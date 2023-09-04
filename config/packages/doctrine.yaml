@@ -1,6 +1,7 @@
 doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
+        driver: pdo_mysql
         # connections:
         #     default:
         #         driver:   pdo_mysql

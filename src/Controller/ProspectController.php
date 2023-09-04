@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route; 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController; 
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @Route("/prospect")
@@ -37,7 +38,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
     /**
      * @Route("/", name="app_prospect_index", methods={"GET", "POST"}) 
      */
-    public function index(Request $request,  ProspectRepository $prospectRepository,  Security $security): Response
+    public function index(Request $request,  ProspectRepository $prospectRepository,  Security $security, RequestStack $requestStack): Response
     {  
         
         
@@ -46,7 +47,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
         $perPage = 4;
 
         $form = $this->createForm(SearchProspectType::class);
-        $form->handleRequest($request);
+        // $form->handleRequest($request);
+        $form->handleRequest($requestStack->getCurrentRequest());
 
             // Pour avoir tous les prospect en taut que je suis admin 
         $user = $security->getUser();
@@ -54,14 +56,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
            
             // je recupere les prospects qui son pas encors affecter
             $prospect =  $prospectRepository->findByUserPasAffecter($this->paginator, $page, $perPage);
-            $request->getSession()->set('security', count($prospect) );
+           
             
             
         } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
           
             // je recupe seulement les prospects affecter au mon equipe
             $prospect =  $prospectRepository->findByUserChefEquipe($user);
-            $request->getSession()->set('security', count($prospect) );
+           
             
         }
       
@@ -71,10 +73,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
             
             $prospect =  $prospectRepository->findByUserConect( $security->getUser()->getId());
        
-            $request->getSession()->set('security', count($prospect) );
+            // $request->getSession()->set('security', count($prospect) );
         }
 
-         
+        $requestStack->getSession()->set('security', count($prospect));
 
       
         return $this->render('prospect/index.html.twig', [

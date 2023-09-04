@@ -18,7 +18,7 @@ class RegisterType extends AbstractType
           
          
             ->add('username', Type\TextType::class, [
-                'label' => 'Votre prénom',
+                'label' => 'username',
                 'required' => true,
                 'attr' => [
                     'placeholder' => 'Merci de saisir votre prénom'

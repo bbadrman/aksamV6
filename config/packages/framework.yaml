@@ -12,7 +12,9 @@ framework:
     #     storage_factory_id: session.storage.factory.native
  
     session:
-        handler_id: null
+        handler_id: session.handler.native_file
+        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+        cookie_lifetime: 14400
         cookie_secure: auto
         cookie_samesite: lax
         storage_factory_id: session.storage.factory.native

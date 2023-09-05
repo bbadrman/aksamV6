@@ -4,15 +4,16 @@ namespace App\Cart;
   
 use App\Repository\ProspectRepository;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class Panier
 {
-    protected $session;
-    protected $prospectRepository;
+    protected $requestStack;
+    public $prospectRepository;
 
-    public function __construct(SessionInterface $session, ProspectRepository $prospectRepository)
+    public function __construct(RequestStack $requestStack, ProspectRepository $prospectRepository)
     {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->prospectRepository = $prospectRepository;
     }
 
@@ -20,21 +21,13 @@ class Panier
     public function getQty(): int {
          
         $prospect =  $this->prospectRepository->findAll();
-        
-        $qty = $this->session->get('prospect',  count($prospect));
+        $session = $this->requestStack->getSession();
+        $qty = $session->get('prospect', count($prospect));
         return $qty;
        
          
     }
-    // public function getNmbr(): int {
-         
-    //     $prospect =  $this->prospectRepository->findAll();
-        
-    //     $nmbr = $this->session->get('prospect',  count($prospect));
-    //     return $nmbr;
-       
-         
-    // }
+   
 
 }
 

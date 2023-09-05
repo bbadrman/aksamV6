@@ -4,6 +4,7 @@ twig:
 
     globals:
       panier: "@App\\Cart\\Panier"
+       
 
 when@test:
     twig:

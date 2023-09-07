@@ -58,7 +58,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/nouveau-utilisateur", name="user_new", methods={"GET","POST"})
-     * @IsGranted("ROLE_SUPER_ADMIN", message="Tu ne peut pas acces a cet ressource")
+     * @IsGranted("ROLE_ADMIN", message="Tu ne peut pas acces a cet ressource")
      */
     public function new(Request $request, UserPasswordHasherInterface $encoder ): Response
     {

@@ -28,17 +28,19 @@ use Symfony\Component\HttpFoundation\RequestStack;
 {
     private $entityManager;
     private $paginator;
+    private $requestStack;
 
-    public function __construct(EntityManagerInterface $entityManager, PaginatorInterface $paginator)
+    public function __construct(EntityManagerInterface $entityManager, PaginatorInterface $paginator, RequestStack $requestStack)
     {
         $this->entityManager = $entityManager;
         $this->paginator = $paginator;
+        $this->requestStack = $requestStack;
     }
 
     /**
      * @Route("/", name="app_prospect_index", methods={"GET", "POST"}) 
      */
-    public function index(Request $request,  ProspectRepository $prospectRepository,  Security $security, RequestStack $requestStack): Response
+    public function index(Request $request,  ProspectRepository $prospectRepository,  Security $security): Response
     {  
         
         
@@ -48,7 +50,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
         $form = $this->createForm(SearchProspectType::class);
         // $form->handleRequest($request);
-        $form->handleRequest($requestStack->getCurrentRequest());
+        $form->handleRequest($this->requestStack->getCurrentRequest());
 
             // Pour avoir tous les prospect en taut que je suis admin 
         $user = $security->getUser();
@@ -76,7 +78,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
             // $request->getSession()->set('security', count($prospect) );
         }
 
-        $requestStack->getSession()->set('security', count($prospect));
+        $this->requestStack->getSession()->set('security', count($prospect));
 
       
         return $this->render('prospect/index.html.twig', [

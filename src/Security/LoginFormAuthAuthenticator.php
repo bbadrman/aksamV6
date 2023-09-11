@@ -31,7 +31,6 @@ class LoginFormAuthAuthenticator extends AbstractLoginFormAuthenticator
     {
         $this->urlGenerator = $urlGenerator;
         $this->entityManager = $entityManager;
-        
     }
 
     public function authenticate(Request $request): Passport
@@ -46,15 +45,15 @@ class LoginFormAuthAuthenticator extends AbstractLoginFormAuthenticator
             [
                 new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
             ]
-            
+
         );
-        
+
         $username = $this->entityManager->getRepository(User::class)->findOneBy(['username' => ['username']]);
 
         if (!$username) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Cette Username est introuvable.');
-        }   
+        }
 
         return $username;
     }
@@ -73,47 +72,54 @@ class LoginFormAuthAuthenticator extends AbstractLoginFormAuthenticator
         //              }else{
         //                 return new RedirectResponse($this->urlGenerator->generate('dashboard'));
         //              }
-                       /** @var User $user */
-                      $user = $token->getUser();
+        /** @var User $user */
+        $user = $token->getUser();
 
-                    if(in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) ){
-                     return new RedirectResponse($this->urlGenerator->generate('dashboard'));}
-                     
-                    if(in_array('ROLE_PROS', $user->getRoles(), true) ){
-                        return new RedirectResponse($this->urlGenerator->generate('app_prospect_index'));}
-                    if(in_array('ROLE_ADD_PROS', $user->getRoles(), true) ){
-                            return new RedirectResponse($this->urlGenerator->generate('app_prospect_new'));}
-                    if(in_array('ROLE_EDIT_PROS', $user->getRoles(), true) ){
-                           return new RedirectResponse($this->urlGenerator->generate('app_prospect_index'));}
-                        
-                    
-                    if(in_array('ROLE_PROD', $user->getRoles(), true) ){
-                            return new RedirectResponse($this->urlGenerator->generate('app_product_index'));}
-                    if(in_array('ROLE_ADD_PROD', $user->getRoles(), true) ){
-                            return new RedirectResponse($this->urlGenerator->generate('app_prospect_new'));}
-                    if(in_array('ROLE_EDIT_PROD', $user->getRoles(), true) ){
-                             return new RedirectResponse($this->urlGenerator->generate('app_product_index'));}
-                        
-                        
+        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            return new RedirectResponse($this->urlGenerator->generate('dashboard'));
+        }
 
-                    if(in_array('ROLE_USER', $user->getRoles(), true) ){
-                            return new RedirectResponse($this->urlGenerator->generate('dashboard'));}
- 
+        if (in_array('ROLE_PROS', $user->getRoles(), true)) {
+            return new RedirectResponse($this->urlGenerator->generate('app_prospect_index'));
+        }
+        if (in_array('ROLE_ADD_PROS', $user->getRoles(), true)) {
+            return new RedirectResponse($this->urlGenerator->generate('app_prospect_new'));
+        }
+        if (in_array('ROLE_EDIT_PROS', $user->getRoles(), true)) {
+            return new RedirectResponse($this->urlGenerator->generate('app_prospect_index'));
+        }
 
-                    if(in_array('ROLE_RH', $user->getRoles(), true) ){
-                            return new RedirectResponse($this->urlGenerator->generate('app_team_index'));}
 
-                    if(in_array('ROLE_ADD_RH', $user->getRoles(), true) ){
-                            return new RedirectResponse($this->urlGenerator->generate('team_new'));}
-                                                              
-                    return new RedirectResponse($this->urlGenerator->generate('dashboard'));
-                    
+        if (in_array('ROLE_PROD', $user->getRoles(), true)) {
+            return new RedirectResponse($this->urlGenerator->generate('app_product_index'));
+        }
+        if (in_array('ROLE_ADD_PROD', $user->getRoles(), true)) {
+            return new RedirectResponse($this->urlGenerator->generate('app_prospect_new'));
+        }
+        if (in_array('ROLE_EDIT_PROD', $user->getRoles(), true)) {
+            return new RedirectResponse($this->urlGenerator->generate('app_product_index'));
+        }
+
+
+
+        if (in_array('ROLE_USER', $user->getRoles(), true)) {
+            return new RedirectResponse($this->urlGenerator->generate('dashboard'));
+        }
+
+
+        if (in_array('ROLE_RH', $user->getRoles(), true)) {
+            return new RedirectResponse($this->urlGenerator->generate('app_team_index'));
+        }
+
+        if (in_array('ROLE_ADD_RH', $user->getRoles(), true)) {
+            return new RedirectResponse($this->urlGenerator->generate('team_new'));
+        }
+
+        return new RedirectResponse($this->urlGenerator->generate('dashboard'));
     }
 
     protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
-   
-    
 }

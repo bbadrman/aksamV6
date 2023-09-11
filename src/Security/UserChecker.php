@@ -23,7 +23,7 @@ class UserChecker implements UserCheckerInterface
             return;
         }
 
-        if(!$user->getStatus()) {
+        if (!$user->getStatus()) {
             throw new CustomUserMessageAccountStatusException('Votre compte n\'est pas actif, voir avec l\'administrateur');
         }
     }
@@ -33,10 +33,8 @@ class UserChecker implements UserCheckerInterface
         if (!$user instanceof AppUser) {
             return;
         }
-        if ($this->security->isGranted('ROLE_SUPER_ADMIN')) {
+        if ($this->security->isGranted('ROLE_ADMIN')) {
             return false;
         }
     }
-
-    
 }

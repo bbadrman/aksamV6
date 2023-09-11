@@ -447,7 +447,7 @@ NB:
                         /** @var User $user */
                       $user = $token->getUser();
 
-                   if(in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) ){
+                   if(in_array('ROLE_ADMIN', $user->getRoles(), true) ){
                      return new RedirectResponse($this->urlGenerator->generate('user_index'));
                      
                                     if(in_array('ROLE_COMER', $user->getRoles(), true) ){

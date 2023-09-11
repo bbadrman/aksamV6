@@ -36,18 +36,18 @@ class ProductController extends AbstractController
     }
 
 
-     /**
+    /**
      * @Route("/new-product", name="product_new", methods={"GET", "POST"}) 
      */
     public function new(Request $request, ValidatorInterface $validator): JsonResponse
     {
-        
+
         $product = new Product();
 
         $product->setName($request->get('name'));
 
         $product->setDescrption($request->get('descrption'));
-         
+
         $errors = $validator->validate($product);
 
         $errorMessages = array();
@@ -81,7 +81,7 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             foreach ($product->getUsers() as $user) {
                 $user->addProduct($product);
             }
@@ -119,7 +119,7 @@ class ProductController extends AbstractController
             foreach ($product->getUsers() as $user) {
                 $user->addProduct($product);
             }
-            
+
             $productRepository->add($product, true);
             $this->addFlash('info', 'Votre Produit a été modifié avec succès!');
             return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
@@ -133,17 +133,14 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_product_delete", methods={"POST"})
-     * @IsGranted("ROLE_SUPER_ADMIN", message="Tu ne peut pas acces a cet ressource")
+     * @IsGranted("ROLE_ADMIN", message="Tu ne peut pas acces a cet ressource")
      */
     public function delete(Request $request, Product $product, ProductRepository $productRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
             $productRepository->remove($product, true);
         }
         $this->addFlash('danger', 'Votre Produit a été supprimé avec succès!');
         return $this->redirectToRoute('app_product_index', [], Response::HTTP_SEE_OTHER);
     }
-
-   
 }
-

@@ -7,7 +7,7 @@ use App\Entity\User;
 use App\Entity\Prospect;
 use App\Service\StatsService;
 use App\Repository\TeamRepository;
-use App\Repository\UserRepository; 
+use App\Repository\UserRepository;
 use App\Repository\ProspectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,32 +32,30 @@ class DashboardController extends AbstractController
      
      * @return Response  
      */
-    public function index(Request $request,  ProspectRepository $prospectRepository, UserRepository $userRepository,  TeamRepository $teamRepository,  StatsService $statsService,  Security $security ): Response
+    public function index(Request $request,  ProspectRepository $prospectRepository, UserRepository $userRepository,  TeamRepository $teamRepository,  StatsService $statsService,  Security $security): Response
     {
         $user = $security->getUser();
-        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true)) {
-           
+        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+
             // je recupere les prospects qui son pas encors affecter
             $prospect =  $prospectRepository->findByUserPasAffecter();
-            $request->getSession()->set('security', count($prospect) );
-            
+            $request->getSession()->set('security', count($prospect));
         } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
-          
-                // je recupe seulement les prospects affecter au mon equipe
+
+            // je recupe seulement les prospects affecter au mon equipe
             $prospect =  $prospectRepository->findOneByChef($user);
-            $request->getSession()->set('security', count($prospect) );
+            $request->getSession()->set('security', count($prospect));
             // dd($prospect);
-            
-        }
-        else {
-            
-            $prospect =  $prospectRepository->findByUserConect( $security->getUser()->getId());
-       
-            $request->getSession()->set('security', count($prospect) );
+
+        } else {
+
+            $prospect =  $prospectRepository->findByUserConect($security->getUser()->getId());
+
+            $request->getSession()->set('security', count($prospect));
         }
 
-       
-        $request->getSession()->set('security', count($prospect) );
+
+        $request->getSession()->set('security', count($prospect));
 
         // generer les données avec statistiques
         $stats    = $statsService->getStats();
@@ -72,14 +70,11 @@ class DashboardController extends AbstractController
         return $this->render('dashboard/index.html.twig', [
             'stats'    => $stats,
             'users' => $users,
-            'teams' => $team, 
+            'teams' => $team,
             'team' => $teams,
             'prospects' => $prospect,
-            'prospstat' => $prosStat]);
-
-            
-        
-        
+            'prospstat' => $prosStat
+        ]);
     }
 
     /**
@@ -90,18 +85,18 @@ class DashboardController extends AbstractController
      * @return Response  
      */
 
-     public function show(Prospect $pro)
-     {
-         //je récuperer l'annonce qui correspond au slug
-         //  $ad = $repo->findOneBySlug($slug);
-         return $this->render('dashboard/show.html.twig', [
-             'pro' => $pro
-         ]);
-     }
+    public function show(Prospect $pro)
+    {
+        //je récuperer l'annonce qui correspond au slug
+        //  $ad = $repo->findOneBySlug($slug);
+        return $this->render('dashboard/show.html.twig', [
+            'pro' => $pro
+        ]);
+    }
 
 
 
-      /**
+    /**
      * Permet d'afficher tous les teams
      * 
      *  @Route("/home/list", name="dashboard_list")
@@ -109,15 +104,15 @@ class DashboardController extends AbstractController
      * @return Response  
      */
 
-     public function list(TeamRepository $teamRepository)
-     {
+    public function list(TeamRepository $teamRepository)
+    {
         $teams = $teamRepository->findAll();
-         return $this->render('dashboard/list.html.twig', [
+        return $this->render('dashboard/list.html.twig', [
             'team' => $teams,
-         ]);
-     }
+        ]);
+    }
 
-      /**
+    /**
      * Permet d'afficher tous les teams
      * 
      *  @Route("/home/show/{id}", name="dashboard_show", methods={"GET"})
@@ -125,13 +120,13 @@ class DashboardController extends AbstractController
      * @return Response  
      */
 
-     public function listShow(Team $team)
-     {
-        
-         return $this->render('partials/_modal_disp_team.html.twig', [
+    public function listShow(Team $team)
+    {
+
+        return $this->render('partials/_modal_disp_team.html.twig', [
             'team' => $team,
-         ]);
-     }
+        ]);
+    }
 
     //  /**
     //  * @Route("/shop", name="shop")
@@ -140,22 +135,22 @@ class DashboardController extends AbstractController
     // {
 
     //     $stats    = $statsService->getStats();
-     
+
     //     return $this->render('header.html.twig', [
     //         'stats'    => $stats,
     //         ]);
 
- 
+
     // }
     // public function total(OrderRepository $order ): Response
     // {
     //     $totalOrder = count($orderRepository->findAll());
-    
+
     // }
     //     return $this->render('@backend/dashboard/index.html.twig', [
     //         'totalAmount'  => $statiProduct,
-          
+
     //     ]);
-    
+
 
 }

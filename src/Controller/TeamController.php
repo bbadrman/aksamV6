@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Team;
 use App\Entity\Product;
-use App\Form\TeamType; 
+use App\Form\TeamType;
 use App\Search\SearchTeam;
 use App\Form\SearchTeamType;
 use App\Repository\TeamRepository;
@@ -34,37 +34,38 @@ class TeamController extends AbstractController
      * @Route("/", name="app_team_index", methods={"GET"})
      */
     public function index(TeamRepository $teamRepository, Request $request): Response
-    {   
+    {
         $data = new SearchTeam();
         $data->page = $request->get('page', 1);
 
         $form = $this->createForm(SearchTeamType::class, $data);
         $form->handleRequest($request);
-        
+
         $teams = $teamRepository->findSearch($data);
-         
+
         return $this->render('team/index.html.twig', [
             'teams' => $teams,
             'search_form' => $form->createView()
         ]);
     }
 
-/**
- * @Route("/teams-test/", name="teams-test", methods={"GET", "POST"})
- */
-    public function testuser(UserRepository $userRepository){
-          $users = $userRepository->findAll();
+    /**
+     * @Route("/teams-test/", name="teams-test", methods={"GET", "POST"})
+     */
+    public function testuser(UserRepository $userRepository)
+    {
+        $users = $userRepository->findAll();
         $jsonData = array();
-        $idx = 0; 
-        foreach($users as $user) {  
+        $idx = 0;
+        foreach ($users as $user) {
             $temp = array(
-               'id' => $user->getId(),  
-               'name' => $user->getFirstname(),  
-               'prenom' => $user->getLastname(),  
-               
-            );   
-            $jsonData[$idx++] = $temp;  
-         } 
+                'id' => $user->getId(),
+                'name' => $user->getFirstname(),
+                'prenom' => $user->getLastname(),
+
+            );
+            $jsonData[$idx++] = $temp;
+        }
         return $this->json([
             'status' => 400,
             'user' => $jsonData
@@ -145,15 +146,15 @@ class TeamController extends AbstractController
     {
         $form = $this->createForm(TeamType::class, $team);
         $form->handleRequest($request);
-           
+
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($team->getUsers() as $user) {
                 $user->setTeams($team);
             }
-            
+
             $teamRepository->add($team, true);
 
-             
+
             $this->addFlash('info', 'Votre equipe a été modifié avec succès!');
             return $this->redirectToRoute('app_team_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -166,7 +167,7 @@ class TeamController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_team_delete", methods={"POST"}) 
-     * @IsGranted("ROLE_SUPER_ADMIN", message="Tu ne peut pas acces a cet ressource")
+     * @IsGranted("ROLE_ADMIN", message="Tu ne peut pas acces a cet ressource")
      */
     public function delete(Request $request, Team $team, TeamRepository $teamRepository): Response
     {
@@ -176,7 +177,4 @@ class TeamController extends AbstractController
         $this->addFlash('danger', 'Votre equipe a été supprimé avec succès!');
         return $this->redirectToRoute('app_team_index', [], Response::HTTP_SEE_OTHER);
     }
-
-
-    
 }

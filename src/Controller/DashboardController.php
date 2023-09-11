@@ -3,36 +3,29 @@
 namespace App\Controller;
 
 use App\Entity\Team;
-use App\Entity\User;
 use App\Entity\Prospect;
 use App\Service\StatsService;
 use App\Repository\TeamRepository;
 use App\Repository\UserRepository;
 use App\Repository\ProspectRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class DashboardController extends AbstractController
 {
-    private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
     /**
      * @Route("/", name="dashboard")
      * @IsGranted("ROLE_USER", message="Tu ne peut pas acces a cet ressource")
      
      * @return Response  
      */
-    public function index(Request $request,  ProspectRepository $prospectRepository, UserRepository $userRepository,  TeamRepository $teamRepository,  StatsService $statsService,  Security $security): Response
+    public function index(Request $request,  ProspectRepository $prospectRepository, UserRepository $userRepository,  TeamRepository $teamRepository,  StatsService $statsService,  Security $security, RequestStack $requestStack): Response
     {
         $user = $security->getUser();
         if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
@@ -55,7 +48,7 @@ class DashboardController extends AbstractController
         }
 
 
-        $request->getSession()->set('security', count($prospect));
+        $requestStack->getSession()->set('security', count($prospect));
 
         // generer les données avec statistiques
         $stats    = $statsService->getStats();

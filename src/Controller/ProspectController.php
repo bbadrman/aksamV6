@@ -149,4 +149,18 @@ class ProspectController extends AbstractController
 
         return $this->redirectToRoute('app_prospect_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    /**
+     * @Route("/valid", name="app_prospect_valide", methods={"GET"})
+     */
+    public function valid(Request $request): Response
+    {
+        $data1 = array(
+            'nom' => $request->query['nom'],
+            'prenom' => $request->query['prenom'],
+            'telephone' => $request->query['telephone'],
+        );
+
+        dd($data1);
+    }
 }

@@ -14,9 +14,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * @Route("/prospect")
@@ -36,6 +37,8 @@ class ProspectController extends AbstractController
         $this->paginator = $paginator;
         $this->requestStack = $requestStack;
     }
+
+
 
     /**
      * @Route("/", name="app_prospect_index", methods={"GET", "POST"}) 
@@ -101,6 +104,7 @@ class ProspectController extends AbstractController
             return $this->redirectToRoute('app_prospect_index', [], Response::HTTP_SEE_OTHER);
         }
 
+
         return $this->renderForm('prospect/new.html.twig', [
             'prospect' => $prospect,
             'form' => $form,
@@ -138,6 +142,7 @@ class ProspectController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/{id}", name="app_prospect_delete", methods={"POST"})
      */
@@ -148,19 +153,5 @@ class ProspectController extends AbstractController
         }
 
         return $this->redirectToRoute('app_prospect_index', [], Response::HTTP_SEE_OTHER);
-    }
-
-    /**
-     * @Route("/valid", name="app_prospect_valide", methods={"GET"})
-     */
-    public function valid(Request $request): Response
-    {
-        $data1 = array(
-            'nom' => $request->query['nom'],
-            'prenom' => $request->query['prenom'],
-            'telephone' => $request->query['telephone'],
-        );
-
-        dd($data1);
     }
 }

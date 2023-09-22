@@ -10,3 +10,8 @@ when@prod:
     framework:
         router:
             strict_requirements: null
+# app_valide:
+#     path: /prospect/valid
+#     controller: App\Controller\ValideController::valid
+#     methods: [GET]
+#     name: app_valide

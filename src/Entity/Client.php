@@ -2,14 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\ClientRepository;
-
-use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\ORM\Mapping as ORM;
 use App\Validator as MyAssert;
 
+use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ClientRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
- * @ORM\Entity(repositoryClass=ClientRepository::class)
+ * @ORM\Entity(repositoryClass=ClientRepository::class) 
+ * @ApiResource
  */
 class Client
 {

@@ -371,5 +371,16 @@ header("Location:/https://aksama-assurance.azurewebsites.net/prospect/valid?nom=
 
 header("Location: /confirmation-VTC.php");
 
+
+//////////////////
+$nom = $_POST['nom'];
+$prenom = $_POST['prenom'];
+$telephone= $_POST['telephone'];
+$gmail= $_POST['gmail'];
+
+header("location:
+http://aksama-assurance.azurewebsites.net/valid?nom='.$nom.'&prenom='.$prenom.'&telephone='.$telephone.'&gmail='.$gmail.'&retour=http://www.assurance-des-vtc.fr/confirmation-VTC.php&source=http://www.assurance-des-vtc.fr/");
+////////////////
+
 return
 $this->redirect('https://www.ton-application.fr/valid?valeur1='.$valeur1.'&valeur2='.$valeur2.'&valeur3='.$valeur3.'&retour=http://www.ton-site-actuelle.fr/confirmation&source=http://www.ton-site-actuelle.fr/');

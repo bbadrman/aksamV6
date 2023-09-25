@@ -2,14 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\ProductRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
- * @ORM\Table(name="product")
+ * @ORM\Table(name="product") 
+ * @ApiResource
  */
 class Product
 {
@@ -30,16 +32,16 @@ class Product
      */
     private $descrption;
 
-     
+
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, mappedBy="products", cascade={"persist"})
      */
     private $users;
 
-   
- 
-    
+
+
+
 
     public function __construct()
     {
@@ -75,7 +77,7 @@ class Product
         return $this;
     }
 
-   
+
 
     public function __toString()
     {
@@ -108,8 +110,4 @@ class Product
 
         return $this;
     }
- 
-  
-    
-    
 }

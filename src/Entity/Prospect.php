@@ -3,13 +3,15 @@
 namespace App\Entity;
 
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ProspectRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ProspectRepository::class)
  * @ORM\HasLifecycleCallbacks()
+ * @ApiResource
  */
 class Prospect
 {
@@ -72,7 +74,7 @@ class Prospect
      */
     private $brithAt;
 
-     
+
     /**
      * @ORM\Column(type="string", nullable=true, length=50)
      */
@@ -240,7 +242,7 @@ class Prospect
 
         return $this;
     }
- 
+
 
     public function getBrithAt(): ?\DateTimeInterface
     {
@@ -253,7 +255,7 @@ class Prospect
 
         return $this;
     }
- 
+
 
     public function getSource(): ?string
     {
@@ -410,6 +412,4 @@ class Prospect
 
         return $this;
     }
-
-   
 }

@@ -5,7 +5,8 @@ namespace App\Entity;
 use ORM\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\Collection; 
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -15,7 +16,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\HasLifecycleCallbacks
- * @ORM\Table(name="user")
+ * @ORM\Table(name="user") 
+ * @ApiResource
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -121,8 +123,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $prospections;
 
-    
-     
+
+
 
     public function __construct()
     {
@@ -130,7 +132,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->products = new ArrayCollection();
         $this->prospects = new ArrayCollection();
         $this->prospections = new ArrayCollection();
-      
     }
 
     public function getId(): ?int
@@ -217,7 +218,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    
+
 
     public function getFirstname(): ?string
     {
@@ -354,13 +355,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    
-   
+
+
 
 
     public function __toString()
     {
-       return strval( $this->getUserIdentifier() );
+        return strval($this->getUserIdentifier());
     }
 
     /**

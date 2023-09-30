@@ -187,11 +187,11 @@ class ProspectType extends AbstractType
                     'required' => false,
                     'placeholder' => '--Merci de selectie-- ',
                     'choices' => [
-                        'Aggravation de risque' =>  0,
-                        'Amiable' =>  1,
-                        'Échéance' => 2,
-                        'Non-paiement' => 3,
-                        'Sinistre' =>  4
+                        'Aggravation de risque' =>  1,
+                        'Amiable' =>  2,
+                        'Échéance' => 3,
+                        'Non-paiement' => 4,
+                        'Sinistre' =>  5
                     ],
                     'expanded' => false,
                     'multiple' => false
@@ -209,7 +209,7 @@ class ProspectType extends AbstractType
 
 
         $formModifier = function (FormInterface $form, Team $team = null) {
-           
+
             $comrcl = $team === null ? [] : $this->userRepository->findComrclByteamOrderedByAscName($team);
             //dd(team); //null
             //dd( $comrcl); //[]
@@ -226,11 +226,11 @@ class ProspectType extends AbstractType
 
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($formModifier, $options)  {
+            function (FormEvent $event) use ($formModifier, $options) {
                 $data = $event->getData();
                 //dd($data);
                 $formModifier($event->getForm(), $data->getTeam());
-                if ($options['editing'] === false ) {
+                if ($options['editing'] === false) {
 
                     $formModifier($event->getForm(), $data->getTeam());
                 }

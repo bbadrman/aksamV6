@@ -231,7 +231,7 @@ window.onload = () => {
 document.addEventListener('DOMContentLoaded', function() {
     const teamSelectEl = document.getElementById('prospect_team');
     teamSelectEl.addEventListener('change', function(e) {
-		console.log('okok');
+		// console.log('okok');
         const formEl = teamSelectEl.closest('form');
 		// console.log("formEl: " + formEl);
 		

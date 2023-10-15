@@ -1,111 +1,102 @@
 {{ form_start(search_form) }}
 
 
-<div class="container">
-    <div  id="my-form" class="search">
-		<div class="form-group">
-			<div class="form-group col-sm-6">
-                         
-				<div class="alert alert-light">
-				             <div class="form-group col-sm-6" id="from"> 
-							{{ form_row(search_form.d) }}
-							</div>
-							 
-							<div class="form-group col-sm-6" id="to">  
-							{{ form_row(search_form.dd) }}
-							</div> 
-                    {{ form_row(search_form.q) }}				 
-					{{ form_row(search_form.m) }}
-				    {{ form_row(search_form.g) }}
-                    {{ form_row(search_form.c) }}
-						 			
-				</div>
-			</div>			
-		</div>
-
-        <div   class="form-group">
-            <div class="form-group col-sm-6">
-
-                <div class="alert alert-light">
-                        
-                       {{ form_row(search_form.l) }}
-
-        
-                    {% if is_granted('ROLE_ADMIN')  == true %}
-
-                    
-                        {{ form_row(search_form.team) }}
-
-                    {% else %}
-
-                        {{form_row(search_form.team, { 'attr' : { 'style':'display:none'} }) }}
-
-                    {% endif %}
-                            
-                            {{ form_row(search_form.r) }}
-                                
-
-                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')  == true %}
-
-                    
-                           {{ form_row(search_form.s) }}
-                           {{ form_row(search_form.source) }}
-
-
-                    {% else %}
-                                {{form_row(search_form.s, { 'attr' : { 'style':'display:none'} }) }}
-                                {{form_row(search_form.source, { 'attr' : { 'style':'display:none'} }) }}
-
-                    {% endif %}
-                                   
-                </div>
-
-            </div>
-        </div>
-    </div>
-     <div class="form-group col-sm-12">
-                <div class="text-center">
-                        <button class="btn btn-theme" value="back" onclick="history.go(-1)">Annuler</button>                 
-                          <button class="btn btn-primary btn search-btn" type="submit">
-                            RECHERCHER ...
-                                <i class="fa fa-search" aria-hidden="true"></i>
-                         </button>
-                       <input class="btn btn-primary" type="reset" value="Reset">
-                </div>
-    </div>
-               
- 
+<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+	{{ form_row(search_form.d) }}
 </div>
-       
-{{ form_end(search_form) }}
 
- 
- 
- <script > 
+<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+	{{ form_row(search_form.dd) }}
+</div>
+<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+	{{ form_row(search_form.q) }}
+</div>
+<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+	{{ form_row(search_form.m) }}
+</div>
+<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+	{{ form_row(search_form.g) }}
+</div>
+<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+	{{ form_row(search_form.c) }}
+</div>
+<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
 
-document.addEventListener('DOMContentLoaded', function() {
-	var searchBtn = document.querySelector('.search-btn');
-	var formInputs = document.querySelectorAll('#my-form input[type="text"], #my-form select');
+	{{ form_row(search_form.l) }}
 
-	// Fonction pour vérifier si au moins un champ est rempli
-	function checkFormInputs() {
-		for (var i = 0; i < formInputs.length; i++) {
-			if (formInputs[i].value.trim() !== '') {
-				searchBtn.classList.remove('hidden');
-				return;
-			}
-		}
-		searchBtn.classList.add('hidden');
-	}
+</div>
+<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+	{{ form_row(search_form.s) }}
+</div>
+<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+	{{ form_row(search_form.source) }}
+</div>
 
-	// Vérifier les champs à chaque modification
-	for (var i = 0; i < formInputs.length; i++) {
-		formInputs[i].addEventListener('input', checkFormInputs);
-	}
+{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')   == true %}
+	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+		{{ form_row(search_form.r) }}
+	</div>
+{% else %}
+	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+		{{form_row(search_form.r, {'label': false, 'attr' : { 'style':'display:none'} }) }}
+	</div>
+{% endif %}
 
-	// Vérifier les champs au chargement de la page
-	checkFormInputs();
-});
+<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+	{% if is_granted('ROLE_ADMIN')  == true %}
 
-</script> 
- 
+
+		{{ form_row(search_form.team) }}
+
+	{% else %}
+
+		{{ form_row(search_form.team, {'label': false, 'attr': { 'style': 'display: none' } }) }}
+
+	{% endif %}
+</div>
+
+
+<div class="input-group-btn col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+	<button class="btn btn-primary btn search-btn" type="submit">
+		<i class="fa fa-search" aria-hidden="true"></i>
+	</button>
+	<button class="btn btn-theme" value="back" onclick="history.go(-1)">
+		<i class="fa fa-undo" aria-hidden="true"></i>
+	</button>
+	<button class="btn btn-primary" type="reset">
+
+		<i class="fa fa-refresh" aria-hidden="true"></i>
+	</button>
+
+</div>
+{{ form_end(search_form) }}{# 
+										<div class="text-center">
+											<button class="btn btn-theme" value="back" onclick="history.go(-1)">Annuler</button>
+											<button class="btn btn-primary btn search-btn" type="submit">RECHERCHER ...<i class="fa fa-search" aria-hidden="true"></i>
+											</button>
+											<input class="btn btn-primary" type="reset" value="Reset"></div></div></div>{{ form_end(search_form) }}
+											#}//<script>
+	// 	document.addEventListener('DOMContentLoaded', function () {
+												// var searchBtn = document.querySelector('.search-btn');
+												// var formInputs = document.querySelectorAll('#my-form input[type="text"], #my-form select');
+												
+												// // Fonction pour vérifier si au moins un champ est rempli
+												// function checkFormInputs() {
+												// for (var i = 0; i < formInputs.length; i++) {
+												// if (formInputs[i].value.trim() !== '') {
+												// searchBtn.classList.remove('hidden');
+												// return;
+												// }
+												// }
+												// searchBtn.classList.add('hidden');
+												// }
+												
+												// // Vérifier les champs à chaque modification
+												// for (var i = 0; i < formInputs.length; i++) {
+												// formInputs[i].addEventListener('input', checkFormInputs);
+												// }
+												
+												// // Vérifier les champs au chargement de la page
+												// checkFormInputs();
+												// });
+												// </script>

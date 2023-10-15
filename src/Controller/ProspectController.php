@@ -27,14 +27,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class ProspectController extends AbstractController
 {
-    private $entityManager;
-    private $paginator;
+
     private $requestStack;
 
-    public function __construct(EntityManagerInterface $entityManager, PaginatorInterface $paginator, RequestStack $requestStack)
+    public function __construct(RequestStack $requestStack)
     {
-        $this->entityManager = $entityManager;
-        $this->paginator = $paginator;
+
         $this->requestStack = $requestStack;
     }
 
@@ -47,11 +45,11 @@ class ProspectController extends AbstractController
     {
 
 
+        $data = new SearchProspect();
+        $data->page = $request->query->get('page', 1);
 
-        $page = $request->query->getInt('page', 1);
-        $perPage = 4;
 
-        $form = $this->createForm(SearchProspectType::class);
+        $form = $this->createForm(SearchProspectType::class, $data);
         // $form->handleRequest($request);
         $form->handleRequest($this->requestStack->getCurrentRequest());
 
@@ -59,20 +57,34 @@ class ProspectController extends AbstractController
         $user = $security->getUser();
         if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
 
-            // je recupere les prospects qui son pas encors affecter
-            $prospect =  $prospectRepository->findByUserPasAffecter($this->paginator, $page, $perPage);
+            // je recupere les prospects qui son pas encors affecter 
+
+            $prospect =  $prospectRepository->findAllSearch($data, null);
+            $prospectpas = $prospectRepository->findByUserPaAffecter($data, null);
+            $this->requestStack->getSession()->set('security', count($prospectpas));
+            return $this->render('prospect/index.html.twig', [
+                'prospects' => $prospect,
+                'prospectpas' => $prospectpas,
+                'search_form' => $form->createView()
+            ]);
         } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
 
             // je recupe seulement les prospects affecter au mon equipe
-            $prospect =  $prospectRepository->findByUserChefEquipe($user);
+            $prospect = $prospectRepository->findAllChefSearch($data, $user, null);
+            $prospectChef = $prospectRepository->findByUserChefEquipe($data, $user, null);
+
+            return $this->render('prospect/indexchef.html.twig', [
+                'prospects' => $prospect,
+                'prospectChef' => $prospectChef,
+                'search_form' => $form->createView()
+            ]);
         }
 
 
         // Alors si je suis pas admin  je recupere selement les prospect attacher a moi 
         else {
-
-            $prospect =  $prospectRepository->findByUserConect($security->getUser()->getId());
-
+            $prospectpas = $prospectRepository->findByUserAffecterCmrcl($data, $user, null);
+            $prospect =  $prospectRepository->findByUserConect($data, $user);
             // $request->getSession()->set('security', count($prospect) );
         }
 
@@ -81,6 +93,7 @@ class ProspectController extends AbstractController
 
         return $this->render('prospect/index.html.twig', [
             'prospects' => $prospect,
+            'prospectpas' => $prospectpas,
             'search_form' => $form->createView()
         ]);
     }

@@ -520,3 +520,94 @@ voila l'error qui j'ai:
 
      -second Error : javascript dont working  on click on button 
      -Fix :  i fixeted par included comont.min.js
+
+     les error et les fixed sur doc: "https://docs.google.com/document/d/1oI_IR68yiIR_NNyTjHtYpYbYUQPFqaIBzV8FvjudjnA/edit"
+   ## Api :
+
+   le but c'est de lie des sites pub avec php native avec notre application symfony, c'est pour cela on a choisir le web service, pricisament l'api .
+   N.B: afin de securiser notre resources on blouquer les autre verbe http, on rester seulement POST pour poster seulement les prosepes apartir des sites 
+      access_control:
+        - { path: ^/api, roles: ROLE_ADMIN, methods: [GET, PUT, DELETE], }
+        - { path: ^/api/prospects, roles: ROLE_ADMIN, methods: [GET, PUT, DELETE], }
+        - { path: ^/api/users, roles: ROLE_ADMIN  }
+        - { path: ^/api/products, roles: ROLE_ADMIN }
+        - { path: ^/api/teams, roles: ROLE_ADMIN }
+        - { path: ^/api/clients, roles: ROLE_ADMIN }
+        - { path: ^/api/fonctions, roles: ROLE_ADMIN }
+   ## Liaison via api de php native :
+                </head>
+                    <?php
+                       // Votre code PHP pour traiter la requête cURL
+
+                    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                        // Récupérer les données du formulaire
+
+                        $nom = $_POST['name'];    
+                        $prenom = $_POST['lastname'];
+                        $telephone = $_POST['phone'];
+                        $email = $_POST['email'];
+                        $raisonSociale = $_POST['raisonSociale'];
+                        $assure = $_POST['assure'];
+                        $lastAssure = $_POST['lastAssure'];
+                        
+                        // Données à envoyer à l'API
+                        $data = array(
+
+                            'name' => $nom,
+                            'lastname' => $prenom,
+                            'phone' => $telephone,
+                            'email' => $email,
+                            'raisonSociale' => $raisonSociale,
+                            'assure' => $assure,
+                            'lastAssure' => $lastAssure,
+                            
+                            
+                        );
+
+                        // Convertir les données en JSON
+                        $jsonData = json_encode($data);
+
+                        // URL du point d'extrémité de l'API
+                        $apiUrl = 'http://aksama-assurance.azurewebsites.net/api/prospects';
+
+                        // Initialisation de cURL
+                        $curl = curl_init();
+
+                        // Définition des options de cURL
+                        curl_setopt($curl, CURLOPT_URL, $apiUrl);
+                        curl_setopt($curl, CURLOPT_POST, true);
+                        curl_setopt($curl, CURLOPT_POSTFIELDS, $jsonData);
+                        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                            'Content-Type: application/json',
+                            'Content-Length: ' . strlen($jsonData)
+                        ));
+
+                        // Exécution de la requête cURL
+                        $response = curl_exec($curl);
+
+                        // Vérification des erreurs
+                        if ($response === false) {
+                            $error = curl_error($curl);
+                            // Gérer l'erreur cURL
+                            echo "Erreur cURL : " . $error;
+                        } else {
+                            // Rediriger vers la page de confirmation
+                            header("Location: https://www.assurance-des-vtc.fr/confirmation-VTC.php");
+                            exit; // Assurez-vous de terminer l'exécution du script ici
+                        }
+
+                        // Fermeture de la session cURL
+                        curl_close($curl);
+                    }
+                    ?>
+                 <body>
+   
+   
+ ## Traitement Prospects :
+   dans cette tache je veux ajouter une champ,je vais l'appelais RelanceAt pour afficher seleument les prosect qui sont relance a une date pricis 
+  1- cree      RelanceAt dans entitie prospect
+  2- ajouter un table contient seulement les prospect de cet relance
+  3- crée une function en repository contient condition RelenceAt = dateNew
+  4- envoie cet function par controller ver la table
+

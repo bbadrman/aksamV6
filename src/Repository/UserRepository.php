@@ -27,7 +27,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      * @var PaginatorInterface
      */
     private $paginator;
-    
+
     public function __construct(ManagerRegistry $registry, PaginatorInterface $paginator)
     {
         parent::__construct($registry, User::class);
@@ -66,7 +66,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->add($user, true);
     }
 
-   /**
+    /**
      * Find list a user by a search form
      * @param SearchUser $search
      * @return PaginationInterface
@@ -82,16 +82,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->leftJoin('u.fonctions', 'f')
             //relation manytomany avec product apartir team
             ->leftJoin('u.products', 'p');
-            
-           
+
+
         if (!empty($search->q)) {
             $query = $query
                 ->Where('u.firstname LIKE :q')
                 ->orWhere('u.username LIKE :q')
                 ->orWhere('u.lastname LIKE :q')
                 ->orWhere('u.remuneration LIKE :q')
-                ->orWhere('u.embuchAt LIKE :q') 
-                ->orWhere('u.gender LIKE :q') 
+                ->orWhere('u.embuchAt LIKE :q')
+                ->orWhere('u.gender LIKE :q')
                 // join les tables              
                 ->orWhere('t.name LIKE :q')
                 ->orWhere('p.name LIKE :q')
@@ -115,33 +115,31 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             $query,
             $search->page,
             10
-           
+
         );
     }
-    
+
     public function findComrclByteamOrderedByAscName(Team $team): array
     {
-         
+
         return $this->createQueryBuilder('t')
             ->andWhere('t.teams = :teams')
             ->setParameter('teams', $team)
             ->orderBy('t.username', 'ASC')
             ->getQuery()
             ->getResult();
-            
     }
-    
-    // selectionner les user activer
-    public function findActifeCorcl(){
 
-        
+    // selectionner les user activer
+    public function findActifeCorcl()
+    {
+
+
         // joiner les tables en relation ManyToOne avec team
         return $this->createQueryBuilder('u')
-           ->andWhere('u.status = :val')
-           ->setParameter('val', 1 )
-           ->getQuery()
-           ->getResult()
-       ;
-
+            ->andWhere('u.status = :val')
+            ->setParameter('val', 1)
+            ->getQuery()
+            ->getResult();
     }
 }

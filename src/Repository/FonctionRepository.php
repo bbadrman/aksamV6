@@ -18,7 +18,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
  * @method Fonction[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class FonctionRepository extends ServiceEntityRepository
-{   
+{
     /**
      * @var PaginatorInterface
      */

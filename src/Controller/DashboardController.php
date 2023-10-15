@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Team;
 use App\Entity\Prospect;
 use App\Service\StatsService;
+use App\Search\SearchProspect;
 use App\Repository\TeamRepository;
 use App\Repository\UserRepository;
 use App\Repository\ProspectRepository;
@@ -19,6 +20,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class DashboardController extends AbstractController
 {
 
+    private $requestStack;
+
+    public function __construct(RequestStack $requestStack)
+    {
+
+        $this->requestStack = $requestStack;
+    }
+
     /**
      * @Route("/", name="dashboard")
      * @IsGranted("ROLE_USER", message="Tu ne peut pas acces a cet ressource")
@@ -27,12 +36,16 @@ class DashboardController extends AbstractController
      */
     public function index(Request $request,  ProspectRepository $prospectRepository, UserRepository $userRepository,  TeamRepository $teamRepository,  StatsService $statsService,  Security $security, RequestStack $requestStack): Response
     {
+        $data = new SearchProspect();
         $user = $security->getUser();
         if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
 
             // je recupere les prospects qui son pas encors affecter
-            $prospect =  $prospectRepository->findByUserPasAffecter();
+            $data->page = $request->query->get('page', 1);
+            $prospect =  $prospectRepository->findAllSearch($data);
+            // $prospectpas = $prospectRepository->findByUserPaAffecter();
             $request->getSession()->set('security', count($prospect));
+            // $this->requestStack->getSession()->set('security', count($prospectpas));
         } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
 
             // je recupe seulement les prospects affecter au mon equipe
@@ -42,7 +55,7 @@ class DashboardController extends AbstractController
 
         } else {
 
-            $prospect =  $prospectRepository->findByUserConect($security->getUser()->getId());
+            $prospect =  $prospectRepository->findByUserConect($data, $user);
 
             $request->getSession()->set('security', count($prospect));
         }
@@ -59,7 +72,8 @@ class DashboardController extends AbstractController
         $users = $userRepository->findAll();
         $team = $teamRepository->findByTeamConect($user);
         $teams = $teamRepository->findAll();
-        // dd($teams);
+        // $teams = [];
+        // dd($teams);  
         return $this->render('dashboard/index.html.twig', [
             'stats'    => $stats,
             'users' => $users,
@@ -73,7 +87,7 @@ class DashboardController extends AbstractController
     /**
      * Permet d'afficher une seule annonce
      * 
-     *  @Route("/home/show/{id}", name="dashboard_show")
+     * @Route("/home/show/{id}", name="dashboard_show")
      *
      * @return Response  
      */

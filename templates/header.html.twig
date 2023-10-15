@@ -21,14 +21,21 @@
 
 					<i class="fa fa-shopping-cart"></i>
 
-					<span class="badge bg-warning">
-						{% if is_granted('ROLE_ADMIN') == true %}
-							{{" %02d"|format(app.session.get('security'))}}
-						{% else %}
+					<span class="badge bg-warning" style="font-size: 13px;">
+						{% if is_granted('ROLE_TEAM') == true %}
 							{{  " %02d"|format(app.user.teams.prospects|filter(p => p.comrcl is null)|length)  }}
+
+						{% elseif is_granted('ROLE_ADMIN') == true  %}
+							{{  " %02d"|format(app.user.prospects|filter(p => p.comrcl is null and p.team is null and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
+							{# {{" %02d"|format(app.session.get('security'))}} #}
+
+						{% else %}
+							{# {{" %02d"|format(app.session.get('security'))}} #}
+
+							{{ " %02d"|format(app.user.teams.prospects|filter(p => p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d'))|length) }}
+
 						{% endif %}
 					</span>
-
 				</a>
 
 			{% endif %}

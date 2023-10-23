@@ -167,75 +167,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->select('u')
             ->orderBy('u.id', 'DESC')
             ->where('u = 0');
-        // ->where('u.team = :team')
 
-        // ->setParameter('team', $team)
-
-        // ->andWhere("u.team is NOT NULL")
-        // joiner les tables en relation ManyToOne avec team
-        // ->leftJoin('u.team', 't')
-        // joiner les tables en relation manytomany avec fonction
-        // ->leftJoin('u.comrcl', 'f');
-
-
-        //     if ((!empty($search->q)) ) {
-        //     $query = $query
-        //         ->Where('u.name LIKE :q')
-
-        //         ->orderBy('u.id', 'desc')
-        //         ->setParameter('q', "%{$search->q}%");
-
-        // }
-
-        // if (isset($search->m)) {
-        //     $query = $query
-        //         ->orWhere('u.lastname LIKE :m')
-        //         ->setParameter('m', "%{$search->m}%");
-
-        // }
-        // if (isset($search->r)) {
-        //     $query = $query
-        //         ->orWhere('f.username LIKE :r')
-        //         ->setParameter('r', "%{$search->r}%");
-
-        // }
-        // if (isset($search->g)) {
-        //     $query = $query
-        //         ->orWhere('u.email LIKE :g')
-        //         ->setParameter('g', "%{$search->g}%");
-
-        // }
-
-        // if (isset($search->l)) {
-        //     $query = $query
-        //         ->orWhere('u.phone LIKE :l')
-        //         ->orWhere('u.gsm LIKE :l')
-        //         ->setParameter('l', "%{$search->l}%");
-
-        // }
-        // if (isset($search->c)) {
-        //     $query = $query
-        //         ->orWhere('u.city LIKE :c')
-        //         ->setParameter('c', "%{$search->c}%");
-
-        // }
-        // if (isset($search->d)) {
-        //     $query = $query
-        //         ->andWhere('u.creatAt LIKE :d')
-        //         ->setParameter('d', "%{$search->d}%");
-
-        // }
-        // if (isset($search->s)) {
-        //     $query = $query
-        //         ->orWhere('u.raisonSociale LIKE :s')
-        //         ->setParameter('s', "%{$search->s}%");
-
-        // }
-        // if (isset($search->source)) {
-        //     $query = $query
-        //         ->orWhere('u.source = :source')
-        //         ->setParameter('source', $search->source);
-        // }
 
         return $this->paginator->paginate(
             $query,
@@ -245,23 +177,40 @@ class ProspectRepository extends ServiceEntityRepository
         );
     }
 
-    // /**
-    //  * @return Prospect[] Returns an array of Prospect objects 
-    //  */
-    // public function findByUserConect($id): array
-    // {
-    //     $today = new \DateTime();  // Obtenir la date d'aujourd'hui
+    /**
+     * Find list a prospect Relanced
+     * @param SearchProspect $search
+     * @return PaginationInterface
+     */
+    public function findRelanced(SearchProspect $search): PaginationInterface
+    {
 
-    //     return $this->createQueryBuilder('p')
-    //         ->andWhere('p.comrcl = :val')
-    //         ->andWhere('p.date = :today') // Ajouter une condition pour la date
-    //         ->setParameter('val', $id)
-    //         ->setParameter('today', $today->format('Y-m-d')) // Formater la date au format 'AAAA-MM-JJ'
-    //         ->orderBy('p.id', 'DESC')
-    //         ->setMaxResults(10)
-    //         ->getQuery()
-    //         ->getResult();
-    // }
+        $today = new \DateTime();
+        $today->setTime(0, 0, 0);
+
+        // get selement les prospects qui n'as pas encors affectter a un user
+        $query = $this->createQueryBuilder('p')
+            ->Where('p.relacedAt = :startOfDay')
+            ->setParameter('startOfDay', $today)
+            ->orderBy('p.id', 'DESC');
+        if ((!empty($search->q))) {
+            $query = $query
+                ->andWhere('p.name LIKE :q')
+
+                ->setParameter('q', "%{$search->q}%");
+        }
+        if (isset($search->m)) {
+            $query = $query
+                ->andWhere('p.lastname LIKE :m')
+                ->setParameter('m', "%{$search->m}%");
+        }
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+
+        );
+    }
 
     // lister les prospects du comcrl
     /**
@@ -359,19 +308,6 @@ class ProspectRepository extends ServiceEntityRepository
             ->orderBy('p.id', 'DESC')
             ->getQuery()
             ->getResult();
-
-
-
-
-        // get selement les prospects qui sont affectter a un comrcl
-        // return $this->createQueryBuilder('p')
-        //     ->andWhere("p.comrcl is NOT NULL") 
-        //     ->orWhere("p.team is NOT NULL") 
-        //     // ->andWhere("p.team != ''") 
-        //     ->orderBy('p.id', 'ASC') 
-        //     ->getQuery()
-        //     ->getResult()
-        // ;
     }
 
     /**
@@ -445,10 +381,15 @@ class ProspectRepository extends ServiceEntityRepository
      */
     public function findByUserPaAffecter(SearchProspect $search): PaginationInterface
     {
+        $today = new \DateTime();
+        $today->setTime(0, 0, 0);
+
+
         // get selement les prospects qui n'as pas encors affectter a un user
         $query = $this->createQueryBuilder('p')
-            ->andWhere("p.comrcl is NULL")
-            ->andWhere("p.team is NULL")
+
+            ->andWhere('p.creatAt >= :startOfDay')
+            ->setParameter('startOfDay', $today)
             ->orderBy('p.id', 'DESC');
         if ((!empty($search->q))) {
             $query = $query
@@ -456,11 +397,7 @@ class ProspectRepository extends ServiceEntityRepository
 
                 ->setParameter('q', "%{$search->q}%");
         }
-        if (isset($search->m)) {
-            $query = $query
-                ->andWhere('p.lastname LIKE :m')
-                ->setParameter('m', "%{$search->m}%");
-        }
+
         return $this->paginator->paginate(
             $query,
             $search->page,
@@ -707,11 +644,39 @@ class ProspectRepository extends ServiceEntityRepository
             10
 
         );
+    }
 
+    // afficher seulement les relance du chef equipe
+    /**
+     * @return Prospect[] Returns an array of Prospect objects
+     * @param SearchProspect $search
+     * @return PaginationInterface 
+     */
+    public function findByRelanceChefEquipe(SearchProspect $search, User $user): PaginationInterface
+    {
+        $team = $user->getTeams();
+        $query = $this->createQueryBuilder('p')
+            ->where('p.team = :team')
+            ->orderBy('p.id', 'DESC')
+            ->setParameter('team', $team);
 
+        if ((!empty($search->q))) {
+            $query = $query
+                ->andWhere('p.name LIKE :q')
 
+                ->setParameter('q', "%{$search->q}%");
+        }
+        if (isset($search->m)) {
+            $query = $query
+                ->andWhere('p.lastname LIKE :m')
+                ->setParameter('m', "%{$search->m}%");
+        }
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
 
-        // select * from prospect join user on prospect.comrcl_id = user.id where prospect.comrcl_id = 2;
+        );
     }
 
     /**

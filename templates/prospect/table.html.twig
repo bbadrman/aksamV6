@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Tableau de bord!
+
+{% endblock %}
+
+{% block body %}
+
+	<style>
+		.container {
+			width: 100%;
+		}
+		/* .jumbotron {
+			width: 90%; /* Ajustez la largeur selon vos besoins */
+		margin: 0 auto;
+	}
+	*/
+	</style>
+
+	<div class="container">
+		<div class="jumbotron mt-2">
+			<h1 class="display-3 text-center">
+				Prospects
+			</h1>
+			<hr class="my-4">
+
+			<div
+				class="col-md-2 col-sm-3 mb">
+
+				<!-- REVENUE PANEL -->
+				<div class="green-panel pn">
+
+
+					<div class="green-header">
+						<h2>RECHERCHE</h2>
+					</div>
+
+					<a href="{{ path('app_prospect_index')}}">
+						<i class="fa fa-search fa-4x"></i>
+						<h1>{{ " %02d"|format(stats.prospects ) }}</h1>
+					</a>
+				</div>
+			</div>
+			<!-- /grey-panel -->
+
+
+			<!-- /col-md-4-->
+
+			<div
+				class="col-md-2 col-sm-3 mb">
+				<!-- REVENUE PANEL -->
+				<div class="green-panel pn">
+
+
+					<div class="green-header">
+						<h2>NOUVEAU</h2>
+					</div>
+					<a href="{{ path('newprospect_index')}}">
+						<i class="fa fa-product-hunt fa-4x" aria-hidden="true"></i>
+						<h1>{{ " %02d"|format(stats.prospectsPasAffect ) }}</h1>
+					</a>
+				</div>
+			</div>
+
+
+			<div
+				class="col-md-2 col-sm-3 mb">
+				<!-- REVENUE PANEL -->
+				<div class="green-panel pn">
+
+
+					<div class="green-header">
+						<h2>RELANCE DU JOUR</h2>
+					</div>
+
+					<a href="{{ path('relancejour_index')}}">
+						<i class="fa fa-calendar-check-o fa-4x" aria-hidden="true"></i>
+						<h1>{{ " %02d"|format(stats.prospectsTeam ) }}</h1>
+					</a>
+				</div>
+			</div>
+
+
+			<div
+				class="col-md-2 col-sm-3 mb">
+				<!-- REVENUE PANEL -->
+				<div class="green-panel pn">
+
+
+					<div class="green-header">
+						<h2>RELANCE NON TRAITE</h2>
+					</div>
+					<a href="#">
+						<i class="fa fa-calendar-times-o fa-4x" aria-hidden="true"></i>
+						<h1>{{ " %02d"|format(stats.prospectsTeam ) }}</h1>
+					</a>
+				</div>
+			</div>
+
+			<div
+				class="col-md-2 col-sm-3 mb">
+				<!-- REVENUE PANEL -->
+				<div class="green-panel pn">
+
+
+					<div class="green-header">
+						<h2>UNJOIGNABLE</h2>
+					</div>
+
+					<a href="#">
+						<i class="fa fa-volume-control-phone fa-4x" aria-hidden="true"></i>
+						<h1>{{ " %02d"|format(stats.prospectsTeam ) }}</h1>
+					</a>
+
+				</div>
+			</div>
+			<div
+				class="col-md-2 col-sm-3 mb">
+				<!-- REVENUE PANEL -->
+				<div class="green-panel pn">
+
+
+					<div class="green-header">
+						<h2>UNJOIGNABLE</h2>
+					</div>
+
+					<a href="#">
+						<i class="fa fa-volume-control-phone fa-4x" aria-hidden="true"></i>
+						<h1>{{ " %02d"|format(stats.prospectsTeam ) }}</h1>
+					</a>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+{% endblock %}

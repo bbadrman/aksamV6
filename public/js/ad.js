@@ -213,17 +213,17 @@ window.onload = () => {
 
  
 // pour cache le tableau prospect
-// $(document).ready(function() {
-//     $("#shrch").hide();  // masquer la div au chargement de la page
-//     $("#searchBtn").click(function() {  // ajouter un écouteur d'événements sur le bouton de recherche
-//         $("#shrch").show();  // afficher la div lorsque le bouton de recherche est cliqué
-//     });
-// });
+$(document).ready(function() {
+    $("#shrch").hide();  // masquer la div au chargement de la page
+    $("#searchBtn").click(function() {  // ajouter un écouteur d'événements sur le bouton de recherche
+        $("#shrch").show();  // afficher la div lorsque le bouton de recherche est cliqué
+    });
+});
 
-// $('document').ready(function() {
-// 	$("#shrch").hide() 
+$('document').ready(function() {
+	$("#shrch").hide() 
         
-//  });
+ });
 
  //select dynamique
 

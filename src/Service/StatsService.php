@@ -29,8 +29,10 @@ class StatsService
         $products = $this->getProductsCount();
         $clients = $this->getClientsCount();
         $prospectsAffect = $this->getProspectCount();
+        $prospectsPasAffect = $this->getProspectPasCount();
         $prospectsTeam = $this->getProspectCountTeam();
         $prospectsnow = $this->getProspectCountNow();
+        $prospects = $this->getProspectTotlCount();
 
         $prospectParng = $this->getProspectParrainag();
         $prospectAppl = $this->getProspectAppl();
@@ -86,7 +88,7 @@ class StatsService
 
 
 
-        return compact('prospectsnow', 'prospectsTeam', 'prospectRevnd', 'prospectSite', 'prospectParng', 'prospectAppl', 'prospectAvn', 'prospectAncien',  'prospectTotalTeamA', 'prospectTotalTeamB', 'prospectTotalTeamC', 'prospectTotalTeamD', 'prospectRevndEqC', 'prospectSiteEqC', 'prospectRevndEqB', 'prospectSiteEqB', 'prospectRevndEq', 'prospectSiteEq', 'prospectRevndEqA', 'prospectSiteEqA', 'prospectAncienEq', 'prospectAncienEqC', 'prospectAncienEqB', 'prospectAncienEqA', 'prospectTestEqB', 'prospectTetChef', 'prospectAutrEqB', 'prospectAvneEqB', 'prospectAppeEqB', 'prospectPrngeEqB', 'prospectAutrEqA', 'prospectAvneEqA', 'prospectAppeEqA', 'prospectPrngeEqA', 'prospectAutrEqC', 'prospectAvneEqC', 'prospectAppeEqC', 'prospectPrngeEqC', 'prospectAutrEq', 'prospectAvneEq', 'prospectAppeEq', 'prospectPrngeEq', 'users', 'teams', 'products', 'clients', 'prospectsAffect');
+        return compact('prospects', 'prospectsPasAffect', 'prospectsnow', 'prospectsTeam', 'prospectRevnd', 'prospectSite', 'prospectParng', 'prospectAppl', 'prospectAvn', 'prospectAncien',  'prospectTotalTeamA', 'prospectTotalTeamB', 'prospectTotalTeamC', 'prospectTotalTeamD', 'prospectRevndEqC', 'prospectSiteEqC', 'prospectRevndEqB', 'prospectSiteEqB', 'prospectRevndEq', 'prospectSiteEq', 'prospectRevndEqA', 'prospectSiteEqA', 'prospectAncienEq', 'prospectAncienEqC', 'prospectAncienEqB', 'prospectAncienEqA', 'prospectTestEqB', 'prospectTetChef', 'prospectAutrEqB', 'prospectAvneEqB', 'prospectAppeEqB', 'prospectPrngeEqB', 'prospectAutrEqA', 'prospectAvneEqA', 'prospectAppeEqA', 'prospectPrngeEqA', 'prospectAutrEqC', 'prospectAvneEqC', 'prospectAppeEqC', 'prospectPrngeEqC', 'prospectAutrEq', 'prospectAvneEq', 'prospectAppeEq', 'prospectPrngeEq', 'users', 'teams', 'products', 'clients', 'prospectsAffect');
     }
 
 
@@ -128,6 +130,11 @@ class StatsService
     {
         return $this->manager->createQuery('SELECT COUNT(c) FROM App\Entity\Client c')->getSingleScalarResult();
     }
+    public function getProspectTotlCount()
+    {
+        return $this->manager->createQuery('SELECT COUNT(p) FROM App\Entity\Prospect p')->getSingleScalarResult();
+    }
+
     // les prospect cree ce jour et afficter au cmrcl  affct
     public function getProspectCount()
     {
@@ -147,6 +154,23 @@ class StatsService
 
         return $result;
     }
+    // les prospect cree ce jour et pas affc
+    public function getProspectPasCount()
+    {
+        $today = new \DateTime();
+        $today->setTime(0, 0, 0);
+
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(p)')
+            ->from('App\Entity\Prospect', 'p')
+            ->andWhere('p.creatAt >= :startOfDay')
+            ->setParameter('startOfDay', $today);
+
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
     // caclcule le total du prospect atache a une equie (panier)
     public function getProspectCountTeam()
     {
@@ -156,9 +180,7 @@ class StatsService
         $qb = $this->manager->createQueryBuilder();
         $qb->select('COUNT(p)')
             ->from('App\Entity\Prospect', 'p')
-            ->where('p.team is NOT NULL')
-            ->andWhere("p.comrcl is NULL")
-            ->andWhere('p.creatAt >= :startOfDay')
+            ->andWhere('p.relacedAt >= :startOfDay')
             ->setParameter('startOfDay', $today);
 
         $query = $qb->getQuery();

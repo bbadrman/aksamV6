@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ProspectRepository::class)
+ * @ORM\Table(name="prospect") 
  * @ORM\HasLifecycleCallbacks()
  * @ApiResource
  */
@@ -139,6 +140,11 @@ class Prospect
      * @ORM\Column(type="datetime")
      */
     private $creatAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $relacedAt;
 
     /**
      * Permet de mettre en place la date de création
@@ -409,6 +415,17 @@ class Prospect
     public function setCreatAt(\DateTimeInterface $creatAt): self
     {
         $this->creatAt = new \DateTime();
+
+        return $this;
+    }
+    public function getRelacedAt(): ?\DateTimeInterface
+    {
+        return $this->relacedAt;
+    }
+
+    public function setRelacedAt(\DateTimeInterface $relacedAt): self
+    {
+        $this->relacedAt = $relacedAt;
 
         return $this;
     }

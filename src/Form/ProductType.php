@@ -7,7 +7,7 @@ use App\Entity\Product;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\OptionsResolver\OptionsResolver; 
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductType extends AbstractType
 {
@@ -16,9 +16,7 @@ class ProductType extends AbstractType
         $builder
             ->add('name')
             ->add('users')
-            ->add('descrption')
-            
-        ;
+            ->add('descrption');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

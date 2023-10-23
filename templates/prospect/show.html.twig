@@ -54,6 +54,7 @@
 					<div class="btn-group pull-right" style="margin-right: 5px;">
 						{% if is_granted('ROLE_ADMIN') == true %}
 							<button type="button" class="btn btn-danger">Action</button>
+
 							<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								<span class="caret"></span>
 								<span class="sr-only">Toggle Dropdown</span>
@@ -78,7 +79,12 @@
 								</a>
 							</li>
 						</ul>
+						<button>
+
+							{{ render(controller('App\\Controller\\ProspectController::relance',{'id':prospect.id}))}}
+						</button>
 					</div>
+
 				</tr>
 			</thead>
 			<tbody>
@@ -216,5 +222,6 @@
 				</tr>
 			</tbody>
 		</table>
+
 	</div>
 </div></div>{% endblock %}

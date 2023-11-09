@@ -6,42 +6,38 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TeamRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Api\IdentifiersExtractor;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity(repositoryClass=TeamRepository::class)
- * @ORM\Table(name="team") 
  * @ApiResource
  */
+
+#[ORM\Entity(repositoryClass: TeamRepository::class)]
+#[ORM\Table(name: "team")]
+#[ApiResource]
+
+
 class Team
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description;
 
 
-
-    /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="teams", cascade={"persist"})
-     */
+    #[ORM\OneToMany(targetEntity: User::class, mappedBy: "teams", cascade: ["persist"])]
     private $users;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Prospect::class, mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: Prospect::class, mappedBy: "team")]
+
+
     private $prospects;
 
 

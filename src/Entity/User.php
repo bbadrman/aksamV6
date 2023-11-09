@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Api\IdentifiersExtractor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -14,113 +15,87 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
- * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ORM\HasLifecycleCallbacks
- * @ORM\Table(name="user") 
  * @ApiResource
  */
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: "user")]
+#[ApiResource]
+
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     * * @Assert\NotBlank(
-     *     message="Le nom d'utilisateur est obligatoire"
-     * )
-     * @Assert\Length(
-     *     min=4,
-     *     max=15,
-     *     minMessage="Votre nom d'utilisateur doit contenir au moins quatre caractères",
-     *     maxMessage="Votre nom d'utilisateur doit contenir au maximum quinze caractères"
-     * )
-     * 
-     */
+    #[ORM\Column(type: "string", length: 180, unique: true)]
+    #[Assert\NotBlank(message: "Le nom d'utilisateur est obligatoire")]
+    #[Assert\Length(
+        min: 4,
+        max: 15,
+        minMessage: "Votre nom d'utilisateur doit contenir au moins quatre caractères",
+        maxMessage: "Votre nom d'utilisateur doit contenir au maximum quinze caractères"
+    )]
     private $username;
 
-    /**
-     * @ORM\Column(type="json")
-     */
+    #[ORM\Column(type: "json")]
     private $roles = [];
 
-    /**
-     * @var string The hashed password
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: "string", length: 255)]
     private $password;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Length(
-     *      min=2,
-     *      max=10,
-     *      minMessage="Votre prénom doit contenir au moins deux caractères",
-     *      maxMessage="Votre prénom doit contenir au maximum dix caractères"
-     * )
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[Assert\Length(
+        min: 2,
+        max: 10,
+        minMessage: "Votre prénom doit contenir au moins deux caractères",
+        maxMessage: "Votre prénom doit contenir au maximum dix caractères"
+    )]
     private $firstname;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Length(
-     *     min=2,
-     *     max=10,
-     *     minMessage="Votre nom doit contenir au moins deux caractères",
-     *     maxMessage="Votre nom doit contenir au maximum dix caractères"
-     * )
-     */
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[Assert\Length(
+        min: 2,
+        max: 10,
+        minMessage: "Votre nom doit contenir au moins deux caractères",
+        maxMessage: "Votre nom doit contenir au maximum dix caractères"
+    )]
     private $lastname;
 
-    /**
-     * @ORM\Column(type="smallint", nullable=true)
-     */
+    #[ORM\Column(type: "smallint", nullable: true)]
     private $gender;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: "datetime", nullable: true)]
     private $embuchAt;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: "integer", nullable: true)]
     private $remuneration;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Fonction::class, inversedBy="users", cascade={"persist"})
-     */
+    #[ORM\ManyToMany(targetEntity: Fonction::class, inversedBy: "users", cascade: ["persist"])]
+
     private $fonctions;
 
-    /**
-     * @ORM\Column(type="smallint")
-     */
+    #[ORM\Column(type: "smallint")]
     private $status = true;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="users", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=true)
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: "users", cascade: ["persist"])]
+    #[ORM\JoinColumn(nullable: true)]
+
     private $teams;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Product::class, inversedBy="users", cascade={"persist"})
-     */
+    #[ORM\ManyToMany(targetEntity: Product::class, inversedBy: "users", cascade: ["persist"])]
+
     private $products;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Prospect::class, mappedBy="autor")
-     */
+    #[ORM\OneToMany(targetEntity: Prospect::class, mappedBy: "autor")]
+
     private $prospects;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Prospect::class, mappedBy="comrcl")
-     * @ORM\JoinColumn(nullable=true)
-     */
+    #[ORM\OneToMany(targetEntity: Prospect::class, mappedBy: "comrcl")]
+    #[ORM\JoinColumn(nullable: true)]
+
+
     private $prospections;
 
 
@@ -186,7 +161,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }

@@ -19,12 +19,8 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
-use Symfony\Component\Form\Extension\Core\Type\TelType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 
 class ProspectType extends AbstractType
 {
@@ -96,7 +92,7 @@ class ProspectType extends AbstractType
                     'placeholder' => 'Address compltét du client',
                 ]
             ])
-            ->add('brithAt', DateType::class, [
+            ->add('brithAt', BirthdayType::class, [
                 'label' => 'Date de Naissance *',
                 'widget' => 'single_text'
             ])
@@ -206,6 +202,7 @@ class ProspectType extends AbstractType
                 'query_builder' => fn (TeamRepository $teamRepository) =>
                 $teamRepository->findAllTeamByAscNameQueryBuilder()
             ]);
+        // ->add('relanceds');
 
 
         $formModifier = function (FormInterface $form, Team $team = null) {

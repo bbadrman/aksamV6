@@ -3,13 +3,16 @@
 namespace App\Form;
 
 use Type\DateType;
+use Type\ResetType;
 use App\Entity\Team;
 use App\Search\SearchProspect;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class SearchProspectType extends AbstractType
 {
@@ -17,16 +20,16 @@ class SearchProspectType extends AbstractType
     {
         $builder
             ->add('q', Type\TextType::class, [
-                
+
                 'label' => "Nom :",
                 'attr' => [
                     'placeholder' => "Recherche par nom du client."
                 ],
-               
+
                 'required' => false
             ])
             ->add('m', Type\TextType::class, [
-                
+
                 'label' => "Prenom :",
                 'attr' => [
                     'placeholder' => "Recherche par prenom du client."
@@ -61,21 +64,13 @@ class SearchProspectType extends AbstractType
                 ],
                 'required' => false
             ])
-            ->add('d', Type\DateType::class, [
-                'label' => "Date :",
-                
-                'widget' => 'single_text',
-                'attr' => [
-                    'placeholder' => "date format: yyyy-mm-dd."
-                ],
-                'required' => false
-            ])
+
             ->add('d', Type\DateType::class, [
                 'label' => "Du :",
-                
+
                 'widget' => 'single_text',
-               
-               
+
+
                 'attr' => [
                     'placeholder' => "date format: yyyy-mm-dd."
                 ],
@@ -84,9 +79,9 @@ class SearchProspectType extends AbstractType
 
             ->add('dd', Type\DateType::class, [
                 'label' => "Ou :",
-                
+
                 'widget' => 'single_text',
-                'attr' => [ 
+                'attr' => [
                     'placeholder' => "date format: yyyy-mm-dd."
                 ],
                 'required' => false
@@ -106,7 +101,7 @@ class SearchProspectType extends AbstractType
                 ],
                 'required' => false
             ])
-            
+
             ->add('source', Type\ChoiceType::class, [
                 'label' => 'Source :',
                 'required' => false,
@@ -119,8 +114,61 @@ class SearchProspectType extends AbstractType
                 'expanded' => false,
                 'multiple' => false
             ])
-            
-         ;
+            ->add('dr', Type\DateType::class, [
+                'label' => "Relance Du :",
+
+                'widget' => 'single_text',
+
+
+                'attr' => [
+                    'placeholder' => "date format: yyyy-mm-dd."
+                ],
+                'required' => false
+            ])
+
+            ->add('ddr', Type\DateType::class, [
+                'label' => "Ou :",
+
+                'widget' => 'single_text',
+                'attr' => [
+                    'placeholder' => "date format: yyyy-mm-dd."
+                ],
+                'required' => false
+            ])
+            ->add('motifRelanced', Type\ChoiceType::class, [
+                'label' => 'MotifRelance ',
+                'required' => false,
+                'placeholder' => '--Merci de selectie-- ',
+                'choices' => [
+                    'Prise de Contact' => [
+                        'Rendez-vous' => '1',
+                        'Unjoing' => '2',
+                        'Déjà Souscrit' => '3',
+                    ],
+                    'Attente Close' => '4',
+                    'Tarification' => '5',
+                    'Prise de Décision ' => '6',
+                    'Cloture ' => [
+                        'Faux Fiche' => '7',
+                        'Doublon' => '8',
+                        'Passage Concurrent ' => '9',
+                        'Passage Contrat ' => '10',
+                    ],
+                ],
+                'expanded' => false,
+                'multiple' => false
+            ]);
+        // ->add('rest', Type\ResetType::class, [
+        //     'label' => "Rest"
+        // ]);
+
+        // Ajoutez la validation personnalisée pour s'assurer qu'au moins un champ est rempli
+        $builder->add('validate_at_least_one', Type\HiddenType::class, [
+            'mapped' => false,
+            'constraints' => [
+                new Callback([$this, 'validateAtLeastOneField']),
+            ],
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -137,4 +185,27 @@ class SearchProspectType extends AbstractType
         return '';
     }
 
+    public function validateAtLeastOneField($value, ExecutionContextInterface $context)
+    {
+        $formData = $context->getRoot()->getData();
+
+        // Liste des champs à vérifier
+        $fieldsToCheck = ['q', 'm', 'g', 'c', 'l', 'team', 'd', 'dd', 'r', 's', 'source', 'dr', 'ddr', 'motifRelanced'];
+
+        $fieldsFilledCount = 0;
+
+        // Vérifiez combien de champs sont remplis
+        foreach ($fieldsToCheck as $field) {
+            if (!empty($formData->{$field})) {
+                $fieldsFilledCount++;
+            }
+        }
+
+        // Si aucun champ n'est rempli, ajoutez une violation de la contrainte
+        if ($fieldsFilledCount === 0) {
+            $context->buildViolation("Au moins un champ doit être rempli.")
+                ->atPath('q') // Remplacez 'q' par un champ de votre choix
+                ->addViolation();
+        }
+    }
 }

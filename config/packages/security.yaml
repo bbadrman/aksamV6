@@ -38,6 +38,7 @@ security:
         - { path: ^/api/prospects, roles: ROLE_ADMIN, methods: [GET, PUT, DELETE], }
         - { path: ^/api/users, roles: ROLE_ADMIN  }
         - { path: ^/api/products, roles: ROLE_ADMIN }
+        - { path: ^/api/Relances, roles: ROLE_ADMIN }
         - { path: ^/api/teams, roles: ROLE_ADMIN }
         - { path: ^/api/clients, roles: ROLE_ADMIN }
         - { path: ^/api/fonctions, roles: ROLE_ADMIN }

@@ -33,7 +33,7 @@ class ClientController extends AbstractController
     public function new(Request $request, ClientRepository $clientRepository): Response
     {
         $client = new Client();
-        
+
         $form = $this->createForm(ClientType::class, $client);
         $form->handleRequest($request);
 
@@ -43,7 +43,7 @@ class ClientController extends AbstractController
             return $this->redirectToRoute('client_new', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('client/site.html.twig', [
+        return $this->renderForm('client/new.html.twig', [
             'client' => $client,
             'form' => $form,
         ]);
@@ -87,7 +87,7 @@ class ClientController extends AbstractController
      */
     public function delete(Request $request, Client $client, ClientRepository $clientRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$client->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $client->getId(), $request->request->get('_token'))) {
             $clientRepository->remove($client, true);
         }
         $this->addFlash('danger', 'le Client a été supprimé avec succès!');

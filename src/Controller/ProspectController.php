@@ -2,13 +2,19 @@
 
 namespace App\Controller;
 
+use App\Entity\Relance;
 use App\Entity\Prospect;
+use App\Entity\Relanced;
+use App\Form\RelanceType;
 use App\Form\ProspectType;
+use App\Form\RelancedType;
 use App\Search\SearchProspect;
 use App\Form\ProspectAffectType;
 use App\Form\SearchProspectType;
 use App\Form\ProspectRelanceType;
+use App\Repository\RelanceRepository;
 use App\Repository\ProspectRepository;
+use App\Repository\RelancedRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +28,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * @Route("/prospect")
- * @IsGranted("ROLE_USER", message="Tu ne peut pas acces a cet ressource")
+ * @IsGranted("ROLE_USER", message="Tu ne peut pas acces a cet ressource") 
  * 
  */
 
@@ -38,7 +44,7 @@ class ProspectController extends AbstractController
     }
 
     /**
-     * @Route("/", name="app_prospect_index", methods={"GET", "POST"}) 
+     * @Route("/", name="app_prospect_index", methods={"GET", "POST"})  
      */
     public function index(Request $request,  ProspectRepository $prospectRepository,  Security $security): Response
     {
@@ -104,7 +110,7 @@ class ProspectController extends AbstractController
     }
 
     /**
-     * @Route("/allprospc", name="allprosp_index", methods={"GET", "POST"}) 
+     * @Route("/allprospc", name="allprosp_index", methods={"GET", "POST"})  
      */
     public function allprosp(Request $request,  ProspectRepository $prospectRepository,  Security $security): Response
 
@@ -114,7 +120,9 @@ class ProspectController extends AbstractController
         $form = $this->createForm(SearchProspectType::class, $data);
         $form->handleRequest($this->requestStack->getCurrentRequest());
         $user = $security->getUser();
-        $prospect =  $prospectRepository->findAllSearch($data, $user, null);
+
+        $prospect =  $prospectRepository->findAllSearch($data, $user,   null);
+        // dd($prospect);
         return $this->render('prospect/index.html.twig', [
             'prospects' => $prospect,
             'search_form' => $form->createView()
@@ -139,6 +147,9 @@ class ProspectController extends AbstractController
         ]);
     }
 
+
+
+
     /**
      * @Route("/relance", name="relancejour_index", methods={"GET", "POST"}) 
      */
@@ -156,25 +167,27 @@ class ProspectController extends AbstractController
         ]);
     }
 
+
     /**
-     * @Route("/relancenontraite", name="relancenontraite_index", methods={"GET", "POST"}) 
+     * @Route("/notrait", name="notrait_index", methods={"GET", "POST"}) 
      */
-    public function relancenontraite(Request $request,  ProspectRepository $prospectRepository,  Security $security): Response
+    public function notrait(Request $request,  ProspectRepository $prospectRepository,  Security $security): Response
 
     {
         $data = new SearchProspect();
         $data->page = $request->query->get('page', 1);
+        $form = $this->createForm(SearchProspectType::class, $data);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+        $prospect =  $prospectRepository->findNonTraiter($data, null);
+        return $this->render('prospect/index.html.twig', [
+            'prospects' => $prospect,
+            'search_form' => $form->createView()
+        ]);
     }
 
-    /**
-     * @Route("/unjoinable", name="unjoinable_index", methods={"GET", "POST"}) 
-     */
-    public function unjoinable(Request $request,  ProspectRepository $prospectRepository,  Security $security): Response
 
-    {
-        $data = new SearchProspect();
-        $data->page = $request->query->get('page', 1);
-    }
+
+
 
     /**
      * @Route("/new", name="app_prospect_new", methods={"GET", "POST"})
@@ -186,13 +199,17 @@ class ProspectController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // $relance = new Relanced();
+            // $relance->setProspect($prospect);
+            // $prospect->addRelanced($relance);
+
 
 
             $prospect->setAutor($this->getUser());
             $prospectRepository->add($prospect, true);
 
             $this->addFlash('success', 'Votre Prospect a été ajouté avec succès!');
-            return $this->redirectToRoute('app_prospect_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('newprospect_index', [], Response::HTTP_SEE_OTHER);
         }
 
 
@@ -203,12 +220,30 @@ class ProspectController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_prospect_show", methods={"GET"})
+     * @Route("/{id}", name="app_prospect_show", methods={"GET", "POST"}) 
      */
-    public function show(Prospect $prospect): Response
+    public function show(Request $request, Prospect $prospect)
     {
+
+        $relance = new Relanced();
+        $relance->setProspect($prospect);
+
+        $form = $this->createForm(RelancedType::class, $relance);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($relance);
+            $entityManager->flush();
+            $this->addFlash('success', 'Relance ajoutée avec succès.');
+
+            return $this->redirectToRoute('app_prospect_show', ['id' => $prospect->getId()]);
+        }
+
         return $this->render('prospect/show.html.twig', [
             'prospect' => $prospect,
+            // dd($prospect),
+            'form' => $form->createView(),
         ]);
     }
 
@@ -221,7 +256,11 @@ class ProspectController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $prospectRepository->add($prospect, true);
+            foreach ($prospect->getRelanceds() as $fonction) {
+                $fonction->setProspect($prospect);
+            }
 
             $this->addFlash('info', 'Votre Prospect a été affecté avec succès!');
             return $this->redirectToRoute('app_prospect_index', [], Response::HTTP_SEE_OTHER);
@@ -234,22 +273,22 @@ class ProspectController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/relance", name="app_prospect_relance", methods={"GET", "POST"}) 
+     * @Route("/{id}/relance", name="app_prospect_relance", methods={"POST"}) 
      */
-    public function relance(Request $request, Prospect $prospect, ProspectRepository $prospectRepository): Response
+    public function relance(Request $request, Relanced $relanced, RelancedRepository $relacedRepository): Response
     {
-        $formR = $this->createForm(ProspectRelanceType::class, $prospect);
+        $formR = $this->createForm(RelancedType::class, $relanced);
         $formR->handleRequest($request);
 
         if ($formR->isSubmitted() && $formR->isValid()) {
-            $prospectRepository->add($prospect, true);
+            $relacedRepository->add($relanced, true);
 
             $this->addFlash('info', 'Votre Prospect a été relancer avec succès!');
             return $this->redirectToRoute('app_prospect_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('partials/_show_relance.html.twig', [
-            'prospect' => $prospect,
+            'relanced' => $relanced,
             'form' => $formR,
         ]);
     }

@@ -1,101 +1,96 @@
 {{ form_start(search_form) }}
 
-
-<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-	{{ form_row(search_form.d) }}
-</div>
-
-<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-	{{ form_row(search_form.dd) }}
-</div>
-<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-	{{ form_row(search_form.q) }}
-</div>
-<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-	{{ form_row(search_form.m) }}
-</div>
-<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-	{{ form_row(search_form.g) }}
-</div>
-<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-	{{ form_row(search_form.c) }}
-</div>
-<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-
-	{{ form_row(search_form.l) }}
-
-</div>
-<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-	{{ form_row(search_form.s) }}
-</div>
-<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-	{{ form_row(search_form.source) }}
-</div>
-
-{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')   == true %}
-	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-		{{ form_row(search_form.r) }}
+<div class="col-xs-12" style="float: right !important;">
+	<div class="col-xs-1" style="padding-right: 1px;padding-left: 4px;">
+		{{ form_row(search_form.d) }}
 	</div>
-{% else %}
-	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-		{{form_row(search_form.r, {'label': false, 'attr' : { 'style':'display:none'} }) }}
+
+	<div class="col-xs-1" style="padding-right: 1px;padding-left: 4px;">
+		{{ form_row(search_form.dd) }}
 	</div>
-{% endif %}
+	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+		{{ form_row(search_form.q) }}
+	</div>
+	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+		{{ form_row(search_form.m) }}
+	</div>
+	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+		{{ form_row(search_form.g) }}
+	</div>
+	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+		{{ form_row(search_form.c) }}
+	</div>
+	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
 
-<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-	{% if is_granted('ROLE_ADMIN')  == true %}
+		{{ form_row(search_form.l) }}
 
+	</div>
+	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+		{{ form_row(search_form.s) }}
+	</div>
+	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+		{{ form_row(search_form.source) }}
+	</div>
 
-		{{ form_row(search_form.team) }}
-
+	{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')   == true %}
+		<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+			{{ form_row(search_form.r) }}
+		</div>
 	{% else %}
-
-		{{ form_row(search_form.team, {'label': false, 'attr': { 'style': 'display: none' } }) }}
-
+		<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+			{{form_row(search_form.r, {'label': false, 'attr' : { 'style':'display:none'} }) }}
+		</div>
 	{% endif %}
-</div>
 
+	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+		{% if is_granted('ROLE_ADMIN')  == true %}
 
-<div class="input-group-btn col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+			{{ form_row(search_form.team) }}
+
+		{% else %}
+
+			{{ form_row(search_form.team, {'label': false, 'attr': { 'style': 'display: none' } }) }}
+
+		{% endif %}
+	</div>
+
 	<button class="btn btn-primary btn search-btn" type="submit">
 		<i class="fa fa-search" aria-hidden="true"></i>
 	</button>
 	<button class="btn btn-theme" value="back" onclick="history.go(-1)">
 		<i class="fa fa-undo" aria-hidden="true"></i>
 	</button>
-	<button class="btn btn-primary" type="reset">
 
+	<button class="btn btn-primary" type="reset" id="reset-button">
 		<i class="fa fa-refresh" aria-hidden="true"></i>
 	</button>
+
+
+</div>
+<div class="col-xs-8" style="float: right !important;">
+
+	{% if app.request.get('_route') == 'prospect_search' %}
+		<div class="col-xs-2" style="padding-right: 2px;padding-left: 3px;">
+			{{ form_row(search_form.dr) }}
+		</div>
+		<div class="col-xs-2" style="padding-right: 2px;padding-left: 3px;">
+			{{ form_row(search_form.ddr) }}
+		</div>
+		<div class="col-xs-2" style="padding-right: 2px;padding-left: 2px;">
+			{{ form_row(search_form.motifRelanced) }}
+		</div>
+	{% else %}
+		{{ form_widget(search_form.dr, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.ddr, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.motifRelanced, { 'attr': { 'style': 'display:none' } }) }}
+	{% endif %}
+
 
 </div>
 {{ form_end(search_form) }}
 
-
-//
 <script>
-	// script pour hidden button recherche
-		// 	document.addEventListener('DOMContentLoaded', function () {
-		// var searchBtn = document.querySelector('.search-btn');
-		// var formInputs = document.querySelectorAll('#my-form input[type="text"], #my-form select');
-		
-		// // Fonction pour vérifier si au moins un champ est rempli
-		// function checkFormInputs() {
-		// for (var i = 0; i < formInputs.length; i++) {
-		// if (formInputs[i].value.trim() !== '') {
-		// searchBtn.classList.remove('hidden');
-		// return;
-		// }
-		// }
-		// searchBtn.classList.add('hidden');
-		// }
-		
-		// // Vérifier les champs à chaque modification
-		// for (var i = 0; i < formInputs.length; i++) {
-		// formInputs[i].addEventListener('input', checkFormInputs);
-		// }
-		
-		// // Vérifier les champs au chargement de la page
-		// checkFormInputs();
-		// });
-		// </script>
+	document.getElementById("reset-button").addEventListener("click", function () { // Réinitialisez les paramètres de l'URL à vide
+window.location.href = window.location.pathname;
+});
+</script>

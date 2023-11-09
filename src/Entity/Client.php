@@ -6,55 +6,36 @@ use App\Validator as MyAssert;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ClientRepository;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=ClientRepository::class) 
- * @ApiResource
- */
+
+
+
+#[ORM\Entity(repositoryClass: ClientRepository::class)]
+#[ORM\Table(name: "client")]
+#[ApiResource]
+
 class Client
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Length(
-     *      min=2,
-     *      max=10,
-     *      minMessage="Votre prénom doit contenir au moins deux caractères",
-     *      maxMessage="Votre prénom doit contenir au maximum dix caractères"
-     * )
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(min: 2, max: 10, minMessage: "Votre prénom doit contenir au moins deux caractères", maxMessage: "Votre prénom doit contenir au maximum dix caractères")]
     private $firstname;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Length(
-     *     min=2,
-     *     max=10,
-     *     minMessage="Votre nom doit contenir au moins deux caractères",
-     *     maxMessage="Votre nom doit contenir au maximum dix caractères"
-     * )
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(min: 2, max: 10, minMessage: "Votre nom doit contenir au moins deux caractères", maxMessage: "Votre nom doit contenir au maximum dix caractères")]
     private $lastname;
 
-    /**
-     * @ORM\Column(type="string", length=20)
-     */
+    #[ORM\Column(type: 'string', length: 20)]
     private $phone;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\Email(
-     *     message="Adresse e-mail non valide"
-     * )
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Email(message: "Adresse e-mail non valide")]
     private $email;
 
     public function getId(): ?int

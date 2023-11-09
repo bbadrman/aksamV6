@@ -6,35 +6,31 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\FonctionRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Api\IdentifiersExtractor;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity(repositoryClass=FonctionRepository::class)
- * @ORM\Table(name="fonction") 
  * @ApiResource
  */
+#[ORM\Entity(repositoryClass: FonctionRepository::class)]
+#[ORM\Table(name: "fonction")]
+#[ApiResource]
+
+
 class Fonction
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="fonctions", cascade={"persist"})
-     */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'fonctions', cascade: ['persist'])]
     private $users;
 
     public function __construct()

@@ -29,10 +29,7 @@ class ProspectRelanceType extends AbstractType
 
         $builder
 
-            ->add('relacedAt', DateType::class, [
-                'label' => 'Date de Naissance *',
-                'widget' => 'single_text'
-            ]);
+            ->add('relanceds');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

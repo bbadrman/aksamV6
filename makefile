@@ -1,5 +1,5 @@
 THIS_FILE := $(lastword $(MAKEFILE_LIST))
-.PHONY: build up stop destroy restart ps logs logs-web logs-db web db install symfony-me symfony-mc symfony-mm symfony-dmm symfony-dfl
+.PHONY: build up stop destroy restart ps logs logs-web logs-db web db install symfony-me symfony-mc symfony-mm symfony-dmm symfony-dfl kill-all stop-all
 build:
 	docker-compose up -d --force-recreate --build
 up:
@@ -37,6 +37,14 @@ symfony-dfl:
 kill:
 	docker-compose kill
 kill-all:
-	docker kill $(docker ps -q)
+	@docker kill $$(docker ps -q)
 stop-all:
-	docker stop $(docker ps -q)
+	@CONTAINERS=$$(docker ps -q); \
+	if [ -n "$$CONTAINERS" ]; then \
+		docker stop $$CONTAINERS; \
+	else \
+		echo "No running containers to stop."; \
+	fi
+stup:
+	@make stop-all
+	@make up

@@ -36,9 +36,9 @@
 						<h2>RECHERCHE</h2>
 					</div>
 
-					<a href="{{ path('app_prospect_index')}}">
+					<a href="{{ path('prospect_search')}}">
 						<i class="fa fa-search fa-4x"></i>
-						<h1>{{ " %02d"|format(stats.prospects ) }}</h1>
+						{# <h1>{{ " %02d"|format(stats.prospects ) }}</h1> #}
 					</a>
 				</div>
 			</div>
@@ -54,7 +54,7 @@
 
 
 					<div class="green-header">
-						<h2>NOUVEAU</h2>
+						<h2>NOUVEAUX</h2>
 					</div>
 					<a href="{{ path('newprospect_index')}}">
 						<i class="fa fa-product-hunt fa-4x" aria-hidden="true"></i>
@@ -71,7 +71,7 @@
 
 
 					<div class="green-header">
-						<h2>RELANCE DU JOUR</h2>
+						<h2>RELANCES DU JOUR</h2>
 					</div>
 
 					<a href="{{ path('relancejour_index')}}">
@@ -89,11 +89,11 @@
 
 
 					<div class="green-header">
-						<h2>RELANCE NON TRAITE</h2>
+						<h2>RELANCES NON TRAITÉ</h2>
 					</div>
-					<a href="#">
+					<a href="{{path('notrait_index')}}">
 						<i class="fa fa-calendar-times-o fa-4x" aria-hidden="true"></i>
-						<h1>{{ " %02d"|format(stats.prospectsTeam ) }}</h1>
+						<h1>{{ " %02d"|format(stats.prospectsNoTraite ) }}</h1>
 					</a>
 				</div>
 			</div>
@@ -105,12 +105,12 @@
 
 
 					<div class="green-header">
-						<h2>UNJOIGNABLE</h2>
+						<h2>INJOIGNABLES</h2>
 					</div>
 
-					<a href="#">
+					<a href="{{path('app_unjoinable')}}">
 						<i class="fa fa-volume-control-phone fa-4x" aria-hidden="true"></i>
-						<h1>{{ " %02d"|format(stats.prospectsTeam ) }}</h1>
+						<h1>{{ " %02d"|format(stats.unjoiniable ) }}</h1>
 					</a>
 
 				</div>
@@ -122,16 +122,19 @@
 
 
 					<div class="green-header">
-						<h2>UNJOIGNABLE</h2>
+						<h2>AJOUTER PROSPECT</h2>
 					</div>
 
-					<a href="#">
-						<i class="fa fa-volume-control-phone fa-4x" aria-hidden="true"></i>
-						<h1>{{ " %02d"|format(stats.prospectsTeam ) }}</h1>
+					<a href="{{path('app_prospect_new')}}">
+						<i class="fa fa-keyboard-o fa-5x" aria-hidden="true"></i>
+
+						{# <i class="fa fa-newspaper-o fa-4x" aria-hidden="true"></i> #}
+
 					</a>
 
 				</div>
 			</div>
+
 
 		</div>
 	</div>

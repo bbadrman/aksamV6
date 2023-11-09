@@ -16,7 +16,7 @@ class SearchProspect
      */
     public $q = '';
 
-     /**
+    /**
      * @var string
      */
     public $m = '';
@@ -25,7 +25,7 @@ class SearchProspect
      * @var string
      */
     public $g = '';
-    
+
     /**
      * @var string
      */
@@ -59,9 +59,24 @@ class SearchProspect
      * @var string
      */
     public $dd;
-     /**
+    /**
      * @var int
      */
-    public $source; 
-    
+    /**
+     * @var string
+     */
+    public $dr;
+
+    /**
+     * @var string
+     */
+    public $ddr;
+    /**
+     * @var int
+     */
+    public $source;
+    /**
+     * @var int
+     */
+    public $motifRelanced;
 }

@@ -1,5 +1,5 @@
 FROM php:8.1.6-apache
-LABEL maintainer="yassine.echcharafi@gmail.com"
+LABEL maintainer="badr.bechtioui@gmail.com"
 
 ########## Packages installation
 RUN apt-get update && apt-get install -y --fix-missing \
@@ -52,7 +52,7 @@ RUN cd /usr/src && \
 ########## Increase PHP Configuration
 RUN echo "upload_max_filesize = 500M\n" \
     "post_max_size = 500M\n" \
-     >> /usr/local/etc/php/conf.d/maxsize.ini
+    >> /usr/local/etc/php/conf.d/maxsize.ini
 
 RUN echo 'max_execution_time = 300' >> /usr/local/etc/php/conf.d/maxexectime.ini;
 

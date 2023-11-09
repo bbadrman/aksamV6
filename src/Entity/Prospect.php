@@ -3,148 +3,115 @@
 namespace App\Entity;
 
 
+use App\Entity\Relance;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\ProspectRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\ProspectRepository;
+use ApiPlatform\Api\IdentifiersExtractor;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=ProspectRepository::class)
- * @ORM\Table(name="prospect") 
- * @ORM\HasLifecycleCallbacks()
- * @ApiResource
- */
+
+
+#[ORM\Entity(repositoryClass: ProspectRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: "prospect")]
+#[ApiResource]
+
 class Prospect
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Length(
-     *      min=2,
-     *      max=10,
-     *      minMessage="Votre prénom doit contenir au moins deux caractères",
-     *      maxMessage="Votre prénom doit contenir au maximum dix caractères"
-     * )
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(
+        min: 2,
+        max: 10,
+        minMessage: "Votre prénom doit contenir au moins deux caractères",
+        maxMessage: "Votre prénom doit contenir au maximum dix caractères"
+    )]
     private $name;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\Length(
-     *     min=2,
-     *     max=10,
-     *     minMessage="Votre nom doit contenir au moins deux caractères",
-     *     maxMessage="Votre nom doit contenir au maximum dix caractères"
-     * )
-     */
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\Length(
+        min: 2,
+        max: 10,
+        minMessage: "Votre nom doit contenir au moins deux caractères",
+        maxMessage: "Votre nom doit contenir au maximum dix caractères"
+    )]
     private $lastname;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $phone;
 
-    /**
-     * @ORM\Column(type="string", nullable=true, length=255) 
-     */
+    #[ORM\Column(type: 'string', nullable: true, length: 255)]
     private $email;
 
-    /**
-     * @ORM\Column(type="smallint", nullable=true)
-     */
+    #[ORM\Column(type: 'smallint', nullable: true)]
     private $gender;
 
-    /**
-     * @ORM\Column(type="string", nullable=true, length=255)
-     */
+    #[ORM\Column(type: 'string', nullable: true, length: 255)]
     private $city;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $adress;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $brithAt;
 
-
-    /**
-     * @ORM\Column(type="string", nullable=true, length=50)
-     */
+    #[ORM\Column(type: 'string', nullable: true, length: 50)]
     private $source;
 
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
     private $typeProspect;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true )
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $raisonSociale;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $codePost;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true )
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $gsm;
 
-    /**
-     * @ORM\Column(type="string", length=20, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 20, nullable: true)]
     private $assure;
 
-    /**
-     * @ORM\Column(type="string", length=20, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 20, nullable: true)]
     private $lastAssure;
 
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
     private $motifResil;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="prospects")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'prospects')]
     private $autor;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="prospections")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'prospections')]
     private $comrcl;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Team::class, inversedBy="prospects")
-     */
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'prospects')]
     private $team;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $motifSaise;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $creatAt;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $relacedAt;
+
+
+    #[ORM\OneToMany(mappedBy: 'prospect', targetEntity: Relanced::class, cascade: ["persist"])]
+    private Collection $relanceds;
+
+    public function __construct()
+    {
+
+
+        $this->relanceds = new ArrayCollection();
+    }
 
     /**
      * Permet de mettre en place la date de création
@@ -153,6 +120,7 @@ class Prospect
      * 
      * @return void
      */
+    #[ORM\PrePersist]
     public function prePersist()
     {
         if (empty($this->creatAt)) {
@@ -418,15 +386,39 @@ class Prospect
 
         return $this;
     }
-    public function getRelacedAt(): ?\DateTimeInterface
+
+
+    /**
+     * @return Collection<int, Relanced>
+     */
+    public function getRelanceds(): Collection
     {
-        return $this->relacedAt;
+        return $this->relanceds;
     }
 
-    public function setRelacedAt(\DateTimeInterface $relacedAt): self
+    public function addRelanced(Relanced $relanced): static
     {
-        $this->relacedAt = $relacedAt;
+        if (!$this->relanceds->contains($relanced)) {
+            $this->relanceds->add($relanced);
+            $relanced->setProspect($this);
+        }
 
         return $this;
+    }
+
+    public function removeRelanced(Relanced $relanced): static
+    {
+        if ($this->relanceds->removeElement($relanced)) {
+            // set the owning side to null (unless already changed)
+            if ($relanced->getProspect() === $this) {
+                $relanced->setProspect(null);
+            }
+        }
+
+        return $this;
+    }
+    public function __toString()
+    {
+        return $this->getName() . ' ' . $this->getLastname();
     }
 }

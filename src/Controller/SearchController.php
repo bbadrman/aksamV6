@@ -45,7 +45,17 @@ class SearchController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
             $data->page = $request->query->get('page', 1);
-            $prospect = $prospectRepository->findSearch($data, $user);
+
+            if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+                // admi peut chercher toutes les prospects
+                $prospect = $prospectRepository->findSearch($data, $user);
+            } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+                // chef peut chercher toutes les prospects atacher a leur equipe
+                $prospect = $prospectRepository->findAllChefSearch($data, $user);
+            } else {
+                // cmrcl peut chercher seulement les prospects atacher a lui
+                $prospect = $prospectRepository->findByUserAffecterCmrcl($data, $user, null);
+            }
 
             return $this->render('prospect/index.html.twig', [
                 'prospects' => $prospect,

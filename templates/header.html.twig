@@ -17,26 +17,19 @@
 		<!-- NOTIFICATION DROPDOWN -->
 		<li id="header_notification_bar" class="dropdown">
 			{% if app.user is not null %}
-				<a data-toggle="dropdown" class="dropdown-toggle" href="{{path('app_prospect_index')}}">
 
-					<i class="fa fa-shopping-cart"></i>
 
-					<span class="badge bg-warning" style="font-size: 13px;">
-						{% if is_granted('ROLE_TEAM') == true %}
-							{{  " %02d"|format(app.user.teams.prospects|filter(p => p.comrcl is null)|length)  }}
+				{% if app.request.get('_route') == 'newprospect_index' or app.request.get('_route')  == 'prospect_search' or app.request.get('_route')  == 'relancejour_index' or app.request.get('_route')  == 'app_unjoinable' or app.request.get('_route')  == 'notrait_index' %}
+					<a data-toggle="dropdown" class="dropdown-toggle" href="{{path('app_prospect_index')}}">
+						<i class="fa fa-shopping-cart"></i>
+						<span class="badge bg-warning fs-4">{{ prospects|length }}</span>
+					</a>
 
-						{% elseif is_granted('ROLE_ADMIN') == true  %}
-							{{  " %02d"|format(app.user.prospects|filter(p => p.comrcl is null and p.team is null and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
-							{# {{" %02d"|format(app.session.get('security'))}} #}
+				{% elseif app.request.get('_route') == 'prospect_search' %}
+					<span class="badge bg-warning fs-4"></span>
 
-						{% else %}
-							{# {{" %02d"|format(app.session.get('security'))}} #}
+				{% endif %}
 
-							{{ " %02d"|format(app.user.teams.prospects|filter(p => p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d'))|length) }}
-
-						{% endif %}
-					</span>
-				</a>
 
 			{% endif %}
 		</li>

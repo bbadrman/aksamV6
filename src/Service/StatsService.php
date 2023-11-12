@@ -31,13 +31,22 @@ class StatsService
         $clients = $this->getClientsCount();
         $prospectsAffect = $this->getProspectCount();
         $prospectsPasAffect = $this->getProspectPasCount();
+        $prospectsChefNv = $this->getProspectChefNv($user);
+        $prospectsCmrclNv = $this->getProspectCmrclNv($user);
         $prospectsTeam = $this->getProspectCountRelance();
-
+        $prospectsTeamChef = $this->getProspectCountRelanceChef($user);
+        $prospectsTeamCmrcl = $this->getProspectCountRelanceCmrcl($user);
         $prospectsNoTraite = $this->getProspectNonTraite();
+        $prospectsNoTrChef = $this->getProspectNonTraiteChef($user);
+        $prospectsNoTrCmrcl = $this->getProspectNonTraiteCmrcl($user);
+
+
         $prospectsPanier = $this->getProspectCountPanier();
         $prospectsnow = $this->getProspectCountNow();
         $prospects = $this->getProspectTotlCount();
         $unjoiniable = $this->getProspectCountUnjoiniable();
+        $unjoiniableChef = $this->getProspectCountUnjoiniableChef($user);
+        $unjoiniableCmrl = $this->getProspectCountUnjoiniableCmrcl($user);
 
         $prospectParng = $this->getProspectParrainag();
         $prospectAppl = $this->getProspectAppl();
@@ -45,6 +54,7 @@ class StatsService
         $prospectAncien = $this->getProspectAncien();
         $prospectSite = $this->getProspectSite();
         $prospectRevnd = $this->getProspectRevendeur();
+
         // $prospectAutre = $this->getProspectAutre(); 
         // $prospectAvnChef = $this->getProspectAvnChef($user);
         // $prospectApplChef = $this->getProspectApplChef($user);
@@ -67,7 +77,7 @@ class StatsService
         $prospectPrngeEqC = $this->getProspectParngEquipeC($user);
         $prospectAppeEqC = $this->getProspectAppEquipeC($user);
         $prospectAvneEqC = $this->getProspectAvnEquipeC($user);
-        $prospectAutrEqC = $this->getProspectAutrEquipeC($user);
+        // $prospectAutrEqC = $this->getProspectAutrEquipeC($user);
         $prospectAncienEqC = $this->getProspectAncienEquipeC($user);
         $prospectSiteEqC = $this->getProspectSiteEquipeC($user);
         $prospectRevndEqC = $this->getProspectRevendeurEquipeC($user);
@@ -75,7 +85,7 @@ class StatsService
         $prospectPrngeEqA = $this->getProspectParngEquipeA($user);
         $prospectAppeEqA = $this->getProspectAppEquipeA($user);
         $prospectAvneEqA = $this->getProspectAvnEquipeA($user);
-        $prospectAutrEqA = $this->getProspectAutrEquipeA($user);
+        // $prospectAutrEqA = $this->getProspectAutrEquipeA($user);
         $prospectAncienEqA = $this->getProspectAnncEquipeA($user);
         $prospectSiteEqA = $this->getProspectSiteEquipeA($user);
         $prospectRevndEqA = $this->getProspectRevendeurEquipeA($user);
@@ -83,7 +93,7 @@ class StatsService
         $prospectPrngeEqB = $this->getProspectParngEquipeB($user);
         $prospectAppeEqB = $this->getProspectAppEquipeB($user);
         $prospectAvneEqB = $this->getProspectAvnEquipeB($user);
-        $prospectAutrEqB = $this->getProspectAutrEquipeB($user);
+        // $prospectAutrEqB = $this->getProspectAutrEquipeB($user);
         $prospectAncienEqB = $this->getProspectAncienEquipeB($user);
         $prospectSiteEqB = $this->getProspectSiteEquipeB($user);
         $prospectRevndEqB = $this->getProspectRevendeurEquipeB($user);
@@ -92,7 +102,7 @@ class StatsService
 
 
 
-        return compact('prospectsNoTraite', 'prospectsPanier', 'unjoiniable', 'prospects', 'prospectsPasAffect', 'prospectsnow', 'prospectsTeam', 'prospectRevnd', 'prospectSite', 'prospectParng', 'prospectAppl', 'prospectAvn', 'prospectAncien',  'prospectTotalTeamA', 'prospectTotalTeamB', 'prospectTotalTeamC', 'prospectTotalTeamD', 'prospectRevndEqC', 'prospectSiteEqC', 'prospectRevndEqB', 'prospectSiteEqB', 'prospectRevndEq', 'prospectSiteEq', 'prospectRevndEqA', 'prospectSiteEqA', 'prospectAncienEq', 'prospectAncienEqC', 'prospectAncienEqB', 'prospectAncienEqA', 'prospectAutrEqB', 'prospectAvneEqB', 'prospectAppeEqB', 'prospectPrngeEqB', 'prospectAutrEqA', 'prospectAvneEqA', 'prospectAppeEqA', 'prospectPrngeEqA', 'prospectAutrEqC', 'prospectAvneEqC', 'prospectAppeEqC', 'prospectPrngeEqC', 'prospectAutrEq', 'prospectAvneEq', 'prospectAppeEq', 'prospectPrngeEq', 'users', 'teams', 'products', 'clients', 'prospectsAffect');
+        return compact('unjoiniableCmrl', 'unjoiniableChef', 'prospectsNoTrCmrcl', 'prospectsNoTrChef', 'prospectsTeamCmrcl', 'prospectsTeamChef', 'prospectsCmrclNv', 'prospectsChefNv', 'prospectsNoTraite', 'prospectsPanier', 'unjoiniable', 'prospects', 'prospectsPasAffect', 'prospectsnow', 'prospectsTeam', 'prospectRevnd', 'prospectSite', 'prospectParng', 'prospectAppl', 'prospectAvn', 'prospectAncien',  'prospectTotalTeamA', 'prospectTotalTeamB', 'prospectTotalTeamC', 'prospectTotalTeamD', 'prospectRevndEqC', 'prospectSiteEqC', 'prospectRevndEqB', 'prospectSiteEqB', 'prospectRevndEq', 'prospectSiteEq', 'prospectRevndEqA', 'prospectSiteEqA', 'prospectAncienEq', 'prospectAncienEqC', 'prospectAncienEqB', 'prospectAncienEqA', 'prospectAvneEqB', 'prospectAppeEqB', 'prospectPrngeEqB', 'prospectAvneEqA', 'prospectAppeEqA', 'prospectPrngeEqA', 'prospectAvneEqC', 'prospectAppeEqC', 'prospectPrngeEqC', 'prospectAutrEq', 'prospectAvneEq', 'prospectAppeEq', 'prospectPrngeEq', 'users', 'teams', 'products', 'clients', 'prospectsAffect');
     }
 
 
@@ -158,6 +168,7 @@ class StatsService
 
         return $result;
     }
+
     // les prospect cree ce jour et pas affc
     public function getProspectPasCount()
     {
@@ -168,6 +179,51 @@ class StatsService
         $qb->select('COUNT(p)')
             ->from('App\Entity\Prospect', 'p')
             ->andWhere('p.creatAt >= :startOfDay')
+            ->setParameter('startOfDay', $today);
+
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
+
+    // les nouveaux prospects cree ce jour affecter a mon equipe
+    public function getProspectChefNv(User $user)
+    {
+        $team = $user->getTeams();
+        $today = new \DateTime();
+        $today->setTime(0, 0, 0);
+
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(p)')
+            ->from('App\Entity\Prospect', 'p')
+            ->where('p.team = :team')
+            ->setParameter('team', $team)
+
+            ->andWhere('p.creatAt >= :startOfDay')
+
+            ->setParameter('startOfDay', $today);
+
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
+
+    public function getProspectCmrclNv($id)
+    {
+
+        $today = new \DateTime();
+        $today->setTime(0, 0, 0);
+
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(p)')
+            ->from('App\Entity\Prospect', 'p')
+            ->andWhere('p.comrcl = :val')
+            ->setParameter('val', $id)
+
+            ->andWhere('p.creatAt >= :startOfDay')
+
             ->setParameter('startOfDay', $today);
 
         $query = $qb->getQuery();
@@ -198,6 +254,57 @@ class StatsService
         return $result;
     }
 
+    //calculer nombre de relance pour chef
+
+    public function getProspectCountRelanceChef(User $user)
+    {
+        $team = $user->getTeams();
+        $today = new \DateTime();
+        $today->setTime(0, 0, 0);
+
+        $endOfDay = clone $today;
+        $endOfDay->setTime(23, 59, 59);
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(p)')
+            ->from(Prospect::class, 'p')
+            ->where('p.team = :team')
+            ->setParameter('team', $team)
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
+            ->setParameter('startOfDay', $today)
+            ->setParameter('endOfDay', $endOfDay);
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
+    //calculer nombre de relance pour comerciel
+
+    public function getProspectCountRelanceCmrcl($id)
+    {
+
+        $today = new \DateTime();
+        $today->setTime(0, 0, 0);
+
+        $endOfDay = clone $today;
+        $endOfDay->setTime(23, 59, 59);
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(p)')
+            ->from(Prospect::class, 'p')
+            ->andWhere('p.comrcl = :val')
+            ->setParameter('val', $id)
+
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
+            ->setParameter('startOfDay', $today)
+            ->setParameter('endOfDay', $endOfDay);
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
+
+
     // caclcule le total du prospect Non traite 
     public function getProspectNonTraite()
     {
@@ -209,6 +316,41 @@ class StatsService
 
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
+            ->andWhere('p.team IS NOT NULL');
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
+    // caclcule le total du prospect Non traite pour chef
+    public function getProspectNonTraiteChef(User $user)
+    {
+
+        $team = $user->getTeams();
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(p)')
+            ->from(Prospect::class, 'p')
+            ->where('p.team = :team')
+            ->setParameter('team', $team)
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
+            ->andWhere('p.team IS NOT NULL');
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
+    // caclcule le total du prospect Non traite pour comerciale
+    public function getProspectNonTraiteCmrcl($id)
+    {
+
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(p)')
+            ->from(Prospect::class, 'p')
+            ->andWhere('p.comrcl = :val')
+            ->setParameter('val', $id)
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
             ->andWhere('p.team IS NOT NULL')  // Affecté à une équipe
             ->andWhere('p.comrcl IS NOT NULL');
         $query = $qb->getQuery();
@@ -216,7 +358,6 @@ class StatsService
 
         return $result;
     }
-
 
     // caclcule le total du prospect en panier
     public function getProspectCountPanier()
@@ -256,6 +397,43 @@ class StatsService
 
         return $result;
     }
+    // caclcule le total du prospect  Unjoiniable pour chef
+    public function getProspectCountUnjoiniableChef(User $user)
+    {
+        $team = $user->getTeams();
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(p)')
+            ->from(Prospect::class, 'p')
+            ->where('p.team = :team')
+            ->setParameter('team', $team)
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere("r.motifRelanced = '2'");
+
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
+
+    // caclcule le total du prospect  Unjoiniable pour chef
+    public function getProspectCountUnjoiniableCmrcl($id)
+    {
+
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(p)')
+            ->from(Prospect::class, 'p')
+            ->andWhere('p.comrcl = :val')
+            ->setParameter('val', $id)
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere("r.motifRelanced = '2'");
+
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
+
+
     // caclcule le total du prospect atache a une equie (panier)
     public function getProspectCountNow()
     {
@@ -421,25 +599,25 @@ class StatsService
         return $result;
     }
 
-    public function getProspectAutrEquipeA()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
+    // public function getProspectAutrEquipeA()
+    // {
+    //     $today = new \DateTime();
+    //     $today->setTime(0, 0, 0);
 
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise is NULL')
-            ->andWhere('p.team = 1')
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
+    //     $qb = $this->manager->createQueryBuilder();
+    //     $qb->select('COUNT(p)')
+    //         ->from('App\Entity\Prospect', 'p')
+    //         ->where('p.motifSaise is NULL')
+    //         ->andWhere('p.team = 1')
+    //         ->andWhere('p.comrcl IS NOT NULL')
+    //         ->andWhere('p.creatAt >= :startOfDay')
+    //         ->setParameter('startOfDay', $today);
 
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
+    //     $query = $qb->getQuery();
+    //     $result = $query->getSingleScalarResult();
 
-        return $result;
-    }
+    //     return $result;
+    // }
 
     public function getProspectSiteEquipeA()
     {
@@ -548,25 +726,25 @@ class StatsService
         return $result;
     }
 
-    public function getProspectAutrEquipeB()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
+    // public function getProspectAutrEquipeB()
+    // {
+    //     $today = new \DateTime();
+    //     $today->setTime(0, 0, 0);
 
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise is NULL')
-            ->andWhere('p.team = 2')
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
+    //     $qb = $this->manager->createQueryBuilder();
+    //     $qb->select('COUNT(p)')
+    //         ->from('App\Entity\Prospect', 'p')
+    //         ->where('p.motifSaise is NULL')
+    //         ->andWhere('p.team = 2')
+    //         ->andWhere('p.comrcl IS NOT NULL')
+    //         ->andWhere('p.creatAt >= :startOfDay')
+    //         ->setParameter('startOfDay', $today);
 
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
+    //     $query = $qb->getQuery();
+    //     $result = $query->getSingleScalarResult();
 
-        return $result;
-    }
+    //     return $result;
+    // }
 
 
     public function getProspectAncienEquipeB()
@@ -702,25 +880,25 @@ class StatsService
     }
 
 
-    public function getProspectAutrEquipeC()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
+    // public function getProspectAutrEquipeC()
+    // {
+    //     $today = new \DateTime();
+    //     $today->setTime(0, 0, 0);
 
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise is NULL')
-            ->andWhere('p.team = 3')
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
+    //     $qb = $this->manager->createQueryBuilder();
+    //     $qb->select('COUNT(p)')
+    //         ->from('App\Entity\Prospect', 'p')
+    //         ->where('p.motifSaise is NULL')
+    //         ->andWhere('p.team = 3')
+    //         ->andWhere('p.comrcl IS NOT NULL')
+    //         ->andWhere('p.creatAt >= :startOfDay')
+    //         ->setParameter('startOfDay', $today);
 
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
+    //     $query = $qb->getQuery();
+    //     $result = $query->getSingleScalarResult();
 
-        return $result;
-    }
+    //     return $result;
+    // }
 
 
     public function getProspectAncienEquipeC()

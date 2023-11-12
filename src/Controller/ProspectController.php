@@ -112,24 +112,25 @@ class ProspectController extends AbstractController
     /**
      * @Route("/allprospc", name="allprosp_index", methods={"GET", "POST"})  
      */
-    public function allprosp(Request $request,  ProspectRepository $prospectRepository,  Security $security): Response
+    // public function allprosp(Request $request,  ProspectRepository $prospectRepository,  Security $security): Response
 
-    {
-        $data = new SearchProspect();
-        $data->page = $request->query->get('page', 1);
-        $form = $this->createForm(SearchProspectType::class, $data);
-        $form->handleRequest($this->requestStack->getCurrentRequest());
-        $user = $security->getUser();
+    // {
+    //     $data = new SearchProspect();
+    //     $data->page = $request->query->get('page', 1);
+    //     $form = $this->createForm(SearchProspectType::class, $data);
+    //     $form->handleRequest($this->requestStack->getCurrentRequest());
+    //     $user = $security->getUser();
 
-        $prospect =  $prospectRepository->findAllSearch($data, $user,   null);
-        // dd($prospect);
-        return $this->render('prospect/index.html.twig', [
-            'prospects' => $prospect,
-            'search_form' => $form->createView()
-        ]);
-    }
+    //     $prospect =  $prospectRepository->findAllSearch($data, $user,   null);
+    //     // dd($prospect);
+    //     return $this->render('prospect/index.html.twig', [
+    //         'prospects' => $prospect,
+    //         'search_form' => $form->createView()
+    //     ]);
+    // }
 
     /**
+     * afficher les nouveaux prospects 
      * @Route("/newprospect", name="newprospect_index", methods={"GET", "POST"}) 
      */
     public function newprospect(Request $request,  ProspectRepository $prospectRepository,  Security $security): Response
@@ -140,7 +141,18 @@ class ProspectController extends AbstractController
         $form = $this->createForm(SearchProspectType::class, $data);
         $form->handleRequest($this->requestStack->getCurrentRequest());
         $user = $security->getUser();
-        $prospect =  $prospectRepository->findByUserPaAffecter($data, null);
+        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            // admi peut voire toutes les nouveaux prospects
+            $prospect =  $prospectRepository->findByUserPaAffecter($data, null);
+        } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+            // chef peut voire toutes les nouveaux prospects atacher a leur equipe
+            $prospect =  $prospectRepository->findByChefAffecter($data,  $user, null);
+        } else {
+            // cmrcl peut voire seulement les nouveaux prospects atacher a lui
+            $prospect =  $prospectRepository->findByCmrclAffecter($data, $user, null);
+        }
+
+
         return $this->render('prospect/index.html.twig', [
             'prospects' => $prospect,
             'search_form' => $form->createView()
@@ -160,7 +172,18 @@ class ProspectController extends AbstractController
         $data->page = $request->query->get('page', 1);
         $form = $this->createForm(SearchProspectType::class, $data);
         $form->handleRequest($this->requestStack->getCurrentRequest());
-        $prospect =  $prospectRepository->findRelanced($data, null);
+        $user = $security->getUser();
+        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            // admi peut voire toutes les relance du jour
+            $prospect =  $prospectRepository->findRelanced($data, null);
+        } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+            // chef peut voire toutes les relance du jour atacher a leur equipe
+            $prospect =  $prospectRepository->findRelancedChef($data, $user, null);
+        } else {
+            // cmrcl peut voire seulement les relance du jour  atacher a lui
+            $prospect =  $prospectRepository->findRelancedCmrcl($data, $user, null);
+        }
+
         return $this->render('prospect/index.html.twig', [
             'prospects' => $prospect,
             'search_form' => $form->createView()
@@ -178,7 +201,20 @@ class ProspectController extends AbstractController
         $data->page = $request->query->get('page', 1);
         $form = $this->createForm(SearchProspectType::class, $data);
         $form->handleRequest($this->requestStack->getCurrentRequest());
-        $prospect =  $prospectRepository->findNonTraiter($data, null);
+
+        $user = $security->getUser();
+        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            // admi peut voire toutes les no traite
+            $prospect =  $prospectRepository->findNonTraiter($data, null);
+        } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+            // chef peut voire toutes les no traite atacher a leur equipe
+            $prospect =  $prospectRepository->findNonTraiterChef($data, $user, null);
+        } else {
+            // cmrcl peut voire seulement les no traite  atacher a lui
+            $prospect =  $prospectRepository->findNonTraiterCmrcl($data, $user, null);
+        }
+
+
         return $this->render('prospect/index.html.twig', [
             'prospects' => $prospect,
             'search_form' => $form->createView()

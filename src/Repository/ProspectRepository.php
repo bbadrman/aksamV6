@@ -224,7 +224,6 @@ class ProspectRepository extends ServiceEntityRepository
         $endOfDay = clone $today;
         $endOfDay->setTime(23, 59, 59);
 
-        // get selement les prospects qui n'as pas encors affectter a un user
         $query = $this->createQueryBuilder('p')
             ->select('p, t, f, r')
             ->leftJoin('p.relanceds', 'r')
@@ -316,6 +315,203 @@ class ProspectRepository extends ServiceEntityRepository
         );
     }
 
+    /**
+     * Find list a prospect Relanced
+     * @param SearchProspect $search
+     * @return PaginationInterface
+     */
+    public function findRelancedChef(SearchProspect $search, User $user): PaginationInterface
+    {
+        $team = $user->getTeams();
+
+        $today = new \DateTime();
+        $today->setTime(0, 0, 0);
+
+        $endOfDay = clone $today;
+        $endOfDay->setTime(23, 59, 59);
+
+        $query = $this->createQueryBuilder('p')
+            ->select('p, f, r')
+            ->where('p.team = :team')
+            ->setParameter('team', $team)
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
+            ->setParameter('startOfDay', $today)
+            ->setParameter('endOfDay', $endOfDay)
+
+
+            // joiner les tables en relation manytomany avec fonction
+            ->leftJoin('p.comrcl', 'f')
+
+            ->orderBy('p.id', 'DESC');
+
+
+
+        if ((!empty($search->q))) {
+            $query = $query
+                ->andWhere('p.name LIKE :q')
+
+                ->orderBy('p.id', 'desc')
+                ->setParameter('q', "%{$search->q}%");
+        }
+
+        if (!empty($search->m)) {
+            $query = $query
+                ->andWhere('p.lastname LIKE :m')
+                ->setParameter('m', "%{$search->m}%");
+        }
+        if (!empty($search->r)) {
+            $query = $query
+                ->andWhere('f.username LIKE :r')
+                ->setParameter('r', "%{$search->r}%");
+        }
+        if (!empty($search->g)) {
+            $query = $query
+                ->andWhere('p.email LIKE :g')
+                ->setParameter('g', "%{$search->g}%");
+        }
+
+        if (!empty($search->l)) {
+            $query = $query
+                ->andWhere('p.phone LIKE :l')
+                ->orWhere('p.gsm LIKE :l')
+                ->setParameter('l', "%{$search->l}%");
+        }
+        if (!empty($search->c)) {
+            $query = $query
+                ->andWhere('p.city LIKE :c')
+                ->setParameter('c', "%{$search->c}%");
+        }
+
+        if (!empty($search->d)) {
+
+            $query = $query
+                ->andWhere('p.creatAt >= :d')
+                ->setParameter('d', $search->d->format('Y-m-d'));
+        }
+        if (!empty($search->dd)) {
+            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+            $query = $query
+                // ->andWhere('u.creatAt LIKE :dd')
+                ->andWhere('p.creatAt <= :dd')
+                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+        }
+
+
+        if (!empty($search->s)) {
+            $query = $query
+                ->andWhere('p.raisonSociale LIKE :s')
+                ->setParameter('s', "%{$search->s}%");
+        }
+        if (!empty($search->source)) {
+            $query = $query
+                ->andWhere('p.source = :source')
+                ->setParameter('source', $search->source);
+        }
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+
+        );
+    }
+
+    /**
+     * Find list a prospect Relanced
+     * @param SearchProspect $search
+     * @return PaginationInterface
+     */
+    public function findRelancedCmrcl(SearchProspect $search, $id): PaginationInterface
+    {
+
+
+        $today = new \DateTime();
+        $today->setTime(0, 0, 0);
+
+        $endOfDay = clone $today;
+        $endOfDay->setTime(23, 59, 59);
+
+        $query = $this->createQueryBuilder('p')
+            ->select('p, r')
+            ->andWhere('p.comrcl = :val')
+            ->setParameter('val', $id)
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
+            ->setParameter('startOfDay', $today)
+            ->setParameter('endOfDay', $endOfDay)
+
+
+            // joiner les tables en relation manytomany avec fonction
+
+
+            ->orderBy('p.id', 'DESC');
+
+
+
+        if ((!empty($search->q))) {
+            $query = $query
+                ->andWhere('p.name LIKE :q')
+
+                ->orderBy('p.id', 'desc')
+                ->setParameter('q', "%{$search->q}%");
+        }
+
+        if (!empty($search->m)) {
+            $query = $query
+                ->andWhere('p.lastname LIKE :m')
+                ->setParameter('m', "%{$search->m}%");
+        }
+
+        if (!empty($search->g)) {
+            $query = $query
+                ->andWhere('p.email LIKE :g')
+                ->setParameter('g', "%{$search->g}%");
+        }
+
+        if (!empty($search->l)) {
+            $query = $query
+                ->andWhere('p.phone LIKE :l')
+                ->orWhere('p.gsm LIKE :l')
+                ->setParameter('l', "%{$search->l}%");
+        }
+        if (!empty($search->c)) {
+            $query = $query
+                ->andWhere('p.city LIKE :c')
+                ->setParameter('c', "%{$search->c}%");
+        }
+
+        if (!empty($search->d)) {
+
+            $query = $query
+                ->andWhere('p.creatAt >= :d')
+                ->setParameter('d', $search->d->format('Y-m-d'));
+        }
+        if (!empty($search->dd)) {
+            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+            $query = $query
+                // ->andWhere('u.creatAt LIKE :dd')
+                ->andWhere('p.creatAt <= :dd')
+                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+        }
+
+
+        if (!empty($search->s)) {
+            $query = $query
+                ->andWhere('p.raisonSociale LIKE :s')
+                ->setParameter('s', "%{$search->s}%");
+        }
+        if (!empty($search->source)) {
+            $query = $query
+                ->andWhere('p.source = :source')
+                ->setParameter('source', $search->source);
+        }
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+
+        );
+    }
 
     /**
      * Find list a prospect no traite (qui sont pas de motirelance et dejat affecter au team et cmrcl)
@@ -333,7 +529,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
             ->andWhere('p.team IS NOT NULL')  // Affecté à une équipe
-            ->andWhere('p.comrcl IS NOT NULL') // Affecté à un commercial
+            // ->andWhere('p.comrcl IS NOT NULL') 
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
             ->orderBy('p.id', 'DESC');
@@ -365,6 +561,178 @@ class ProspectRepository extends ServiceEntityRepository
                 ->andWhere('t.name LIKE :team')
                 ->setParameter('team', "%{$search->team}%");
         }
+        if (!empty($search->l)) {
+            $query = $query
+                ->andWhere('p.phone LIKE :l')
+                ->orWhere('p.gsm LIKE :l')
+                ->setParameter('l', "%{$search->l}%");
+        }
+        if (!empty($search->c)) {
+            $query = $query
+                ->andWhere('p.city LIKE :c')
+                ->setParameter('c', "%{$search->c}%");
+        }
+
+        if (!empty($search->d)) {
+
+            $query = $query
+                ->andWhere('p.creatAt >= :d')
+                ->setParameter('d', $search->d->format('Y-m-d'));
+        }
+        if (!empty($search->dd)) {
+            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+            $query = $query
+                // ->andWhere('u.creatAt LIKE :dd')
+                ->andWhere('p.creatAt <= :dd')
+                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+        }
+
+
+        if (!empty($search->s)) {
+            $query = $query
+                ->andWhere('p.raisonSociale LIKE :s')
+                ->setParameter('s', "%{$search->s}%");
+        }
+        if (!empty($search->source)) {
+            $query = $query
+                ->andWhere('p.source = :source')
+                ->setParameter('source', $search->source);
+        }
+
+        // Vos autres conditions de recherche restent inchangées.
+
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+        );
+    }
+    /**
+     * Find list a prospect no traite (qui sont pas de motirelance et dejat affecter au team et cmrcl)
+     * @param SearchProspect $search
+     * @return PaginationInterface
+     */
+    public function findNonTraiterChef(SearchProspect $search, User $user): PaginationInterface
+    {
+
+        $team = $user->getTeams();
+        $query = $this->createQueryBuilder('p')
+            ->select('p, f, r')
+            ->where('p.team = :team')
+            ->setParameter('team', $team)
+
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
+            ->andWhere('p.team IS NOT NULL')
+            ->leftJoin('p.comrcl', 'f')
+            ->orderBy('p.id', 'DESC');
+        if ((!empty($search->q))) {
+            $query = $query
+                ->andWhere('p.name LIKE :q')
+
+                ->orderBy('p.id', 'desc')
+                ->setParameter('q', "%{$search->q}%");
+        }
+
+        if (!empty($search->m)) {
+            $query = $query
+                ->andWhere('p.lastname LIKE :m')
+                ->setParameter('m', "%{$search->m}%");
+        }
+        if (!empty($search->r)) {
+            $query = $query
+                ->andWhere('f.username LIKE :r')
+                ->setParameter('r', "%{$search->r}%");
+        }
+        if (!empty($search->g)) {
+            $query = $query
+                ->andWhere('p.email LIKE :g')
+                ->setParameter('g', "%{$search->g}%");
+        }
+
+        if (!empty($search->l)) {
+            $query = $query
+                ->andWhere('p.phone LIKE :l')
+                ->orWhere('p.gsm LIKE :l')
+                ->setParameter('l', "%{$search->l}%");
+        }
+        if (!empty($search->c)) {
+            $query = $query
+                ->andWhere('p.city LIKE :c')
+                ->setParameter('c', "%{$search->c}%");
+        }
+
+        if (!empty($search->d)) {
+
+            $query = $query
+                ->andWhere('p.creatAt >= :d')
+                ->setParameter('d', $search->d->format('Y-m-d'));
+        }
+        if (!empty($search->dd)) {
+            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+            $query = $query
+                // ->andWhere('u.creatAt LIKE :dd')
+                ->andWhere('p.creatAt <= :dd')
+                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+        }
+
+
+        if (!empty($search->s)) {
+            $query = $query
+                ->andWhere('p.raisonSociale LIKE :s')
+                ->setParameter('s', "%{$search->s}%");
+        }
+        if (!empty($search->source)) {
+            $query = $query
+                ->andWhere('p.source = :source')
+                ->setParameter('source', $search->source);
+        }
+
+        // Vos autres conditions de recherche restent inchangées.
+
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+        );
+    }
+    /**
+     * Find list a prospect no traite (qui sont pas de motirelance et dejat affecter au team et cmrcl)
+     * @param SearchProspect $search
+     * @return PaginationInterface
+     */
+    public function findNonTraiterCmrcl(SearchProspect $search, $id): PaginationInterface
+    {
+
+
+        $query = $this->createQueryBuilder('p')
+            ->select('p,   r')
+            ->andWhere('p.comrcl = :val')
+            ->setParameter('val', $id)
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
+
+            ->orderBy('p.id', 'DESC');
+        if ((!empty($search->q))) {
+            $query = $query
+                ->andWhere('p.name LIKE :q')
+
+                ->orderBy('p.id', 'desc')
+                ->setParameter('q', "%{$search->q}%");
+        }
+
+        if (!empty($search->m)) {
+            $query = $query
+                ->andWhere('p.lastname LIKE :m')
+                ->setParameter('m', "%{$search->m}%");
+        }
+
+        if (!empty($search->g)) {
+            $query = $query
+                ->andWhere('p.email LIKE :g')
+                ->setParameter('g', "%{$search->g}%");
+        }
+
         if (!empty($search->l)) {
             $query = $query
                 ->andWhere('p.phone LIKE :l')
@@ -507,7 +875,182 @@ class ProspectRepository extends ServiceEntityRepository
 
         );
     }
+    /**
+     * Find list a prospect Unjoinable
+     * @return Prospect[] 
+     * @param SearchProspect $search
+     * @return PaginationInterface 
+     */
+    public function findUnjoingChef(SearchProspect $search, User $user): PaginationInterface
+    {
+        $team = $user->getTeams();
 
+        $query = $this->createQueryBuilder('p')
+            ->select('p, f')
+            ->where('p.team = :team')
+            ->setParameter('team', $team)
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.motifRelanced = 2')
+
+            // joiner les tables en relation ManyToOne avec team
+
+
+            // joiner les tables en relation manytomany avec fonction
+            ->leftJoin('p.comrcl', 'f');
+
+        if ((!empty($search->q))) {
+            $query = $query
+                ->andWhere('p.name LIKE :q')
+
+                ->orderBy('p.id', 'desc')
+                ->setParameter('q', "%{$search->q}%");
+        }
+
+        if (!empty($search->m)) {
+            $query = $query
+                ->andWhere('p.lastname LIKE :m')
+                ->setParameter('m', "%{$search->m}%");
+        }
+        if (!empty($search->r)) {
+            $query = $query
+                ->andWhere('f.username LIKE :r')
+                ->setParameter('r', "%{$search->r}%");
+        }
+        if (!empty($search->g)) {
+            $query = $query
+                ->andWhere('p.email LIKE :g')
+                ->setParameter('g', "%{$search->g}%");
+        }
+
+        if (!empty($search->l)) {
+            $query = $query
+                ->andWhere('p.phone LIKE :l')
+                ->orWhere('p.gsm LIKE :l')
+                ->setParameter('l', "%{$search->l}%");
+        }
+        if (!empty($search->c)) {
+            $query = $query
+                ->andWhere('p.city LIKE :c')
+                ->setParameter('c', "%{$search->c}%");
+        }
+
+        if (!empty($search->d)) {
+
+            $query = $query
+                ->andWhere('p.creatAt >= :d')
+                ->setParameter('d', $search->d->format('Y-m-d'));
+        }
+        if (!empty($search->dd)) {
+            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+            $query = $query
+                // ->andWhere('u.creatAt LIKE :dd')
+                ->andWhere('p.creatAt <= :dd')
+                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+        }
+
+
+        if (!empty($search->s)) {
+            $query = $query
+                ->andWhere('p.raisonSociale LIKE :s')
+                ->setParameter('s', "%{$search->s}%");
+        }
+        if (!empty($search->source)) {
+            $query = $query
+                ->andWhere('p.source = :source')
+                ->setParameter('source', $search->source);
+        }
+
+        $query->orderBy('p.id', 'DESC');
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+
+        );
+    }
+    /**
+     * Find list a prospect Unjoinable
+     * @return Prospect[] 
+     * @param SearchProspect $search
+     * @return PaginationInterface 
+     */
+    public function findUnjoingCmrcl(SearchProspect $search, $id): PaginationInterface
+    {
+
+
+        $query = $this->createQueryBuilder('p')
+
+            ->andWhere('p.comrcl = :val')
+            ->setParameter('val', $id)
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.motifRelanced = 2');
+
+        if ((!empty($search->q))) {
+            $query = $query
+                ->andWhere('p.name LIKE :q')
+
+                ->orderBy('p.id', 'desc')
+                ->setParameter('q', "%{$search->q}%");
+        }
+
+        if (!empty($search->m)) {
+            $query = $query
+                ->andWhere('p.lastname LIKE :m')
+                ->setParameter('m', "%{$search->m}%");
+        }
+
+        if (!empty($search->g)) {
+            $query = $query
+                ->andWhere('p.email LIKE :g')
+                ->setParameter('g', "%{$search->g}%");
+        }
+
+        if (!empty($search->l)) {
+            $query = $query
+                ->andWhere('p.phone LIKE :l')
+                ->orWhere('p.gsm LIKE :l')
+                ->setParameter('l', "%{$search->l}%");
+        }
+        if (!empty($search->c)) {
+            $query = $query
+                ->andWhere('p.city LIKE :c')
+                ->setParameter('c', "%{$search->c}%");
+        }
+
+        if (!empty($search->d)) {
+
+            $query = $query
+                ->andWhere('p.creatAt >= :d')
+                ->setParameter('d', $search->d->format('Y-m-d'));
+        }
+        if (!empty($search->dd)) {
+            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+            $query = $query
+                // ->andWhere('u.creatAt LIKE :dd')
+                ->andWhere('p.creatAt <= :dd')
+                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+        }
+
+
+        if (!empty($search->s)) {
+            $query = $query
+                ->andWhere('p.raisonSociale LIKE :s')
+                ->setParameter('s', "%{$search->s}%");
+        }
+        if (!empty($search->source)) {
+            $query = $query
+                ->andWhere('p.source = :source')
+                ->setParameter('source', $search->source);
+        }
+
+        $query->orderBy('p.id', 'DESC');
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+
+        );
+    }
     // lister les prospects du comcrl
     /**
      * @return Prospect[] Returns an array of Prospect objects 
@@ -678,6 +1221,7 @@ class ProspectRepository extends ServiceEntityRepository
      */
     public function findByUserPaAffecter(SearchProspect $search): PaginationInterface
     {
+
         $today = new \DateTime();
         $today->setTime(0, 0, 0);
 
@@ -771,7 +1315,212 @@ class ProspectRepository extends ServiceEntityRepository
 
         );
     }
+
     // afficher les prospects qui n ont pas du team et cmrcl
+    /**
+     * @return Prospect[] Returns an array of Prospect objects
+     * 
+     * @param SearchProspect $search
+     * @return PaginationInterface 
+     */
+    public function findByChefAffecter(SearchProspect $search, User $user): PaginationInterface
+    {
+        $team = $user->getTeams();
+        $today = new \DateTime();
+        $today->setTime(0, 0, 0);
+
+
+        // get selement les prospects qui n'as pas encors affectter a un user
+        $query = $this->createQueryBuilder('p')
+            ->select('p, t, f')
+            ->where('p.team = :team')
+            ->setParameter('team', $team)
+            ->andWhere('p.creatAt >= :startOfDay')
+            ->setParameter('startOfDay', $today)
+            ->orderBy('p.id', 'DESC')
+            // si tu veux disparer prospect apres l affectation  il decommenter cet ligne
+            // ->andWhere("p.comrcl is NULL")
+
+            // joiner les tables en relation ManyToOne avec team
+            ->leftJoin('p.team', 't')
+
+            // joiner les tables en relation manytomany avec fonction
+            ->leftJoin('p.comrcl', 'f');
+
+
+        if ((!empty($search->q))) {
+            $query = $query
+                ->andWhere('p.name LIKE :q')
+
+                ->orderBy('p.id', 'desc')
+                ->setParameter('q', "%{$search->q}%");
+        }
+
+        if (!empty($search->m)) {
+            $query = $query
+                ->andWhere('p.lastname LIKE :m')
+                ->setParameter('m', "%{$search->m}%");
+        }
+        if (!empty($search->r)) {
+            $query = $query
+                ->andWhere('f.username LIKE :r')
+                ->setParameter('r', "%{$search->r}%");
+        }
+        if (!empty($search->g)) {
+            $query = $query
+                ->andWhere('p.email LIKE :g')
+                ->setParameter('g', "%{$search->g}%");
+        }
+
+        if (!empty($search->l)) {
+            $query = $query
+                ->andWhere('p.phone LIKE :l')
+                ->orWhere('p.gsm LIKE :l')
+                ->setParameter('l', "%{$search->l}%");
+        }
+        if (!empty($search->c)) {
+            $query = $query
+                ->andWhere('p.city LIKE :c')
+                ->setParameter('c', "%{$search->c}%");
+        }
+
+        if (!empty($search->d)) {
+
+            $query = $query
+                ->andWhere('p.creatAt >= :d')
+                ->setParameter('d', $search->d->format('Y-m-d'));
+        }
+        if (!empty($search->dd)) {
+            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+            $query = $query
+                // ->andWhere('u.creatAt LIKE :dd')
+                ->andWhere('p.creatAt <= :dd')
+                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+        }
+
+
+        if (!empty($search->s)) {
+            $query = $query
+                ->andWhere('p.raisonSociale LIKE :s')
+                ->setParameter('s', "%{$search->s}%");
+        }
+        if (!empty($search->source)) {
+            $query = $query
+                ->andWhere('p.source = :source')
+                ->setParameter('source', $search->source);
+        }
+
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+
+        );
+    }
+    // afficher les prospects qui n ont pas du team et cmrcl
+    /**
+     * @return Prospect[] Returns an array of Prospect objects
+     * 
+     * @param SearchProspect $search
+     * @return PaginationInterface 
+     */
+    public function findByCmrclAffecter(SearchProspect $search, $id): PaginationInterface
+    {
+
+        $today = new \DateTime();
+        $today->setTime(0, 0, 0);
+
+
+        // get selement les prospects qui n'as pas encors affectter a un user
+        $query = $this->createQueryBuilder('p')
+
+            ->andWhere('p.comrcl = :val')
+            ->setParameter('val', $id)
+
+            ->andWhere('p.creatAt >= :startOfDay')
+            ->setParameter('startOfDay', $today)
+            ->orderBy('p.id', 'DESC');
+
+
+
+        // joiner les tables en relation ManyToOne avec team
+
+
+        // joiner les tables en relation manytomany avec fonction
+
+
+
+        if ((!empty($search->q))) {
+            $query = $query
+                ->andWhere('p.name LIKE :q')
+
+                ->orderBy('p.id', 'desc')
+                ->setParameter('q', "%{$search->q}%");
+        }
+
+        if (!empty($search->m)) {
+            $query = $query
+                ->andWhere('p.lastname LIKE :m')
+                ->setParameter('m', "%{$search->m}%");
+        }
+        if (!empty($search->r)) {
+            $query = $query
+                ->andWhere('f.username LIKE :r')
+                ->setParameter('r', "%{$search->r}%");
+        }
+        if (!empty($search->g)) {
+            $query = $query
+                ->andWhere('p.email LIKE :g')
+                ->setParameter('g', "%{$search->g}%");
+        }
+
+        if (!empty($search->l)) {
+            $query = $query
+                ->andWhere('p.phone LIKE :l')
+                ->orWhere('p.gsm LIKE :l')
+                ->setParameter('l', "%{$search->l}%");
+        }
+        if (!empty($search->c)) {
+            $query = $query
+                ->andWhere('p.city LIKE :c')
+                ->setParameter('c', "%{$search->c}%");
+        }
+
+        if (!empty($search->d)) {
+
+            $query = $query
+                ->andWhere('p.creatAt >= :d')
+                ->setParameter('d', $search->d->format('Y-m-d'));
+        }
+        if (!empty($search->dd)) {
+            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+            $query = $query
+                // ->andWhere('u.creatAt LIKE :dd')
+                ->andWhere('p.creatAt <= :dd')
+                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+        }
+
+
+        if (!empty($search->s)) {
+            $query = $query
+                ->andWhere('p.raisonSociale LIKE :s')
+                ->setParameter('s', "%{$search->s}%");
+        }
+        if (!empty($search->source)) {
+            $query = $query
+                ->andWhere('p.source = :source')
+                ->setParameter('source', $search->source);
+        }
+
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+
+        );
+    }
+
+    // afficher les prospects qui n'ont pas du team et cmrcl
     /**
      * @return Prospect[] Returns an array of Prospect objects
      * 
@@ -780,14 +1529,16 @@ class ProspectRepository extends ServiceEntityRepository
      */
     public function findByUserAffecterCmrcl(SearchProspect $search, $id): PaginationInterface
     {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
+        // $today = new \DateTime();
+        // $today->setTime(0, 0, 0);
         // get selement les prospects qui n'as pas encors affectter a un user
         $query = $this->createQueryBuilder('p')
+            ->select('p,  h')
             ->andWhere('p.comrcl = :val')
             ->setParameter('val', $id)
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today)
+            ->leftJoin('p.relanceds', 'h')
+            // ->andWhere('p.creatAt >= :startOfDay')
+            // ->setParameter('startOfDay', $today)
             ->orderBy('p.id', 'DESC');
 
         if ((!empty($search->q))) {
@@ -801,6 +1552,33 @@ class ProspectRepository extends ServiceEntityRepository
                 ->andWhere('p.lastname LIKE :m')
                 ->setParameter('m', "%{$search->m}%");
         }
+
+        //sherche par relance
+        if (!empty($search->dr)) {
+
+            $query = $query
+
+                ->andWhere('h.relacedAt >= :dr')
+                ->setParameter('dr', $search->dr->format('Y-m-d'));
+        }
+        if (!empty($search->ddr)) {
+            $search->ddr->modify('+23 hours 59 minutes 59 seconds');
+            $query = $query
+
+                ->andWhere('h.relacedAt <= :ddr')
+                ->setParameter('ddr', $search->ddr->format('Y-m-d H:i:s'));
+        }
+
+
+
+
+        if (!empty($search->motifRelanced)) {
+            $query = $query
+
+                ->andWhere('h.motifRelanced = :motifRelanced')
+                ->setParameter('motifRelanced', $search->motifRelanced);
+        }
+
         return $this->paginator->paginate(
             $query,
             $search->page,
@@ -909,10 +1687,12 @@ class ProspectRepository extends ServiceEntityRepository
         $team = $user->getTeams();
         $query = $this
             ->createQueryBuilder('p')
+            ->select('p,  h')
 
             // joiner les tables en relation ManyToOne avec team
             ->where('p.team = :team')
             // ->andWhere("p.comrcl is NULL")
+            ->leftJoin('p.relanceds', 'h')
             ->setParameter('team', $team)
             ->orderBy('p.id', 'DESC');
 
@@ -968,6 +1748,31 @@ class ProspectRepository extends ServiceEntityRepository
             $query = $query
                 ->andWhere('p.raisonSociale LIKE :s')
                 ->setParameter('s', "%{$search->s}%");
+        }
+        //sherche par relance
+        if (!empty($search->dr)) {
+
+            $query = $query
+
+                ->andWhere('h.relacedAt >= :dr')
+                ->setParameter('dr', $search->dr->format('Y-m-d'));
+        }
+        if (!empty($search->ddr)) {
+            $search->ddr->modify('+23 hours 59 minutes 59 seconds');
+            $query = $query
+
+                ->andWhere('h.relacedAt <= :ddr')
+                ->setParameter('ddr', $search->ddr->format('Y-m-d H:i:s'));
+        }
+
+
+
+
+        if (!empty($search->motifRelanced)) {
+            $query = $query
+
+                ->andWhere('h.motifRelanced = :motifRelanced')
+                ->setParameter('motifRelanced', $search->motifRelanced);
         }
 
         return $this->paginator->paginate(

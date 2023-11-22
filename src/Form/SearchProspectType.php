@@ -5,7 +5,10 @@ namespace App\Form;
 use Type\DateType;
 use Type\ResetType;
 use App\Entity\Team;
+use App\Entity\User;
 use App\Search\SearchProspect;
+use App\Repository\TeamRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -16,14 +19,34 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class SearchProspectType extends AbstractType
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $teamRepository = $this->entityManager->getRepository(Team::class);
+        $teams = $teamRepository->findAll();
+        $teamChoices = [];
+        foreach ($teams as $team) {
+            $teamChoices[$team->getName()] = $team->getName();
+        }
+
+        $userRepository = $this->entityManager->getRepository(User::class);
+        $comrcls = $userRepository->findAll();
+        $comrclChoices = [];
+        foreach ($comrcls as $comrcl) {
+            $comrclChoices[$comrcl->getUsername()] = $comrcl->getUsername();
+        }
+
         $builder
             ->add('q', Type\TextType::class, [
 
                 'label' => "Nom :",
                 'attr' => [
-                    'placeholder' => "Recherche par nom du client."
+                    'placeholder' => "Nom."
                 ],
 
                 'required' => false
@@ -32,36 +55,36 @@ class SearchProspectType extends AbstractType
 
                 'label' => "Prenom :",
                 'attr' => [
-                    'placeholder' => "Recherche par prenom du client."
+                    'placeholder' => "Prenom."
                 ],
                 'required' => false
             ])
             ->add('g', Type\TextType::class, [
                 'label' => "E-mail :",
                 'attr' => [
-                    'placeholder' => "Recherche par E-mail."
+                    'placeholder' => "E-mail."
                 ],
                 'required' => false
             ])
             ->add('c', Type\TextType::class, [
                 'label' => "Ville :",
                 'attr' => [
-                    'placeholder' => "Recherche par ville."
+                    'placeholder' => "Ville."
                 ],
                 'required' => false
             ])
             ->add('l', Type\TextType::class, [
                 'label' => "Telephone :",
                 'attr' => [
-                    'placeholder' => "Recherche par numero telephone du client."
+                    'placeholder' => "Telephone."
                 ],
                 'required' => false
             ])
-            ->add('team', Type\TextType::class, [
+
+            ->add('team', Type\ChoiceType::class, [
                 'label' => "Equipe :",
-                'attr' => [
-                    'placeholder' => "Recherche par nom d'equipe."
-                ],
+                'placeholder' => '--Selectie-- ',
+                'choices' => $teamChoices,
                 'required' => false
             ])
 
@@ -87,11 +110,11 @@ class SearchProspectType extends AbstractType
                 'required' => false
             ])
 
-            ->add('r', Type\TextType::class, [
-                'label' => "Comercielle :",
-                'attr' => [
-                    'placeholder' => "Recherche par nom du Comercielle."
-                ],
+
+            ->add('r', Type\ChoiceType::class, [
+                'label' => "commercial :",
+                'placeholder' => '--Selectie-- ',
+                'choices' => $comrclChoices,
                 'required' => false
             ])
             ->add('s', Type\TextType::class, [
@@ -105,7 +128,7 @@ class SearchProspectType extends AbstractType
             ->add('source', Type\ChoiceType::class, [
                 'label' => 'Source :',
                 'required' => false,
-                'placeholder' => '--Merci de selectie-- ',
+                'placeholder' => '--Selectie-- ',
                 'choices' => [
                     'Propre site' => 'Propre site',
                     'Saisie manuelle' => 'Saisie manuelle',
@@ -136,9 +159,9 @@ class SearchProspectType extends AbstractType
                 'required' => false
             ])
             ->add('motifRelanced', Type\ChoiceType::class, [
-                'label' => 'MotifRelance ',
+                'label' => 'Motif Relance ',
                 'required' => false,
-                'placeholder' => '--Merci de selectie-- ',
+                'placeholder' => '--Selectie-- ',
                 'choices' => [
                     'Prise de Contact' => [
                         'Rendez-vous' => '1',

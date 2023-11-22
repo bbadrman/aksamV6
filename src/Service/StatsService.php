@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Entity\Prospect;
+use App\Entity\Relanced;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Security;
 
@@ -36,6 +37,14 @@ class StatsService
         $prospectsTeam = $this->getProspectCountRelance();
         $prospectsTeamChef = $this->getProspectCountRelanceChef($user);
         $prospectsTeamCmrcl = $this->getProspectCountRelanceCmrcl($user);
+
+        //table a venir
+        $prospectsAvenir = $this->getProspectRelanceAvenir();
+        $prosAvenirChef = $this->getProspectRelanceAvenirChef($user);
+        $prosAvenirCmrcl = $this->getProspectRelanceAvenirCmrcl($user);
+
+
+        // table no traite
         $prospectsNoTraite = $this->getProspectNonTraite();
         $prospectsNoTrChef = $this->getProspectNonTraiteChef($user);
         $prospectsNoTrCmrcl = $this->getProspectNonTraiteCmrcl($user);
@@ -102,7 +111,7 @@ class StatsService
 
 
 
-        return compact('unjoiniableCmrl', 'unjoiniableChef', 'prospectsNoTrCmrcl', 'prospectsNoTrChef', 'prospectsTeamCmrcl', 'prospectsTeamChef', 'prospectsCmrclNv', 'prospectsChefNv', 'prospectsNoTraite', 'prospectsPanier', 'unjoiniable', 'prospects', 'prospectsPasAffect', 'prospectsnow', 'prospectsTeam', 'prospectRevnd', 'prospectSite', 'prospectParng', 'prospectAppl', 'prospectAvn', 'prospectAncien',  'prospectTotalTeamA', 'prospectTotalTeamB', 'prospectTotalTeamC', 'prospectTotalTeamD', 'prospectRevndEqC', 'prospectSiteEqC', 'prospectRevndEqB', 'prospectSiteEqB', 'prospectRevndEq', 'prospectSiteEq', 'prospectRevndEqA', 'prospectSiteEqA', 'prospectAncienEq', 'prospectAncienEqC', 'prospectAncienEqB', 'prospectAncienEqA', 'prospectAvneEqB', 'prospectAppeEqB', 'prospectPrngeEqB', 'prospectAvneEqA', 'prospectAppeEqA', 'prospectPrngeEqA', 'prospectAvneEqC', 'prospectAppeEqC', 'prospectPrngeEqC', 'prospectAutrEq', 'prospectAvneEq', 'prospectAppeEq', 'prospectPrngeEq', 'users', 'teams', 'products', 'clients', 'prospectsAffect');
+        return compact('prosAvenirCmrcl', 'prosAvenirChef', 'prospectsAvenir', 'unjoiniableCmrl', 'unjoiniableChef', 'prospectsNoTrCmrcl', 'prospectsNoTrChef', 'prospectsTeamCmrcl', 'prospectsTeamChef', 'prospectsCmrclNv', 'prospectsChefNv', 'prospectsNoTraite', 'prospectsPanier', 'unjoiniable', 'prospects', 'prospectsPasAffect', 'prospectsnow', 'prospectsTeam', 'prospectRevnd', 'prospectSite', 'prospectParng', 'prospectAppl', 'prospectAvn', 'prospectAncien',  'prospectTotalTeamA', 'prospectTotalTeamB', 'prospectTotalTeamC', 'prospectTotalTeamD', 'prospectRevndEqC', 'prospectSiteEqC', 'prospectRevndEqB', 'prospectSiteEqB', 'prospectRevndEq', 'prospectSiteEq', 'prospectRevndEqA', 'prospectSiteEqA', 'prospectAncienEq', 'prospectAncienEqC', 'prospectAncienEqB', 'prospectAncienEqA', 'prospectAvneEqB', 'prospectAppeEqB', 'prospectPrngeEqB', 'prospectAvneEqA', 'prospectAppeEqA', 'prospectPrngeEqA', 'prospectAvneEqC', 'prospectAppeEqC', 'prospectPrngeEqC', 'prospectAutrEq', 'prospectAvneEq', 'prospectAppeEq', 'prospectPrngeEq', 'users', 'teams', 'products', 'clients', 'prospectsAffect');
     }
 
 
@@ -253,6 +262,88 @@ class StatsService
 
         return $result;
     }
+
+    // caclcule le total du prospect relancer à venir
+    public function getProspectRelanceAvenir()
+    {
+        $today = new \DateTime('tomorrow');
+        $today->setTime(0, 0, 0);
+
+
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(p)')
+            ->from(Prospect::class, 'p')
+
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.relacedAt >= :tomorrow')
+            ->setParameter('tomorrow', $today)
+            //pour count seuelement qui ont motifrlc 1 pas avec les coumun
+            ->andWhere('NOT EXISTS (
+                SELECT 1 FROM App\Entity\Relanced otherR
+                WHERE otherR.prospect = p AND otherR.motifRelanced = 2
+            )');
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
+
+    // caclcule le total du prospect relancer à venir
+    public function getProspectRelanceAvenirChef(User $user)
+    {
+        $team = $user->getTeams();
+        $today = new \DateTime('tomorrow');
+        $today->setTime(0, 0, 0);
+
+        $endOfDay = clone $today;
+        $endOfDay->setTime(23, 59, 59);
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(p)')
+            ->from(Prospect::class, 'p')
+            ->where('p.team = :team')
+            ->setParameter('team', $team)
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.relacedAt >= :tomorrow')
+            ->setParameter('tomorrow', $today)
+            ->andWhere('NOT EXISTS (
+                SELECT 1 FROM App\Entity\Relanced otherR
+                WHERE otherR.prospect = p AND otherR.motifRelanced = 2
+            )');
+
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
+
+    // caclcule le total du prospect relancer à venir du cmrcl
+    public function getProspectRelanceAvenirCmrcl($id)
+    {
+
+        $today = new \DateTime('tomorrow');
+        $today->setTime(0, 0, 0);
+
+        $endOfDay = clone $today;
+        $endOfDay->setTime(23, 59, 59);
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(p)')
+            ->from(Prospect::class, 'p')
+            ->andWhere('p.comrcl = :val')
+            ->setParameter('val', $id)
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.relacedAt >= :tomorrow')
+            ->setParameter('tomorrow', $today)
+            ->andWhere('NOT EXISTS (
+                SELECT 1 FROM App\Entity\Relanced otherR
+                WHERE otherR.prospect = p AND otherR.motifRelanced = 2
+            )');
+
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
+
 
     //calculer nombre de relance pour chef
 

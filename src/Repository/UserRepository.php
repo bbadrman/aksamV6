@@ -114,7 +114,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $this->paginator->paginate(
             $query,
             $search->page,
-            10
+            8
 
         );
     }

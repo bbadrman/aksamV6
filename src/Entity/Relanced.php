@@ -7,13 +7,14 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\PrePersist;
 use App\Repository\RelancedRepository;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
 
-/**
- * @ApiResource
- */
+
 #[ORM\Entity(repositoryClass: RelancedRepository::class)]
-#[ApiResource]
+#[ApiResource(attributes: [
+    'normalization_context' => ['Relanced' => ['read']],
+    'denormalization_context' => ['Relanced' => ['write']],
+])]
 class Relanced
 {
     #[ORM\Id]

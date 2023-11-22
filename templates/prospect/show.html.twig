@@ -55,8 +55,8 @@
 					<thead>
 						<tr>
 							{# <div id="relance-div" class="btn-group pull-right" style="margin-right: 5px;">
-																																																																																																																																																																																																																																																																																																																																																																																					Relance
-																																																																																																																																																																																																																																																																																																																																																																																				</div> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															Relance
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																														</div> #}
 							<div class="btn-group pull-right" style="margin-right: 5px;">
 								{% if is_granted('ROLE_ADMIN') == true %}
 									<button type="button" class="btn btn-danger">Action</button>
@@ -86,7 +86,7 @@
 									</li>
 									<li></li>
 									{# <a href="{{ path('app_relance', {'id': prospect.id}) }}" class="btn btn-primary">Relance</a>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		<i class="fa fa-undo"></i>																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						Planifier																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						</a> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																								<i class="fa fa-undo"></i>																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						Planifier																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						</a> #}
 								</li>
 							</ul>
 
@@ -108,7 +108,16 @@
 						</tr>
 						<tr>
 							<th>GSM 2</th>
-							<td>{{ prospect.gsm }}</td>
+
+							<td>
+								<form method="post">
+									{{ form_widget(gsmForm.gsm) }}
+									<button type="submit">Update</button>
+									{{ form_row(gsmForm._token) }}
+								</form>
+							</td>
+
+							{# <td>{{ prospect.gsm }}</td> #}
 						</tr>
 						<tr>
 							<th>Email
@@ -307,8 +316,11 @@
 										{{  relance.relacedAt  |  date('d/m/Y, H:i:s')}}</td>
 									<br>
 
-
-									<td>{{  relance.comment  }}</td>
+									<td class="truncated" onclick="showFullText(this)">
+										<span class="shortened">{{  relance.comment |slice(0, 50) }}</span>
+										<span class="fullText" style="display: none;">{{ relance.comment }}</span>
+									</td>
+									{# <td id="p1">{{  relance.comment |slice(0, 50) }}</td> #}
 								</tr>
 							{% endfor %}
 						</tbody>
@@ -328,29 +340,29 @@
 
 							<tr style="text-align: left; font-size:20px;">
 
-								<th>motif</th>
-								<th>date</th>
-								<th>comment</th>
+
+								<th>Option</th>
+								<th>Date</th>
+
 							</tr>
 
 						</thead>
 						<tbody>
+							{% for histor in teamHistory %}
+								<tr>
+									<td>
+										Affecté au
+										{{ histor.actionType }}</td>
 
-							<tr style="text-align:left;">
+
+									<td>{{ histor.actionDate|date('Y-m-d H:i:s') }}</td>
 
 
-								<td>
-
-									qd
-								</td>
-
-								<td>qsq</td>
-
-								<td>qsd</td>
-							</tr>
-
+								</tr>
+							{% endfor %}
 						</tbody>
 					</table>
+
 				</div>
 			</div>
 		</div>

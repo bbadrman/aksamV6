@@ -5,17 +5,18 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TeamRepository;
 use Doctrine\Common\Collections\Collection;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Api\IdentifiersExtractor;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * @ApiResource
- */
+
 
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
 #[ORM\Table(name: "team")]
-#[ApiResource]
+#[ApiResource(attributes: [
+    'normalization_context' => ['Team' => ['read']],
+    'denormalization_context' => ['Team' => ['write']],
+])]
 
 
 class Team
@@ -79,9 +80,9 @@ class Team
     }
 
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getName();
+        return $this->name ?? '';
     }
 
     /**

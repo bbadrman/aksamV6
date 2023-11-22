@@ -3503,7 +3503,16 @@ ul.chat-available-user li a:hover {
     padding: 0 !important;
 }
 
+.shortened {
+    cursor: pointer;
+    text-decoration: underline;
+    color: blue;
+}
 
+/* Pour cacher le texte complet par défaut */
+.fullText {
+    display: none;
+}
 
 /* GOOGLE MAPS - SCRIPT HELPER*/
 #gmap-list,

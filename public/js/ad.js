@@ -328,6 +328,22 @@ $(document).ready(function () {
 	});
 });
 
+
+//pour afficher comment 	
+function showFullText(element) {
+	// Récupère l'élément contenant le texte complet
+	var fullText = element.querySelector('.fullText');
+	// Change la visibilité du texte complet au clic
+	if (fullText.style.display === 'none') {
+		fullText.style.display = 'inline'; // Montre le texte complet
+		element.querySelector('.shortened').style.display = 'none'; // Cache le texte raccourci
+	} else {
+		fullText.style.display = 'none'; // Cache le texte complet
+		element.querySelector('.shortened').style.display = 'inline'; // Montre le texte raccourci
+	}
+}
+
+
 //button dashbord
 // function togglePanel() {
 // 	var panel = document.getElementById('panell');

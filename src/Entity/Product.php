@@ -5,18 +5,19 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\Collection;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Api\IdentifiersExtractor;
 use Doctrine\Common\Collections\ArrayCollection;
 
 
-/**
- * @ApiResource
- */
+
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\Table(name: "product")]
-#[ApiResource]
+#[ApiResource(attributes: [
+    'normalization_context' => ['Product' => ['read']],
+    'denormalization_context' => ['Product' => ['write']],
+])]
 
 
 class Product

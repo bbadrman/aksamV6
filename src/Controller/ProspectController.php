@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Team;
+use App\Form\GsmType;
+use App\Entity\History;
 use App\Entity\Relance;
 use App\Entity\Prospect;
 use App\Entity\Relanced;
@@ -22,6 +25,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Form\Extension\Core\Type as Type;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -36,11 +40,13 @@ class ProspectController extends AbstractController
 {
 
     private $requestStack;
+    private $entityManager;
 
-    public function __construct(RequestStack $requestStack)
+    public function __construct(RequestStack $requestStack, EntityManagerInterface $entityManager)
     {
 
         $this->requestStack = $requestStack;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -221,9 +227,49 @@ class ProspectController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/avenir", name="avenir_index", methods={"GET", "POST"}) 
+     */
+    public function avenir(Request $request,  ProspectRepository $prospectRepository,  Security $security): Response
+
+    {
+        $data = new SearchProspect();
+        $data->page = $request->query->get('page', 1);
+        $form = $this->createForm(SearchProspectType::class, $data);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
 
 
 
+        $prospect = [];
+
+
+        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
+
+            $user = $security->getUser();
+            if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+                // admi peut voire toutes les no traite
+                $prospect =  $prospectRepository->findAvenir($data, null);
+            } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+                // chef peut voire toutes les no traite atacher a leur equipe
+                $prospect =  $prospectRepository->findAvenirChef($data, $user, null);
+            } else {
+                // cmrcl peut voire seulement les no traite  atacher a lui
+                $prospect =  $prospectRepository->findAvenirCmrcl($data, $user, null);
+            }
+
+
+            return $this->render('prospect/index.html.twig', [
+                'prospects' => $prospect,
+                'search_form' => $form->createView()
+            ]);
+        }
+
+
+        return $this->render('prospect/search.html.twig', [
+            'prospects' => $prospect,
+            'search_form' => $form->createView(),
+        ]);
+    }
 
     /**
      * @Route("/new", name="app_prospect_new", methods={"GET", "POST"})
@@ -260,6 +306,13 @@ class ProspectController extends AbstractController
      */
     public function show(Request $request, Prospect $prospect)
     {
+        $gsmForm = $this->createForm(GsmType::class, $prospect);
+        $gsmForm->handleRequest($request);
+
+        if ($gsmForm->isSubmitted() && $gsmForm->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+        }
 
         $relance = new Relanced();
         $relance->setProspect($prospect);
@@ -276,10 +329,13 @@ class ProspectController extends AbstractController
             return $this->redirectToRoute('app_prospect_show', ['id' => $prospect->getId()]);
         }
 
+        $teamHistory = $this->getDoctrine()->getRepository(History::class)->findBy(['prospect' => $prospect]);
+
         return $this->render('prospect/show.html.twig', [
             'prospect' => $prospect,
-            // dd($prospect),
+            'teamHistory' => $teamHistory,
             'form' => $form->createView(),
+            'gsmForm' => $gsmForm->createView(),
         ]);
     }
 
@@ -288,6 +344,7 @@ class ProspectController extends AbstractController
      */
     public function edit(Request $request, Prospect $prospect, ProspectRepository $prospectRepository): Response
     {
+
         $form = $this->createForm(ProspectAffectType::class, $prospect);
         $form->handleRequest($request);
 
@@ -298,8 +355,31 @@ class ProspectController extends AbstractController
                 $fonction->setProspect($prospect);
             }
 
+            $teamHistory = new History();
+            $teamHistory->setProspect($prospect); // $prospect est votre instance de Prospect
+
+
+            if ($prospect->getTeam() !== null && $prospect->getComrcl() !== null) {
+                $actionType =  $prospect->getTeam()->getName() . ' et commercial ' . $prospect->getComrcl()->getUserIdentifier(); // Les deux sont associés
+            } elseif ($prospect->getTeam() !== null) {
+                $actionType =  $prospect->getTeam()->getName(); // Seulement associé à l'équipe
+            } elseif ($prospect->getComrcl() !== null) {
+                $actionType =  $prospect->getComrcl()->getUserIdentifier(); // Seulement associé au commercial
+            } else {
+                $actionType = 'None'; // Aucune association
+            }
+
+            $teamHistory->setActionType($actionType);
+
+            $teamHistory->setActionDate(new \DateTime());
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $entityManager->persist($teamHistory);
+            $entityManager->flush();
+
             $this->addFlash('info', 'Votre Prospect a été affecté avec succès!');
-            return $this->redirectToRoute('app_prospect_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_table_liste', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('partials/_show_modal.html.twig', [

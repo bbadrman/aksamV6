@@ -6,7 +6,7 @@ use ORM\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Api\IdentifiersExtractor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -14,13 +14,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-/**
- * @ApiResource
- */
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: "user")]
-#[ApiResource]
+#[ApiResource(attributes: [
+    'normalization_context' => ['User' => ['read']],
+    'denormalization_context' => ['User' => ['write']],
+])]
 
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {

@@ -16,10 +16,20 @@
 		</div>
 	{% endfor %}
 	<section class="content-header">
-		<h2>
-			Prospects
-			<small>Recherche</small>
-		</h2>
+		{% if app.request.get('_route') == 'newprospect_index' %}
+			<h2>Nouveaux Prospects</h2>
+		{% elseif app.request.get('_route') == 'prospect_search' %}
+			<h2>Recherche a tous Prospects</h2>
+		{% elseif app.request.get('_route') == 'relancejour_index' %}
+			<h2>Recherche Les Relances du Jour</h2>
+		{% elseif app.request.get('_route') == 'avenir_index' %}
+			<h2>Recherche Les Relances à venir</h2>
+		{% elseif app.request.get('_route') == 'app_unjoinable' %}
+			<h2>Recherche Les Unjoiniables</h2>
+		{% elseif app.request.get('_route') == 'notrait_index' %}
+			<h2>Recherche Les Prospects Non Traités</h2>
+
+		{% endif %}
 		<ol class="breadcrumb">
 			<li>
 				<a href="{{ path('dashboard') }}">
@@ -37,17 +47,14 @@
 					<i class="fa fa-shopping-cart"></i>
 					<span class="badge bg-warning">{{ prospects|length }}
 					</span>
-				</a>
-
+				</li>
 			</li>
-			<!-- END NOTIFICATION DROPDOWN -->
-		</ol>
-		<br>
-		    {# {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')  == true %}
-		<a href="{{ path('app_prospect_new') }}" class="btn btn-primary">Ajouter Prospect</a>
-          	{% endif %} #}
-	</section>
-	{{ include('prospect/_search_form.html.twig')  }}
+		</a>
 
- 
-{% endblock %}
+	</li>
+	<!-- END NOTIFICATION DROPDOWN -->
+</ol>
+<br>
+{# {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')  == true %}
+		<a href="{{ path('app_prospect_new') }}" class="btn btn-primary">Ajouter Prospect</a>
+          	{% endif %} #}</section>{{ include('prospect/_search_form.html.twig')  }}{% endblock %}

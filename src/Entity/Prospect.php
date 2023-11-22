@@ -5,7 +5,7 @@ namespace App\Entity;
 
 use App\Entity\Relance;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProspectRepository;
 use ApiPlatform\Api\IdentifiersExtractor;
 use Doctrine\Common\Collections\Collection;
@@ -17,7 +17,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ProspectRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: "prospect")]
-#[ApiResource]
+#[ApiResource(attributes: [
+    'normalization_context' => ['Prospect' => ['read']],
+    'denormalization_context' => ['Prospect' => ['write']],
+])]
 
 class Prospect
 {
@@ -26,22 +29,12 @@ class Prospect
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(
-        min: 2,
-        max: 10,
-        minMessage: "Votre prénom doit contenir au moins deux caractères",
-        maxMessage: "Votre prénom doit contenir au maximum dix caractères"
-    )]
+    #[ORM\Column(type: 'string',  length: 255)]
+
     private $name;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(
-        min: 2,
-        max: 10,
-        minMessage: "Votre nom doit contenir au moins deux caractères",
-        maxMessage: "Votre nom doit contenir au maximum dix caractères"
-    )]
+
     private $lastname;
 
     #[ORM\Column(type: 'string', length: 255)]
@@ -106,11 +99,15 @@ class Prospect
     #[ORM\OneToMany(mappedBy: 'prospect', targetEntity: Relanced::class, cascade: ["persist"])]
     private Collection $relanceds;
 
+    #[ORM\OneToMany(mappedBy: 'prospect', targetEntity: History::class)]
+    private Collection $histories;
+
     public function __construct()
     {
 
 
         $this->relanceds = new ArrayCollection();
+        $this->histories = new ArrayCollection();
     }
 
     /**
@@ -420,5 +417,35 @@ class Prospect
     public function __toString()
     {
         return $this->getName() . ' ' . $this->getLastname();
+    }
+
+    /**
+     * @return Collection<int, History>
+     */
+    public function getHistories(): Collection
+    {
+        return $this->histories;
+    }
+
+    public function addHistory(History $history): static
+    {
+        if (!$this->histories->contains($history)) {
+            $this->histories->add($history);
+            $history->setProspect($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistory(History $history): static
+    {
+        if ($this->histories->removeElement($history)) {
+            // set the owning side to null (unless already changed)
+            if ($history->getProspect() === $this) {
+                $history->setProspect(null);
+            }
+        }
+
+        return $this;
     }
 }

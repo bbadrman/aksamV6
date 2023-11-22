@@ -69,7 +69,7 @@
 </div>
 <div class="col-xs-8" style="float: right !important;">
 
-	{% if app.request.get('_route') == 'prospect_search' %}
+	{% if app.request.get('_route') == 'prospect_search' or app.request.get('_route') == 'avenir_index'%}
 		<div class="col-xs-2" style="padding-right: 2px;padding-left: 3px;">
 			{{ form_row(search_form.dr) }}
 		</div>

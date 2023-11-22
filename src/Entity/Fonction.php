@@ -5,16 +5,17 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\FonctionRepository;
 use Doctrine\Common\Collections\Collection;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Api\IdentifiersExtractor;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * @ApiResource
- */
+
 #[ORM\Entity(repositoryClass: FonctionRepository::class)]
 #[ORM\Table(name: "fonction")]
-#[ApiResource]
+#[ApiResource(attributes: [
+    'normalization_context' => ['Fonction' => ['read']],
+    'denormalization_context' => ['Fonction' => ['write']],
+])]
 
 
 class Fonction

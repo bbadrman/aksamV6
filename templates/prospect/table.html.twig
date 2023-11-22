@@ -28,7 +28,7 @@
 			<hr class="my-4">
 
 			<div
-				class="col-md-2 col-sm-3 mb">
+				class="col-md-3 col-sm-3 mb">
 
 				<!-- REVENUE PANEL -->
 				<div class="green-panel pn">
@@ -40,6 +40,7 @@
 
 					<a href="{{ path('prospect_search')}}">
 						<i class="fa fa-search fa-4x"></i>
+
 						{# <h1>{{ " %02d"|format(stats.prospects ) }}</h1> #}
 					</a>
 				</div>
@@ -50,7 +51,7 @@
 			<!-- /col-md-4-->
 
 			<div
-				class="col-md-2 col-sm-3 mb">
+				class="col-md-3 col-sm-3 mb">
 				<!-- REVENUE PANEL -->
 				<div class="green-panel pn">
 
@@ -74,7 +75,7 @@
 
 
 			<div
-				class="col-md-2 col-sm-3 mb">
+				class="col-md-3 col-sm-3 mb">
 				<!-- REVENUE PANEL -->
 				<div class="green-panel pn">
 
@@ -101,7 +102,7 @@
 
 
 			<div
-				class="col-md-2 col-sm-3 mb">
+				class="col-md-3 col-sm-3 mb">
 				<!-- REVENUE PANEL -->
 				<div class="green-panel pn">
 
@@ -126,7 +127,7 @@
 			</div>
 
 			<div
-				class="col-md-2 col-sm-3 mb">
+				class="col-md-3 col-sm-3 mb">
 				<!-- REVENUE PANEL -->
 				<div class="green-panel pn">
 
@@ -150,8 +151,36 @@
 
 				</div>
 			</div>
+
+
 			<div
-				class="col-md-2 col-sm-3 mb">
+				class="col-md-3 col-sm-3 mb">
+				<!-- REVENUE PANEL -->
+				<div class="green-panel pn">
+
+
+					<div class="green-header">
+						<h2>RELANCES A VENIR</h2>
+					</div>
+
+					<a href="{{path('avenir_index')}}">
+
+						<i class="fa fa-calendar fa-5x" aria-hidden="true"></i>
+						{% if is_granted('ROLE_ADMIN')  == true %}
+							<h1>{{ " %02d"|format(stats.prospectsAvenir ) }}</h1>
+						{% elseif is_granted('ROLE_TEAM') == true %}
+							<h1>{{ " %02d"|format(stats.prosAvenirChef ) }}</h1>
+						{% elseif is_granted('ROLE_USER') == true %}
+							<h1>{{ " %02d"|format(stats.prosAvenirCmrcl ) }}</h1>
+						{% endif %}
+
+
+					</a>
+
+				</div>
+			</div>
+			<div
+				class="col-md-3 col-sm-3 mb">
 				<!-- REVENUE PANEL -->
 				<div class="green-panel pn">
 
@@ -169,8 +198,6 @@
 
 				</div>
 			</div>
-
-
 		</div>
 	</div>
 

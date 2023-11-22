@@ -44,7 +44,7 @@ class SearchController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
-            $data->page = $request->query->get('page', 1);
+
 
             if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
                 // admi peut chercher toutes les prospects

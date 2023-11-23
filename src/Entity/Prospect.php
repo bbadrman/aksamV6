@@ -7,20 +7,14 @@ use App\Entity\Relance;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProspectRepository;
-use ApiPlatform\Api\IdentifiersExtractor;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Constraints as Assert;
-
 
 
 #[ORM\Entity(repositoryClass: ProspectRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: "prospect")]
-#[ApiResource(attributes: [
-    'normalization_context' => ['Prospect' => ['read']],
-    'denormalization_context' => ['Prospect' => ['write']],
-])]
+#[ApiResource]
 
 class Prospect
 {

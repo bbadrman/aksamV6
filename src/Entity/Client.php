@@ -11,13 +11,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 
 
-
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
 #[ORM\Table(name: "client")]
-#[ApiResource(attributes: [
-    'normalization_context' => ['Client' => ['read']],
-    'denormalization_context' => ['Client' => ['write']],
-])]
+#[ApiResource]
 
 class Client
 {

@@ -4,19 +4,17 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TeamRepository;
-use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Api\IdentifiersExtractor;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+
 
 
 
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
 #[ORM\Table(name: "team")]
-#[ApiResource(attributes: [
-    'normalization_context' => ['Team' => ['read']],
-    'denormalization_context' => ['Team' => ['write']],
-])]
+#[ApiResource]
 
 
 class Team

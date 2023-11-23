@@ -6,16 +6,14 @@ use App\Entity\Team;
 use App\Entity\User;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping\PrePersist;
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\HistoryRepository;
 
 
 #[ORM\Entity(repositoryClass: HistoryRepository::class)]
-#[ApiResource(attributes: [
-    'normalization_context' => ['History' => ['read']],
-    'denormalization_context' => ['History' => ['write']],
-])]
+#[ApiResource]
+
 class History
 {
     #[ORM\Id]

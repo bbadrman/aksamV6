@@ -182,6 +182,7 @@ class ProspectRepository extends ServiceEntityRepository
     }
 
     /**
+     * il faut supremer
      * Find list a user by a search form
      * @param SearchProspect $search
      * @return PaginationInterface
@@ -1388,6 +1389,7 @@ class ProspectRepository extends ServiceEntityRepository
     }
     // lister les prospects du comcrl
     /**
+     * il faut supreme il ya une autre depliceted mais modifie sur dashbordcontroler
      * @return Prospect[] Returns an array of Prospect objects 
      * @param SearchProspect $search
      * @return PaginationInterface 
@@ -1469,6 +1471,7 @@ class ProspectRepository extends ServiceEntityRepository
 
 
     /**
+     * aussi il faut supremer parceque on supreme aussi index sur reafecrtcontroler
      * @return Prospect[] Returns an array of Prospect objects
      * @param SearchProspect $search
      * @return PaginationInterface
@@ -1486,6 +1489,7 @@ class ProspectRepository extends ServiceEntityRepository
 
 
     /**
+     * aussi comme fonct presedent
      * @return Prospect[] Returns an array of Prospect objects
      * @param SearchProspect $search
      * @return PaginationInterface
@@ -1925,6 +1929,7 @@ class ProspectRepository extends ServiceEntityRepository
 
 
     /**
+     * a verifie deplcated
      * @return Prospect[] Returns an array of Prospect objects 
      * @param SearchProspect $search
      * @return PaginationInterface
@@ -2012,6 +2017,7 @@ class ProspectRepository extends ServiceEntityRepository
     // afecher seulement les prospects qui partient de panier du chef findByUserChefEquipe
 
     /**
+     * deplicated voire emplacement
      * @return Prospect[] Returns an array of Prospect objects 
      * @param SearchProspect $search
      * @return PaginationInterface
@@ -2120,6 +2126,7 @@ class ProspectRepository extends ServiceEntityRepository
 
     // afficher seulement les prospects qui apartient au chef d equipe et ne sont pas affiter au cmrcl
     /**
+     * supreme avec fnc contrl
      * @return Prospect[] Returns an array of Prospect objects
      * @param SearchProspect $search
      * @return PaginationInterface 

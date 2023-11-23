@@ -48,3 +48,6 @@ stop-all:
 stup:
 	@make stop-all
 	@make up
+klup:
+	@make kill-all
+	@make up

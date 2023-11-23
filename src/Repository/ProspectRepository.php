@@ -181,31 +181,31 @@ class ProspectRepository extends ServiceEntityRepository
         );
     }
 
-    /**
-     * il faut supremer
-     * Find list a user by a search form
-     * @param SearchProspect $search
-     * @return PaginationInterface
-     */
-    public function findSearchChef(SearchProspect $search, User $user): PaginationInterface
-    {
-        $team = $user->getTeams();
+    // /**
+    //  * il faut supremer
+    //  * Find list a user by a search form
+    //  * @param SearchProspect $search
+    //  * @return PaginationInterface
+    //  */
+    // public function findSearchChef(SearchProspect $search, User $user): PaginationInterface
+    // {
+    //     $team = $user->getTeams();
 
 
-        $query = $this
-            ->createQueryBuilder('u')
-            ->select('u')
-            ->orderBy('u.id', 'DESC')
-            ->where('u = 0');
+    //     $query = $this
+    //         ->createQueryBuilder('u')
+    //         ->select('u')
+    //         ->orderBy('u.id', 'DESC')
+    //         ->where('u = 0');
 
 
-        return $this->paginator->paginate(
-            $query,
-            $search->page,
-            4
+    //     return $this->paginator->paginate(
+    //         $query,
+    //         $search->page,
+    //         4
 
-        );
-    }
+    //     );
+    // }
 
     /**
      * Find list a prospect Relanced
@@ -1389,7 +1389,6 @@ class ProspectRepository extends ServiceEntityRepository
     }
     // lister les prospects du comcrl
     /**
-     * il faut supreme il ya une autre depliceted mais modifie sur dashbordcontroler
      * @return Prospect[] Returns an array of Prospect objects 
      * @param SearchProspect $search
      * @return PaginationInterface 

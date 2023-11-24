@@ -120,19 +120,37 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('c', "%{$search->c}%");
         }
 
-        if (!empty($search->d)) {
-
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
                 ->andWhere('u.creatAt >= :d')
-                ->setParameter('d', $search->d->format('Y-m-d'));
+                ->setParameter('d', $search->d);
         }
-        if (!empty($search->dd)) {
-            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+
+
+
+
+
+        // if (!empty($search->d)) {
+
+        //     $query = $query
+        //         ->andWhere('u.creatAt >= :d')
+        //         ->setParameter('d', $search->d->format('Y-m-d'));
+        // }
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
             $query = $query
-                // ->andWhere('u.creatAt LIKE :dd')
                 ->andWhere('u.creatAt <= :dd')
-                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+                ->setParameter('dd', $search->dd);
         }
+
+
+        // if (!empty($search->dd)) {
+        //     $search->dd->modify('+23 hours 59 minutes 59 seconds');
+        //     $query = $query
+        //         // ->andWhere('u.creatAt LIKE :dd')
+        //         ->andWhere('u.creatAt <= :dd')
+        //         ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+        // }
 
 
         if (!empty($search->s)) {
@@ -147,20 +165,36 @@ class ProspectRepository extends ServiceEntityRepository
         }
 
         //sherche par relance
-        if (!empty($search->dr)) {
 
+        if (!empty($search->dr) && $search->dr instanceof \DateTime) {
             $query = $query
-
                 ->andWhere('h.relacedAt >= :dr')
                 ->setParameter('dr', $search->dr->format('Y-m-d'));
         }
-        if (!empty($search->ddr)) {
-            $search->ddr->modify('+23 hours 59 minutes 59 seconds');
-            $query = $query
 
+        if (!empty($search->ddr) && $search->ddr instanceof \DateTime) {
+            $search->ddr->setTime(23, 59, 59); // Fix time to end of the day
+            $query = $query
                 ->andWhere('h.relacedAt <= :ddr')
                 ->setParameter('ddr', $search->ddr->format('Y-m-d H:i:s'));
         }
+
+
+        // if (!empty($search->dr)) {
+
+        //     $query = $query
+
+        //         ->andWhere('h.relacedAt >= :dr')
+        //         ->setParameter('dr', $search->dr->format('Y-m-d'));
+        // }
+
+        // if (!empty($search->ddr)) {
+        //     $search->ddr->modify('+23 hours 59 minutes 59 seconds');
+        //     $query = $query
+
+        //         ->andWhere('h.relacedAt <= :ddr')
+        //         ->setParameter('ddr', $search->ddr->format('Y-m-d H:i:s'));
+        // }
 
 
 
@@ -280,19 +314,19 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('c', "%{$search->c}%");
         }
 
-        if (!empty($search->d)) {
-
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
                 ->andWhere('p.creatAt >= :d')
-                ->setParameter('d', $search->d->format('Y-m-d'));
+                ->setParameter('d', $search->d);
         }
-        if (!empty($search->dd)) {
-            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
             $query = $query
-                // ->andWhere('u.creatAt LIKE :dd')
                 ->andWhere('p.creatAt <= :dd')
-                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+                ->setParameter('dd', $search->dd);
         }
+
 
 
         if (!empty($search->s)) {
@@ -391,19 +425,19 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('c', "%{$search->c}%");
         }
 
-        if (!empty($search->d)) {
-
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
                 ->andWhere('p.creatAt >= :d')
-                ->setParameter('d', $search->d->format('Y-m-d'));
+                ->setParameter('d', $search->d);
         }
-        if (!empty($search->dd)) {
-            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
             $query = $query
-                // ->andWhere('u.creatAt LIKE :dd')
                 ->andWhere('p.creatAt <= :dd')
-                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+                ->setParameter('dd', $search->dd);
         }
+
 
 
         if (!empty($search->s)) {
@@ -501,19 +535,18 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('c', "%{$search->c}%");
         }
 
-        if (!empty($search->d)) {
-
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
                 ->andWhere('p.creatAt >= :d')
-                ->setParameter('d', $search->d->format('Y-m-d'));
+                ->setParameter('d', $search->d);
         }
-        if (!empty($search->dd)) {
-            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
             $query = $query
-                // ->andWhere('u.creatAt LIKE :dd')
                 ->andWhere('p.creatAt <= :dd')
-                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+                ->setParameter('dd', $search->dd);
         }
+
 
 
         if (!empty($search->s)) {
@@ -616,19 +649,18 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('c', "%{$search->c}%");
         }
 
-        if (!empty($search->d)) {
-
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
                 ->andWhere('p.creatAt >= :d')
-                ->setParameter('d', $search->d->format('Y-m-d'));
+                ->setParameter('d', $search->d);
         }
-        if (!empty($search->dd)) {
-            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
             $query = $query
-                // ->andWhere('u.creatAt LIKE :dd')
                 ->andWhere('p.creatAt <= :dd')
-                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+                ->setParameter('dd', $search->dd);
         }
+
 
 
         if (!empty($search->s)) {
@@ -718,19 +750,19 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('c', "%{$search->c}%");
         }
 
-        if (!empty($search->d)) {
-
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
                 ->andWhere('p.creatAt >= :d')
-                ->setParameter('d', $search->d->format('Y-m-d'));
+                ->setParameter('d', $search->d);
         }
-        if (!empty($search->dd)) {
-            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
             $query = $query
-                // ->andWhere('u.creatAt LIKE :dd')
                 ->andWhere('p.creatAt <= :dd')
-                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+                ->setParameter('dd', $search->dd);
         }
+
 
 
         if (!empty($search->s)) {
@@ -815,19 +847,19 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('c', "%{$search->c}%");
         }
 
-        if (!empty($search->d)) {
-
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
                 ->andWhere('p.creatAt >= :d')
-                ->setParameter('d', $search->d->format('Y-m-d'));
+                ->setParameter('d', $search->d);
         }
-        if (!empty($search->dd)) {
-            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
             $query = $query
-                // ->andWhere('u.creatAt LIKE :dd')
                 ->andWhere('p.creatAt <= :dd')
-                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+                ->setParameter('dd', $search->dd);
         }
+
 
 
         if (!empty($search->s)) {
@@ -908,19 +940,19 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('c', "%{$search->c}%");
         }
 
-        if (!empty($search->d)) {
-
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
                 ->andWhere('p.creatAt >= :d')
-                ->setParameter('d', $search->d->format('Y-m-d'));
+                ->setParameter('d', $search->d);
         }
-        if (!empty($search->dd)) {
-            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
             $query = $query
-                // ->andWhere('u.creatAt LIKE :dd')
                 ->andWhere('p.creatAt <= :dd')
-                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+                ->setParameter('dd', $search->dd);
         }
+
 
 
         if (!empty($search->s)) {
@@ -998,19 +1030,19 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('c', "%{$search->c}%");
         }
 
-        if (!empty($search->d)) {
-
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
                 ->andWhere('p.creatAt >= :d')
-                ->setParameter('d', $search->d->format('Y-m-d'));
+                ->setParameter('d', $search->d);
         }
-        if (!empty($search->dd)) {
-            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
             $query = $query
-                // ->andWhere('u.creatAt LIKE :dd')
                 ->andWhere('p.creatAt <= :dd')
-                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+                ->setParameter('dd', $search->dd);
         }
+
 
 
         if (!empty($search->s)) {
@@ -1081,19 +1113,19 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('c', "%{$search->c}%");
         }
 
-        if (!empty($search->d)) {
-
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
                 ->andWhere('p.creatAt >= :d')
-                ->setParameter('d', $search->d->format('Y-m-d'));
+                ->setParameter('d', $search->d);
         }
-        if (!empty($search->dd)) {
-            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
             $query = $query
-                // ->andWhere('u.creatAt LIKE :dd')
                 ->andWhere('p.creatAt <= :dd')
-                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+                ->setParameter('dd', $search->dd);
         }
+
 
 
         if (!empty($search->s)) {
@@ -1177,19 +1209,19 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('c', "%{$search->c}%");
         }
 
-        if (!empty($search->d)) {
-
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
                 ->andWhere('p.creatAt >= :d')
-                ->setParameter('d', $search->d->format('Y-m-d'));
+                ->setParameter('d', $search->d);
         }
-        if (!empty($search->dd)) {
-            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
             $query = $query
-                // ->andWhere('u.creatAt LIKE :dd')
                 ->andWhere('p.creatAt <= :dd')
-                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+                ->setParameter('dd', $search->dd);
         }
+
 
 
         if (!empty($search->s)) {
@@ -1270,19 +1302,19 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('c', "%{$search->c}%");
         }
 
-        if (!empty($search->d)) {
-
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
                 ->andWhere('p.creatAt >= :d')
-                ->setParameter('d', $search->d->format('Y-m-d'));
+                ->setParameter('d', $search->d);
         }
-        if (!empty($search->dd)) {
-            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
             $query = $query
-                // ->andWhere('u.creatAt LIKE :dd')
                 ->andWhere('p.creatAt <= :dd')
-                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+                ->setParameter('dd', $search->dd);
         }
+
 
 
         if (!empty($search->s)) {
@@ -1353,19 +1385,19 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('c', "%{$search->c}%");
         }
 
-        if (!empty($search->d)) {
-
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
                 ->andWhere('p.creatAt >= :d')
-                ->setParameter('d', $search->d->format('Y-m-d'));
+                ->setParameter('d', $search->d);
         }
-        if (!empty($search->dd)) {
-            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
             $query = $query
-                // ->andWhere('u.creatAt LIKE :dd')
                 ->andWhere('p.creatAt <= :dd')
-                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+                ->setParameter('dd', $search->dd);
         }
+
 
 
         if (!empty($search->s)) {
@@ -1402,18 +1434,17 @@ class ProspectRepository extends ServiceEntityRepository
             ->setParameter('val', $id)
             ->orderBy('p.id', 'DESC');
 
-        if (isset($search->d)) {
-
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
                 ->andWhere('p.creatAt >= :d')
-                ->setParameter('d', $search->d->format('Y-m-d'));
+                ->setParameter('d', $search->d);
         }
-        if (isset($search->dd)) {
-            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
             $query = $query
-                // ->andWhere('u.creatAt LIKE :dd')
                 ->andWhere('p.creatAt <= :dd')
-                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+                ->setParameter('dd', $search->dd);
         }
 
         if (isset($search->m)) {
@@ -1620,19 +1651,20 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('c', "%{$search->c}%");
         }
 
-        if (!empty($search->d)) {
 
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
                 ->andWhere('p.creatAt >= :d')
-                ->setParameter('d', $search->d->format('Y-m-d'));
+                ->setParameter('d', $search->d);
         }
-        if (!empty($search->dd)) {
-            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
             $query = $query
-                // ->andWhere('u.creatAt LIKE :dd')
                 ->andWhere('p.creatAt <= :dd')
-                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+                ->setParameter('dd', $search->dd);
         }
+
 
 
         if (!empty($search->s)) {
@@ -1722,19 +1754,19 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('c', "%{$search->c}%");
         }
 
-        if (!empty($search->d)) {
-
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
                 ->andWhere('p.creatAt >= :d')
-                ->setParameter('d', $search->d->format('Y-m-d'));
+                ->setParameter('d', $search->d);
         }
-        if (!empty($search->dd)) {
-            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
             $query = $query
-                // ->andWhere('u.creatAt LIKE :dd')
                 ->andWhere('p.creatAt <= :dd')
-                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+                ->setParameter('dd', $search->dd);
         }
+
 
 
         if (!empty($search->s)) {
@@ -1824,19 +1856,19 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('c', "%{$search->c}%");
         }
 
-        if (!empty($search->d)) {
-
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
                 ->andWhere('p.creatAt >= :d')
-                ->setParameter('d', $search->d->format('Y-m-d'));
+                ->setParameter('d', $search->d);
         }
-        if (!empty($search->dd)) {
-            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
             $query = $query
-                // ->andWhere('u.creatAt LIKE :dd')
                 ->andWhere('p.creatAt <= :dd')
-                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+                ->setParameter('dd', $search->dd);
         }
+
 
 
         if (!empty($search->s)) {
@@ -1892,20 +1924,34 @@ class ProspectRepository extends ServiceEntityRepository
         }
 
         //sherche par relance
-        if (!empty($search->dr)) {
 
+        if (!empty($search->dr) && $search->dr instanceof \DateTime) {
             $query = $query
-
                 ->andWhere('h.relacedAt >= :dr')
                 ->setParameter('dr', $search->dr->format('Y-m-d'));
         }
-        if (!empty($search->ddr)) {
-            $search->ddr->modify('+23 hours 59 minutes 59 seconds');
-            $query = $query
 
+        if (!empty($search->ddr) && $search->ddr instanceof \DateTime) {
+            $search->ddr->setTime(23, 59, 59); // Fix time to end of the day
+            $query = $query
                 ->andWhere('h.relacedAt <= :ddr')
                 ->setParameter('ddr', $search->ddr->format('Y-m-d H:i:s'));
         }
+
+        // if (!empty($search->dr)) {
+
+        //     $query = $query
+
+        //         ->andWhere('h.relacedAt >= :dr')
+        //         ->setParameter('dr', $search->dr->format('Y-m-d'));
+        // }
+        // if (!empty($search->ddr)) {
+        //     $search->ddr->modify('+23 hours 59 minutes 59 seconds');
+        //     $query = $query
+
+        //         ->andWhere('h.relacedAt <= :ddr')
+        //         ->setParameter('ddr', $search->ddr->format('Y-m-d H:i:s'));
+        // }
 
 
 
@@ -1944,18 +1990,17 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f');
 
-        if (isset($search->d)) {
-
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
                 ->andWhere('p.creatAt >= :d')
-                ->setParameter('d', $search->d->format('Y-m-d'));
+                ->setParameter('d', $search->d);
         }
-        if (isset($search->dd)) {
-            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
             $query = $query
-                // ->andWhere('u.creatAt LIKE :dd')
                 ->andWhere('p.creatAt <= :dd')
-                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+                ->setParameter('dd', $search->dd);
         }
 
         if (!empty($search->q)) {
@@ -2044,18 +2089,17 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('q', "%{$search->q}%");
         }
 
-        if (isset($search->d)) {
-
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
                 ->andWhere('p.creatAt >= :d')
-                ->setParameter('d', $search->d->format('Y-m-d'));
+                ->setParameter('d', $search->d);
         }
-        if (isset($search->dd)) {
-            $search->dd->modify('+23 hours 59 minutes 59 seconds');
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
             $query = $query
-                // ->andWhere('u.creatAt LIKE :dd')
                 ->andWhere('p.creatAt <= :dd')
-                ->setParameter('dd', $search->dd->format('Y-m-d H:i:s'));
+                ->setParameter('dd', $search->dd);
         }
 
 
@@ -2090,20 +2134,33 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('s', "%{$search->s}%");
         }
         //sherche par relance
-        if (!empty($search->dr)) {
-
+        if (!empty($search->dr) && $search->dr instanceof \DateTime) {
             $query = $query
-
                 ->andWhere('h.relacedAt >= :dr')
                 ->setParameter('dr', $search->dr->format('Y-m-d'));
         }
-        if (!empty($search->ddr)) {
-            $search->ddr->modify('+23 hours 59 minutes 59 seconds');
-            $query = $query
 
+        if (!empty($search->ddr) && $search->ddr instanceof \DateTime) {
+            $search->ddr->setTime(23, 59, 59); // Fix time to end of the day
+            $query = $query
                 ->andWhere('h.relacedAt <= :ddr')
                 ->setParameter('ddr', $search->ddr->format('Y-m-d H:i:s'));
         }
+
+        // if (!empty($search->dr)) {
+
+        //     $query = $query
+
+        //         ->andWhere('h.relacedAt >= :dr')
+        //         ->setParameter('dr', $search->dr->format('Y-m-d'));
+        // }
+        // if (!empty($search->ddr)) {
+        //     $search->ddr->modify('+23 hours 59 minutes 59 seconds');
+        //     $query = $query
+
+        //         ->andWhere('h.relacedAt <= :ddr')
+        //         ->setParameter('ddr', $search->ddr->format('Y-m-d H:i:s'));
+        // }
 
 
 

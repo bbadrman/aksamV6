@@ -26,177 +26,180 @@
 				<i class="fa fa-diamond "></i>
 			</h1>
 			<hr class="my-4">
+			<div class="col-md-12">
+				<div
+					class="col-md-4 col-sm-3 mb">
 
-			<div
-				class="col-md-3 col-sm-3 mb">
-
-				<!-- REVENUE PANEL -->
-				<div class="green-panel pn">
+					<!-- REVENUE PANEL -->
+					<div class="green-panel pn">
 
 
-					<div class="green-header">
-						<h2>RECHERCHE</h2>
+						<div class="green-header">
+							<h2>RECHERCHE</h2>
+						</div>
+
+						<a href="{{ path('prospect_search')}}">
+							<i class="fa fa-search fa-4x"></i>
+
+							{# <h1>{{ " %02d"|format(stats.prospects ) }}</h1> #}
+						</a>
 					</div>
-
-					<a href="{{ path('prospect_search')}}">
-						<i class="fa fa-search fa-4x"></i>
-
-						{# <h1>{{ " %02d"|format(stats.prospects ) }}</h1> #}
-					</a>
 				</div>
+				<!-- /grey-panel -->
+
+
+				<!-- /col-md-4-->
+
+				<div
+					class="col-md-4 col-sm-3 mb">
+					<!-- REVENUE PANEL -->
+					<div class="green-panel pn">
+
+
+						<div class="green-header">
+							<h2>NOUVEAUX</h2>
+						</div>
+						<a href="{{ path('newprospect_index')}}">
+							<i class="fa fa-newspaper-o fa-4x" aria-hidden="true"></i>
+
+							{% if is_granted('ROLE_ADMIN')  == true %}
+								<h1>{{ " %02d"|format(stats.prospectsPasAffect ) }}</h1>
+							{% elseif is_granted('ROLE_TEAM') == true %}
+								<h1>{{ " %02d"|format(stats.prospectsChefNv ) }}</h1>
+							{% elseif is_granted('ROLE_USER') == true %}
+								<h1>{{ " %02d"|format(stats.prospectsCmrclNv ) }}</h1>
+							{% endif %}
+						</a>
+					</div>
+				</div>
+
+				<div
+					class="col-md-4 col-sm-3 mb">
+					<!-- REVENUE PANEL -->
+					<div class="green-panel pn">
+
+
+						<div class="green-header">
+							<h2>AJOUTER PROSPECT</h2>
+						</div>
+
+						<a href="{{path('app_prospect_new')}}">
+							<i class="fa fa-keyboard-o fa-5x" aria-hidden="true"></i>
+
+							{# <i class="fa fa-newspaper-o fa-4x" aria-hidden="true"></i> #}
+
+						</a>
+
+					</div>
+				</div>
+
+
 			</div>
-			<!-- /grey-panel -->
+			<div class="col-md-12">
+
+				<div
+					class="col-md-3 col-sm-3 mb">
+					<!-- REVENUE PANEL -->
+					<div class="green-panel pn">
+
+						<div class="green-header">
+							<h2>RELANCES DU JOUR</h2>
+						</div>
+
+						<a href="{{ path('relancejour_index')}}">
+							<i class="fa fa-calendar-check-o fa-4x" aria-hidden="true"></i>
+
+							{% if is_granted('ROLE_ADMIN')  == true %}
+								<h1>{{ " %02d"|format(stats.prospectsTeam ) }}</h1>
+							{% elseif is_granted('ROLE_TEAM') == true %}
+								<h1>{{ " %02d"|format(stats.prospectsTeamChef ) }}</h1>
+							{% elseif is_granted('ROLE_USER') == true %}
+								<h1>{{ " %02d"|format(stats.prospectsTeamCmrcl ) }}</h1>
+							{% endif %}
 
 
-			<!-- /col-md-4-->
-
-			<div
-				class="col-md-3 col-sm-3 mb">
-				<!-- REVENUE PANEL -->
-				<div class="green-panel pn">
-
-
-					<div class="green-header">
-						<h2>NOUVEAUX</h2>
+						</a>
 					</div>
-					<a href="{{ path('newprospect_index')}}">
-						<i class="fa fa-newspaper-o fa-4x" aria-hidden="true"></i>
-
-						{% if is_granted('ROLE_ADMIN')  == true %}
-							<h1>{{ " %02d"|format(stats.prospectsPasAffect ) }}</h1>
-						{% elseif is_granted('ROLE_TEAM') == true %}
-							<h1>{{ " %02d"|format(stats.prospectsChefNv ) }}</h1>
-						{% elseif is_granted('ROLE_USER') == true %}
-							<h1>{{ " %02d"|format(stats.prospectsCmrclNv ) }}</h1>
-						{% endif %}
-					</a>
 				</div>
-			</div>
+
+				<div
+					class="col-md-3 col-sm-3 mb">
+					<!-- REVENUE PANEL -->
+					<div class="green-panel pn">
 
 
-			<div
-				class="col-md-3 col-sm-3 mb">
-				<!-- REVENUE PANEL -->
-				<div class="green-panel pn">
+						<div class="green-header">
+							<h2>RELANCES A VENIR</h2>
+						</div>
+
+						<a href="{{path('avenir_index')}}">
+
+							<i class="fa fa-calendar fa-5x" aria-hidden="true"></i>
+							{% if is_granted('ROLE_ADMIN')  == true %}
+								<h1>{{ " %02d"|format(stats.prospectsAvenir ) }}</h1>
+							{% elseif is_granted('ROLE_TEAM') == true %}
+								<h1>{{ " %02d"|format(stats.prosAvenirChef ) }}</h1>
+							{% elseif is_granted('ROLE_USER') == true %}
+								<h1>{{ " %02d"|format(stats.prosAvenirCmrcl ) }}</h1>
+							{% endif %}
 
 
-					<div class="green-header">
-						<h2>RELANCES DU JOUR</h2>
+						</a>
+
 					</div>
-
-					<a href="{{ path('relancejour_index')}}">
-						<i class="fa fa-calendar-check-o fa-4x" aria-hidden="true"></i>
-
-						{% if is_granted('ROLE_ADMIN')  == true %}
-							<h1>{{ " %02d"|format(stats.prospectsTeam ) }}</h1>
-						{% elseif is_granted('ROLE_TEAM') == true %}
-							<h1>{{ " %02d"|format(stats.prospectsTeamChef ) }}</h1>
-						{% elseif is_granted('ROLE_USER') == true %}
-							<h1>{{ " %02d"|format(stats.prospectsTeamCmrcl ) }}</h1>
-						{% endif %}
-
-
-					</a>
 				</div>
-			</div>
+				<div
+					class="col-md-3 col-sm-3 mb">
+					<!-- REVENUE PANEL -->
+					<div class="green-panel pn">
 
 
-			<div
-				class="col-md-3 col-sm-3 mb">
-				<!-- REVENUE PANEL -->
-				<div class="green-panel pn">
+						<div class="green-header">
+							<h2>RELANCES NON TRAITÉ</h2>
+						</div>
+						<a href="{{path('notrait_index')}}">
+							<i class="fa fa-calendar-times-o fa-4x" aria-hidden="true"></i>
+
+							{% if is_granted('ROLE_ADMIN')  == true %}
+								<h1>{{ " %02d"|format(stats.prospectsNoTraite ) }}</h1>
+							{% elseif is_granted('ROLE_TEAM') == true %}
+								<h1>{{ " %02d"|format(stats.prospectsNoTrChef ) }}</h1>
+							{% elseif is_granted('ROLE_USER') == true %}
+								<h1>{{ " %02d"|format(stats.prospectsNoTrCmrcl ) }}</h1>
+							{% endif %}
 
 
-					<div class="green-header">
-						<h2>RELANCES NON TRAITÉ</h2>
+						</a>
 					</div>
-					<a href="{{path('notrait_index')}}">
-						<i class="fa fa-calendar-times-o fa-4x" aria-hidden="true"></i>
-
-						{% if is_granted('ROLE_ADMIN')  == true %}
-							<h1>{{ " %02d"|format(stats.prospectsNoTraite ) }}</h1>
-						{% elseif is_granted('ROLE_TEAM') == true %}
-							<h1>{{ " %02d"|format(stats.prospectsNoTrChef ) }}</h1>
-						{% elseif is_granted('ROLE_USER') == true %}
-							<h1>{{ " %02d"|format(stats.prospectsNoTrCmrcl ) }}</h1>
-						{% endif %}
-
-
-					</a>
 				</div>
-			</div>
 
-			<div
-				class="col-md-3 col-sm-3 mb">
-				<!-- REVENUE PANEL -->
-				<div class="green-panel pn">
+				<div
+					class="col-md-3 col-sm-3 mb">
+					<!-- REVENUE PANEL -->
+					<div class="green-panel pn">
 
 
-					<div class="green-header">
-						<h2>INJOIGNABLES</h2>
+						<div class="green-header">
+							<h2>INJOIGNABLES</h2>
+						</div>
+
+						<a href="{{path('app_unjoinable')}}">
+							<i class="fa fa-volume-control-phone fa-4x" aria-hidden="true"></i>
+							{% if is_granted('ROLE_ADMIN')  == true %}
+								<h1>{{ " %02d"|format(stats.unjoiniable ) }}</h1>
+							{% elseif is_granted('ROLE_TEAM') == true %}
+								<h1>{{ " %02d"|format(stats.unjoiniableChef ) }}</h1>
+							{% elseif is_granted('ROLE_USER') == true %}
+								<h1>{{ " %02d"|format(stats.unjoiniableCmrl ) }}</h1>
+							{% endif %}
+
+
+						</a>
+
 					</div>
-
-					<a href="{{path('app_unjoinable')}}">
-						<i class="fa fa-volume-control-phone fa-4x" aria-hidden="true"></i>
-						{% if is_granted('ROLE_ADMIN')  == true %}
-							<h1>{{ " %02d"|format(stats.unjoiniable ) }}</h1>
-						{% elseif is_granted('ROLE_TEAM') == true %}
-							<h1>{{ " %02d"|format(stats.unjoiniableChef ) }}</h1>
-						{% elseif is_granted('ROLE_USER') == true %}
-							<h1>{{ " %02d"|format(stats.unjoiniableCmrl ) }}</h1>
-						{% endif %}
-
-
-					</a>
-
 				</div>
-			</div>
 
 
-			<div
-				class="col-md-3 col-sm-3 mb">
-				<!-- REVENUE PANEL -->
-				<div class="green-panel pn">
-
-
-					<div class="green-header">
-						<h2>RELANCES A VENIR</h2>
-					</div>
-
-					<a href="{{path('avenir_index')}}">
-
-						<i class="fa fa-calendar fa-5x" aria-hidden="true"></i>
-						{% if is_granted('ROLE_ADMIN')  == true %}
-							<h1>{{ " %02d"|format(stats.prospectsAvenir ) }}</h1>
-						{% elseif is_granted('ROLE_TEAM') == true %}
-							<h1>{{ " %02d"|format(stats.prosAvenirChef ) }}</h1>
-						{% elseif is_granted('ROLE_USER') == true %}
-							<h1>{{ " %02d"|format(stats.prosAvenirCmrcl ) }}</h1>
-						{% endif %}
-
-
-					</a>
-
-				</div>
-			</div>
-			<div
-				class="col-md-3 col-sm-3 mb">
-				<!-- REVENUE PANEL -->
-				<div class="green-panel pn">
-
-
-					<div class="green-header">
-						<h2>AJOUTER PROSPECT</h2>
-					</div>
-
-					<a href="{{path('app_prospect_new')}}">
-						<i class="fa fa-keyboard-o fa-5x" aria-hidden="true"></i>
-
-						{# <i class="fa fa-newspaper-o fa-4x" aria-hidden="true"></i> #}
-
-					</a>
-
-				</div>
 			</div>
 		</div>
 	</div>

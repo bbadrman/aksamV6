@@ -15,6 +15,7 @@ use App\Search\SearchProspect;
 use App\Form\ProspectAffectType;
 use App\Form\SearchProspectType;
 use App\Form\ProspectRelanceType;
+use App\Repository\HistoryRepository;
 use App\Repository\RelanceRepository;
 use App\Repository\ProspectRepository;
 use App\Repository\RelancedRepository;
@@ -221,14 +222,14 @@ class ProspectController extends AbstractController
     /**
      * @Route("/{id}", name="app_prospect_show", methods={"GET", "POST"}) 
      */
-    public function show(Request $request, Prospect $prospect)
+    public function show(Request $request, Prospect $prospect, HistoryRepository $historyRepository)
     {
         $gsmForm = $this->createForm(GsmType::class, $prospect);
         $gsmForm->handleRequest($request);
 
         if ($gsmForm->isSubmitted() && $gsmForm->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->flush();
+            // $entityManager = $this->getDoctrine()->getManager();
+            $this->entityManager->flush();
         }
 
         $relance = new Relanced();
@@ -238,15 +239,18 @@ class ProspectController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($relance);
-            $entityManager->flush();
+
+            $this->entityManager->persist($relance);
+            $this->entityManager->flush();
+
             $this->addFlash('success', 'Relance ajoutée avec succès.');
 
             return $this->redirectToRoute('app_prospect_show', ['id' => $prospect->getId()]);
         }
 
-        $teamHistory = $this->getDoctrine()->getRepository(History::class)->findBy(['prospect' => $prospect]);
+        // $teamHistory = $this->getDoctrine()->getRepository(History::class)->findBy(['prospect' => $prospect]);
+        $teamHistory = $historyRepository->findBy(['prospect' => $prospect]);
+
 
         return $this->render('prospect/show.html.twig', [
             'prospect' => $prospect,
@@ -290,10 +294,11 @@ class ProspectController extends AbstractController
 
             $teamHistory->setActionDate(new \DateTime());
 
-            $entityManager = $this->getDoctrine()->getManager();
 
-            $entityManager->persist($teamHistory);
-            $entityManager->flush();
+            $this->entityManager->persist($teamHistory);
+            $this->entityManager->flush();
+
+
 
             $this->addFlash('info', 'Votre Prospect a été affecté avec succès!');
             return $this->redirectToRoute('app_table_liste', [], Response::HTTP_SEE_OTHER);

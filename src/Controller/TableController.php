@@ -18,7 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 /**
- * @Route("/")
+ * @Route("/tables")
  * @IsGranted("ROLE_USER", message="Tu ne peut pas acces a cet ressource")
  * 
  */
@@ -33,7 +33,7 @@ class TableController extends AbstractController
     }
 
     /**
-     * @Route("/tables", name="app_table_liste", methods={"GET"})
+     * @Route("/", name="app_table_liste", methods={"GET"})
      */
     public function new(StatsService $statsService): Response
     {

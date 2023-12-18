@@ -12,7 +12,7 @@
 			</h1>
 			<ol class="breadcrumb">
 				<li>
-					<a href="{{ path('app_prospect_index') }}">
+					<a href="{{ path('app_table_liste') }}">
 						<i class="fa fa-users"></i>
 						Tous les prospects</a>
 				</li>
@@ -48,38 +48,34 @@
 	{% endblock %}
 
 	{% block javascripts %}
-    <script>
-     
-		document.addEventListener('DOMContentLoaded', function() {
-			const teamSelectEl = document.getElementById('prospect_affect_team');
-			teamSelectEl.addEventListener('change', function(e) {
-				console.log('okok');
-				const formEl = teamSelectEl.closest('form');
-				// console.log("formEl: " + formEl);
-				
-				fetch(formEl.action, {
-					method: formEl.method,
-					body: new FormData(formEl)
-				})
-				.then(response => response.text())
-				.then(html => {
+		<script>
 
-					
-					const parser = new DOMParser();
-					const doc = parser.parseFromString(html, 'text/html');
-					const newComrclFormFieldEl = doc.getElementById('prospect_affect_comrcl');
-				
-						newComrclFormFieldEl.addEventListener('change', function(e) {
-							e.target.classList.remove('is-invalid');
-						});
-						document.getElementById('prospect_affect_comrcl').replaceWith(newComrclFormFieldEl);
-					
-				})
-				.catch(function (err) {
-					console.warn('Something went wrong.', err);
-				});
-			});
-		});
-    </script>
-{% endblock %}
+			document.addEventListener('DOMContentLoaded', function () {
+const teamSelectEl = document.getElementById('prospect_affect_team');
+teamSelectEl.addEventListener('change', function (e) {
+console.log('okok');
+const formEl = teamSelectEl.closest('form');
+// console.log("formEl: " + formEl);
 
+fetch(formEl.action, {
+method: formEl.method,
+body: new FormData(formEl)
+}).then(response => response.text()).then(html => {
+
+
+const parser = new DOMParser();
+const doc = parser.parseFromString(html, 'text/html');
+const newComrclFormFieldEl = doc.getElementById('prospect_affect_comrcl');
+
+newComrclFormFieldEl.addEventListener('change', function (e) {
+e.target.classList.remove('is-invalid');
+});
+document.getElementById('prospect_affect_comrcl').replaceWith(newComrclFormFieldEl);
+
+}).catch(function (err) {
+console.warn('Something went wrong.', err);
+});
+});
+});
+		</script>
+	{% endblock %}

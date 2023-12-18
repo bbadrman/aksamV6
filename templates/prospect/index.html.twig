@@ -21,14 +21,18 @@
 			<h2>Tous Prospects</h2>
 		{% elseif app.request.get('_route') == 'relancejour_index' %}
 			<h2>Les Relances du Jour</h2>
+		{% elseif app.request.get('_route') == 'relancenotraite_index' %}
+			<h2>Les Relances Non Traités</h2>
 		{% elseif app.request.get('_route') == 'avenir_index' %}
 			<h2>Les Relances à venir</h2>
 		{% elseif app.request.get('_route') == 'app_unjoinable' %}
-			<h2>Les Unjoiniables</h2>
+			<h2>Les Injoignables</h2>
 		{% elseif app.request.get('_route') == 'notrait_index' %}
 			<h2>Les Prospects Non Traités</h2>
-
+		{% elseif app.request.get('_route') == 'app_client' %}
+			<h2>Les Clients</h2>
 		{% endif %}
+
 		<ol class="breadcrumb">
 			<li>
 				<a href="{{ path('dashboard') }}">
@@ -54,8 +58,8 @@
 		</ol>
 		<br>
 		{# {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')  == true %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	<a href="{{ path('app_prospect_new') }}" class="btn btn-primary">Ajouter Prospect</a>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															          	{% endif %} #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																								<a href="{{ path('app_prospect_new') }}" class="btn btn-primary">Ajouter Prospect</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						          	{% endif %} #}
 	</section>
 	<div class="col-xs-12" style="float: right !important;">
 		<div class="row" style="margin-right: 10px;">
@@ -71,7 +75,6 @@
 
 				{# {% endif %} #}
 				<hr>
-				{# <div id="shrch"> #}
 
 					<table class="table table-striped table-advance table-hover"> <thead>
 
@@ -80,38 +83,52 @@
 							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true %}
 								<th>Autor</th>
 								<th>Commerciele</th>
+
 							{% endif %}
-							<th>Equipe</th>
+							{% if is_granted('ROLE_ADMIN')  == true %}
+								<th>Equipe</th>
+							{% endif %}
 							<th>Nom</th>
 							<th>Prenom</th>
 							<th>Phone</th>
 							<th>Email</th>
-							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true %}
-								<th>Status</th>
+							{% if app.request.get('_route') != 'app_client' %}
+								{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true %}
+									<th>Status</th>
+								{% endif %}
+								{# <th>Gender</th> #}
+								{# <th>Ville</th> #}
+								<th>Source</th>
+								<th>Motif</th>
+								<th>Type Prospect</th>
 							{% endif %}
-							{# <th>Gender</th> #}
-							{# <th>Ville</th> #}
-							<th>Source</th>
-							<th>Motif</th>
-							<th>Type Prospect</th>
-							{# <th>RaisonSociale</th> #}
-							{% if app.request.get('_route') == 'relancejour_index'  %}
+							{% if app.request.get('_route') == 'app_client' %}
+								<th>RaisonSociale</th>
+								<th>codePost</th>
+								<th>Adresse</th>
+							{% endif %}
+							{% if app.request.get('_route') == 'relancejour_index' or 
+							      app.request.get('_route') == 'relancenotraite_index' %}
 								<th>Date Relance</th>
 							{% elseif app.request.get('_route') == 'app_unjoinable' %}
 								<th>Date injoinable</th>
+							{% elseif app.request.get('_route') == 'app_client' %}
+								<th>Date soucrire</th>
 							{% endif %}
 							{# <th>Assure</th>#}
 							{# <th>Ancienne</th>#}
 							{# <th>Motife Resil</th> #}
-
-								{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true %}
-									<th>
-								option
-							</th>
+								{% if app.request.get('_route') != 'app_client' %}
+									{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true %}
+										<th>
+									option
+								</th>
+							{% endif %}
 							{% endif %}
 								<th>
 							actions
 						</th>
+
 					</tr>
 				</thead>
 			</tr>
@@ -132,89 +149,115 @@
 										Site
 									</a>
 								{% endif %}
-							</td>
-						{% endif %}
 
-						{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true %}
+							</td>
+
+
+							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true %}
+								<td>
+
+									{% if prospect.comrcl is not empty %}
+
+										<a href="#" class="btn btn-info ">
+											{{ prospect.comrcl  }}
+										</a>
+									{% else %}
+										<a href="#" class="btn btn-success  ">
+											En attend
+										</a>
+									{% endif %}
+								</td>
+							{% endif %}
+						{% endif %}
+						{% if is_granted('ROLE_ADMIN') == true %}
 							<td>
 
-								{% if prospect.comrcl is not empty %}
-
-									<a href="#" class="btn btn-info ">
-										{{ prospect.comrcl  }}
-									</a>
+								{% if prospect.team is not empty %}
+									{{ prospect.team }}
 								{% else %}
-									<a href="#" class="btn btn-success  ">
-										En attend
-									</a>
+									Aucun
 								{% endif %}
+
 							</td>
 						{% endif %}
-
-						<td>
-
-							{% if prospect.team is not empty %}
-								{{ prospect.team }}
-							{% else %}
-								Aucun
-							{% endif %}
-
-						</td>
 						<td>{{ prospect.name }}</td>
 						<td>{{ prospect.lastname }}</td>
 						<td>{{ prospect.phone }}</td>
 						<td>{{ prospect.email }}</td>
-						{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true %}
+						{% if app.request.get('_route') != 'app_client' %}
+							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true %}
+								<td>
+									{% if prospect.comrcl and prospect.team is not empty %}
+										<button class='btn btn' style="background-color:Violet;">Au Cmrcl
+										</button>
+
+
+									{% elseif prospect.comrcl is  empty and prospect.team is not empty  %}
+										<button class='btn btn' style="background-color:Orange;">Affecté
+										</button>
+									{% else %}
+										<button class='btn btn' style="background-color:SlateBlue;">Nouveau
+										</button>
+									{% endif %}
+								</td>
+							{% endif %}
+							{# <td>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													{% if prospect.gender == 1 %}Male{% else %}Female
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													{% endif %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												</td> #}
+
+							{# <td>{{ prospect.city }}</td> #}
+							<td>{{ prospect.source }}</td>
 							<td>
-								{% if prospect.comrcl and prospect.team is not empty %}
-									<button class='btn btn' style="background-color:Violet;">Au Cmrcl
-									</button>
-
-
-								{% elseif prospect.comrcl is  empty and prospect.team is not empty  %}
-									<button class='btn btn' style="background-color:Orange;">Affecté
-									</button>
-								{% else %}
-									<button class='btn btn' style="background-color:SlateBlue;">Nouveau
-									</button>
+								{% if prospect.motifSaise is null %}
+									Autre
 								{% endif %}
+								{% if prospect.motifSaise == 1 %}
+									Parrainage
+								{% endif %}
+								{% if prospect.motifSaise == 2 %}
+									Appel Entrant
+								{% endif %}
+								{% if prospect.motifSaise == 3 %}
+									Avenant
+								{% endif %}
+								{% if prospect.motifSaise == 4 %}
+									Ancienne Contrat
+								{% endif %}
+
 							</td>
+							<td>{{ prospect.typeProspect }}</td>
 						{% endif %}
-						{# <td>
-																																																							{% if prospect.gender == 1 %}Male{% else %}Female
-																																																							{% endif %}
-																																																						</td> #}
+						{% if app.request.get('_route') == 'app_client' %}
+							<td>{{ prospect.raisonSociale }}</td>
+							<td>{{ prospect.codePost }}</td>
+							<td>{{ prospect.adress }}</td>
+						{% endif %}
+						{% if app.request.get('_route') == 'relancejour_index' or 
+						      app.request.get('_route') == 'app_unjoinable' or 
+						      app.request.get('_route') == 'relancenotraite_index' %}
 
-						{# <td>{{ prospect.city }}</td> #}
-						<td>{{ prospect.source }}</td>
-						<td>
-							{% if prospect.motifSaise is null %}
-								Autre
-							{% endif %}
-							{% if prospect.motifSaise == 1 %}
-								Parrainage
-							{% endif %}
-							{% if prospect.motifSaise == 2 %}
-								Appel Entrant
-							{% endif %}
-							{% if prospect.motifSaise == 3 %}
-								Avenant
-							{% endif %}
-							{% if prospect.motifSaise == 4 %}
-								Ancienne Contrat
-							{% endif %}
-
-						</td>
-						<td>{{ prospect.typeProspect }}</td>
-						{# <td>{{ prospect.raisonSociale }}</td> #}
-						{% if app.request.get('_route') == 'relancejour_index' or app.request.get('_route') == 'app_unjoinable' %}
 							<td>
 								{% for relance in prospect.relanceds|sort(null, 'desc') %}
-									{% if relance.relacedAt is not empty %}
-										{{ relance.relacedAt|date('Y-m-d H:i:s') }}
-										<br>
-										{% else %}
+									{% if relance.motifRelanced == 1 %}
+										{% if relance.relacedAt is not empty %}
+											{{ relance.relacedAt|date('Y-m-d H:i:s') }}
+											<br>
+											{% else %}
 
+										{% endif %}
+									{% endif %}
+								{% endfor %}
+							</td>
+						{% endif %}
+						{% if app.request.get('_route') == 'app_client' %}
+							<td>
+								{% for relance in prospect.relanceds|sort(null, 'desc') %}
+									{% if relance.motifRelanced == 10 %}
+										{% if relance.relacedAt is not empty %}
+											{{ relance.relacedAt|date('Y-m-d H:i:s') }}
+											<br>
+										{% endif %}
 									{% endif %}
 								{% endfor %}
 							</td>
@@ -223,82 +266,68 @@
 						{# <td>{{ prospect.assure }}</td> #}
 						{# <td>{{ prospect.lastAssure }}</td> #}
 						{# <td>
-																																																							{% if prospect.motifResil is null %}
-																																																								Autre
-																																																							{% endif %}
-																																																							{% if prospect.motifResil == 1 %}
-																																																								Aggravation de risque
-																																																							{% endif %}
-																																																							{% if prospect.motifResil == 2 %}
-																																																								Amiable
-																																																							{% endif %}
-																																																							{% if prospect.motifResil == 3 %}
-																																																								Échéance
-																																																							{% endif %}
-																																																							{% if prospect.motifResil == 4 %}
-																																																								Non-paiement
-																																																							{% endif %}
-																																																							{% if prospect.motifResil == 5 %}
-																																																								Sinistre
-																																																							{% endif %}
-																																																						</td> #}
-
-							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') %}
-								<td>
-								{# <a href="{{ path('app_prospect_edit', {'id': prospect.id}) }}" class="btn btn-primary btn-xs">
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					<i class="fa fa-pencil"></i>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																				</a> #}
-							{{ render(controller('App\\Controller\\ProspectController::edit',{'id':prospect.id}))}}
+																																																																																																																																																																																																																																																																																																											   {% if prospect.motifResil is null %}
+																																																																																																																																																																																																																																																																																																												 	Autre
+																																																																																																																																																																																																																																																																																																												 {% endif %}
+																																																																																																																																																																																																																																																																																																													   {% if prospect.motifResil == 1 %}
+																																																																																																																																																																																																																																																																																																													   Aggravation de risque
+																																																																																																																																																																																																																																																																																																													 	{% endif %}
+																																																																																																																																																																																																																																																																																																												 {% if prospect.motifResil == 2 %}
+																																																																																																																																																																																																																																																																																																													   Amiable
+																																																																																																																																																																																																																																																																																																														 {% endif %}
+																																																																																																																																																																																																																																																																																																													  {% if prospect.motifResil == 3 %}
+																																																																																																																																																																																																																																																																																																													 	Échéance
+																																																																																																																																																																																																																																																																																																														   {% endif %}
+																																																																																																																																																																																																																																																																																																															 {% endif %}
+																																																																																																																																																																																																																																																																																																														  {% if prospect.motifResil == 5 %}
+																																																																																																																																																																																																																																																																																																														  Sinistre
+																																																																																																																																																																																																																																																																																																														 	{% endif %}
+																																																																																																																																																																																																																																																																																																														 </td> #}
+							{% if app.request.get('_route') != 'app_client' %}
+								{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') %}
+									<td>
+								{{ render(controller('App\\Controller\\ProspectController::edit',{'id':prospect.id}))}}
 
 
 							</td>
-						{% else %}
-
-							<td>
-								<a href="{{ path('app_prospect_edit', {'id': prospect.id}) }}" class="btn btn-primary btn-xs">
-									<i class="fa fa-pencil"></i>
-								</a>
-							</td>
-
-
 						{% endif %}
-						<td class="btn-toolbar">
+						{% endif %}
+						{# <td>
+																																																																																																																																																																																																																						<a href="{{ path('app_prospect_edit', {'id': prospect.id}) }}" class="btn btn-primary btn-xs">
+																																																																																																																																																																																																																							<i class="fa fa-pencil"></i>
+																																																																																																																																																																																																																						</a>
+																																																																																																																																																																																																																					</td> #}
 
-							<a href="{{ path('app_prospect_show', {'id': prospect.id}) }}" class="btn btn-success btn-xs">
+
+							<td class="btn-toolbar"> <a href="{{ path('app_prospect_show', {'id': prospect.id}) }}" class="btn btn-success btn-xs">
 								<i class="fa fa-eye fa-2x text-primary" aria-hidden="true"></i>
-
 							</a>
 
 						</td>
 
 					</tr>
-
-				</tbody>
-
-
+				</tr>
 			</tbody>
 
 
-		{% endfor %}{# {% if  app.user and app.user == prospect.comrcl %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															 	  Tableau
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																  {% endif %} #}</tbody>
-	<tfoot class="text-right">
-		<tr>
+		</tbody>
+	{% endfor %}{# {% if  app.user and app.user == prospect.comrcl %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													 	  Tableau
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																														  {% endif %} #}</tbody>
+<tfoot class="text-right">
+	<tr>
 
-			{# {% if app.request.get('_route') == 'prospect_search'  %} #}
-			<td colspan="10">
-				{{ knp_pagination_render(prospects, 'pagination.html.twig') }}
-			</td>
-			{# {% endif %} #}
-		</tr>
-	</tfoot>
-
-</table>
-{# </div> #}</div></div></div>{% endblock %}{% block javascripts %}{{ parent() }}<script src='/js/ad.js'>// {
-																																																																																																																																// # $(document).ready(function () {
-																																																																																																																																// $("#reset-button").click(function () {
-																																																																																																																																// $("#my-form .alert").empty();
-																																																																																																																																// });
-																																																																																																																																// });
-																																																																																																																																// #
-																																																																																																																																// }</script>{% endblock %}
+		{# {% if app.request.get('_route') == 'prospect_search'  %} #}
+		<td colspan="10">
+			{{ knp_pagination_render(prospects, 'pagination.html.twig') }}
+		</td>
+		{# {% endif %} #}
+	</tr>
+</tfoot></table>{# </div> #}</div></div></div>{% endblock %}{% block javascripts %}{{ parent() }}<script src='/js/ad.js'>// {
+																																																																																																																																																																																																																																																					// # $(document).ready(function () {
+																																																																																																																																																																																																																																																					// $("#reset-button").click(function () {
+																																																																																																																																																																																																																																																					// $("#my-form .alert").empty();
+																																																																																																																																																																																																																																																					// });
+																																																																																																																																																																																																																																																					// });
+																																																																																																																																																																																																																																																					// #
+																																																																																																																																																																																																																																																					// }</script>{% endblock %}

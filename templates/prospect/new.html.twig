@@ -13,7 +13,7 @@
 			</h2>
 			<ol class="breadcrumb">
 				<li>
-					<a href="{{ path('app_prospect_index') }}">
+					<a href="{{ path('app_table_liste') }}">
 						<i class="fa fa-users"></i>
 						Tous les Prospects</a>
 				</li>
@@ -29,9 +29,7 @@
 {% endblock %}
 
 {% block javascripts %}
-{{ parent() }}
+	{{ parent() }}
 
-<script src='/js/ad.js'>
-
-
-</script>{% endblock %}
+	<script src='/js/ad.js'></script>
+{% endblock %}

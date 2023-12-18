@@ -1,0 +1,15 @@
+{# templates/csv/upload.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Upload CSV
+{% endblock %}
+
+{% block body %}
+	<h1>Upload a CSV File</h1>
+
+	{{ form_start(form) }}
+	{{ form_row(form.csvFile) }}
+	<button type="submit">Upload</button>
+	{{ form_end(form) }}
+{% endblock %}

@@ -2,34 +2,30 @@
 
 namespace App\Controller;
 
-use App\Entity\Team;
+
 use App\Form\GsmType;
+use App\Entity\Client;
 use App\Entity\History;
-use App\Entity\Relance;
 use App\Entity\Prospect;
 use App\Entity\Relanced;
-use App\Form\RelanceType;
+use App\Form\ClientType;
 use App\Form\ProspectType;
 use App\Form\RelancedType;
 use App\Search\SearchProspect;
 use App\Form\ProspectAffectType;
+use App\Form\ProspectClientType;
 use App\Form\SearchProspectType;
-use App\Form\ProspectRelanceType;
+use App\Repository\ClientRepository;
 use App\Repository\HistoryRepository;
-use App\Repository\RelanceRepository;
 use App\Repository\ProspectRepository;
-use App\Repository\RelancedRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Form\Extension\Core\Type as Type;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * @Route("/prospect")
@@ -50,71 +46,6 @@ class ProspectController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @Route("/", name="app_prospect_index", methods={"GET", "POST"})  
-     */
-    public function index(Request $request,  ProspectRepository $prospectRepository,  Security $security): Response
-    {
-
-        $data = new SearchProspect();
-        $data->page = $request->query->get('page', 1);
-
-
-        $form = $this->createForm(SearchProspectType::class, $data);
-        // $form->handleRequest($request);
-        $form->handleRequest($this->requestStack->getCurrentRequest());
-
-        // Pour avoir tous les prospect en taut que je suis admin 
-        $user = $security->getUser();
-        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
-
-            // je recupere les prospects qui son pas encors affecter 
-
-            $prospect =  $prospectRepository->findAllSearch($data, null);
-
-            // recupere seulement les pas encour affect et cree ce jour
-            $prospectpas = $prospectRepository->findByUserPaAffecter($data, null);
-            // recupere qui sont relance 
-            $prospectrlc = $prospectRepository->findRelanced($data,  null);
-            $this->requestStack->getSession()->set('security', count($prospectpas));
-            return $this->render('prospect/index.html.twig', [
-                'prospects' => $prospect,
-                'prospectpas' => $prospectpas,
-                'prospectrlc' => $prospectrlc,
-                'search_form' => $form->createView()
-            ]);
-        } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
-
-            // je recupe seulement les prospects affecter au mon equipe
-            $prospect = $prospectRepository->findAllChefSearch($data, $user, null);
-            $prospectChef = $prospectRepository->findByUserChefEquipe($data, $user, null);
-            $prospectRelance = $prospectRepository->findByRelanceChefEquipe($data, $user, null);
-
-            return $this->render('prospect/indexchef.html.twig', [
-                'prospects' => $prospect,
-                'prospectRelance' => $prospectRelance,
-                'prospectChef' => $prospectChef,
-                'search_form' => $form->createView()
-            ]);
-        }
-
-
-        // Alors si je suis pas admin  je recupere selement les prospect attacher a moi 
-        else {
-            $prospectpas = $prospectRepository->findByUserAffecterCmrcl($data, $user, null);
-            $prospect =  $prospectRepository->findByUserConect($data, $user);
-            // $request->getSession()->set('security', count($prospect) );
-        }
-
-        $this->requestStack->getSession()->set('security', count($prospect));
-
-
-        return $this->render('prospect/index.html.twig', [
-            'prospects' => $prospect,
-            'prospectpas' => $prospectpas,
-            'search_form' => $form->createView()
-        ]);
-    }
 
 
     /**
@@ -128,27 +59,36 @@ class ProspectController extends AbstractController
         $data->page = $request->query->get('page', 1);
         $form = $this->createForm(SearchProspectType::class, $data);
         $form->handleRequest($this->requestStack->getCurrentRequest());
-        $user = $security->getUser();
-        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
-            // admi peut voire toutes les nouveaux prospects
-            $prospect =  $prospectRepository->findByUserPaAffecter($data, null);
-        } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
-            // chef peut voire toutes les nouveaux prospects atacher a leur equipe
-            $prospect =  $prospectRepository->findByChefAffecter($data,  $user, null);
-        } else {
-            // cmrcl peut voire seulement les nouveaux prospects atacher a lui
-            $prospect =  $prospectRepository->findByCmrclAffecter($data, $user, null);
+        $prospect = [];
+        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
+
+            $user = $security->getUser();
+            if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+                // admi peut voire toutes les nouveaux prospects
+                $prospect =  $prospectRepository->findByUserPaAffecter($data, null);
+            } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+                // chef peut voire toutes les nouveaux prospects atacher a leur equipe
+                $prospect =  $prospectRepository->findByChefAffecter($data,  $user, null);
+            } else {
+                // cmrcl peut voire seulement les nouveaux prospects atacher a lui
+                $prospect =  $prospectRepository->findByCmrclAffecter($data, $user, null);
+            }
+
+
+            return $this->render('prospect/index.html.twig', [
+                'prospects' => $prospect,
+                'search_form' => $form->createView()
+            ]);
         }
-
-
-        return $this->render('prospect/index.html.twig', [
+        return $this->render('prospect/search.html.twig', [
             'prospects' => $prospect,
-            'search_form' => $form->createView()
+            'search_form' => $form->createView(),
         ]);
     }
 
 
     /**
+     * les prospects a venir
      * @Route("/avenir", name="avenir_index", methods={"GET", "POST"}) 
      */
     public function avenir(Request $request,  ProspectRepository $prospectRepository,  Security $security): Response
@@ -159,11 +99,7 @@ class ProspectController extends AbstractController
         $form = $this->createForm(SearchProspectType::class, $data);
         $form->handleRequest($this->requestStack->getCurrentRequest());
 
-
-
         $prospect = [];
-
-
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
 
             $user = $security->getUser();
@@ -192,6 +128,31 @@ class ProspectController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/client", name="app_client", methods={"GET", "POST"})
+     */
+    public function client(Request $request, ProspectRepository $prospectRepository, Security $security): Response
+    {
+        $data = new SearchProspect();
+        $data->page = $request->query->get('page', 1);
+        $form = $this->createForm(SearchProspectType::class, $data);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+        $user = $security->getUser();
+        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+
+            $prospect =  $prospectRepository->findClient($data, null);
+        } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+            // chef peut voire toutes les no traite atacher a leur equipe
+            $prospect =  $prospectRepository->findClientChef($data, $user, null);
+        } else {
+            // cmrcl peut voire seulement les no traite  atacher a lui
+            $prospect =  $prospectRepository->findClientCmrcl($data, $user, null);
+        }
+        return $this->render('prospect/index.html.twig', [
+            'prospects' => $prospect,
+            'search_form' => $form->createView()
+        ]);
+    }
     /**
      * @Route("/new", name="app_prospect_new", methods={"GET", "POST"})
      */
@@ -222,15 +183,50 @@ class ProspectController extends AbstractController
     /**
      * @Route("/{id}", name="app_prospect_show", methods={"GET", "POST"}) 
      */
-    public function show(Request $request, Prospect $prospect, HistoryRepository $historyRepository)
+    public function show(Request $request, Prospect $prospect, HistoryRepository $historyRepository, ProspectRepository $prospectRepository)
     {
+
+
+        // Form to modify the prospect's second number
         $gsmForm = $this->createForm(GsmType::class, $prospect);
         $gsmForm->handleRequest($request);
 
         if ($gsmForm->isSubmitted() && $gsmForm->isValid()) {
-            // $entityManager = $this->getDoctrine()->getManager();
+
             $this->entityManager->flush();
         }
+
+        //modife prospect afin de remplir la table cient
+        $clientForm = $this->createForm(ProspectClientType::class, $prospect);
+        $clientForm->handleRequest($request);
+
+        if ($clientForm->isSubmitted() && $clientForm->isValid()) {
+
+            $prospectRepository->add($prospect, true);
+        }
+
+        // Create a new client based on prospect information
+
+        // $prospectFirstName = $prospect->getName();
+        // $prospectLastName = $prospect->getLastName();
+        // // $prospectPhone = $prospect->getPhone();
+        // // $prospectEmail = $prospect->getEmail();
+
+        // $client = new Client();
+
+        // $client->setFirstName($prospectFirstName);
+        // $client->setLastName($prospectLastName);
+        // // $client->setPhone($prospectPhone);
+        // // $client->setEmail($prospectEmail);
+
+        // $clientForm = $this->createForm(ClientType::class, $client);
+        // $clientForm->handleRequest($request);
+
+        // if ($clientForm->isSubmitted() && $clientForm->isValid()) {
+        //     $clientRepository->add($client, true);
+        // }
+
+
 
         $relance = new Relanced();
         $relance->setProspect($prospect);
@@ -245,8 +241,9 @@ class ProspectController extends AbstractController
 
             $this->addFlash('success', 'Relance ajoutée avec succès.');
 
-            return $this->redirectToRoute('app_prospect_show', ['id' => $prospect->getId()]);
+            // return $this->redirectToRoute('app_prospect_show', ['id' => $prospect->getId()]);
         }
+
 
         // $teamHistory = $this->getDoctrine()->getRepository(History::class)->findBy(['prospect' => $prospect]);
         $teamHistory = $historyRepository->findBy(['prospect' => $prospect]);
@@ -256,6 +253,7 @@ class ProspectController extends AbstractController
             'prospect' => $prospect,
             'teamHistory' => $teamHistory,
             'form' => $form->createView(),
+            'clientForm' => $clientForm->createView(),
             'gsmForm' => $gsmForm->createView(),
         ]);
     }
@@ -276,6 +274,7 @@ class ProspectController extends AbstractController
                 $fonction->setProspect($prospect);
             }
 
+            // history of prospect affect
             $teamHistory = new History();
             $teamHistory->setProspect($prospect); // $prospect est votre instance de Prospect
 
@@ -310,26 +309,7 @@ class ProspectController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/relance", name="app_prospect_relance", methods={"POST"}) 
-     */
-    public function relance(Request $request, Relanced $relanced, RelancedRepository $relacedRepository): Response
-    {
-        $formR = $this->createForm(RelancedType::class, $relanced);
-        $formR->handleRequest($request);
 
-        if ($formR->isSubmitted() && $formR->isValid()) {
-            $relacedRepository->add($relanced, true);
-
-            $this->addFlash('info', 'Votre Prospect a été relancer avec succès!');
-            return $this->redirectToRoute('app_prospect_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('partials/_show_relance.html.twig', [
-            'relanced' => $relanced,
-            'form' => $formR,
-        ]);
-    }
 
 
     /**
@@ -341,6 +321,6 @@ class ProspectController extends AbstractController
             $prospectRepository->remove($prospect, true);
         }
 
-        return $this->redirectToRoute('app_prospect_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_table_liste', [], Response::HTTP_SEE_OTHER);
     }
 }

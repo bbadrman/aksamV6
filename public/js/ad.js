@@ -303,20 +303,27 @@ if (resilField !== null) {
 }
 
 
-//select motiveRelanced
+
+//select motiveRelanced pour afficher la ajouter client quand on click sur pasage contart
+//select motiveRelanced pour afficher la calandrie et comment quand on click sur rndv
 var resilField = document.getElementById('relanced_motifRelanced');
-var subresilContainer = document.getElementById('subMotivRelc-container');
+var subresilContainer1 = document.getElementById('subMotivRelc-container');
+var subresilContainer2 = document.getElementById('subMotivContrat-container');
+
 if (resilField !== null) {
 	resilField.addEventListener('change', function () {
 		if (resilField.value === '1') {
-
-			subresilContainer.style.display = 'block';
+			subresilContainer1.style.display = 'block';
+			subresilContainer2.style.display = 'none';
+		} else if (resilField.value === '10') {
+			subresilContainer1.style.display = 'none';
+			subresilContainer2.style.display = 'block';
 		} else {
-			subresilContainer.style.display = 'none';
+			subresilContainer1.style.display = 'none';
+			subresilContainer2.style.display = 'none';
 		}
 	});
 }
-
 
 
 
@@ -342,6 +349,59 @@ function showFullText(element) {
 		element.querySelector('.shortened').style.display = 'inline'; // Montre le texte raccourci
 	}
 }
+
+// submut deux button
+document.addEventListener('DOMContentLoaded', function () {
+	const relanceSubmitButton = document.querySelector('#relance-submit');
+	const clientSubmitButton = document.querySelector('#client-submit');
+	const clientForm = document.querySelector('#client-form');
+
+	clientSubmitButton.addEventListener('click', async (event) => {
+		event.preventDefault(); // Empêche la soumission par défaut du formulaire client
+		await submitForm(clientForm); // Soumet le formulaire client manuellement
+		await delay(100); // Attente de 100 ms pour laisser le temps à la soumission de se terminer
+		relanceSubmitButton.click(); // Déclenche la soumission du formulaire de relance
+	});
+
+	async function submitForm(form) {
+		try {
+			await fetch(form.action, {
+				method: form.method,
+				body: new FormData(form)
+			});
+		} catch (error) {
+			console.error('Une erreur s\'est produite :', error);
+		}
+	}
+
+	function delay(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
+});
+
+// filter table
+$(document).ready(function () {
+	var table = $('#example').DataTable({
+		searchPanes: true
+	});
+	table.searchPanes.container().prependTo(table.table().container());
+	table.searchPanes.resizePanes();
+});
+
+// pour passer au path client quen on click sur passage en contart
+// document.addEventListener('DOMContentLoaded', function () {
+// 	const motifRelanced = document.getElementById('relanced_motifRelanced'); // Assurez-vous de remplacer 'relanced_motifRelanced' par l'ID réel de votre champ de formulaire
+
+// 	motifRelanced.addEventListener('change', function () {
+// 		const selectedValue = this.value;
+// 		const prospectId = document.getElementById('relance-submit').dataset.prospectId; // Récupérer l'ID du prospect à partir du bouton
+
+// 		if (selectedValue === '10') {
+// 			window.location.href = '/client/new/'; // Redirection vers la route client avec l'ID du prospect
+// 		}
+// 	});
+// });
+
 
 
 //button dashbord

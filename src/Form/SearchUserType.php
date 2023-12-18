@@ -36,8 +36,8 @@ class SearchUserType extends AbstractType
                     'Female' => 0
                 ],
                 'expanded' => false,
-                'multiple' => false,    
-                 'placeholder' => 'Gender'
+                'multiple' => false,
+                'placeholder' => 'Gender'
             ]);
     }
 
@@ -54,5 +54,4 @@ class SearchUserType extends AbstractType
     {
         return '';
     }
-
 }

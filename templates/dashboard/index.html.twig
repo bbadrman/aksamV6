@@ -106,7 +106,7 @@
 									</td>
 
 									{# <td> <span class="btn btn-danger"> {{ " %02d"|format(teams.prospects|filter(p => p.comrcl is null  )| length)  }}   </span>  </td>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															  #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										  #}
 									<td>
 										<span class="btn btn-primary">
 											<strong>
@@ -371,11 +371,11 @@
 					</tr>
 				{% endfor %}
 				{# <td><span class="btn btn-success"> {{ app.user.teams.prospects | length  }}  </span></td>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							<td><span class="btn btn-warning"> {{ " %02d"|format(stats.prospectTestEqB) }} test   </span></td>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							<td><span class="btn btn-info">    {{ " %02d"|format(stats.prospectTetChef) }}  s </span></td>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							<td><span class="btn btn-info">    {{ app.user.teams.prospects|filter(p => p.motifSaise == 3)|length }}   </span></td>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					        <td><span class="btn btn-info">    {{ app.user.teams.prospects|filter(p => p.motifSaise == 0 and p.comrcl is null)|length }} c:n - m/0 	  </span></td>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					        <td><span class="btn btn-info">    {{ "%02d"|format(app.user.prospects|filter(p =>   p.comrcl  == '4'  and p.team == '3' )|length) }} c:n - m/1  </span></td> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																			<td><span class="btn btn-warning"> {{ " %02d"|format(stats.prospectTestEqB) }} test   </span></td>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																			<td><span class="btn btn-info">    {{ " %02d"|format(stats.prospectTetChef) }}  s </span></td>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																			<td><span class="btn btn-info">    {{ app.user.teams.prospects|filter(p => p.motifSaise == 3)|length }}   </span></td>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	        <td><span class="btn btn-info">    {{ app.user.teams.prospects|filter(p => p.motifSaise == 0 and p.comrcl is null)|length }} c:n - m/0 	  </span></td>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	        <td><span class="btn btn-info">    {{ "%02d"|format(app.user.prospects|filter(p =>   p.comrcl  == '4'  and p.team == '3' )|length) }} c:n - m/1  </span></td> #}
 
 
 			{% endif %}
@@ -384,12 +384,12 @@
 </p></div><!-- Prospects en Statique  --><div class="col-lg-4 main-chart">
 <p class="centered">
 
-	<a href="{{path('app_prospect_index')}}">
+	<a href="{{path('app_table_liste')}}">
 		<img src=" {{ asset('images/statiqueProspect.png') }} " class="img-circle" width="140" alt="">
 	</a>
 	<h2>
 		Prospects en Statique  &nbsp &nbsp
-		<a href="{{path('app_prospect_index')}}">Voir<i class="fas fa-eye"></i>
+		<a href="{{path('app_table_liste')}}">Voir<i class="fas fa-eye"></i>
 		</a>
 	</h2>
 </p>
@@ -410,7 +410,7 @@
 			<tr style="font-size:20px;">
 				<th style="text-align: left;">- Nouveaux prospects :</th>
 				<td>
-					<a href="{{path('app_prospect_index')}}">
+					<a href="{{path('app_table_liste')}}">
 						<span class="btn btn-primary">
 							<strong>
 								{# {{" %02d"|format(app.session.get('security'))}} #}
@@ -424,7 +424,7 @@
 			<tr style="font-size:20px;">
 				<th style="text-align: left;">- Parrainage :</th>
 				<td>
-					<a href="{{path('app_prospect_index')}}">
+					<a href="{{path('app_table_liste')}}">
 						<span class="btn btn-danger ">
 							<strong>
 								{{ " %02d"|format(stats.prospectParng) }}
@@ -436,7 +436,7 @@
 			<tr style=" font-size:20px;">
 				<th style="text-align: left;">- Appl Entrant :</th>
 				<td>
-					<a href="{{path('app_prospect_index')}}">
+					<a href="{{path('app_table_liste')}}">
 						<span class="btn btn-success">
 							<strong>
 								{{ " %02d"|format(stats.prospectAppl) }}
@@ -448,7 +448,7 @@
 			<tr style=" font-size:20px;">
 				<th style="text-align: left;">- Avenant :</th>
 				<td>
-					<a href="{{path('app_prospect_index')}}">
+					<a href="{{path('app_table_liste')}}">
 						<span class="btn btn" style="background-color:#41B9E1;">
 							<strong>
 								{{ " %02d"|format(stats.prospectAvn) }}
@@ -461,7 +461,7 @@
 			<tr style=" font-size:20px;">
 				<th style="text-align: left;">- Ancienne contrat :</th>
 				<td>
-					<a href="{{path('app_prospect_index')}}">
+					<a href="{{path('app_table_liste')}}">
 						<span class='btn btn' style="background-color:Violet;">
 							<strong>{{ " %02d"|format(stats.prospectAncien) }}</strong>
 						</span>
@@ -472,7 +472,7 @@
 			<tr style=" font-size:20px;">
 				<th style="text-align: left;">- Propre Site :</th>
 				<td>
-					<a href="{{path('app_prospect_index')}}">
+					<a href="{{path('app_table_liste')}}">
 						<span class='btn btn' style="background-color:GreenYellow;">
 							<strong>
 								{{ " %02d"|format(stats.prospectSite) }}
@@ -484,7 +484,7 @@
 			<tr style=" font-size:20px;">
 				<th style="text-align: left;">- Revendeur :</th>
 				<td>
-					<a href="{{path('app_prospect_index')}}">
+					<a href="{{path('app_table_liste')}}">
 						<span class='btn btn' style="background-color:Aquamarine;">
 							<strong>
 								{{ " %02d"|format(stats.prospectRevnd) }}
@@ -502,7 +502,7 @@
 			<tr>
 				<th>Nouveaux prospects :</th>
 				<td>
-					<a href="{{path('app_prospect_index')}}">
+					<a href="{{path('app_table_liste')}}">
 						<span class="btn btn-primary">
 							{{ " %02d"|format(
 											(app.user.teams.prospects|filter(p => p.motifSaise == 1 and p.comrcl is null)|length) +
@@ -520,7 +520,7 @@
 			<tr>
 				<th>Parrainage :</th>
 				<td>
-					<a href="{{path('app_prospect_index')}}">
+					<a href="{{path('app_table_liste')}}">
 						<span class="btn btn-danger">
 							{{ " %02d"|format(app.user.teams.prospects|filter(p => p.motifSaise == 1 and p.comrcl is null)|length) }}
 						</span>
@@ -530,7 +530,7 @@
 			<tr>
 				<th>Appl Entrant  :</th>
 				<td>
-					<a href="{{path('app_prospect_index')}}">
+					<a href="{{path('app_table_liste')}}">
 						<span class="btn btn-success">
 							{{ " %02d"|format(app.user.teams.prospects|filter(p => p.motifSaise == 2 and p.comrcl is null)|length) }}
 						</span>
@@ -540,7 +540,7 @@
 			<tr>
 				<th>Avenant :</th>
 				<td>
-					<a href="{{path('app_prospect_index')}}">
+					<a href="{{path('app_table_liste')}}">
 						<span class="btn btn-warning">
 							{{ " %02d"|format(app.user.teams.prospects|filter(p => p.motifSaise == 3 and p.comrcl is null)|length) }}
 						</span>
@@ -550,7 +550,7 @@
 			<tr>
 				<th>Ancienne contrat :</th>
 				<td>
-					<a href="{{path('app_prospect_index')}}">
+					<a href="{{path('app_table_liste')}}">
 						<span class='btn btn' style="background-color:Violet;">
 							{{ " %02d"|format(app.user.teams.prospects|filter(p => p.motifSaise == 4 and p.comrcl is null)|length) }}</span>
 					</a>
@@ -560,7 +560,7 @@
 			<tr>
 				<th>&#8239; &#8239; &#8239; &#8239; &#8239;   - Propre Site :</th>
 				<td>
-					<a href="{{path('app_prospect_index')}}">
+					<a href="{{path('app_table_liste')}}">
 						<span class='btn btn' style="background-color:GreenYellow;">
 							{{ " %02d"|format(app.user.teams.prospects|filter(p => p.source == 'Propre site' and p.comrcl is null)|length) }}</span>
 					</a>
@@ -570,7 +570,7 @@
 				<th>
 					&#8239; &#8239; &#8239; &#8239; &#8239;  - Revendeur :</th>
 				<td>
-					<a href="{{path('app_prospect_index')}}">
+					<a href="{{path('app_table_liste')}}">
 						<span class='btn btn' style="background-color:Aquamarine;">
 							{{ " %02d"|format(app.user.teams.prospects|filter(p => p.source == 'Revendeur' and p.comrcl is null)|length) }}</span>
 					</a>
@@ -751,10 +751,10 @@ panel.style.display = 'none';
 var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
 return new bootstrap.Popover(popoverTriggerEl)
 })</script>{# <script> 
-																																																																																																																																																							$(document).ready(function(){
-																																																																																																																																																							$("#flipp").click(function(){
-																																																																																																																																																								$("#panell").slideToggle("slow");
-																																																																																																																																																								$("#panel1").slideToggle("slow");
-																																																																																																																																																							});
-																																																																																																																																																							});
-																																																																																																																																																						</script> #}{% endblock %}
+																																																																																																																																																										$(document).ready(function(){
+																																																																																																																																																										$("#flipp").click(function(){
+																																																																																																																																																											$("#panell").slideToggle("slow");
+																																																																																																																																																											$("#panel1").slideToggle("slow");
+																																																																																																																																																										});
+																																																																																																																																																										});
+																																																																																																																																																									</script> #}{% endblock %}

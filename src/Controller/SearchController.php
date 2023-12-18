@@ -27,6 +27,7 @@ class SearchController extends AbstractController
     }
 
     /**
+     * Search for all prospects
      * @Route("/search_prospect", name="prospect_search", methods={"GET"})
      * @IsGranted("ROLE_USER", message="Tu ne peut pas acces a cet ressource")
      */
@@ -45,7 +46,6 @@ class SearchController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
 
-
             if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
                 // admi peut chercher toutes les prospects
                 $prospect = $prospectRepository->findSearch($data, $user);
@@ -62,6 +62,7 @@ class SearchController extends AbstractController
                 'search_form' => $form->createView()
             ]);
         }
+
 
 
         return $this->render('prospect/search.html.twig', [

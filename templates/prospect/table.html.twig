@@ -26,32 +26,14 @@
 				<i class="fa fa-diamond "></i>
 			</h1>
 			<hr class="my-4">
-			<div class="col-md-12">
-				<div
-					class="col-md-4 col-sm-3 mb">
-
-					<!-- REVENUE PANEL -->
-					<div class="green-panel pn">
-
-
-						<div class="green-header">
-							<h2>RECHERCHE</h2>
-						</div>
-
-						<a href="{{ path('prospect_search')}}">
-							<i class="fa fa-search fa-4x"></i>
-
-							{# <h1>{{ " %02d"|format(stats.prospects ) }}</h1> #}
-						</a>
-					</div>
-				</div>
-				<!-- /grey-panel -->
+			<div
+				class="col-md-12">
 
 
 				<!-- /col-md-4-->
 
 				<div
-					class="col-md-4 col-sm-3 mb">
+					class="col-md-3 col-sm-3 mb">
 					<!-- REVENUE PANEL -->
 					<div class="green-panel pn">
 
@@ -74,7 +56,32 @@
 				</div>
 
 				<div
-					class="col-md-4 col-sm-3 mb">
+					class="col-md-3 col-sm-3 mb">
+					<!-- REVENUE PANEL -->
+					<div class="green-panel pn">
+
+
+						<div class="green-header">
+							<h2>PROSPECTS NON TRAITÉ</h2>
+						</div>
+						<a href="{{path('notrait_index')}}">
+							<i class="fa fa-calendar-times-o fa-4x" aria-hidden="true"></i>
+
+							{% if is_granted('ROLE_ADMIN')  == true %}
+								<h1>{{ " %02d"|format(stats.prospectsNoTraite ) }}</h1>
+							{% elseif is_granted('ROLE_TEAM') == true %}
+								<h1>{{ " %02d"|format(stats.prospectsNoTrChef ) }}</h1>
+							{% elseif is_granted('ROLE_USER') == true %}
+								<h1>{{ " %02d"|format(stats.prospectsNoTrCmrcl ) }}</h1>
+							{% endif %}
+
+
+						</a>
+					</div>
+				</div>
+
+				<div
+					class="col-md-3 col-sm-3 mb">
 					<!-- REVENUE PANEL -->
 					<div class="green-panel pn">
 
@@ -90,6 +97,22 @@
 
 						</a>
 
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-3 mb">
+
+					<div class="green-panel pn">
+
+
+						<div class="green-header">
+							<h2>RECHERCHE</h2>
+						</div>
+
+						<a href="{{ path('prospect_search')}}">
+							<i class="fa fa-search fa-4x"></i>
+
+							{# <h1>{{ " %02d"|format(stats.prospects ) }}</h1> #}
+						</a>
 					</div>
 				</div>
 
@@ -157,17 +180,16 @@
 						<div class="green-header">
 							<h2>RELANCES NON TRAITÉ</h2>
 						</div>
-						<a href="{{path('notrait_index')}}">
+						<a href="{{path('relancenotraite_index')}}">
 							<i class="fa fa-calendar-times-o fa-4x" aria-hidden="true"></i>
 
 							{% if is_granted('ROLE_ADMIN')  == true %}
-								<h1>{{ " %02d"|format(stats.prospectsNoTraite ) }}</h1>
+								<h1>{{ " %02d"|format(stats.relanceNoTraite ) }}</h1>
 							{% elseif is_granted('ROLE_TEAM') == true %}
-								<h1>{{ " %02d"|format(stats.prospectsNoTrChef ) }}</h1>
+								<h1>{{ " %02d"|format(stats.relancesNoTrChef ) }}</h1>
 							{% elseif is_granted('ROLE_USER') == true %}
-								<h1>{{ " %02d"|format(stats.prospectsNoTrCmrcl ) }}</h1>
+								<h1>{{ " %02d"|format(stats.relancesNoTrCmrcl ) }}</h1>
 							{% endif %}
-
 
 						</a>
 					</div>

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 
+use ORM\PreUpdate;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\PrePersist;
@@ -26,7 +27,7 @@ class Relanced
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $relacedAt = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(length: 515, nullable: true)]
     private ?string $comment = null;
 
 
@@ -46,6 +47,15 @@ class Relanced
     {
         if (empty($this->relacedAt)) {
             $this->relacedAt = new \Datetime();
+        }
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function updateRelacedAt(): void
+    {
+        if ($this->motifRelanced === '10') {
+            $this->relacedAt = new \DateTime();
         }
     }
 

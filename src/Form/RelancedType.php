@@ -7,7 +7,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
@@ -27,7 +26,7 @@ class RelancedType extends AbstractType
                     'Prise de Contact' => [
                         'Rendez-vous' => '1',
                         'Unjoing' => '2',
-                        'Déjà Souscrit' => '3',
+
                     ],
                     'Attente Close' => '4',
                     'Tarification' => '5',
@@ -37,6 +36,7 @@ class RelancedType extends AbstractType
                         'Doublon' => '8',
                         'Passage Concurrent ' => '9',
                         'Passage Contrat ' => '10',
+                        'Déjà Souscrit' => '3',
                     ],
                 ],
                 'expanded' => false,

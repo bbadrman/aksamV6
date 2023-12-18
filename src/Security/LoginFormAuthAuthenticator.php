@@ -80,13 +80,13 @@ class LoginFormAuthAuthenticator extends AbstractLoginFormAuthenticator
         }
 
         if (in_array('ROLE_PROS', $user->getRoles(), true)) {
-            return new RedirectResponse($this->urlGenerator->generate('app_prospect_index'));
+            return new RedirectResponse($this->urlGenerator->generate('app_table_liste'));
         }
         if (in_array('ROLE_ADD_PROS', $user->getRoles(), true)) {
             return new RedirectResponse($this->urlGenerator->generate('app_prospect_new'));
         }
         if (in_array('ROLE_EDIT_PROS', $user->getRoles(), true)) {
-            return new RedirectResponse($this->urlGenerator->generate('app_prospect_index'));
+            return new RedirectResponse($this->urlGenerator->generate('app_table_liste'));
         }
 
 

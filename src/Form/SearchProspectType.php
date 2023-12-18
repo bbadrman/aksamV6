@@ -8,8 +8,10 @@ use App\Entity\Team;
 use App\Entity\User;
 use App\Search\SearchProspect;
 use App\Repository\TeamRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\Callback;
@@ -20,26 +22,46 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class SearchProspectType extends AbstractType
 {
     private $entityManager;
+    private $userRepository;
+    private $security;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, UserRepository $userRepository, Security $security)
     {
         $this->entityManager = $entityManager;
+        $this->userRepository = $userRepository;
+        $this->security = $security;
     }
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    public function buildForm(FormBuilderInterface $builder,  array $options): void
     {
+
         $teamRepository = $this->entityManager->getRepository(Team::class);
         $teams = $teamRepository->findAll();
         $teamChoices = [];
         foreach ($teams as $team) {
             $teamChoices[$team->getName()] = $team->getName();
         }
-
-        $userRepository = $this->entityManager->getRepository(User::class);
-        $comrcls = $userRepository->findAll();
+        $user = $this->security->getUser();
+        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            $comrclsForTeam = $this->userRepository->findAll();
+        } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+            $comrclsForTeam = $this->userRepository->findComrclByteamOrderedByAscName($team);
+        } else {
+            // cmrcl peut voire seulement les no traite  atacher a lui
+            $comrclsForTeam =  [];
+        }
+        // Transformez la liste de commerciaux en un tableau utilisable pour les choix dans le formulaire
         $comrclChoices = [];
-        foreach ($comrcls as $comrcl) {
+        foreach ($comrclsForTeam as $comrcl) {
             $comrclChoices[$comrcl->getUsername()] = $comrcl->getUsername();
         }
+
+
+        // $userRepository = $this->entityManager->getRepository(User::class);
+        // $comrcls = $userRepository->findAll();
+        // $comrclChoices = [];
+        // foreach ($comrcls as $comrcl) {
+        //     $comrclChoices[$comrcl->getUsername()] = $comrcl->getUsername();
+        // }
 
         $builder
             ->add('q', Type\TextType::class, [
@@ -185,13 +207,13 @@ class SearchProspectType extends AbstractType
         //     'label' => "Rest"
         // ]);
 
-        // Ajoutez la validation personnalisée pour s'assurer qu'au moins un champ est rempli
-        $builder->add('validate_at_least_one', Type\HiddenType::class, [
-            'mapped' => false,
-            'constraints' => [
-                new Callback([$this, 'validateAtLeastOneField']),
-            ],
-        ]);
+        //Ajoutez la validation personnalisée pour s'assurer qu'au moins un champ est rempli
+        // $builder->add('validate_at_least_one', Type\HiddenType::class, [
+        //     'mapped' => false,
+        //     'constraints' => [
+        //         new Callback([$this, 'validateAtLeastOneField']),
+        //     ],
+        // ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -203,32 +225,32 @@ class SearchProspectType extends AbstractType
         ]);
     }
 
-    public function getBlockPrefix(): string
-    {
-        return '';
-    }
+    // public function getBlockPrefix(): string
+    // {
+    //     return '';
+    // }
 
-    public function validateAtLeastOneField($value, ExecutionContextInterface $context)
-    {
-        $formData = $context->getRoot()->getData();
+    // public function validateAtLeastOneField($value, ExecutionContextInterface $context)
+    // {
+    //     $formData = $context->getRoot()->getData();
 
-        // Liste des champs à vérifier
-        $fieldsToCheck = ['q', 'm', 'g', 'c', 'l', 'team', 'd', 'dd', 'r', 's', 'source', 'dr', 'ddr', 'motifRelanced'];
+    //     // Liste des champs à vérifier
+    //     $fieldsToCheck = ['q', 'm', 'g', 'c', 'l', 'team', 'd', 'dd', 'r', 's', 'source', 'dr', 'ddr', 'motifRelanced'];
 
-        $fieldsFilledCount = 0;
+    //     $fieldsFilledCount = 0;
 
-        // Vérifiez combien de champs sont remplis
-        foreach ($fieldsToCheck as $field) {
-            if (!empty($formData->{$field})) {
-                $fieldsFilledCount++;
-            }
-        }
+    //     // Vérifiez combien de champs sont remplis
+    //     foreach ($fieldsToCheck as $field) {
+    //         if (!empty($formData->{$field})) {
+    //             $fieldsFilledCount++;
+    //         }
+    //     }
 
-        // Si aucun champ n'est rempli, ajoutez une violation de la contrainte
-        if ($fieldsFilledCount === 0) {
-            $context->buildViolation("Au moins un champ doit être rempli.")
-                ->atPath('q') // Remplacez 'q' par un champ de votre choix
-                ->addViolation();
-        }
-    }
+    //     // Si aucun champ n'est rempli, ajoutez une violation de la contrainte
+    //     if ($fieldsFilledCount === 0) {
+    //         $context->buildViolation("Au moins un champ doit être rempli.")
+    //             ->atPath('q') // Remplacez 'q' par un champ de votre choix
+    //             ->addViolation();
+    //     }
+    // }
 }

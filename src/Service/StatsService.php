@@ -517,10 +517,11 @@ class StatsService
         $qb = $this->manager->createQueryBuilder();
         $qb->select('COUNT(DISTINCT p.id)')
             ->from(Prospect::class, 'p')
-
+            // ->andWhere('p.team IS NOT NULL')
             ->leftJoin('p.relanceds', 'r')
-            ->andWhere('r.prospect IS NULL'); // Aucune relation avec relanced
-        // ->andWhere('p.team IS NOT NULL');
+            ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
+        ;
+
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
 
@@ -538,7 +539,7 @@ class StatsService
             ->setParameter('team', $team)
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
-            ->andWhere('p.team IS NOT NULL');
+        ;
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
 

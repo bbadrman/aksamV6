@@ -1,38 +1,99 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Client{% endblock %}
+{% block title %}Client
+{% endblock %}
 
 {% block body %}
-    <h1>Client</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ client.id }}</td>
-            </tr>
-            <tr>
-                <th>Firstname</th>
-                <td>{{ client.firstname }}</td>
-            </tr>
-            <tr>
-                <th>Lastname</th>
-                <td>{{ client.lastname }}</td>
-            </tr>
-            <tr>
-                <th>Phone</th>
-                <td>{{ client.phone }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ client.email }}</td>
-            </tr>
-        </tbody>
-    </table>
 
-    <a href="{{ path('client_index') }}">back to list</a>
+	<div class="container">
+		<section class="content-header">
+			<h1>
+				Gestion
+				<small>Clients</small>
+			</h1>
+			<ol class="breadcrumb">
+				<li>
+					<a href="{{ path('client_index') }}">
+						<i class="fa fa-object-client"></i>
+						Tous les clients</a>
+				</li>
+				<li class="active">{{ client.firstname }}</li>
+			</ol>
+		</section>
 
-    <a href="{{ path('client_edit', {'id': client.id}) }}">edit</a>
+		<div class="col-md-12 mt">
+			<div class="content-panel">
+				<table class="table table-hover">
+					<h4>
+						<i class="fa fa-angle-right"></i>
+						client :
 
-    {{ include('client/_delete_form.html.twig') }}
+						<b>{{client.firstname }}
+							{{ client.lastname }}
+						</b>
+					</h4>
+					<hr>
+					<thead>
+						<tr>
+							<div class="btn-group pull-right" style="margin-right: 5px;">
+								<button type="button" class="btn btn-danger">Action</button>
+								<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<span class="caret"></span>
+									<span class="sr-only">Toggle Dropdown</span>
+								</button>
+								<ul class="dropdown-menu">
+									<li>
+
+										<a href="{{ path('client_edit', {'id': client.id}) }}">
+											<i class="fa fa-edit"></i>
+											Modifier
+										</a>
+									</li>
+									<li class="show-delete">
+
+										{{ include('client/_delete_form.html.twig') }}
+
+									</li>
+									<li role="separator" class="divider"></li>
+									<li>
+										<a href="{{ path('client_index') }}">
+											<i class="fa fa-undo"></i>
+											Retour a la liste des clients
+										</a>
+									</li>
+								</ul>
+							</div>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th>Id</th>
+							<td>{{ client.id }}</td>
+						</tr>
+						<tr>
+							<th>Firstname</th>
+							<td>{{ client.firstname }}</td>
+						</tr>
+						<tr>
+							<th>Lastname</th>
+							<td>{{ client.lastname }}</td>
+						</tr>
+						<tr>
+							<th>Phone</th>
+							<td>{{ client.phone }}</td>
+						</tr>
+						<tr>
+							<th>Email</th>
+							<td>{{ client.email }}</td>
+						</tr>
+						<tr>
+							<th>raisonSociale</th>
+							<td>{{ client.raisonSociale }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 {% endblock %}

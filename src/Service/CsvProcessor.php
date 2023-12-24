@@ -11,8 +11,23 @@ class CsvProcessor
     {
         $csvFilePath = $csvFile->getPathname();
         $csvData = [];
+        $firstLine = true; // Variable pour suivre la première ligne
+
         if (($handle = fopen($csvFilePath, 'r')) !== false) {
-            while (($data = fgetcsv($handle)) !== false) {
+            while (($line = fgets($handle)) !== false) {
+                // Si c'est la première ligne, passer à la suivante
+                if ($firstLine) {
+                    $firstLine = false;
+                    continue;
+                }
+
+                // Diviser chaque ligne en utilisant un point-virgule (;)
+                $data = explode(';', $line);
+
+                // Supprimer les espaces autour de chaque élément
+                $data = array_map('trim', $data);
+
+                // Ajouter les données à la liste
                 $csvData[] = $data;
             }
             fclose($handle);

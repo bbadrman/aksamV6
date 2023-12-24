@@ -19,6 +19,7 @@ use App\Repository\ClientRepository;
 use App\Repository\HistoryRepository;
 use App\Repository\ProspectRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -60,32 +61,27 @@ class ProspectController extends AbstractController
         $form = $this->createForm(SearchProspectType::class, $data);
         $form->handleRequest($this->requestStack->getCurrentRequest());
         $prospect = [];
-        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
-
-            $user = $security->getUser();
-            if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
-                // admi peut voire toutes les nouveaux prospects
-                $prospect =  $prospectRepository->findByUserPaAffecter($data, null);
-            } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
-                // chef peut voire toutes les nouveaux prospects atacher a leur equipe
-                $prospect =  $prospectRepository->findByChefAffecter($data,  $user, null);
-            } else {
-                // cmrcl peut voire seulement les nouveaux prospects atacher a lui
-                $prospect =  $prospectRepository->findByCmrclAffecter($data, $user, null);
-            }
 
 
-            return $this->render('prospect/index.html.twig', [
-                'prospects' => $prospect,
-                'search_form' => $form->createView()
-            ]);
+        $user = $security->getUser();
+        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            // admi peut voire toutes les nouveaux prospects
+            $prospect =  $prospectRepository->findByUserPaAffecter($data, null);
+        } elseif (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+            // chef peut voire toutes les nouveaux prospects atacher a leur equipe
+            $prospect =  $prospectRepository->findByChefAffecter($data,  $user, null);
+        } else {
+            // cmrcl peut voire seulement les nouveaux prospects atacher a lui
+            $prospect =  $prospectRepository->findByCmrclAffecter($data, $user, null);
         }
-        return $this->render('prospect/search.html.twig', [
+
+
+
+        return $this->render('prospect/index.html.twig', [
             'prospects' => $prospect,
-            'search_form' => $form->createView(),
+            'search_form' => $form->createView()
         ]);
     }
-
 
     /**
      * les prospects a venir
@@ -183,9 +179,17 @@ class ProspectController extends AbstractController
     /**
      * @Route("/{id}", name="app_prospect_show", methods={"GET", "POST"}) 
      */
-    public function show(Request $request, Prospect $prospect, HistoryRepository $historyRepository, ProspectRepository $prospectRepository)
+    public function show(Request $request, Prospect $prospect, HistoryRepository $historyRepository, ClientRepository $clientRepository)
     {
+        $client = HttpClient::create();
+        $response = $client->request('GET', 'https://public-api.ringover.com/v2/calls', [
+            'headers' => [
+                // Ajoutez ici vos en-têtes d'authentification ou d'autorisation nécessaires
+                'Authorization' => '6eae1744801c7cdbdf6fbdce2b3ce4354547d1aa',
+            ],
+        ]);
 
+        $data = $response->toArray();
 
         // Form to modify the prospect's second number
         $gsmForm = $this->createForm(GsmType::class, $prospect);
@@ -197,34 +201,34 @@ class ProspectController extends AbstractController
         }
 
         //modife prospect afin de remplir la table cient
-        $clientForm = $this->createForm(ProspectClientType::class, $prospect);
-        $clientForm->handleRequest($request);
-
-        if ($clientForm->isSubmitted() && $clientForm->isValid()) {
-
-            $prospectRepository->add($prospect, true);
-        }
-
-        // Create a new client based on prospect information
-
-        // $prospectFirstName = $prospect->getName();
-        // $prospectLastName = $prospect->getLastName();
-        // // $prospectPhone = $prospect->getPhone();
-        // // $prospectEmail = $prospect->getEmail();
-
-        // $client = new Client();
-
-        // $client->setFirstName($prospectFirstName);
-        // $client->setLastName($prospectLastName);
-        // // $client->setPhone($prospectPhone);
-        // // $client->setEmail($prospectEmail);
-
-        // $clientForm = $this->createForm(ClientType::class, $client);
+        // $clientForm = $this->createForm(ProspectClientType::class, $prospect);
         // $clientForm->handleRequest($request);
 
         // if ($clientForm->isSubmitted() && $clientForm->isValid()) {
-        //     $clientRepository->add($client, true);
+
+        //     $prospectRepository->add($prospect, true);
         // }
+
+        //Create a new client based on prospect information
+
+        $prospectFirstName = $prospect->getName();
+        $prospectLastName = $prospect->getLastName();
+        $raisonSociale = $prospect->getRaisonSociale();
+        // $prospectEmail = $prospect->getEmail();
+
+        $client = new Client();
+
+        $client->setFirstName($prospectFirstName);
+        $client->setLastName($prospectLastName);
+        $client->setRaisonSociale($raisonSociale);
+        // $client->setEmail($prospectEmail);
+
+        $clientForm = $this->createForm(ClientType::class, $client);
+        $clientForm->handleRequest($request);
+
+        if ($clientForm->isSubmitted() && $clientForm->isValid()) {
+            $clientRepository->add($client, true);
+        }
 
 
 
@@ -255,6 +259,7 @@ class ProspectController extends AbstractController
             'form' => $form->createView(),
             'clientForm' => $clientForm->createView(),
             'gsmForm' => $gsmForm->createView(),
+            'ringoverData' => $data,
         ]);
     }
 

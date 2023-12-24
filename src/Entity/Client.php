@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Validator as MyAssert;
+use Doctrine\DBAL\Types\Types;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ClientRepository;
@@ -36,6 +37,12 @@ class Client
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Email(message: "Adresse e-mail non valide")]
     private $email;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $raisonSociale = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $adress = null;
 
     public function getId(): ?int
     {
@@ -86,6 +93,30 @@ class Client
     public function setEmail(?string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getRaisonSociale(): ?string
+    {
+        return $this->raisonSociale;
+    }
+
+    public function setRaisonSociale(?string $raisonSociale): static
+    {
+        $this->raisonSociale = $raisonSociale;
+
+        return $this;
+    }
+
+    public function getAdress(): ?string
+    {
+        return $this->adress;
+    }
+
+    public function setAdress(?string $adress): static
+    {
+        $this->adress = $adress;
 
         return $this;
     }

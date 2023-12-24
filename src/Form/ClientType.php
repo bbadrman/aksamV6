@@ -43,7 +43,20 @@ class ClientType extends AbstractType
                     'placeholder' => "Merci de saisir l'adresse email"
                 ]
             ])
-        ;
+            ->add('adress', Type\TextareaType::class, [
+                'label' => 'Address complét *',
+
+                'attr' => [
+                    'placeholder' => 'Address compltét du client',
+                ]
+            ])
+            ->add('raisonSociale', Type\TextType::class, [
+                'label' => 'Raison sociale ',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Raison sociale',
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

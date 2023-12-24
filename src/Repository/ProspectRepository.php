@@ -1523,7 +1523,7 @@ class ProspectRepository extends ServiceEntityRepository
     }
 
     /**
-     * Find list a prospect no traite (qui sont pas de motirelance et dejat affecter au team et cmrcl)
+     * Find list a prospect no traite (qui sont pas de motifrelance et dejat affecter au team et cmrcl)
      * @param SearchProspect $search
      * @return PaginationInterface
      */
@@ -1537,8 +1537,8 @@ class ProspectRepository extends ServiceEntityRepository
             ->select('p, t, f, r')
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
-            // ->andWhere('p.team IS NOT NULL')  // Affecté à une équipe
-            // ->andWhere('p.comrcl IS NOT NULL') 
+            // ->andWhere('p.team IS NOT NULL')  // Affecté à une équipe 
+            // ->andWhere('p.comrcl IS NOT NULL')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
             ->orderBy('p.id', 'DESC');

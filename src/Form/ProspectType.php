@@ -57,6 +57,13 @@ class ProspectType extends AbstractType
             ->add('phone', Type\TelType::class, [
                 'label' => 'Téléphone 1 *',
                 'required' => true,
+                'constraints' => new Length([
+                    'min' => 10,  'minMessage' => '  
+                    le numéro de téléphone doit composer des 10 chiffres y a compris le 0 ',
+                    'max' => 10, 'maxMessage' => '  
+                    le numéro de téléphone doit composer des 10 chiffres y a compris le 0 '
+                ]),
+
                 'attr' => [
                     'placeholder' => 'Merci de saisir le numéro de téléphone'
                 ]
@@ -149,6 +156,12 @@ class ProspectType extends AbstractType
             ->add('gsm', Type\TelType::class, [
                 'label' => 'Téléphone ',
                 'required' => false,
+                'constraints' => new Length([
+                    'min' => 10,  'minMessage' => '  
+                    le numéro de téléphone doit composer des 10 chiffres y a compris le 0 ',
+                    'max' => 10, 'maxMessage' => '  
+                    le numéro de téléphone doit composer des 10 chiffres y a compris le 0 '
+                ]),
                 'attr' => [
                     'placeholder' => 'Merci de saisir si la deuxieme numéro de téléphone'
                 ]

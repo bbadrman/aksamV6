@@ -44,8 +44,8 @@
 		</ol>
 		<br>
 		{# {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')  == true %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		<a href="{{ path('app_prospect_new') }}" class="btn btn-primary">Ajouter Prospect</a>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																          	{% endif %} #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																<a href="{{ path('app_prospect_new') }}" class="btn btn-primary">Ajouter Prospect</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																														          	{% endif %} #}
 	</section>
 
 	<div class="row mt">
@@ -63,7 +63,7 @@
 							<th>contact</th>
 							<th>Start Time</th>
 							<th>Fin d'appel</th>
-
+							<th>dure appelé</th>
 							<th>Numéro de l'appelant</th>
 							<th>Numéro appelé</th>
 
@@ -82,11 +82,15 @@
 								{% else %}
 									<td>No user data</td>
 								{% endif %}
-								<td>{{ call.contact.firstname }}
-									{{ call.contact.lastname }}</td>
+								{% if call.contact is not null %}
+									<td>{{ call.contact.firstname }}
+										{{ call.contact.lastname }}</td>
+								{% else %}
+									<td>No contact data</td>
+								{% endif %}
 								<td>{{ call.start_time }}</td>
 								<td>{{ call.end_time }}</td>
-
+								<td>{{ (call.total_duration / 60) | round(2, 'floor') | number_format(2, '.', ',') }}</td>
 
 								<td>+{{ call.from_number }}</td>
 								<td>+{{ call.to_number }}</td>

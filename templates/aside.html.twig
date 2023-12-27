@@ -8,11 +8,11 @@
 		<a href="{% if app.user is not null %} {{ path('user_show', {'id':app.user.id }) }}{% else %} {{ asset('images/no-image.png') }}{% endif %}">
 
 			<img src="
-																																																																																																						{% if app.user is not null %}
-																																																																																																							{{ asset('images/aksamLogo.jpeg') }}
-																																																																																																					 	{% else %}
-																																																																																																							{{ asset('images/no-image.png') }}
-																																																																																																						{% endif %}" class="img-circle" width="80" alt="">
+																																																																																																										{% if app.user is not null %}
+																																																																																																											{{ asset('images/aksamLogo.jpeg') }}
+																																																																																																									 	{% else %}
+																																																																																																											{{ asset('images/no-image.png') }}
+																																																																																																										{% endif %}" class="img-circle" width="80" alt="">
 		</a>
 
 	</p>
@@ -21,28 +21,28 @@
 	<h5
 		class="centered">
 		{# {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-																																														{% set user = app.user %}
-																																														{% set roles = user.getRoles() %}
-																																													{% if roles is not empty %}
-																																															{% for role in roles %}
-																																																<p>  
-																																																		 {% if role == "ROLE_TEAM" %}
-																																																			 Chef d'equipe<br>
-																																																		 {% elseif role == "ROLE_SUPER_ADMIN" %}
-																																																			 Directeur <br>
-																																																		 {% elseif role == "ROLE_ADMIN" %}
-																																																			 Admin<br> 				
-																																																		 {% elseif role == "ROLE_PROS" %}
-																																																			 Commercial<br> 
-																																																		 {% elseif role == "ROLE_ADD_PROS" %}
-																																																			 Ajouter Prospect<br> 
-																																																		 {% elseif role == "ROLE_EDIT_PROS" %}
-																																																			 Edite Prospect<br>
-																																																		 {% endif %}
-																																														        </p>
-																																													        {% endfor %}
-																																													{% endif %}
-																																												{% endif %} #}
+																																																{% set user = app.user %}
+																																																{% set roles = user.getRoles() %}
+																																															{% if roles is not empty %}
+																																																	{% for role in roles %}
+																																																		<p>  
+																																																				 {% if role == "ROLE_TEAM" %}
+																																																					 Chef d'equipe<br>
+																																																				 {% elseif role == "ROLE_SUPER_ADMIN" %}
+																																																					 Directeur <br>
+																																																				 {% elseif role == "ROLE_ADMIN" %}
+																																																					 Admin<br> 				
+																																																				 {% elseif role == "ROLE_PROS" %}
+																																																					 Commercial<br> 
+																																																				 {% elseif role == "ROLE_ADD_PROS" %}
+																																																					 Ajouter Prospect<br> 
+																																																				 {% elseif role == "ROLE_EDIT_PROS" %}
+																																																					 Edite Prospect<br>
+																																																				 {% endif %}
+																																																        </p>
+																																															        {% endfor %}
+																																															{% endif %}
+																																														{% endif %} #}
 
 
 		{% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -87,36 +87,36 @@
 				</span>
 			</a>
 			{# <a href="app_table" class="nav-link {% if page in ['app_prospect_index', 'app_prospect_new', 'prospect_search', 'app_prospect_show', 'app_prospect_edit', 'prospect_reaffecter'] %}active{% endif %}" href="javascript:;">
-																																														<i class="fa fa-diamond "></i>
-																																														<span>Prospect</span>
-																																													</a> #}
+																																																	<i class="fa fa-diamond "></i>
+																																																	<span>Prospect</span>
+																																																</a> #}
 
 			{# <ul class="sub">
-																																								{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')  == true %}
-																																				
-																																									<li>
-																																										<a href="{{path('app_table_liste')}}">Prospect</a>
-																																									</li>
-																																				
-																																									<li>
-																																										<a href="{{path('app_prospect_new')}}">Ajouter Prospect</a>
-																																									</li>
-																																								{% else %}
-																																									<li>
-																																										<a href="{{path('app_prospect_index')}}">Prospects</a>
-																																									</li>
-																																								{% endif %}
-																																				
-																																				
-																																								<li>
-																																									<a href="{{path('prospect_search')}}">Recherche</a>
-																																								</li>
-																																				
-																																								<li>
-																																									<a href="#">Traitement</a>
-																																								</li>
-																																				
-																																							</ul> #}
+																																											{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')  == true %}
+																																							
+																																												<li>
+																																													<a href="{{path('app_table_liste')}}">Prospect</a>
+																																												</li>
+																																							
+																																												<li>
+																																													<a href="{{path('app_prospect_new')}}">Ajouter Prospect</a>
+																																												</li>
+																																											{% else %}
+																																												<li>
+																																													<a href="{{path('app_prospect_index')}}">Prospects</a>
+																																												</li>
+																																											{% endif %}
+																																							
+																																							
+																																											<li>
+																																												<a href="{{path('prospect_search')}}">Recherche</a>
+																																											</li>
+																																							
+																																											<li>
+																																												<a href="#">Traitement</a>
+																																											</li>
+																																							
+																																										</ul> #}
 		</li>
 	{% endif %}
 	<!-- END Prospect -->
@@ -181,26 +181,26 @@
 			class="sub-menu">
 
 			{# <a class="nav-link {% if page in ['customer_index', 'customer_new', 'customer_show', '#'] %}active{% endif %}" href="javascript:;">
-																						<i class="fas fa-user-check"></i>
-																						<span>Clients</span>
-																					</a> #}
+																									<i class="fas fa-user-check"></i>
+																									<span>Clients</span>
+																								</a> #}
 			<a class="nav-link " href="{{ path('client_index') }}">
 				<i class="fa fa-diamond "></i>
 				<span>Clients
 				</span>
 			</a>
 			{# <ul class="sub">
-																									{% if is_granted('ROLE_ADD_CLIENT') == true %}
-																										<li>
-																											<a href="{{ path('client_new') }} ">Ajouter un Client</a>
-																										</li>
-																									{% endif %}
-																									{% if is_granted('ROLE_EDIT_CLIENT') == true %}
-																										<li>
-																											<a href="{{ path('client_index') }}">Gérer les Clients</a>
-																										</li>
-																									{% endif %}
-																								</ul> #}
+																												{% if is_granted('ROLE_ADD_CLIENT') == true %}
+																													<li>
+																														<a href="{{ path('client_new') }} ">Ajouter un Client</a>
+																													</li>
+																												{% endif %}
+																												{% if is_granted('ROLE_EDIT_CLIENT') == true %}
+																													<li>
+																														<a href="{{ path('client_index') }}">Gérer les Clients</a>
+																													</li>
+																												{% endif %}
+																											</ul> #}
 		</li>
 	{% endif %}
 {% endif %}
@@ -309,7 +309,7 @@
 				<li class="sub-menu">
 
 
-					<a class="nav-link " href="{{ path('upload_csv') }}">
+					<a class="nav-link " href="{{ path('ringover-api') }}">
 						<i class="fa fa-upload" aria-hidden="true"></i>
 						<span>Appels
 						</span>

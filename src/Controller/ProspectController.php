@@ -200,16 +200,6 @@ class ProspectController extends AbstractController
             $this->entityManager->flush();
         }
 
-        //modife prospect afin de remplir la table cient
-        // $clientForm = $this->createForm(ProspectClientType::class, $prospect);
-        // $clientForm->handleRequest($request);
-
-        // if ($clientForm->isSubmitted() && $clientForm->isValid()) {
-
-        //     $prospectRepository->add($prospect, true);
-        // }
-
-        //Create a new client based on prospect information
 
         $prospectFirstName = $prospect->getName();
         $prospectLastName = $prospect->getLastName();

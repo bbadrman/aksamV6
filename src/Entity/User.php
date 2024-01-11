@@ -94,6 +94,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     private $prospections;
 
+    #[ORM\OneToMany(mappedBy: 'cmrl', targetEntity: Client::class)]
+    private Collection $clients;
+
 
 
 
@@ -103,6 +106,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->products = new ArrayCollection();
         $this->prospects = new ArrayCollection();
         $this->prospections = new ArrayCollection();
+        $this->clients = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -404,5 +408,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     //     // Utilisez la méthode count() de la collection prospects pour obtenir le nombre de prospects
     //     return $this->prospects->count();
     // }
+
+    /**
+     * @return Collection<int, Client>
+     */
+    public function getClients(): Collection
+    {
+        return $this->clients;
+    }
+
+    public function addClient(Client $client): static
+    {
+        if (!$this->clients->contains($client)) {
+            $this->clients->add($client);
+            $client->setCmrl($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClient(Client $client): static
+    {
+        if ($this->clients->removeElement($client)) {
+            // set the owning side to null (unless already changed)
+            if ($client->getCmrl() === $this) {
+                $client->setCmrl(null);
+            }
+        }
+
+        return $this;
+    }
 
 }

@@ -39,24 +39,23 @@ class LoginFormAuthAuthenticator extends AbstractLoginFormAuthenticator
 
         $request->getSession()->set(Security::LAST_USERNAME, $username);
 
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
+
+        if (!$user) {
+            // Échec de l'authentification avec une erreur personnalisée
+            throw new CustomUserMessageAuthenticationException('Ce nom d\'utilisateur est introuvable.');
+        }
+
+
         return new Passport(
             new UserBadge($username),
             new PasswordCredentials($request->request->get('password', '')),
             [
                 new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
             ]
-
         );
-
-        $username = $this->entityManager->getRepository(User::class)->findOneBy(['username' => ['username']]);
-
-        if (!$username) {
-            // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Cette Username est introuvable.');
-        }
-
-        return $username;
     }
+
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {

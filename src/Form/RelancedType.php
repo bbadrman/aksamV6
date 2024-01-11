@@ -21,7 +21,7 @@ class RelancedType extends AbstractType
             ->add('motifRelanced', Type\ChoiceType::class, [
                 'label' => 'Motive de Relance ',
                 'required' => true,
-                'placeholder' => '--Merci de selectie-- ',
+                'placeholder' => '       ',
                 'choices' => [
                     'Prise de Contact' => [
                         'Rendez-vous' => '1',

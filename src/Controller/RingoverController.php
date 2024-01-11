@@ -5,12 +5,14 @@ namespace App\Controller;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class RingoverController extends AbstractController
 {
     /**
      * @Route("/ringover", name="ringover-api")
+     * @IsGranted("ROLE_USER", message="Tu ne peut pas acces a cet ressource")
      */
     public function fetchRingoverData(): Response
     {

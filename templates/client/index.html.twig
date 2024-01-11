@@ -50,8 +50,8 @@
 						</div>
 						<div
 							class="col-xs-4" style="float: right !important;  margin-right: 5px;">{# <div class="input-group">
-																																																																																																																																																																																																																																									{% include 'client/_search_form.html.twig' with {search_form: search_form} only %}
-																																																																																																																																																																																																																																								</div> #}
+																																																																																																																																																																																																																																																																																									{% include 'client/_search_form.html.twig' with {search_form: search_form} only %}
+																																																																																																																																																																																																																																																																																								</div> #}
 						</div>
 					</div>
 					<hr>
@@ -77,16 +77,17 @@
 									<td>{{ client.phone }}</td>
 									<td>{{ client.email }}</td>
 									<td>{{ client.raisonSociale }}</td>
+
 									<td class="btn-toolbar">
+
 										<a href="{{ path('client_show', {'id': client.id}) }}" class="btn btn-success btn-xs">
 											<i class="fa fa-eye"></i>
 										</a>
-										<a href="{{ path('client_edit', {'id': client.id}) }}" class="btn btn-primary btn-xs">
-											<i class="fa fa-pencil"></i>
-										</a>
-										{% set form_title = '<i class="fa fa-trash-o"></i>' %}
-										{{ include('client/_delete_form.html.twig', {
-                                    'form_title': form_title}) }}
+										{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') %}
+											<a href="{{ path('client_edit', {'id': client.id}) }}" class="btn btn-primary btn-xs">
+												<i class="fa fa-pencil"></i>
+											</a>
+										{% endif %}
 									</td>
 
 								</tr>
@@ -96,18 +97,16 @@
 								</tr>
 							{% endfor %}
 						</tbody>
-
-
-						<tfoot class="text-right">
-							<tr>
-								<td colspan="8">
-									{{ knp_pagination_render(clients, 'pagination.html.twig') }}
-								</td>
-							</tr>
-						</tfoot>
-					</table>
-				</div>
+					</tbody>
+					<tfoot class="text-right">
+						<tr>
+							<td colspan="8">
+								{{ knp_pagination_render(clients, 'pagination.html.twig') }}
+							</td>
+						</tr>
+					</tfoot>
+				</table>
 			</div>
 		</div>
 	</div>
-{% endblock %}
+</div>{% endblock %}

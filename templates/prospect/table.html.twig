@@ -45,7 +45,7 @@
 							<i class="fa fa-newspaper-o fa-4x" aria-hidden="true"></i>
 
 							{% if is_granted('ROLE_ADMIN')  == true %}
-								<h1>{{ " %02d"|format(stats.prospectsPasAffect ) }}</h1>
+								<h1>{{ " %02d"|format(stats.prospectspasaffect ) }}</h1>
 							{% elseif is_granted('ROLE_TEAM') == true %}
 								<h1>{{ " %02d"|format(stats.prospectsChefNv ) }}</h1>
 							{% elseif is_granted('ROLE_USER') == true %}
@@ -62,7 +62,7 @@
 
 
 						<div class="green-header">
-							<h2>PROSPECTS NON TRAITÉ</h2>
+							<h2>PROSPECTS NON TRAITÉS</h2>
 						</div>
 						<a href="{{path('notrait_index')}}">
 							<i class="fa fa-calendar-times-o fa-4x" aria-hidden="true"></i>
@@ -178,7 +178,7 @@
 
 
 						<div class="green-header">
-							<h2>RELANCES NON TRAITÉ</h2>
+							<h2>RELANCES NON TRAITÉS</h2>
 						</div>
 						<a href="{{path('relancenotraite_index')}}">
 							<i class="fa fa-calendar-times-o fa-4x" aria-hidden="true"></i>

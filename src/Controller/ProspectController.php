@@ -15,6 +15,7 @@ use App\Search\SearchProspect;
 use App\Form\ProspectAffectType;
 use App\Form\ProspectClientType;
 use App\Form\SearchProspectType;
+use App\Repository\TeamRepository;
 use App\Repository\ClientRepository;
 use App\Repository\HistoryRepository;
 use App\Repository\ProspectRepository;
@@ -204,14 +205,18 @@ class ProspectController extends AbstractController
         $prospectFirstName = $prospect->getName();
         $prospectLastName = $prospect->getLastName();
         $raisonSociale = $prospect->getRaisonSociale();
-        // $prospectEmail = $prospect->getEmail();
+        $team = $prospect->getTeam();
+        $cmrl = $prospect->getComrcl();
+
 
         $client = new Client();
 
         $client->setFirstName($prospectFirstName);
         $client->setLastName($prospectLastName);
         $client->setRaisonSociale($raisonSociale);
-        // $client->setEmail($prospectEmail);
+        $client->setTeam($team);
+        $client->setCmrl($cmrl);
+
 
         $clientForm = $this->createForm(ClientType::class, $client);
         $clientForm->handleRequest($request);
@@ -256,9 +261,10 @@ class ProspectController extends AbstractController
     /**
      * @Route("/{id}/edit", name="app_prospect_edit", methods={"GET", "POST"}) 
      */
-    public function edit(Request $request, Prospect $prospect, ProspectRepository $prospectRepository): Response
+    public function edit(Request $request, Prospect $prospect, ProspectRepository $prospectRepository,  TeamRepository $teamRepository, Security $security): Response
     {
 
+        $user = $security->getUser();
         $form = $this->createForm(ProspectAffectType::class, $prospect);
         $form->handleRequest($request);
 
@@ -297,10 +303,13 @@ class ProspectController extends AbstractController
             $this->addFlash('info', 'Votre Prospect a été affecté avec succès!');
             return $this->redirectToRoute('app_table_liste', [], Response::HTTP_SEE_OTHER);
         }
-
+        $teams = $teamRepository->findAll();
+        $team = $teamRepository->findByTeamConect($user);
         return $this->renderForm('partials/_show_modal.html.twig', [
             'prospect' => $prospect,
             'form' => $form,
+            'team' => $teams,
+            'teams' => $team,
         ]);
     }
 

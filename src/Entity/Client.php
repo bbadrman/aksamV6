@@ -44,6 +44,12 @@ class Client
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $adress = null;
 
+    #[ORM\ManyToOne(inversedBy: 'clients')]
+    private ?Team $team = null;
+
+    #[ORM\ManyToOne(inversedBy: 'clients')]
+    private ?User $cmrl = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -117,6 +123,30 @@ class Client
     public function setAdress(?string $adress): static
     {
         $this->adress = $adress;
+
+        return $this;
+    }
+
+    public function getTeam(): ?Team
+    {
+        return $this->team;
+    }
+
+    public function setTeam(?Team $team): static
+    {
+        $this->team = $team;
+
+        return $this;
+    }
+
+    public function getCmrl(): ?User
+    {
+        return $this->cmrl;
+    }
+
+    public function setCmrl(?User $cmrl): static
+    {
+        $this->cmrl = $cmrl;
 
         return $this;
     }

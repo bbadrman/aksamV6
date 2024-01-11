@@ -511,6 +511,30 @@ class ProspectRepository extends ServiceEntityRepository
     }
 
 
+    // caclcule le total du prospect en panier
+    public function getProspectCountPanierJour()
+    {
+        $today = new \DateTime();
+        $today->setTime(0, 0, 0);
+
+        $endOfDay = clone $today;
+        $endOfDay->setTime(23, 59, 59);
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(p)')
+            ->from(Prospect::class, 'p')
+            ->leftJoin('p.histories', 'r')
+            ->where('p.team is NOT NULL')
+            ->andWhere("p.comrcl is NULL")
+
+            ->andWhere('r.actionDate BETWEEN :startOfDay AND :endOfDay')
+            // ->andWhere('p.creatAt BETWEEN :startOfDay AND :endOfDay')
+            ->setParameter('startOfDay', $today)
+            ->setParameter('endOfDay', $endOfDay);
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
 
     /**
      * Find list a prospect Relanced no traités
@@ -1270,16 +1294,18 @@ class ProspectRepository extends ServiceEntityRepository
      */
     public function findNonTraiter(SearchProspect $search): PaginationInterface
     {
-        // $now = new \DateTime();
-        // $yesterday = clone $now;
-        // $yesterday->modify('-24 hours');
+        $now = new \DateTime();
+        $yesterday = clone $now;
+        $yesterday->modify('-24 hours');
 
         $query = $this->createQueryBuilder('p')
             ->select('p, t, f, r')
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
-            // ->andWhere('p.team IS NOT NULL')  // Affecté à une équipe 
+            ->andWhere('p.team IS NOT NULL')  // Affecté à une équipe 
             // ->andWhere('p.comrcl IS NOT NULL')
+            ->andWhere('p.creatAt <= :yesterday')
+            ->setParameter('yesterday', $yesterday)
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
             ->orderBy('p.id', 'DESC');
@@ -1367,6 +1393,9 @@ class ProspectRepository extends ServiceEntityRepository
      */
     public function findNonTraiterChef(SearchProspect $search, User $user): PaginationInterface
     {
+        $now = new \DateTime();
+        $yesterday = clone $now;
+        $yesterday->modify('-24 hours');
 
         $team = $user->getTeams();
         $query = $this->createQueryBuilder('p')
@@ -1377,6 +1406,8 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
             ->andWhere('p.team IS NOT NULL')
+            ->andWhere('p.creatAt <= :yesterday')
+            ->setParameter('yesterday', $yesterday)
             ->leftJoin('p.comrcl', 'f')
             ->orderBy('p.id', 'DESC');
         if ((!empty($search->q))) {
@@ -1456,14 +1487,19 @@ class ProspectRepository extends ServiceEntityRepository
      */
     public function findNonTraiterCmrcl(SearchProspect $search, $id): PaginationInterface
     {
-
+        $now = new \DateTime();
+        $yesterday = clone $now;
+        $yesterday->modify('-24 hours');
 
         $query = $this->createQueryBuilder('p')
             ->select('p,   r')
             ->andWhere('p.comrcl = :val')
             ->setParameter('val', $id)
             ->leftJoin('p.relanceds', 'r')
-            ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
+            ->andWhere('r.prospect IS NULL')
+            ->andWhere('p.creatAt <= :yesterday')
+            ->setParameter('yesterday', $yesterday)
+            // Aucune relation avec relanced
 
             ->orderBy('p.id', 'DESC');
         if ((!empty($search->q))) {

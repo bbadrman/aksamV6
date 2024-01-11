@@ -256,51 +256,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-// select typeProspect
-
-var categoryField = document.getElementById('prospect_typeProspect');
-var subcategoryContainer = document.getElementById('subcategory-container');
-
-if (categoryField !== null) {
-	categoryField.addEventListener('change', function () {
-		if (categoryField.value === 'Professionnels') {
-
-			subcategoryContainer.style.display = 'block';
-		} else {
-			subcategoryContainer.style.display = 'none';
-		}
-	});
+// form prospect  select 
+function setupDisplayControl(fieldId, containerId, targetValue) {
+	var field = document.getElementById(fieldId);
+	var container = document.getElementById(containerId);
+	if (field !== null && container !== null) {
+		field.addEventListener('change', function () {
+			container.style.display = field.value === targetValue ? 'block' : 'none';
+		});
+	}
 }
 
+// Configuration des différents champs de formulaire
+setupDisplayControl('prospect_typeProspect', 'subcategory-container', 'Professionnels');
+setupDisplayControl('prospect_source', 'subMotiv-container', 'Saisie manuelle');
+setupDisplayControl('prospect_lastAssure', 'subResil-container', 'Oui');
 
 
-//select motiveProspect
-var motifField = document.getElementById('prospect_source');
-var submotifContainer = document.getElementById('subMotiv-container');
-if (motifField !== null) {
-	motifField.addEventListener('change', function () {
-		if (motifField.value === 'Saisie manuelle') {
 
-			submotifContainer.style.display = 'block';
-		} else {
-			submotifContainer.style.display = 'none';
-		}
-	});
-}
 
-//select motiveResil
-var resilField = document.getElementById('prospect_lastAssure');
-var subresilContainer = document.getElementById('subResil-container');
-if (resilField !== null) {
-	resilField.addEventListener('change', function () {
-		if (resilField.value === 'Oui') {
-
-			subresilContainer.style.display = 'block';
-		} else {
-			subresilContainer.style.display = 'none';
-		}
-	});
-}
 
 
 
@@ -428,3 +402,48 @@ $(document).ready(function () {
 // 	$("#panel1").slideToggle("slow");
 // });
 // });
+// // select typeProspect
+
+// var categoryField = document.getElementById('prospect_typeProspect');
+// var subcategoryContainer = document.getElementById('subcategory-container');
+
+// if (categoryField !== null) {
+// 	categoryField.addEventListener('change', function () {
+// 		if (categoryField.value === 'Professionnels') {
+
+// 			subcategoryContainer.style.display = 'block';
+// 		} else {
+// 			subcategoryContainer.style.display = 'none';
+// 		}
+// 	});
+// }
+
+
+
+// //select motiveProspect
+// var motifField = document.getElementById('prospect_source');
+// var submotifContainer = document.getElementById('subMotiv-container');
+// if (motifField !== null) {
+// 	motifField.addEventListener('change', function () {
+// 		if (motifField.value === 'Saisie manuelle') {
+
+// 			submotifContainer.style.display = 'block';
+// 		} else {
+// 			submotifContainer.style.display = 'none';
+// 		}
+// 	});
+// }
+
+// //select motiveResil
+// var resilField = document.getElementById('prospect_lastAssure');
+// var subresilContainer = document.getElementById('subResil-container');
+// if (resilField !== null) {
+// 	resilField.addEventListener('change', function () {
+// 		if (resilField.value === 'Oui') {
+
+// 			subresilContainer.style.display = 'block';
+// 		} else {
+// 			subresilContainer.style.display = 'none';
+// 		}
+// 	});
+// }

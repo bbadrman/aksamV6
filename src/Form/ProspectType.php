@@ -257,6 +257,34 @@ class ProspectType extends AbstractType
             }
         );
 
+        //pour reformater le numero nationnal
+        $builder->addEventListener(
+            FormEvents::SUBMIT,
+            function (FormEvent $event) {
+                $prospect = $event->getData();
+                $phone = $prospect->getPhone(); // Récupération du numéro de téléphone
+                $gsm = $prospect->getGsm(); // Récupération du numéro de GSM
+
+                // Convertir le numéro de téléphone si nécessaire
+                if ($phone !== null && $phone !== '') {
+                    $formattedPhone = $this->convertPhoneNumberToInternational($phone);
+                    if ($formattedPhone !== null && $formattedPhone !== '') {
+                        $prospect->setPhone($formattedPhone);
+                    }
+                }
+
+                // Convertir le numéro de GSM si nécessaire
+                if ($gsm !== null && $gsm !== '') {
+                    $formattedGsm = $this->convertPhoneNumberToInternational($gsm);
+                    if ($formattedGsm !== null && $formattedGsm !== '') {
+                        $prospect->setGsm($formattedGsm);
+                    }
+                }
+            }
+        );
+
+
+
         if ($options['editing']) {
             $builder->remove('motifResil')
                 ->remove('assure')
@@ -294,5 +322,19 @@ class ProspectType extends AbstractType
             'editing' => false,
 
         ]);
+    }
+
+    private function convertPhoneNumberToInternational($phoneNumber)
+    {
+        $phoneNumber = preg_replace('/\D/', '', $phoneNumber);
+
+        // Vérifier la longueur du numéro pour s'assurer qu'il est valide
+        if (strlen($phoneNumber) === 10) {
+            // Vérifier s'il commence par '0' (format local)
+            if (substr($phoneNumber, 0, 1) === '0') {
+                // Remplacer le '0' par '33' pour obtenir le format international
+                return '33' . substr($phoneNumber, 1);
+            }
+        }
     }
 }

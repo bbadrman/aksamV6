@@ -122,7 +122,6 @@ class ClientRepository extends ServiceEntityRepository
 
         $query = $this->createQueryBuilder('c')
 
-
             ->andwhere('c.team = :team')
             ->setParameter('team', $team)
             ->orderBy('c.id', 'DESC');
@@ -173,11 +172,10 @@ class ClientRepository extends ServiceEntityRepository
     {
 
 
-
         $query = $this->createQueryBuilder('c')
 
 
-            ->andWhere('p.comrcl = :val')
+            ->andWhere('c.cmrl = :val')
             ->setParameter('val', $id)
             ->orderBy('c.id', 'DESC');
 

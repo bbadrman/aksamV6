@@ -111,11 +111,17 @@ class DashboardController extends AbstractController
      * @return Response  
      */
 
-    public function list(TeamRepository $teamRepository)
+    public function list(TeamRepository $teamRepository, ProspectRepository $prospectRepository)
     {
+
         $teams = $teamRepository->findAll();
+
         return $this->render('dashboard/list.html.twig', [
             'team' => $teams,
+
+
+
+
         ]);
     }
 

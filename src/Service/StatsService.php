@@ -31,7 +31,7 @@ class StatsService
         $products = $this->getProductsCount();
         $clients = $this->getClientsCount();
         $prospectsAffect = $this->getProspectCount();
-        $prospectsPasAffect = $this->getProspectPasCount();
+        $prospectspasaffect = $this->getProspectPasCount();
         $prospectsChefNv = $this->getProspectChefNv($user);
         $prospectsCmrclNv = $this->getProspectCmrclNv($user);
         $prospectsTeam = $this->getProspectCountRelance();
@@ -56,6 +56,8 @@ class StatsService
 
         // caclcule le total du prospect en panier
         $prospectsPanier = $this->getProspectCountPanier();
+        // $prospectsPanierJour = $this->getProspectCountPanierJour();
+
         $prospectsnow = $this->getProspectCountNow();
         $prospects = $this->getProspectTotlCount();
         $unjoiniable = $this->getProspectCountUnjoiniable();
@@ -74,43 +76,41 @@ class StatsService
         $prospectTotalTeamC = $this->getProspectTeamC($user);
         $prospectTotalTeamD = $this->getProspectTeamD($user);
 
-        $prospectPrngeEq = $this->getProspectParngEquipe($user);
-        $prospectAppeEq = $this->getProspectAppEquipe($user);
-        $prospectAvneEq = $this->getProspectAvnEquipe($user);
-        $prospectAutrEq = $this->getProspectAutrEquipe($user);
-        $prospectAncienEq = $this->getProspectAncienEquipe($user);
-        $prospectSiteEq = $this->getProspectSiteEquipe($user);
-        $prospectRevndEq = $this->getProspectRevendeurEquipe($user);
+        // $prospectPrngeEq = $this->getProspectParngEquipe($user);
+        // $prospectAppeEq = $this->getProspectAppEquipe($user);
+        // $prospectAvneEq = $this->getProspectAvnEquipe($user);
+        // $prospectAutrEq = $this->getProspectAutrEquipe($user);
+        // $prospectAncienEq = $this->getProspectAncienEquipe($user);
+        // $prospectSiteEq = $this->getProspectSiteEquipe($user);
+        // $prospectRevndEq = $this->getProspectRevendeurEquipe($user);
 
-        $prospectPrngeEqC = $this->getProspectParngEquipeC($user);
-        $prospectAppeEqC = $this->getProspectAppEquipeC($user);
-        $prospectAvneEqC = $this->getProspectAvnEquipeC($user);
+        // $prospectPrngeEqC = $this->getProspectParngEquipeC($user);
+        // $prospectAppeEqC = $this->getProspectAppEquipeC($user);
+        // $prospectAvneEqC = $this->getProspectAvnEquipeC($user);
         // $prospectAutrEqC = $this->getProspectAutrEquipeC($user);
-        $prospectAncienEqC = $this->getProspectAncienEquipeC($user);
-        $prospectSiteEqC = $this->getProspectSiteEquipeC($user);
-        $prospectRevndEqC = $this->getProspectRevendeurEquipeC($user);
+        // $prospectAncienEqC = $this->getProspectAncienEquipeC($user);
 
-        $prospectPrngeEqA = $this->getProspectParngEquipeA($user);
-        $prospectAppeEqA = $this->getProspectAppEquipeA($user);
-        $prospectAvneEqA = $this->getProspectAvnEquipeA($user);
+
+
+        // $prospectPrngeEqA = $this->getProspectParngEquipeA($user);
+        // $prospectAppeEqA = $this->getProspectAppEquipeA($user);
+        // $prospectAvneEqA = $this->getProspectAvnEquipeA($user);
         // $prospectAutrEqA = $this->getProspectAutrEquipeA($user);
-        $prospectAncienEqA = $this->getProspectAnncEquipeA($user);
-        $prospectSiteEqA = $this->getProspectSiteEquipeA($user);
-        $prospectRevndEqA = $this->getProspectRevendeurEquipeA($user);
 
-        $prospectPrngeEqB = $this->getProspectParngEquipeB($user);
-        $prospectAppeEqB = $this->getProspectAppEquipeB($user);
-        $prospectAvneEqB = $this->getProspectAvnEquipeB($user);
+
+
+        // $prospectPrngeEqB = $this->getProspectParngEquipeB($user);
+        // $prospectAppeEqB = $this->getProspectAppEquipeB($user);
+        // $prospectAvneEqB = $this->getProspectAvnEquipeB($user);
         // $prospectAutrEqB = $this->getProspectAutrEquipeB($user);
-        $prospectAncienEqB = $this->getProspectAncienEquipeB($user);
-        $prospectSiteEqB = $this->getProspectSiteEquipeB($user);
-        $prospectRevndEqB = $this->getProspectRevendeurEquipeB($user);
 
 
 
 
 
-        return compact('relancesNoTrCmrcl', 'relancesNoTrChef', 'relanceNoTraite', 'prosAvenirCmrcl', 'prosAvenirChef', 'prospectsAvenir', 'unjoiniableCmrl', 'unjoiniableChef', 'prospectsNoTrCmrcl', 'prospectsNoTrChef', 'prospectsTeamCmrcl', 'prospectsTeamChef', 'prospectsCmrclNv', 'prospectsChefNv', 'prospectsNoTraite', 'prospectsPanier', 'unjoiniable', 'prospects', 'prospectsPasAffect', 'prospectsnow', 'prospectsTeam', 'prospectRevnd', 'prospectSite', 'prospectParng', 'prospectAppl', 'prospectAvn', 'prospectAncien',  'prospectTotalTeamA', 'prospectTotalTeamB', 'prospectTotalTeamC', 'prospectTotalTeamD', 'prospectRevndEqC', 'prospectSiteEqC', 'prospectRevndEqB', 'prospectSiteEqB', 'prospectRevndEq', 'prospectSiteEq', 'prospectRevndEqA', 'prospectSiteEqA', 'prospectAncienEq', 'prospectAncienEqC', 'prospectAncienEqB', 'prospectAncienEqA', 'prospectAvneEqB', 'prospectAppeEqB', 'prospectPrngeEqB', 'prospectAvneEqA', 'prospectAppeEqA', 'prospectPrngeEqA', 'prospectAvneEqC', 'prospectAppeEqC', 'prospectPrngeEqC', 'prospectAutrEq', 'prospectAvneEq', 'prospectAppeEq', 'prospectPrngeEq', 'users', 'teams', 'products', 'clients', 'prospectsAffect');
+
+
+        return compact('relancesNoTrCmrcl', 'relancesNoTrChef', 'relanceNoTraite', 'prosAvenirCmrcl', 'prosAvenirChef', 'prospectsAvenir', 'unjoiniableCmrl', 'unjoiniableChef', 'prospectsNoTrCmrcl', 'prospectsNoTrChef', 'prospectsTeamCmrcl', 'prospectsTeamChef', 'prospectsCmrclNv', 'prospectsChefNv', 'prospectsNoTraite', 'prospectsPanier', 'unjoiniable', 'prospects', 'prospectspasaffect', 'prospectsnow', 'prospectsTeam', 'prospectRevnd', 'prospectSite', 'prospectParng', 'prospectAppl', 'prospectAvn', 'prospectAncien',  'prospectTotalTeamA', 'prospectTotalTeamB', 'prospectTotalTeamC', 'prospectTotalTeamD',  'users', 'teams', 'products', 'clients', 'prospectsAffect');
     }
 
 
@@ -180,16 +180,14 @@ class StatsService
     // les prospect cree ce jour et pas affc
     public function getProspectPasCount()
     {
-        // $today = new \DateTime();
-        // $today->setTime(0, 0, 0);
+
 
         $qb = $this->manager->createQueryBuilder();
         $qb->select('COUNT(p)')
             ->from('App\Entity\Prospect', 'p')
             ->andWhere("p.comrcl is NULL")
             ->andWhere("p.team is NULL");
-        // ->andWhere('p.creatAt >= :startOfDay')
-        // ->setParameter('startOfDay', $today);
+
 
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
@@ -512,15 +510,18 @@ class StatsService
     // caclcule le total du prospect Non traite 
     public function getProspectNonTraite()
     {
-
+        $now = new \DateTime();
+        $yesterday = clone $now;
+        $yesterday->modify('-24 hours');
 
         $qb = $this->manager->createQueryBuilder();
         $qb->select('COUNT(DISTINCT p.id)')
             ->from(Prospect::class, 'p')
             // ->andWhere('p.team IS NOT NULL')
             ->leftJoin('p.relanceds', 'r')
-            ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
-        ;
+            ->andWhere('r.prospect IS NULL')
+            ->andWhere('p.creatAt <= :yesterday')
+            ->setParameter('yesterday', $yesterday);
 
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
@@ -530,6 +531,9 @@ class StatsService
     // caclcule le total du prospect Non traite pour chef
     public function getProspectNonTraiteChef(User $user)
     {
+        $now = new \DateTime();
+        $yesterday = clone $now;
+        $yesterday->modify('-24 hours');
 
         $team = $user->getTeams();
         $qb = $this->manager->createQueryBuilder();
@@ -538,7 +542,9 @@ class StatsService
             ->where('p.team = :team')
             ->setParameter('team', $team)
             ->leftJoin('p.relanceds', 'r')
-            ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
+            ->andWhere('r.prospect IS NULL')
+            ->andWhere('p.creatAt <= :yesterday')
+            ->setParameter('yesterday', $yesterday)   // Aucune relation avec relanced
         ;
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
@@ -549,6 +555,9 @@ class StatsService
     // caclcule le total du prospect Non traite pour comerciale
     public function getProspectNonTraiteCmrcl($id)
     {
+        $now = new \DateTime();
+        $yesterday = clone $now;
+        $yesterday->modify('-24 hours');
 
         $qb = $this->manager->createQueryBuilder();
         $qb->select('COUNT(p)')
@@ -558,7 +567,9 @@ class StatsService
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
             ->andWhere('p.team IS NOT NULL')  // Affecté à une équipe
-            ->andWhere('p.comrcl IS NOT NULL');
+            ->andWhere('p.comrcl IS NOT NULL')
+            ->andWhere('p.creatAt <= :yesterday')
+            ->setParameter('yesterday', $yesterday);
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
 
@@ -587,6 +598,31 @@ class StatsService
 
         return $result;
     }
+
+    // caclcule le total du prospect en panier
+    // public function getProspectCountPanierJour()
+    // {
+    //     $today = new \DateTime();
+    //     $today->setTime(0, 0, 0);
+
+    //     $endOfDay = clone $today;
+    //     $endOfDay->setTime(23, 59, 59);
+    //     $qb = $this->manager->createQueryBuilder();
+    //     $qb->select('COUNT(p)')
+    //         ->from(Prospect::class, 'p')
+    //         ->leftJoin('p.histories', 'r')
+    //         ->where('p.team is NOT NULL')
+    //         ->andWhere("p.comrcl is NULL")
+
+    //         ->andWhere('r.actionDate BETWEEN :startOfDay AND :endOfDay')
+    //         // ->andWhere('p.creatAt BETWEEN :startOfDay AND :endOfDay')
+    //         ->setParameter('startOfDay', $today)
+    //         ->setParameter('endOfDay', $endOfDay);
+    //     $query = $qb->getQuery();
+    //     $result = $query->getSingleScalarResult();
+
+    //     return $result;
+    // }
 
     // caclcule le total du prospect  Unjoiniable 
     public function getProspectCountUnjoiniable()
@@ -722,91 +758,10 @@ class StatsService
 
 
 
-    //Equipe A
-
-    public function getProspectParngEquipeA()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise = 1')
-            ->andWhere('p.team = 1')
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
-
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
+    //Equipe 
 
 
-    public function getProspectAppEquipeA()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise = 2')
-            ->andWhere('p.team = 1')
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
-
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
-
-    public function getProspectAvnEquipeA()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise = 3')
-            ->andWhere('p.team = 1')
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
-
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
-
-
-    public function getProspectAnncEquipeA()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise = 4')
-            ->andWhere('p.team = 1')
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
-
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
-
-    // public function getProspectAutrEquipeA()
+    // public function getProspectParngEquipe()
     // {
     //     $today = new \DateTime();
     //     $today->setTime(0, 0, 0);
@@ -814,9 +769,9 @@ class StatsService
     //     $qb = $this->manager->createQueryBuilder();
     //     $qb->select('COUNT(p)')
     //         ->from('App\Entity\Prospect', 'p')
-    //         ->where('p.motifSaise is NULL')
-    //         ->andWhere('p.team = 1')
-    //         ->andWhere('p.comrcl IS NOT NULL')
+    //         ->where('p.motifSaise = 1')
+    //         // ->andWhere('p.team = 4')
+
     //         ->andWhere('p.creatAt >= :startOfDay')
     //         ->setParameter('startOfDay', $today);
 
@@ -826,114 +781,70 @@ class StatsService
     //     return $result;
     // }
 
-    public function getProspectSiteEquipeA()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
 
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise is NULL')
-            ->andWhere('p.team = 1')
-            ->andWhere("p.source = 'Propre site'")
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
+    // public function getProspectAppEquipe()
+    // {
+    //     $today = new \DateTime();
+    //     $today->setTime(0, 0, 0);
 
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
+    //     $qb = $this->manager->createQueryBuilder();
+    //     $qb->select('COUNT(p)')
+    //         ->from('App\Entity\Prospect', 'p')
+    //         ->where('p.motifSaise = 2')
+    //         // ->andWhere('p.team = 4')
+    //         // ->andWhere('p.comrcl IS NOT NULL')
+    //         ->andWhere('p.creatAt >= :startOfDay')
+    //         ->setParameter('startOfDay', $today);
 
-        return $result;
-    }
+    //     $query = $qb->getQuery();
+    //     $result = $query->getSingleScalarResult();
 
-    public function getProspectRevendeurEquipeA()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise is NULL')
-            ->andWhere('p.team = 1')
-            ->andWhere("p.source = 'Revendeur'")
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
-
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
-
-    //Equipe B
-
-    public function getProspectParngEquipeB()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise = 1')
-            ->andWhere('p.team = 2')
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
-
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
+    //     return $result;
+    // }
 
 
+    // public function getProspectAvnEquipe()
+    // {
+    //     $today = new \DateTime();
+    //     $today->setTime(0, 0, 0);
 
-    public function getProspectAppEquipeB()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
+    //     $qb = $this->manager->createQueryBuilder();
+    //     $qb->select('COUNT(p)')
+    //         ->from('App\Entity\Prospect', 'p')
+    //         ->where('p.motifSaise = 3')
+    //         // ->andWhere('p.team = 4')
+    //         // ->andWhere('p.comrcl IS NOT NULL')
+    //         ->andWhere('p.creatAt >= :startOfDay')
+    //         ->setParameter('startOfDay', $today);
 
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise = 2')
-            ->andWhere('p.team = 2')
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
+    //     $query = $qb->getQuery();
+    //     $result = $query->getSingleScalarResult();
 
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
+    //     return $result;
+    // }
 
 
-    public function getProspectAvnEquipeB()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
+    // public function getProspectAncienEquipe()
+    // {
+    //     $today = new \DateTime();
+    //     $today->setTime(0, 0, 0);
 
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise = 3')
-            ->andWhere('p.team = 2')
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
+    //     $qb = $this->manager->createQueryBuilder();
+    //     $qb->select('COUNT(p)')
+    //         ->from('App\Entity\Prospect', 'p')
+    //         ->where('p.motifSaise = 4')
+    //         // ->andWhere('p.team = 4')
+    //         // ->andWhere('p.comrcl IS NOT NULL')
+    //         ->andWhere('p.creatAt >= :startOfDay')
+    //         ->setParameter('startOfDay', $today);
 
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
+    //     $query = $qb->getQuery();
+    //     $result = $query->getSingleScalarResult();
 
-        return $result;
-    }
+    //     return $result;
+    // }
 
-    // public function getProspectAutrEquipeB()
+    // public function getProspectAutrEquipe()
     // {
     //     $today = new \DateTime();
     //     $today->setTime(0, 0, 0);
@@ -942,7 +853,7 @@ class StatsService
     //     $qb->select('COUNT(p)')
     //         ->from('App\Entity\Prospect', 'p')
     //         ->where('p.motifSaise is NULL')
-    //         ->andWhere('p.team = 2')
+    //         ->andWhere('p.team = 4')
     //         ->andWhere('p.comrcl IS NOT NULL')
     //         ->andWhere('p.creatAt >= :startOfDay')
     //         ->setParameter('startOfDay', $today);
@@ -954,140 +865,7 @@ class StatsService
     // }
 
 
-    public function getProspectAncienEquipeB()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise = 4')
-            ->andWhere('p.team = 2')
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
-
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
-
-
-    public function getProspectSiteEquipeB()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise  is NULL')
-            ->andWhere('p.team = 2')
-            ->andWhere("p.source = 'Propre site'")
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
-
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
-
-
-
-    public function getProspectRevendeurEquipeB()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise  is NULL')
-            ->andWhere('p.team = 2')
-            ->andWhere("p.source = 'Revendeur'")
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
-
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
-
-    //Equipe C
-
-    public function getProspectParngEquipeC()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise = 1')
-            ->andWhere('p.team = 3')
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
-
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
-
-
-
-
-    public function getProspectAppEquipeC()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise = 2')
-            ->andWhere('p.team = 3')
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
-
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
-
-
-
-    public function getProspectAvnEquipeC()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise = 3')
-            ->andWhere('p.team = 3')
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
-
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
-
-
-    // public function getProspectAutrEquipeC()
+    // public function getProspectSiteEquipe()
     // {
     //     $today = new \DateTime();
     //     $today->setTime(0, 0, 0);
@@ -1095,9 +873,10 @@ class StatsService
     //     $qb = $this->manager->createQueryBuilder();
     //     $qb->select('COUNT(p)')
     //         ->from('App\Entity\Prospect', 'p')
-    //         ->where('p.motifSaise is NULL')
-    //         ->andWhere('p.team = 3')
-    //         ->andWhere('p.comrcl IS NOT NULL')
+
+    //         // ->andWhere('p.team = 4')
+    //         ->andWhere("p.source = 'Propre site'")
+    //         // ->andWhere('p.comrcl IS NOT NULL')
     //         ->andWhere('p.creatAt >= :startOfDay')
     //         ->setParameter('startOfDay', $today);
 
@@ -1108,241 +887,26 @@ class StatsService
     // }
 
 
-    public function getProspectAncienEquipeC()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise = 4')
-            ->andWhere('p.team = 3')
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
-
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
-
-    public function getProspectSiteEquipeC()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise is NULL ')
-            ->andWhere('p.team = 3')
-            ->andWhere("p.source = 'Propre site'")
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
-
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
-
-    public function getProspectRevendeurEquipeC()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise is NULL ')
-            ->andWhere('p.team = 3')
-            ->andWhere("p.source = 'Revendeur'")
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
-
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
-    //Equipe D
 
 
-    public function getProspectParngEquipe()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
+    // public function getProspectRevendeurEquipe()
+    // {
+    //     $today = new \DateTime();
+    //     $today->setTime(0, 0, 0);
 
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise = 1')
-            ->andWhere('p.team = 4')
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
+    //     $qb = $this->manager->createQueryBuilder();
+    //     $qb->select('COUNT(p)')
+    //         ->from('App\Entity\Prospect', 'p')
+    //         ->where('p.motifSaise is NULL')
+    //         // ->andWhere('p.team = 4')
+    //         ->andWhere("p.source = 'Revendeur'")
+    //         // ->andWhere('p.comrcl IS NOT NULL')
+    //         ->andWhere('p.creatAt >= :startOfDay')
+    //         ->setParameter('startOfDay', $today);
 
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
+    //     $query = $qb->getQuery();
+    //     $result = $query->getSingleScalarResult();
 
-        return $result;
-    }
-
-
-    public function getProspectAppEquipe()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise = 2')
-            ->andWhere('p.team = 4')
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
-
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
-
-
-    public function getProspectAvnEquipe()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise = 3')
-            ->andWhere('p.team = 4')
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
-
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
-
-
-    public function getProspectAncienEquipe()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise = 4')
-            ->andWhere('p.team = 4')
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
-
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
-
-    public function getProspectAutrEquipe()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise is NULL')
-            ->andWhere('p.team = 4')
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
-
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
-
-
-    public function getProspectSiteEquipe()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise is NULL')
-            ->andWhere('p.team = 4')
-            ->andWhere("p.source = 'Propre site'")
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
-
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
-
-
-
-
-    public function getProspectRevendeurEquipe()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from('App\Entity\Prospect', 'p')
-            ->where('p.motifSaise is NULL')
-            ->andWhere('p.team = 4')
-            ->andWhere("p.source = 'Revendeur'")
-            ->andWhere('p.comrcl IS NOT NULL')
-            ->andWhere('p.creatAt >= :startOfDay')
-            ->setParameter('startOfDay', $today);
-
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
-
-    // public function getBestAds(){
-    //     return $this->manager->createQuery(
-    //         'SELECT AVG(c.rating) as note, a.title, a.id, u.firstName, u.lastName, u.picture
-    //         FROM App\Entity\Comment c
-    //         JOIN c.ad a
-    //         JOIN a.author u
-    //         GROUP BY a
-    //         ORDER BY note DESC'
-    //     )
-    //     ->setMaxResults(5)
-    //     ->getResult();
-    // }
-    // public function getWorstAds(){
-    //     return $this->manager->createQuery(
-    //         'SELECT AVG(c.rating) as note, a.title, a.id, u.firstName, u.lastName, u.picture
-    //         FROM App\Entity\Comment c
-    //         JOIN c.ad a
-    //         JOIN a.author u
-    //         GROUP BY a
-    //         ORDER BY note ASC'
-    //     )
-    //     ->setMaxResults(5)
-    //     ->getResult();
+    //     return $result;
     // }
 }

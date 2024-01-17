@@ -59,56 +59,47 @@ class ClientRepository extends ServiceEntityRepository
 
 
     /**
-     * Find list a client by a all search form
+     * Find a list of clients using a search form
      * @param SearchClient $search
      * @return PaginationInterface
      */
     public function findClientAdmin(SearchClient $search): PaginationInterface
     {
+        $queryBuilder = $this->createQueryBuilder('c')
+            ->orderBy('c.id', 'DESC');
 
-        $query = $this->createQueryBuilder('c')
-            ->orderBy('c.id', 'DESC')
-            ->getQuery()
-            ->getResult();
-
-        if ((!empty($search->f))) {
-            $query = $query
+        if (!empty($search->f)) {
+            $queryBuilder
                 ->andWhere('c.firstname LIKE :f')
-
-
                 ->setParameter('f', "%{$search->f}%");
         }
 
         if (!empty($search->l)) {
-            $query = $query
+            $queryBuilder
                 ->andWhere('c.lastname LIKE :l')
                 ->setParameter('l', "%{$search->l}%");
         }
 
         if (!empty($search->g)) {
-            $query = $query
+            $queryBuilder
                 ->andWhere('c.email LIKE :g')
                 ->setParameter('g', "%{$search->g}%");
         }
 
-        if (!empty($search->a)) {
-            $query = $query
-                ->orWhere('c.adress LIKE :a')
-                ->setParameter('a', "%{$search->a}%");
-        }
         if (!empty($search->t)) {
-            $query = $query
+            $queryBuilder
                 ->orWhere('c.phone LIKE :t')
                 ->setParameter('t', "%{$search->t}%");
         }
+
+        $query = $queryBuilder->getQuery();
+
         return $this->paginator->paginate(
             $query,
             $search->page,
             10
         );
     }
-
-
 
     /**
      * Find list a client by a all search form
@@ -146,11 +137,7 @@ class ClientRepository extends ServiceEntityRepository
                 ->setParameter('g', "%{$search->g}%");
         }
 
-        if (!empty($search->a)) {
-            $query = $query
-                ->orWhere('c.adress LIKE :a')
-                ->setParameter('a', "%{$search->a}%");
-        }
+
         if (!empty($search->t)) {
             $query = $query
                 ->orWhere('c.phone LIKE :t')
@@ -199,11 +186,7 @@ class ClientRepository extends ServiceEntityRepository
                 ->setParameter('g', "%{$search->g}%");
         }
 
-        if (!empty($search->a)) {
-            $query = $query
-                ->orWhere('c.adress LIKE :a')
-                ->setParameter('a', "%{$search->a}%");
-        }
+
         if (!empty($search->t)) {
             $query = $query
                 ->orWhere('c.phone LIKE :t')

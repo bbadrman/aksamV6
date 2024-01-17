@@ -4,14 +4,22 @@
 		{{ form_title|default('Ajouter un client') }}
 	</h4>
 
-<div class="form-group"> 
-{{ form_start(form) }}
+	<div class="form-group">
+		{{ form_start(form) }}
 
-    {{ form_widget(form) }}
-    
-    <button  class="btn btn-theme">{{ button_label|default('Save') }}</button>
-    
-{{ form_end(form) }}
+		{# {{ form_widget(form) }} #}
+
+
+		{{ form_row(form.firstname) }}
+		{{ form_row(form.lastname) }}
+		{{ form_row(form.raisonSociale) }}
+
+		{{ form_row(form.phone) }}
+		{{ form_row(form.email) }}
+		{{ form_row(form.adress) }}
+
+		<button class="btn btn-theme">{{ button_label|default('Save') }}</button>
+
+		{{ form_end(form) }}
+	</div>
 </div>
-</div>
- 

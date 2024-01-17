@@ -13,3 +13,7 @@ when@test:
 
     framework:
         profiler: { collect: false }
+# config/routes/dev/web_profiler.yaml
+    _wdt:
+        resource: '@WebProfilerBundle/Resources/config/routing/wdt.xml'
+        prefix: /_wdt

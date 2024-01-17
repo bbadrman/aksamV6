@@ -15,7 +15,7 @@
 	</button>
 {% endif %}
 
-<!-- Modal -->
+<!-- Modal pour affictation team or cmrcl -->
 <div class="modal fade" id="exampleModal{{ prospect.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -96,8 +96,8 @@
 
 							<td>
 								{# <span class="btn btn-primary">
-																																																																																																																																																																																																																																																																																																																																																																																								{{ "%02d"|format((teams.prospects|filter(p => p.comrcl is null and p.team is not null and p.creatAt|date('Y-m-d')  == "now"|date('Y-m-d')))|length) }}
-																																																																																																																																																																																																																																																																																																																																																																																							</span> #}
+																																																																																																																																																																																																																																																																																																																																																																																																{{ "%02d"|format((teams.prospects|filter(p => p.comrcl is null and p.team is not null and p.creatAt|date('Y-m-d')  == "now"|date('Y-m-d')))|length) }}
+																																																																																																																																																																																																																																																																																																																																																																																															</span> #}
 								<span
 									class="btn btn-primary">
 									{# {{ "%02d"|format((teams.prospects|filter(p => p.comrcl is null and p.team is not null ))|length) }} #}

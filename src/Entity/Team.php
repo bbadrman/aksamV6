@@ -43,7 +43,6 @@ class Team
     private Collection $clients;
 
 
-
     public function __construct()
     {
 

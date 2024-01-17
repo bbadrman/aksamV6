@@ -129,6 +129,43 @@ $(document).on('click', '.product_new', function (e) {
 
 // END adding a Product //
 
+// START adding a Client //
+
+// $(document).on('click', '.clients_add', function (e) {
+// 	e.preventDefault();
+
+// 	const data = {
+// 		'firstname': $('#client_firstname').val(),
+
+// 		'lastname': $('.client_lastname').val(),
+// 		'phone': $('.client_phone').val(),
+// 		'email': $('.client_email').val(),
+// 		'raisonSociale': $('.client_raisonSociale').val()
+// 	};
+
+// 	let AddClientModal = $('#AddClientModal');
+
+// 	$.ajax({
+// 		type: "POST",
+// 		url: "/client/new-client",
+// 		data: data,
+// 		dataType: "json",
+// 		success: function (response) {
+// 			if (response.status === 400) {
+// 				$('#saveform_errList').html("").addClass('alert alert-danger');
+// 				$.each(response.errors, function (key, err_values) {
+// 					$('#saveform_errList').append('<li>' + err_values + '</li>');
+// 				});
+// 			} else {
+// 				$('#saveform_errList').html("").removeClass('alert alert-danger');
+// 				$('#success_message').addClass('alert alert-success').text(response.message);
+
+// 				AddClientModal.modal('hide').find('#client_firstname').val("").find('#client_lastname').find('#client_phone').find('#client_email').find('#client_raisonSociale').val("");
+
+// 			}
+// 		}
+// 	})
+// });
 
 // START adding a Fonction //
 
@@ -274,10 +311,6 @@ setupDisplayControl('prospect_lastAssure', 'subResil-container', 'Oui');
 
 
 
-
-
-
-
 //select motiveRelanced pour afficher la ajouter client quand on click sur pasage contart
 //select motiveRelanced pour afficher la calandrie et comment quand on click sur rndv
 var resilField = document.getElementById('relanced_motifRelanced');
@@ -298,6 +331,22 @@ if (resilField !== null) {
 		}
 	});
 }
+
+// var resilField = document.getElementById('relanced_motifRelanced');
+// var subresilContainer1 = document.getElementById('subMotivRelc-container');
+// // var subresilContainer2 = document.getElementById('subMotivContrat-container');
+
+// if (resilField !== null) {
+// 	resilField.addEventListener('change', function () {
+// 		if (resilField.value === '1') {
+// 			subresilContainer1.style.display = 'block';
+// 		} else if (resilField.value === '10') {
+// 			subresilContainer1.style.display = 'none';
+// 		} else {
+// 			subresilContainer1.style.display = 'none';
+// 		}
+// 	});
+// }
 
 
 

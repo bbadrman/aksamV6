@@ -180,7 +180,7 @@ class ProspectController extends AbstractController
     /**
      * @Route("/{id}", name="app_prospect_show", methods={"GET", "POST"}) 
      */
-    public function show(Request $request, Prospect $prospect, HistoryRepository $historyRepository, ClientRepository $clientRepository)
+    public function show(Prospect $prospect,  Request $request,  HistoryRepository $historyRepository)
     {
         $client = HttpClient::create();
         $response = $client->request('GET', 'https://public-api.ringover.com/v2/calls', [
@@ -197,35 +197,34 @@ class ProspectController extends AbstractController
         $gsmForm->handleRequest($request);
 
         if ($gsmForm->isSubmitted() && $gsmForm->isValid()) {
-
-            $this->entityManager->flush();
         }
 
-
+        $client = new Client();
+        // //ajouter client apartir de crée contrat
         $prospectFirstName = $prospect->getName();
         $prospectLastName = $prospect->getLastName();
         $raisonSociale = $prospect->getRaisonSociale();
         $team = $prospect->getTeam();
         $cmrl = $prospect->getComrcl();
+        $date =   new \DateTime();
 
-
-        $client = new Client();
 
         $client->setFirstName($prospectFirstName);
         $client->setLastName($prospectLastName);
         $client->setRaisonSociale($raisonSociale);
         $client->setTeam($team);
         $client->setCmrl($cmrl);
+        $client->setCreatAt($date);
 
 
         $clientForm = $this->createForm(ClientType::class, $client);
         $clientForm->handleRequest($request);
 
         if ($clientForm->isSubmitted() && $clientForm->isValid()) {
-            $clientRepository->add($client, true);
+            // $clientRepository->add($client, true);
+            $this->entityManager->persist($client);
+            $this->addFlash('success', 'client ajoutée avec succès.');
         }
-
-
 
         $relance = new Relanced();
         $relance->setProspect($prospect);
@@ -236,13 +235,11 @@ class ProspectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $this->entityManager->persist($relance);
-            $this->entityManager->flush();
-
             $this->addFlash('success', 'Relance ajoutée avec succès.');
 
             // return $this->redirectToRoute('app_prospect_show', ['id' => $prospect->getId()]);
         }
-
+        $this->entityManager->flush();
 
         // $teamHistory = $this->getDoctrine()->getRepository(History::class)->findBy(['prospect' => $prospect]);
         $teamHistory = $historyRepository->findBy(['prospect' => $prospect]);
@@ -301,7 +298,10 @@ class ProspectController extends AbstractController
 
 
             $this->addFlash('info', 'Votre Prospect a été affecté avec succès!');
-            return $this->redirectToRoute('app_table_liste', [], Response::HTTP_SEE_OTHER);
+            //pour reste a mon page 
+            return $this->redirect($request->headers->get('referer'));
+
+            // return $this->redirectToRoute('app_table_liste', [], Response::HTTP_SEE_OTHER);
         }
         $teams = $teamRepository->findAll();
         $team = $teamRepository->findByTeamConect($user);

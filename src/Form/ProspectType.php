@@ -333,7 +333,7 @@ class ProspectType extends AbstractType
             // Vérifier s'il commence par '0' (format local)
             if (substr($phoneNumber, 0, 1) === '0') {
                 // Remplacer le '0' par '33' pour obtenir le format international
-                return '33' . substr($phoneNumber, 1);
+                return '+33' . substr($phoneNumber, 1);
             }
         }
     }

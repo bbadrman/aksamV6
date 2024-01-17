@@ -1,0 +1,30 @@
+{{ form_start(search_form) }}
+<div class="col-xs-12" style="float: center !important;">
+	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+		{{ form_row(search_form.f, {attr: {class: 'form-control', 'placeholder': ' Prénom...'}}) }}
+	</div>
+	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+		{{ form_row(search_form.l, {attr: {class: 'form-control', 'placeholder': ' Nom...'}}) }}
+	</div>
+	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+		{{ form_row(search_form.g, {attr: {class: 'form-control', 'placeholder': ' E-mail...'}}) }}
+	</div>
+	{# <div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+														{{ form_row(search_form.a, {'label': false, 'attr' : { 'style':'display:none'} }) }}
+													</div> #}
+	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+		{{ form_row(search_form.t, {attr: {class: 'form-control', 'placeholder': ' Téléphone...'}}) }}
+	</div>
+	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+		{{ form_row(search_form.r, {attr: {class: 'form-control', 'placeholder': ' Raison sociale...'}}) }}
+	</div>
+	<div class="input-group-btn col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+		<h1>
+			<button class="btn btn-default" type="submit">
+				<i class="fa fa-search" aria-hidden="true"></i>
+			</button>
+		</h1>
+	</div>
+</div>
+
+{{ form_end(search_form) }}

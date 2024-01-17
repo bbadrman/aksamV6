@@ -45,7 +45,7 @@ class ClientType extends AbstractType
             ])
             ->add('adress', Type\TextareaType::class, [
                 'label' => 'Address complét *',
-
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Address compltét du client',
                 ]

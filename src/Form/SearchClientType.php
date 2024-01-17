@@ -15,21 +15,21 @@ class SearchClientType extends AbstractType
         $builder
             ->add('f', Type\TextType::class, [
                 'label' => 'Prénom',
-                'required' => true,
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Merci de saisir le prénom du client'
                 ]
             ])
             ->add('l', Type\TextType::class, [
                 'label' => 'Nom',
-                'required' => true,
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Merci de saisir le nom du client'
                 ]
             ])
             ->add('t', Type\TextType::class, [
                 'label' => 'Téléphone',
-                'required' => true,
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Merci de saisir le numéro de téléphone'
                 ]
@@ -41,13 +41,7 @@ class SearchClientType extends AbstractType
                     'placeholder' => "Merci de saisir l'adresse email"
                 ]
             ])
-            ->add('a', Type\TextareaType::class, [
-                'label' => 'Address complét *',
 
-                'attr' => [
-                    'placeholder' => 'Address compltét du client',
-                ]
-            ])
             ->add('r', Type\TextType::class, [
                 'label' => 'Raison sociale ',
                 'required' => false,

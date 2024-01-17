@@ -140,30 +140,4 @@ class DashboardController extends AbstractController
             'team' => $team,
         ]);
     }
-
-    //  /**
-    //  * @Route("/shop", name="shop")
-    //  */
-    // public function shop( StatsService $statsService): Response
-    // {
-
-    //     $stats    = $statsService->getStats();
-
-    //     return $this->render('header.html.twig', [
-    //         'stats'    => $stats,
-    //         ]);
-
-
-    // }
-    // public function total(OrderRepository $order ): Response
-    // {
-    //     $totalOrder = count($orderRepository->findAll());
-
-    // }
-    //     return $this->render('@backend/dashboard/index.html.twig', [
-    //         'totalAmount'  => $statiProduct,
-
-    //     ]);
-
-
 }

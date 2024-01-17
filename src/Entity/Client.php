@@ -2,9 +2,7 @@
 
 namespace App\Entity;
 
-use App\Validator as MyAssert;
 use Doctrine\DBAL\Types\Types;
-
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ClientRepository;
 use ApiPlatform\Metadata\ApiResource;
@@ -24,11 +22,11 @@ class Client
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(min: 2, max: 10, minMessage: "Votre prénom doit contenir au moins deux caractères", maxMessage: "Votre prénom doit contenir au maximum dix caractères")]
+    #[Assert\Length(min: 2, max: 10, minMessage: "Le prénom doit contenir au moins deux caractères", maxMessage: "Le prénom doit contenir au maximum dix caractères")]
     private $firstname;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(min: 2, max: 10, minMessage: "Votre nom doit contenir au moins deux caractères", maxMessage: "Votre nom doit contenir au maximum dix caractères")]
+    #[Assert\Length(min: 2, max: 10, minMessage: "Le nom doit contenir au moins deux caractères", maxMessage: "Le nom doit contenir au maximum dix caractères")]
     private $lastname;
 
     #[ORM\Column(type: 'string', length: 20)]
@@ -49,6 +47,28 @@ class Client
 
     #[ORM\ManyToOne(inversedBy: 'clients')]
     private ?User $cmrl = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $creatAt;
+
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Prospect $prospect = null;
+
+
+    /**
+     * Permet de mettre en place la date de création
+     * 
+     * @ORM\PrePersist
+     * 
+     * @return void
+     */
+    #[ORM\PrePersist]
+    public function prePersist(): void
+    {
+        if (empty($this->creatAt)) {
+            $this->creatAt = new \DateTime();
+        }
+    }
 
     public function getId(): ?int
     {
@@ -147,6 +167,30 @@ class Client
     public function setCmrl(?User $cmrl): static
     {
         $this->cmrl = $cmrl;
+
+        return $this;
+    }
+
+    public function getCreatAt(): ?\DateTimeInterface
+    {
+        return $this->creatAt;
+    }
+
+    public function setCreatAt(\DateTimeInterface $creatAt): self
+    {
+        $this->creatAt = $creatAt;
+
+        return $this;
+    }
+
+    public function getProspect(): ?Prospect
+    {
+        return $this->prospect;
+    }
+
+    public function setProspect(?Prospect $prospect): static
+    {
+        $this->prospect = $prospect;
 
         return $this;
     }

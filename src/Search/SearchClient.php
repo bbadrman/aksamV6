@@ -25,10 +25,7 @@ class SearchClient
      */
     public $g = '';
 
-    /**
-     * @var string
-     */
-    public $a = '';
+
     /**
      * @var string
      */

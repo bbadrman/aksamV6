@@ -2,16 +2,51 @@
 
 namespace App\Form;
 
+use App\Entity\Team;
 use App\Search\SearchClient;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type as Type;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type as Type;
 
 class SearchClientType extends AbstractType
 {
+    private $entityManager;
+    private $userRepository;
+    private $security;
+
+    public function __construct(EntityManagerInterface $entityManager, UserRepository $userRepository, Security $security)
+    {
+        $this->entityManager = $entityManager;
+        $this->userRepository = $userRepository;
+        $this->security = $security;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $teamRepository = $this->entityManager->getRepository(Team::class);
+        $teams = $teamRepository->findAll();
+        $teamChoices = [];
+        foreach ($teams as $team) {
+            $teamChoices[$team->getName()] = $team->getName();
+        }
+
+        $user = $this->security->getUser();
+        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            $comrclsForTeam = $this->userRepository->findAll();
+        } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+            $comrclsForTeam = $this->userRepository->findComrclByteamOrderedByAscName($team);
+        } else {
+            // cmrcl peut voire seulement les no traite  atacher a lui
+            $comrclsForTeam =  [];
+        }
+        // Transformez la liste de commerciaux en un tableau utilisable pour les choix dans le formulaire
+        $comrclChoices = [];
+        foreach ($comrclsForTeam as $comrcl) {
+            $comrclChoices[$comrcl->getUsername()] = $comrcl->getUsername();
+        }
         $builder
             ->add('f', Type\TextType::class, [
                 'label' => 'Prénom',
@@ -48,6 +83,18 @@ class SearchClientType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Raison sociale',
                 ]
+            ])
+            ->add('team', Type\ChoiceType::class, [
+                'label' => "Equipe :",
+                'placeholder' => '--Selectie-- ',
+                'choices' => $teamChoices,
+                'required' => false
+            ])
+            ->add('m', Type\ChoiceType::class, [
+                'label' => "commercial :",
+                'placeholder' => '--Selectie-- ',
+                'choices' => $comrclChoices,
+                'required' => false
             ]);
     }
 

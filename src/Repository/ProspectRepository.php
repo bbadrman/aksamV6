@@ -1010,6 +1010,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
             ->setParameter('startOfDay', $today)
             ->setParameter('endOfDay', $endOfDay)
+            ->andWhere('r.motifRelanced = 1')
 
 
             // joiner les tables en relation manytomany avec fonction
@@ -1112,6 +1113,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
             ->setParameter('startOfDay', $today)
             ->setParameter('endOfDay', $endOfDay)
+            ->andWhere('r.motifRelanced = 1')
 
 
             // joiner les tables en relation manytomany avec fonction
@@ -1213,6 +1215,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
             ->setParameter('startOfDay', $today)
             ->setParameter('endOfDay', $endOfDay)
+            ->andWhere('r.motifRelanced = 1')
 
 
             // joiner les tables en relation manytomany avec fonction
@@ -1302,8 +1305,8 @@ class ProspectRepository extends ServiceEntityRepository
             ->select('p, t, f, r')
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
-            // ->andWhere('p.team IS NOT NULL')  // Affecté à une équipe 
-            // ->andWhere('p.comrcl IS NOT NULL')
+            ->andWhere('p.team IS NOT NULL')  // Affecté à une équipe 
+            // ->andWhere('p.comrcl IS NOT NULL')   
             ->andWhere('p.creatAt <= :yesterday')
             ->setParameter('yesterday', $yesterday)
             ->leftJoin('p.team', 't')
@@ -1405,7 +1408,8 @@ class ProspectRepository extends ServiceEntityRepository
 
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
-            ->andWhere('p.team IS NOT NULL')
+            ->andWhere('p.team IS NOT NULL')  // chef d'equipe affecté 
+            ->andWhere('p.comrcl IS NOT NULL')
             ->andWhere('p.creatAt <= :yesterday')
             ->setParameter('yesterday', $yesterday)
             ->leftJoin('p.comrcl', 'f')

@@ -30,7 +30,7 @@ class ClientType extends AbstractType
                 ]
             ])
             ->add('phone', Type\TextType::class, [
-                'label' => 'Téléphone',
+                'label' => 'Téléphone 2',
                 'required' => true,
                 'attr' => [
                     'placeholder' => 'Merci de saisir le numéro de téléphone'

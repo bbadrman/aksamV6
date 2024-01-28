@@ -37,25 +37,25 @@ class ProspectType extends AbstractType
 
         $builder
             ->add('name', Type\TextType::class, [
-                'label' => 'Nom *',
+                'label' => 'Nom    (obligatoir)',
                 'attr' => [
 
                     'placeholder' => 'Tapez le Nom du Client'
                 ],
-                'required' => false,
+                'required' => true,
                 // 'constraints' => new NotBlank(['message' => 'ne peut pas etre vide'])
             ])
             ->add('lastname', Type\TextType::class, [
-                'label' => 'Prenom *',
+                'label' => 'Prenom   (obligatoir) ',
                 'attr' => [
 
                     'placeholder' => 'Tapez le Prénom du Client'
                 ],
-                'required' => false,
+                'required' => true,
 
             ])
             ->add('phone', Type\TelType::class, [
-                'label' => 'Téléphone 1 *',
+                'label' => 'Téléphone 1    (obligatoir)',
                 'required' => true,
                 'constraints' => new Length([
                     'min' => 10,  'minMessage' => '  
@@ -69,7 +69,7 @@ class ProspectType extends AbstractType
                 ]
             ])
             ->add('email', Type\EmailType::class, [
-                'label' => 'Email *',
+                'label' => 'Email (obligatoir)',
                 'required' => true,
                 'attr' => [
                     'placeholder' => "Merci de saisir l'adresse email"
@@ -93,18 +93,18 @@ class ProspectType extends AbstractType
                 ]
             ])
             ->add('adress', Type\TextareaType::class, [
-                'label' => 'Address complét *',
+                'label' => 'Address complét (obligatoir)',
 
                 'attr' => [
                     'placeholder' => 'Address compltét du client',
                 ]
             ])
             ->add('brithAt', BirthdayType::class, [
-                'label' => 'Date de Naissance *',
+                'label' => 'Date de Naissance   (obligatoir)',
                 'widget' => 'single_text'
             ])
             ->add('source', Type\ChoiceType::class, [
-                'label' => 'Source *',
+                'label' => 'Source ',
                 'required' => false,
                 'placeholder' => '--Merci de selectie-- ',
                 'choices' => [
@@ -129,7 +129,7 @@ class ProspectType extends AbstractType
                 'multiple' => false
             ])
             ->add('typeProspect', Type\ChoiceType::class, [
-                'label' => 'Type Pospect *',
+                'label' => 'Type Pospect ',
                 'required' => false,
                 'placeholder' => '--Merci de selectie-- ',
                 'choices' => [
@@ -147,14 +147,14 @@ class ProspectType extends AbstractType
                 ]
             ])
             ->add('codePost', Type\IntegerType::class, [
-                'label' => 'Code Postal *',
+                'label' => 'Code Postal (obligatoir)',
                 'constraints' => new Length(['min' => 4,  'minMessage' => 'le code postale doit etre quatre caactaire mini', 'max' => 5, 'maxMessage' => 'le code postale doite etre 5 caractaire max']),
                 'attr' => [
                     'placeholder' => 'Merci de saisir le Code Postal',
                 ]
             ])
             ->add('gsm', Type\TelType::class, [
-                'label' => 'Téléphone ',
+                'label' => 'Téléphone 2',
                 'required' => false,
                 'constraints' => new Length([
                     'min' => 10,  'minMessage' => '  
@@ -167,7 +167,7 @@ class ProspectType extends AbstractType
                 ]
             ])
             ->add('assure', Type\ChoiceType::class, [
-                'label' => 'Assuré actuellement *',
+                'label' => 'Assuré actuellement',
                 'required' => false,
                 'placeholder' => '--Merci de selectie-- ',
                 'choices' => [
@@ -178,7 +178,7 @@ class ProspectType extends AbstractType
                 'multiple' => false
             ])
             ->add('lastAssure', Type\ChoiceType::class, [
-                'label' => 'Ancienne assurance résilié *',
+                'label' => 'Ancienne assurance résilié ',
                 'required' => false,
                 'placeholder' => '--Merci de selectie-- ',
                 'choices' => [

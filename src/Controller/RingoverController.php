@@ -12,7 +12,7 @@ class RingoverController extends AbstractController
 {
     /**
      * @Route("/ringover", name="ringover-api")
-     * @IsGranted("ROLE_USER", message="Tu ne peut pas acces a cet ressource")
+     * @IsGranted("ROLE_ADMIN", message="Tu ne peut pas acces a cet ressource")
      */
     public function fetchRingoverData(): Response
     {

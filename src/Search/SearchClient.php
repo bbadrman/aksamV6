@@ -25,7 +25,6 @@ class SearchClient
      */
     public $g = '';
 
-
     /**
      * @var string
      */
@@ -34,4 +33,12 @@ class SearchClient
      * @var string
      */
     public $r = '';
+    /**
+     * @var string
+     */
+    public  $team = '';
+    /**
+     * @var string
+     */
+    public  $m = '';
 }

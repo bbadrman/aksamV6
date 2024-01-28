@@ -63,7 +63,7 @@
 							<th>Téléphone</th>
 							<th>Email</th>
 							<th>Raison Sociale</th>
-							<th>Date de contrat</th>
+							<th>Date Client</th>
 							<th>Actions</th>
 						</tr>
 					</thead>
@@ -103,16 +103,16 @@
 									{% endif %}
 								</td>
 								{# <td>
-																																																																																																																	{% for prospects in client.prospect %}
-																																																																																																								
-																																																																																																																		{% if prospects.creatAt is not empty %}
-																																																																																																																			{{ prospects.creatAt|date('Y-m-d H:i:s') }}
-																																																																																																																			<br>
-																																																																																																																		{% endif %}
-																																																																																																								
-																																																																																																								
-																																																																																																																	{% endfor %}
-																																																																																																																</td> #}
+																																																																																																																									{% for prospects in client.prospect %}
+																																																																																																																
+																																																																																																																										{% if prospects.creatAt is not empty %}
+																																																																																																																											{{ prospects.creatAt|date('Y-m-d H:i:s') }}
+																																																																																																																											<br>
+																																																																																																																										{% endif %}
+																																																																																																																
+																																																																																																																
+																																																																																																																									{% endfor %}
+																																																																																																																								</td> #}
 							</tr>
 						{% else %}
 							<tr>

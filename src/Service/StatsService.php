@@ -343,7 +343,9 @@ class StatsService
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
             ->setParameter('startOfDay', $today)
-            ->setParameter('endOfDay', $endOfDay);
+            ->setParameter('endOfDay', $endOfDay)
+            ->andWhere('r.motifRelanced = 1');
+
 
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
@@ -369,7 +371,8 @@ class StatsService
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
             ->setParameter('startOfDay', $today)
-            ->setParameter('endOfDay', $endOfDay);
+            ->setParameter('endOfDay', $endOfDay)
+            ->andWhere('r.motifRelanced = 1');;
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
 
@@ -394,7 +397,8 @@ class StatsService
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
             ->setParameter('startOfDay', $today)
-            ->setParameter('endOfDay', $endOfDay);
+            ->setParameter('endOfDay', $endOfDay)
+            ->andWhere('r.motifRelanced = 1');;
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
 
@@ -517,7 +521,7 @@ class StatsService
         $qb = $this->manager->createQueryBuilder();
         $qb->select('COUNT(DISTINCT p.id)')
             ->from(Prospect::class, 'p')
-            // ->andWhere('p.team IS NOT NULL')
+            ->andWhere('p.team IS NOT NULL')
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL')
             ->andWhere('p.creatAt <= :yesterday')
@@ -543,6 +547,8 @@ class StatsService
             ->setParameter('team', $team)
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL')
+            ->andWhere('p.team IS NOT NULL')  // chef d'equipe affecté 
+            ->andWhere('p.comrcl IS NOT NULL')
             ->andWhere('p.creatAt <= :yesterday')
             ->setParameter('yesterday', $yesterday)   // Aucune relation avec relanced
         ;
@@ -566,8 +572,8 @@ class StatsService
             ->setParameter('val', $id)
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
-            ->andWhere('p.team IS NOT NULL')  // Affecté à une équipe
-            ->andWhere('p.comrcl IS NOT NULL')
+            // ->andWhere('p.team IS NOT NULL')  // Affecté à une équipe
+            // ->andWhere('p.comrcl IS NOT NULL')
             ->andWhere('p.creatAt <= :yesterday')
             ->setParameter('yesterday', $yesterday);
         $query = $qb->getQuery();

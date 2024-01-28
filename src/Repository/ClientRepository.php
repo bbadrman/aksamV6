@@ -66,12 +66,23 @@ class ClientRepository extends ServiceEntityRepository
     public function findClientAdmin(SearchClient $search): PaginationInterface
     {
         $queryBuilder = $this->createQueryBuilder('c')
+            ->select('c, h, b')
+
+            ->leftJoin('c.team', 'b')
+
+            ->leftJoin('c.cmrl', 'h')
+
             ->orderBy('c.id', 'DESC');
 
         if (!empty($search->f)) {
             $queryBuilder
                 ->andWhere('c.firstname LIKE :f')
                 ->setParameter('f', "%{$search->f}%");
+        }
+        if (!empty($search->team)) {
+            $queryBuilder
+                ->andWhere('b.name LIKE :team')
+                ->setParameter('team', "%{$search->team}%");
         }
 
         if (!empty($search->l)) {
@@ -80,6 +91,11 @@ class ClientRepository extends ServiceEntityRepository
                 ->setParameter('l', "%{$search->l}%");
         }
 
+        if (!empty($search->r)) {
+            $queryBuilder
+                ->andWhere('h.username LIKE :m')
+                ->setParameter('m', "%{$search->m}%");
+        }
         if (!empty($search->g)) {
             $queryBuilder
                 ->andWhere('c.email LIKE :g')
@@ -112,6 +128,10 @@ class ClientRepository extends ServiceEntityRepository
         $team = $user->getTeams();
 
         $query = $this->createQueryBuilder('c')
+            ->select('c, r')
+
+
+            ->leftJoin('c.cmrl', 'r')
 
             ->andwhere('c.team = :team')
             ->setParameter('team', $team)
@@ -120,15 +140,17 @@ class ClientRepository extends ServiceEntityRepository
         if ((!empty($search->f))) {
             $query = $query
                 ->andWhere('c.firstname LIKE :f')
-
-
                 ->setParameter('f', "%{$search->f}%");
         }
-
         if (!empty($search->l)) {
             $query = $query
-                ->andWhere('c.lastname LIKE :l')
+                ->andWhere('c.lastname LIKE :r')
                 ->setParameter('l', "%{$search->l}%");
+        }
+        if (!empty($search->r)) {
+            $query = $query
+                ->andWhere('f.username LIKE :r')
+                ->setParameter('r', "%{$search->r}%");
         }
 
         if (!empty($search->g)) {

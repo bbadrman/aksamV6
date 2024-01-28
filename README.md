@@ -602,8 +602,28 @@ voila l'error qui j'ai:
                     }
                     ?>
                  <body>
-   
-   
+ ## modifie numero telephone au format europe
+  # au form de l'application
+ private function convertPhoneNumberToInternational($phoneNumber)
+    {
+        $phoneNumber = preg_replace('/\D/', '', $phoneNumber);
+
+        // Vérifier la longueur du numéro pour s'assurer qu'il est valide
+        if (strlen($phoneNumber) === 10) {
+            // Vérifier s'il commence par '0' (format local)
+            if (substr($phoneNumber, 0, 1) === '0') {
+                // Remplacer le '0' par '33' pour obtenir le format international
+                return '+33' . substr($phoneNumber, 1);
+            }
+        }
+    }
+    
+   # au form du site pub
+  $telephone = $_POST['phone'];
+// Formatage du numéro de téléphone en ajoutant le préfixe "+33"
+    $telephone = '+33' . substr($telephone, 1); // Supposant que le numéro commence par "0"
+   j'ai depose cet script au form du index.php du site
+
  ## Traitement Prospects :
    dans cette tache je veux ajouter une champ,je vais l'appelais RelanceAt pour afficher seleument les prosect qui sont relance a une date pricis 
   1- cree      RelanceAt dans entitie prospect
@@ -611,3 +631,13 @@ voila l'error qui j'ai:
   3- crée une function en repository contient condition RelenceAt = dateNew
   4- envoie cet function par controller ver la table
 
+# ajouter heur Europe/Paris
+
+#[ORM\PrePersist]
+public function prePersist()
+{
+    if (empty($this->creatAt)) {
+        $timezone = new \DateTimeZone('Europe/Paris'); // Remplacez par le fuseau horaire approprié
+        $this->creatAt = new \Datetime('now', $timezone);
+    }
+}

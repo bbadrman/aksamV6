@@ -93,26 +93,26 @@
 									<a href="{{ path('client_show', {'id': client.id}) }}" class="btn btn-success btn-xs">
 										<i class="fa fa-eye"></i>
 									</a>
-									{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') %}
-										<a href="{{ path('client_edit', {'id': client.id}) }}" class="btn btn-primary btn-xs">
-											<i class="fa fa-pencil"></i>
-										</a>
-										<a href="{{ path('client_new', {'id': client.id}) }}" class="btn btn-primary btn-xs">
-											<i class="fa fa-plus"></i>
-										</a>
-									{% endif %}
+									{# {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') %}
+																												<a href="{{ path('client_edit', {'id': client.id}) }}" class="btn btn-primary btn-xs">
+																													<i class="fa fa-pencil"></i>
+																												</a>
+																												<a href="{{ path('client_new', {'id': client.id}) }}" class="btn btn-primary btn-xs">
+																													<i class="fa fa-plus"></i>
+																												</a>
+																											{% endif %} #}
 								</td>
 								{# <td>
-																																																																																																																									{% for prospects in client.prospect %}
-																																																																																																																
-																																																																																																																										{% if prospects.creatAt is not empty %}
-																																																																																																																											{{ prospects.creatAt|date('Y-m-d H:i:s') }}
-																																																																																																																											<br>
-																																																																																																																										{% endif %}
-																																																																																																																
-																																																																																																																
-																																																																																																																									{% endfor %}
-																																																																																																																								</td> #}
+																																																																																																																																									{% for prospects in client.prospect %}
+																																																																																																																																
+																																																																																																																																										{% if prospects.creatAt is not empty %}
+																																																																																																																																											{{ prospects.creatAt|date('Y-m-d H:i:s') }}
+																																																																																																																																											<br>
+																																																																																																																																										{% endif %}
+																																																																																																																																
+																																																																																																																																
+																																																																																																																																									{% endfor %}
+																																																																																																																																								</td> #}
 							</tr>
 						{% else %}
 							<tr>

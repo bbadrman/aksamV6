@@ -105,7 +105,7 @@ class ProspectType extends AbstractType
             ])
             ->add('source', Type\ChoiceType::class, [
                 'label' => 'Source ',
-                'required' => false,
+                'required' => true,
                 'placeholder' => '--Merci de selectie-- ',
                 'choices' => [
                     'Propre site' => 'Propre site',

@@ -79,22 +79,21 @@ class ClientRepository extends ServiceEntityRepository
                 ->andWhere('c.firstname LIKE :f')
                 ->setParameter('f', "%{$search->f}%");
         }
+        if (!empty($search->l)) {
+            $queryBuilder
+                ->andWhere('c.lastname LIKE :l')
+                ->setParameter('l', "%{$search->l}%");
+        }
         if (!empty($search->team)) {
             $queryBuilder
                 ->andWhere('b.name LIKE :team')
                 ->setParameter('team', "%{$search->team}%");
         }
 
-        if (!empty($search->l)) {
+        if (!empty($search->k)) {
             $queryBuilder
-                ->andWhere('c.lastname LIKE :l')
-                ->setParameter('l', "%{$search->l}%");
-        }
-
-        if (!empty($search->r)) {
-            $queryBuilder
-                ->andWhere('h.username LIKE :m')
-                ->setParameter('m', "%{$search->m}%");
+                ->andWhere('h.username LIKE :k')
+                ->setParameter('k', "%{$search->k}%");
         }
         if (!empty($search->g)) {
             $queryBuilder

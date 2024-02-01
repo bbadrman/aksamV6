@@ -40,5 +40,5 @@ class SearchClient
     /**
      * @var string
      */
-    public  $m = '';
+    public  $k = '';
 }

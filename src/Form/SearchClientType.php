@@ -90,7 +90,7 @@ class SearchClientType extends AbstractType
                 'choices' => $teamChoices,
                 'required' => false
             ])
-            ->add('m', Type\ChoiceType::class, [
+            ->add('k', Type\ChoiceType::class, [
                 'label' => "commercial :",
                 'placeholder' => '--Selectie-- ',
                 'choices' => $comrclChoices,

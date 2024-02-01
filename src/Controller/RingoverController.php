@@ -31,6 +31,8 @@ class RingoverController extends AbstractController
 
         return $this->render('ringover/index.html.twig', [
             'ringoverData' => $data,
+
+            // dd($data)
         ]);
     }
 }

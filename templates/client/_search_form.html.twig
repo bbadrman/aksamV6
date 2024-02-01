@@ -20,7 +20,7 @@
 		{{ form_row(search_form.team, {attr: {class: 'form-control', 'placeholder': ' Equipe...'}}) }}
 	</div>
 	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-		{{ form_row(search_form.m, {attr: {class: 'form-control', 'placeholder': ' Commercial...'}}) }}
+		{{ form_row(search_form.k, {attr: {class: 'form-control', 'placeholder': ' Commercial...'}}) }}
 	</div>
 	<div class="input-group-btn col-xs-1" style="padding-right: 2px;padding-left: 2px;">
 		<h1>
@@ -41,3 +41,8 @@
 </div>
 
 {{ form_end(search_form) }}
+<script>
+	document.getElementById("reset-button").addEventListener("click", function () { // Réinitialisez les paramètres de l'URL à vide
+window.location.href = window.location.pathname;
+});
+</script>

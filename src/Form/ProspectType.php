@@ -108,7 +108,7 @@ class ProspectType extends AbstractType
                 'required' => true,
                 'placeholder' => '--Merci de selectie-- ',
                 'choices' => [
-                    'Propre site' => 'Propre site',
+
                     'Saisie manuelle' => 'Saisie manuelle',
                     'Revendeur' => 'Revendeur',
                 ],
@@ -124,6 +124,7 @@ class ProspectType extends AbstractType
                     'Appel Entrant' => '2',
                     'Avenant' => '3',
                     'Ancienne contrat' => '4',
+                    'Propre site' => '5',
                 ],
                 'expanded' => false,
                 'multiple' => false

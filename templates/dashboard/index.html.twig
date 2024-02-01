@@ -76,6 +76,8 @@
 							</th>
 							<th>Revendeur
 							</th>
+							<th>site pub
+							</th>
 
 						</tr>
 
@@ -101,7 +103,8 @@
 										<span class="btn btn-primary">
 											<strong>
 												{# {{ "%02d"|format(teams.prospects |length) }} #}
-												{{ " %02d"|format( teams.prospects|filter(p =>  p.comrcl is  null and p.team is not null and p.creatAt|date('Y-m-d') == "now"|date('Y-m-d'))|length) }}
+												{{ " %02d"|format( teams.prospects|filter(p =>  p.comrcl is  null and p.team is not null and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 												{# {{ teams.prospects.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') }} #}
 											</strong>
 
@@ -109,13 +112,14 @@
 									</td>
 
 									{# <td> <span class="btn btn-danger"> {{ " %02d"|format(teams.prospects|filter(p => p.comrcl is null  )| length)  }}   </span>  </td>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																														  #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						  #}
 									<td>
 										<span class="btn btn-primary">
 											<strong>
 
 												<strong>
-													{{ " %02d"|format( teams.prospects|filter(p =>  p.comrcl is not null and p.creatAt|date('Y-m-d') == "now"|date('Y-m-d'))|length) }}
+													{{ " %02d"|format( teams.prospects|filter(p =>  p.comrcl is not null and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 												</strong>
 											</span>
 										</td>
@@ -123,7 +127,8 @@
 									<td>
 										<span class="btn btn-danger">
 											<strong>
-												{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise == 1    and p.creatAt|date('Y-m-d') == "now"|date('Y-m-d'))|length) }}
+												{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise == 1    and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 											</strong>
 										</span>
 									</td>
@@ -131,7 +136,8 @@
 									<td>
 										<span class="btn btn-success day">
 											<strong>
-												{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  2   and p.creatAt|date('Y-m-d') == "now"|date('Y-m-d'))|length) }}
+												{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  2   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 											</strong>
 										</span>
 									</td>
@@ -151,23 +157,34 @@
 
 									<td>
 										<span class='btn btn' style="background-color:Violet;">
-											<strong>{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise == 4   and p.creatAt|date('Y-m-d') == "now"|date('Y-m-d'))|length) }}
+											<strong>{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise == 4   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 											</strong>
 										</span>
 									</td>
 
 
 									<td>
-										<span class='btn btn' style="background-color:GreenYellow;">
-											<strong>
-												{{ " %02d"|format( teams.prospects|filter(p =>  p.source == 'Propre site'  and p.creatAt|date('Y-m-d') == "now"|date('Y-m-d'))|length) }}</strong>
+										<span class='btn btn' style="background-color:Violet;">
+											<strong>{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise == 5   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+											</strong>
 										</span>
 									</td>
 
 									<td>
 										<span class='btn btn' style="background-color:Aquamarine;">
 											<strong>
-												{{ " %02d"|format( teams.prospects|filter(p =>  p.source == 'Revendeur'   and p.creatAt|date('Y-m-d') == "now"|date('Y-m-d'))|length) }}
+												{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise is null and p.source == 'Revendeur'   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+											</strong>
+										</span>
+									</td>
+									<td>
+										<span class='btn btn' style="background-color:Aquamarine;">
+											<strong>
+												{{ " %02d"|format( teams.prospects|filter(p =>  p.motifSaise is null  and p.source is null   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 											</strong>
 										</span>
 									</td>
@@ -178,73 +195,73 @@
 
 
 							{# <tr style="text-align: left; font-size:20px;">
-																																																																																																																																																																																																																																																																				<td>
-																																																																																																																																																																																																																																																																					<span class='btn btn' style="background-color:SpringGreen ;">
-																																																																																																																																																																																																																																																																						<strong>
-																																																																																																																																																																																																																																																																							Total :&nbsp &nbsp
-																																																																																																																																																																																																																																																																						</strong>
-																																																																																																																																																																																																																																																																					</span>
-																																																																																																																																																																																																																																																																				</td>
-																																																																																																																																																																																																																																																																				<td>
-																																																																																																																																																																																																																																																																					<span class='btn btn' style="background-color:SpringGreen ;">
-																																																																																																																																																																																																																																																																						<strong>
-																																																																																																																																																																																																																																																																							{ 
-																																																																																																																																																																																																																																																																						{{ " %02d"|format(stats.prospectsPanier ) }}
-																																																																																																																																																																																																																																																												
-																																																																																																																																																																																																																																																																 
-																																																																																																																																																																																																																																																												
-																																																																																																																																																																																																																																																												
-																																																																																																																																																																																																																																																																						</strong>
-																																																																																																																																																																																																																																																																					</span>
-																																																																																																																																																																																																																																																																				</td>
-																																																																																																																																																																																																																																																																				<td>
-																																																																																																																																																																																																																																																																					<span class='btn btn' style="background-color:SpringGreen;">
-																																																																																																																																																																																																																																																																						<strong>
-																																																																																																																																																																																																																																																																							{{ " %02d"|format(stats.prospectsAffect ) }}
-																																																																																																																																																																																																																																																																						 	</strong>
-																																																																																																																																																																																																																																																																					</span>
-																																																																																																																																																																																																																																																																				</td>
-																																																																																																																																																																																																																																																												
-																																																																																																																																																																																																																																																																				<td>
-																																																																																																																																																																																																																																																																					<span class='btn btn' style="background-color:SpringGreen ;">
-																																																																																																																																																																																																																																																																						<b>
-																																																																																																																																																																																																																																																																							{{ " %02d"|format(stats.prospectPrngeEq   ) }}
-																																																																																																																																																																																																																																																																						</b>
-																																																																																																																																																																																																																																																																					</span>
-																																																																																																																																																																																																																																																																				</td>
-																																																																																																																																																																																																																																																																				<td>
-																																																																																																																																																																																																																																																																					<span class='btn btn' style="background-color:SpringGreen ;">
-																																																																																																																																																																																																																																																																						<b>
-																																																																																																																																																																																																																																																																							{{ " %02d"|format(stats.prospectAppeEq ) }}
-																																																																																																																																																																																																																																																																						</b>
-																																																																																																																																																																																																																																																																					</span>
-																																																																																																																																																																																																																																																																				</td>
-																																																																																																																																																																																																																																																																				<td>
-																																																																																																																																																																																																																																																																					<span class='btn btn' style="background-color:SpringGreen ;">
-																																																																																																																																																																																																																																																																						<b>
-																																																																																																																																																																																																																																																																							{{ " %02d"|format(stats.prospectAvneEq   ) }}
-																																																																																																																																																																																																																																																																						</b>
-																																																																																																																																																																																																																																																																					</span>
-																																																																																																																																																																																																																																																																				</td>
-																																																																																																																																																																																																																																																																				<td>
-																																																																																																																																																																																																																																																																					<span class='btn btn' style="background-color:SpringGreen ;">
-																																																																																																																																																																																																																																																																						<b>{{ " %02d"|format(stats.prospectAncienEq ) }}
-																																																																																																																																																																																																																																																																						</b>
-																																																																																																																																																																																																																																																																					</span>
-																																																																																																																																																																																																																																																																				</td>
-																																																																																																																																																																																																																																																																				<td>
-																																																																																																																																																																																																																																																																					<span class='btn btn' style="background-color:SpringGreen ;">
-																																																																																																																																																																																																																																																																						<b>{{ " %02d"|format(stats.prospectSiteEq  ) }}
-																																																																																																																																																																																																																																																																						</b>
-																																																																																																																																																																																																																																																																					</span>
-																																																																																																																																																																																																																																																																				</td>
-																																																																																																																																																																																																																																																																				<td>
-																																																																																																																																																																																																																																																																					<span class='btn btn' style="background-color:SpringGreen ;">
-																																																																																																																																																																																																																																																																						<b>{{ " %02d"|format(stats.prospectRevndEq  ) }}
-																																																																																																																																																																																																																																																																						</b>
-																																																																																																																																																																																																																																																																					</span>
-																																																																																																																																																																																																																																																																				</td>
-																																																																																																																																																																																																																																																																			</tr> #}
+																																																																																																																																																																																																																																																																																																																												<td>
+																																																																																																																																																																																																																																																																																																																													<span class='btn btn' style="background-color:SpringGreen ;">
+																																																																																																																																																																																																																																																																																																																														<strong>
+																																																																																																																																																																																																																																																																																																																															Total :&nbsp &nbsp
+																																																																																																																																																																																																																																																																																																																														</strong>
+																																																																																																																																																																																																																																																																																																																													</span>
+																																																																																																																																																																																																																																																																																																																												</td>
+																																																																																																																																																																																																																																																																																																																												<td>
+																																																																																																																																																																																																																																																																																																																													<span class='btn btn' style="background-color:SpringGreen ;">
+																																																																																																																																																																																																																																																																																																																														<strong>
+																																																																																																																																																																																																																																																																																																																															{ 
+																																																																																																																																																																																																																																																																																																																														{{ " %02d"|format(stats.prospectsPanier ) }}
+																																																																																																																																																																																																																																																																																																																				
+																																																																																																																																																																																																																																																																																																																								 
+																																																																																																																																																																																																																																																																																																																				
+																																																																																																																																																																																																																																																																																																																				
+																																																																																																																																																																																																																																																																																																																														</strong>
+																																																																																																																																																																																																																																																																																																																													</span>
+																																																																																																																																																																																																																																																																																																																												</td>
+																																																																																																																																																																																																																																																																																																																												<td>
+																																																																																																																																																																																																																																																																																																																													<span class='btn btn' style="background-color:SpringGreen;">
+																																																																																																																																																																																																																																																																																																																														<strong>
+																																																																																																																																																																																																																																																																																																																															{{ " %02d"|format(stats.prospectsAffect ) }}
+																																																																																																																																																																																																																																																																																																																														 	</strong>
+																																																																																																																																																																																																																																																																																																																													</span>
+																																																																																																																																																																																																																																																																																																																												</td>
+																																																																																																																																																																																																																																																																																																																				
+																																																																																																																																																																																																																																																																																																																												<td>
+																																																																																																																																																																																																																																																																																																																													<span class='btn btn' style="background-color:SpringGreen ;">
+																																																																																																																																																																																																																																																																																																																														<b>
+																																																																																																																																																																																																																																																																																																																															{{ " %02d"|format(stats.prospectPrngeEq   ) }}
+																																																																																																																																																																																																																																																																																																																														</b>
+																																																																																																																																																																																																																																																																																																																													</span>
+																																																																																																																																																																																																																																																																																																																												</td>
+																																																																																																																																																																																																																																																																																																																												<td>
+																																																																																																																																																																																																																																																																																																																													<span class='btn btn' style="background-color:SpringGreen ;">
+																																																																																																																																																																																																																																																																																																																														<b>
+																																																																																																																																																																																																																																																																																																																															{{ " %02d"|format(stats.prospectAppeEq ) }}
+																																																																																																																																																																																																																																																																																																																														</b>
+																																																																																																																																																																																																																																																																																																																													</span>
+																																																																																																																																																																																																																																																																																																																												</td>
+																																																																																																																																																																																																																																																																																																																												<td>
+																																																																																																																																																																																																																																																																																																																													<span class='btn btn' style="background-color:SpringGreen ;">
+																																																																																																																																																																																																																																																																																																																														<b>
+																																																																																																																																																																																																																																																																																																																															{{ " %02d"|format(stats.prospectAvneEq   ) }}
+																																																																																																																																																																																																																																																																																																																														</b>
+																																																																																																																																																																																																																																																																																																																													</span>
+																																																																																																																																																																																																																																																																																																																												</td>
+																																																																																																																																																																																																																																																																																																																												<td>
+																																																																																																																																																																																																																																																																																																																													<span class='btn btn' style="background-color:SpringGreen ;">
+																																																																																																																																																																																																																																																																																																																														<b>{{ " %02d"|format(stats.prospectAncienEq ) }}
+																																																																																																																																																																																																																																																																																																																														</b>
+																																																																																																																																																																																																																																																																																																																													</span>
+																																																																																																																																																																																																																																																																																																																												</td>
+																																																																																																																																																																																																																																																																																																																												<td>
+																																																																																																																																																																																																																																																																																																																													<span class='btn btn' style="background-color:SpringGreen ;">
+																																																																																																																																																																																																																																																																																																																														<b>{{ " %02d"|format(stats.prospectSiteEq  ) }}
+																																																																																																																																																																																																																																																																																																																														</b>
+																																																																																																																																																																																																																																																																																																																													</span>
+																																																																																																																																																																																																																																																																																																																												</td>
+																																																																																																																																																																																																																																																																																																																												<td>
+																																																																																																																																																																																																																																																																																																																													<span class='btn btn' style="background-color:SpringGreen ;">
+																																																																																																																																																																																																																																																																																																																														<b>{{ " %02d"|format(stats.prospectRevndEq  ) }}
+																																																																																																																																																																																																																																																																																																																														</b>
+																																																																																																																																																																																																																																																																																																																													</span>
+																																																																																																																																																																																																																																																																																																																												</td>
+																																																																																																																																																																																																																																																																																																																											</tr> #}
 
 
 						{% endif %}
@@ -268,20 +285,23 @@
 										<td>
 											<span class="btn btn-primary">
 
-												{{ " %02d"|format(user.prospections|filter(p => p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d'))|length) }}
+												{{ " %02d"|format(user.prospections|filter(p =>   p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 												{# {{   " %02d"|format(user.prospections| length)  }} #}
 											</span>
 
 										</td>
 										<td>
 											<span class="btn btn-danger">
-												{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 1 and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
+												{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 1 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 												{# {{   " %02d"|format(user.prospections|filter(p => p.motifSaise == 1)| length)  }} #}
 											</span>
 										</td>
 										<td>
 											<span class="btn btn-success">
-												{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 2 and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d'))| length) }}
+												{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 2 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 												{# {{  " %02d"|format(user.prospections|filter(p => p.motifSaise == 2)| length)  }} #}
 											</span>
 										</td>
@@ -290,89 +310,101 @@
 												class="btn btn-warning">
 
 												{# {{  " %02d"|format(user.prospections|filter(p => p.motifSaise == 3)| length)  }} #}
-												{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 3 and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d'))| length) }}
+												{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 3 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 											</span>
 										</td>
 										<td>
 											<span class='btn btn' style="background-color:Violet;">
-												{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 4 and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d'))| length) }}
+												{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 4 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 												{# {{  " %02d"|format(user.prospections|filter(p => p.motifSaise  == 4)| length)  }} #}
 											</span>
 										</td>
 
 
 										<td>
-											<span class='btn btn' style="background-color:GreenYellow;">
-												{{ " %02d"|format(user.prospections|filter(p => p.motifSaise is null and p.source == 'Propre site' and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d'))| length)  }}
-												{# {{  " %02d"|format(user.prospections|filter(p => p.motifSaise is null and p.source == 'Propre site' )| length)  }} #}
+											<span class='btn btn' style="background-color:Violet;">
+												{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 5 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+												{# {{  " %02d"|format(user.prospections|filter(p => p.motifSaise  == 4)| length)  }} #}
 											</span>
 										</td>
 										<td>
 											<span class='btn btn' style="background-color:Aquamarine;">
-												{{ " %02d"|format(user.prospections|filter(p => p.motifSaise is null and p.source == 'Revendeur' and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
+												{{ " %02d"|format(user.prospections|filter(p => p.motifSaise is null and p.source == 'Revendeur' and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 												{# {{  " %02d"|format(user.prospections|filter(p => p.motifSaise is null and 	p.source == 'Revendeur' )| length)  }} #}
 											</span>
 										</td>
+										<td>
+											<span class='btn btn' style="background-color:Aquamarine;">
+												{{ " %02d"|format(user.prospections|filter(p => p.motifSaise is null and p.source is null and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+												{# {{  " %02d"|format(user.prospections|filter(p => p.motifSaise is null and 	p.source == 'Revendeur' )| length)  }} #}
+											</span>
+										</td>
+
 
 									</tr>
 
 								{% endfor %}
 								{# <tr style="text-align: left; font-size:20px;">
-																																																																																																																																																																	<td>
-																																																																																																																																																																		<span class='btn btn' style="background-color:SpringGreen ;">
-																																																																																																																																																																			<strong>
-																																																																																																																																																																				Total :&nbsp &nbsp
-																																																																																																																																																																			</strong>
-																																																																																																																																																																		</span>
-																																																																																																																																																																	</td>
-																																																																																																																																																								
-																																																																																																																																																																	<td>
-																																																																																																																																																																		<span class='btn btn' style="background-color:SpringGreen ;">
-																																																																																																																																																																			<strong>
-																																																																																																																																																																				{{  " %02d"|format(app.user.teams.prospects|filter(p => p.comrcl is not null and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
-																																																																																																																																																																			</strong>
-																																																																																																																																																																		</span>
-																																																																																																																																																																	</td>
-																																																																																																																																																																	<td>
-																																																																																																																																																																		<span class='btn btn' style="background-color:SpringGreen ;">
-																																																																																																																																																																			<b>
-																																																																																																																																																																				{{  " %02d"|format(app.user.teams.prospects|filter(p => p.motifSaise == 1 and  p.comrcl is not null and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
-																																																																																																																																																																			</b>
-																																																																																																																																																																		</span>
-																																																																																																																																																																	</td>
-																																																																																																																																																																	<td>
-																																																																																																																																																																		<span class='btn btn' style="background-color:SpringGreen ;">
-																																																																																																																																																																			<b>
-																																																																																																																																																																				{{  " %02d"|format(app.user.teams.prospects|filter(p => p.motifSaise == 2 and  p.comrcl is not null and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
-																																																																																																																																																																			</b>
-																																																																																																																																																																		</span>
-																																																																																																																																																																	</td>
-																																																																																																																																																																	<td>
-																																																																																																																																																																		<span class='btn btn' style="background-color:SpringGreen ;">
-																																																																																																																																																																			<b>
-																																																																																																																																																																				{{  " %02d"|format(app.user.teams.prospects|filter(p => p.motifSaise == 3 and  p.comrcl is not null and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
-																																																																																																																																																																			</b>
-																																																																																																																																																																		</span>
-																																																																																																																																																																	</td>
-																																																																																																																																																																	<td>
-																																																																																																																																																																		<span class='btn btn' style="background-color:SpringGreen ;">
-																																																																																																																																																																			<b>{{  " %02d"|format(app.user.teams.prospects|filter(p => p.motifSaise == 4 and  p.comrcl is not null and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
-																																																																																																																																																																			</b>
-																																																																																																																																																																		</span>
-																																																																																																																																																																	</td>
-																																																																																																																																																																	<td>
-																																																																																																																																																																		<span class='btn btn' style="background-color:SpringGreen ;">
-																																																																																																																																																																			<b>{{  " %02d"|format(app.user.teams.prospects|filter(p => p.motifSaise is null and p.source == 'Propre site' and  p.comrcl is not null and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
-																																																																																																																																																																			</b>
-																																																																																																																																																																		</span>
-																																																																																																																																																																	</td>
-																																																																																																																																																																	<td>
-																																																																																																																																																																		<span class='btn btn' style="background-color:SpringGreen ;">
-																																																																																																																																																																			<b>{{  " %02d"|format(app.user.teams.prospects|filter(p => p.motifSaise is null and p.source == 'Revendeur' and  p.comrcl is not null and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
-																																																																																																																																																																			</b>
-																																																																																																																																																																		</span>
-																																																																																																																																																																	</td>
-																																																																																																																																																																</tr> #}
+																																																																																																																																																																																																																																	<td>
+																																																																																																																																																																																																																																		<span class='btn btn' style="background-color:SpringGreen ;">
+																																																																																																																																																																																																																																			<strong>
+																																																																																																																																																																																																																																				Total :&nbsp &nbsp
+																																																																																																																																																																																																																																			</strong>
+																																																																																																																																																																																																																																		</span>
+																																																																																																																																																																																																																																	</td>
+																																																																																																																																																																																																																								
+																																																																																																																																																																																																																																	<td>
+																																																																																																																																																																																																																																		<span class='btn btn' style="background-color:SpringGreen ;">
+																																																																																																																																																																																																																																			<strong>
+																																																																																																																																																																																																																																				{{  " %02d"|format(app.user.teams.prospects|filter(p => p.comrcl is not null and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
+																																																																																																																																																																																																																																			</strong>
+																																																																																																																																																																																																																																		</span>
+																																																																																																																																																																																																																																	</td>
+																																																																																																																																																																																																																																	<td>
+																																																																																																																																																																																																																																		<span class='btn btn' style="background-color:SpringGreen ;">
+																																																																																																																																																																																																																																			<b>
+																																																																																																																																																																																																																																				{{  " %02d"|format(app.user.teams.prospects|filter(p => p.motifSaise == 1 and  p.comrcl is not null and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
+																																																																																																																																																																																																																																			</b>
+																																																																																																																																																																																																																																		</span>
+																																																																																																																																																																																																																																	</td>
+																																																																																																																																																																																																																																	<td>
+																																																																																																																																																																																																																																		<span class='btn btn' style="background-color:SpringGreen ;">
+																																																																																																																																																																																																																																			<b>
+																																																																																																																																																																																																																																				{{  " %02d"|format(app.user.teams.prospects|filter(p => p.motifSaise == 2 and  p.comrcl is not null and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
+																																																																																																																																																																																																																																			</b>
+																																																																																																																																																																																																																																		</span>
+																																																																																																																																																																																																																																	</td>
+																																																																																																																																																																																																																																	<td>
+																																																																																																																																																																																																																																		<span class='btn btn' style="background-color:SpringGreen ;">
+																																																																																																																																																																																																																																			<b>
+																																																																																																																																																																																																																																				{{  " %02d"|format(app.user.teams.prospects|filter(p => p.motifSaise == 3 and  p.comrcl is not null and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
+																																																																																																																																																																																																																																			</b>
+																																																																																																																																																																																																																																		</span>
+																																																																																																																																																																																																																																	</td>
+																																																																																																																																																																																																																																	<td>
+																																																																																																																																																																																																																																		<span class='btn btn' style="background-color:SpringGreen ;">
+																																																																																																																																																																																																																																			<b>{{  " %02d"|format(app.user.teams.prospects|filter(p => p.motifSaise == 4 and  p.comrcl is not null and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
+																																																																																																																																																																																																																																			</b>
+																																																																																																																																																																																																																																		</span>
+																																																																																																																																																																																																																																	</td>
+																																																																																																																																																																																																																																	<td>
+																																																																																																																																																																																																																																		<span class='btn btn' style="background-color:SpringGreen ;">
+																																																																																																																																																																																																																																			<b>{{  " %02d"|format(app.user.teams.prospects|filter(p => p.motifSaise is null and p.source == 'Propre site' and  p.comrcl is not null and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
+																																																																																																																																																																																																																																			</b>
+																																																																																																																																																																																																																																		</span>
+																																																																																																																																																																																																																																	</td>
+																																																																																																																																																																																																																																	<td>
+																																																																																																																																																																																																																																		<span class='btn btn' style="background-color:SpringGreen ;">
+																																																																																																																																																																																																																																			<b>{{  " %02d"|format(app.user.teams.prospects|filter(p => p.motifSaise is null and p.source == 'Revendeur' and  p.comrcl is not null and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
+																																																																																																																																																																																																																																			</b>
+																																																																																																																																																																																																																																		</span>
+																																																																																																																																																																																																																																	</td>
+																																																																																																																																																																																																																																</tr> #}
 							{% endfor %}
 						{% endif %}
 					</tbody>
@@ -639,11 +671,11 @@ return new bootstrap.Popover(popoverTriggerEl)
 	</script>
 
 	{# <script> 
-																																																											$(document).ready(function(){
-																																																											$("#flipp").click(function(){
-																																																												$("#panell").slideToggle("slow");
-																																																												$("#panel1").slideToggle("slow");
-																																																											});
-																																																											});
-																																																										</script> #}
+																																																																			$(document).ready(function(){
+																																																																			$("#flipp").click(function(){
+																																																																				$("#panell").slideToggle("slow");
+																																																																				$("#panel1").slideToggle("slow");
+																																																																			});
+																																																																			});
+																																																																		</script> #}
 {% endblock %}

@@ -32,13 +32,17 @@
 				<div class="modal-body">
 					{{form_row(form.team)}}
 				</div>
-
+				{# <div class="modal-body">
+																																																																					{{form_row(form.comrcl, { 'attr' : { 'style':'display:none'} }) }}
+																																																																				</div> #}
 			{% else %}
 
 				{{ form_widget(form.team, { 'attr' : { 'style':'display:none'} }) }}
+
 			{% endif %}
+
 			<div class="modal-body">
-				{{form_row(form.comrcl)}}
+				{{form_row(form.comrcl) }}
 			</div>
 
 			<div class="modal-footer">
@@ -96,54 +100,62 @@
 
 							<td>
 								{# <span class="btn btn-primary">
-																																																																																																																																																																																																																																																																																																																																																																																																{{ "%02d"|format((teams.prospects|filter(p => p.comrcl is null and p.team is not null and p.creatAt|date('Y-m-d')  == "now"|date('Y-m-d')))|length) }}
-																																																																																																																																																																																																																																																																																																																																																																																															</span> #}
-								<span
-									class="btn btn-primary">
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																{{ "%02d"|format((teams.prospects|filter(p => p.comrcl is null and p.team is not null and p.creatAt|date('Y-m-d')  == "now"|date('Y-m-d')))|length) }}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															</span> #}
+								<span class="btn btn-primary">
 									{# {{ "%02d"|format((teams.prospects|filter(p => p.comrcl is null and p.team is not null ))|length) }} #}
-									{{ "%02d"|format( teams.prospects|filter(p =>  p.comrcl is  null and p.team is not null and p.creatAt|date('Y-m-d') == "now"|date('Y-m-d'))|length) }}
+									{# {{ "%02d"|format( teams.prospects|filter(p =>  p.comrcl is  null  and p.creatAt|date('Y-m-d') == "now"|date('Y-m-d'))|length) }} #}
 
-								</span>
+								{{ "%02d"|format( teams.prospects |filter(p => p.comrcl is  null and p.team is not null and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+
+							</span>
 							</td>
-							<td>
+								<td>
 
-								<span
-									class="btn btn-primary">
-									{# {{ "%02d"|format((teams.prospects|filter(p => p.comrcl is not null and p.team is not null ))|length) }} #}
-									{{ "%02d"|format( teams.prospects|filter(p =>  p.comrcl is not null and p.creatAt|date('Y-m-d') == "now"|date('Y-m-d'))|length) }}
+									<span
+									class="btn btn-primary"> {# {{ "%02d"|format((teams.prospects|filter(p => p.comrcl is not null and p.team is not null ))|length) }} #}
+									{{ "%02d"|format( teams.prospects|filter(p =>  p.comrcl is not null and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 
 								</span>
 							</td>
 							<td>
 								<span class="btn btn-danger">
-									{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  1    and p.creatAt|date('Y-m-d') == "now"|date('Y-m-d'))|length) }}
+									{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  1   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 								</span>
 							</td>
 							<td>
 								<span class="btn btn-success day">
-									{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  2     and p.creatAt|date('Y-m-d') == "now"|date('Y-m-d'))|length) }}
+									{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  2    and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 								</span>
 							</td>
 							<td>
 								<span class="btn btn" style="background-color:#41B9E1;">
-									{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  3   and p.creatAt|date('Y-m-d') == "now"|date('Y-m-d'))|length) }}
+									{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  3   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 								</span>
 							</td>
 							<td>
 								<span class='btn btn' style="background-color:Violet;">
-									{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  4   and p.creatAt|date('Y-m-d') == "now"|date('Y-m-d'))|length) }}
+									{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  4     and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 								</span>
 							</td>
 							<td>
 								<span class='btn btn' style="background-color:GreenYellow;">
 									<strong>
-										{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise is null and p.source == 'Propre site'   and p.creatAt|date('Y-m-d') == "now"|date('Y-m-d'))|length) }}</strong>
+										{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise is null and p.source == 'Propre site'     and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+									</strong>
 								</span>
 							</td>
 							<td>
 								<span class='btn btn' style="background-color:Aquamarine;">
 									<strong>
-										{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise is null and p.source == 'Revendeur'   and p.creatAt|date('Y-m-d') == "now"|date('Y-m-d'))|length) }}
+										{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise is null and p.source == 'Revendeur'   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 									</strong>
 								</span>
 							</td>
@@ -167,19 +179,22 @@
 								<td>
 									<span class="btn btn-primary">
 
-										{{ " %02d"|format(user.prospections|filter(p => p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d'))|length) }}
+										{{ " %02d"|format(user.prospections|filter(p =>  p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 										{# {{   " %02d"|format(user.prospections| length)  }} #}
 									</span>
 								</td>
 								<td>
 									<span class="btn btn-danger">
-										{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 1 and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
+										{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 1 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 										{# {{   " %02d"|format(user.prospections|filter(p => p.motifSaise == 1)| length)  }} #}
 									</span>
 								</td>
 								<td>
 									<span class="btn btn-success">
-										{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 2 and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d'))| length) }}
+										{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 2 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 										{# {{  " %02d"|format(user.prospections|filter(p => p.motifSaise == 2)| length)  }} #}
 									</span>
 								</td>
@@ -188,24 +203,28 @@
 										class="btn btn-warning">
 
 										{# {{  " %02d"|format(user.prospections|filter(p => p.motifSaise == 3)| length)  }} #}
-										{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 3 and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d'))| length) }}
+										{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 3 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 									</span>
 								</td>
 								<td>
 									<span class='btn btn' style="background-color:Violet;">
-										{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 4 and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d'))| length) }}
+										{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 4 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 										{# {{  " %02d"|format(user.prospections|filter(p => p.motifSaise  == 4)| length)  }} #}
 									</span>
 								</td>
 								<td>
 									<span class='btn btn' style="background-color:GreenYellow;">
-										{{ " %02d"|format(user.prospections|filter(p => p.motifSaise is null and p.source == 'Propre site' and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d'))| length)  }}
+										{{ " %02d"|format(user.prospections|filter(p => p.motifSaise is null and p.source == 'Propre site' and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 										{# {{  " %02d"|format(user.prospections|filter(p => p.motifSaise is null and p.source == 'Propre site' )| length)  }} #}
 									</span>
 								</td>
 								<td>
 									<span class='btn btn' style="background-color:Aquamarine;">
-										{{ " %02d"|format(user.prospections|filter(p => p.motifSaise is null and p.source == 'Revendeur' and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
+										{{ " %02d"|format(user.prospections|filter(p => p.motifSaise is null and p.source == 'Revendeur' and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 										{# {{  " %02d"|format(user.prospections|filter(p => p.motifSaise is null and 	p.source == 'Revendeur' )| length)  }} #}
 									</span>
 								</td>

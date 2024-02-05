@@ -32,6 +32,9 @@ class Product
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'products', cascade: ['persist'])]
     private $users;
 
+    #[ORM\ManyToMany(targetEntity: Prospect::class, mappedBy: 'produit', cascade: ['persist'])]
+    private Collection $prospects;
+
 
 
 
@@ -39,6 +42,7 @@ class Product
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->prospects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -99,6 +103,33 @@ class Product
     {
         if ($this->users->removeElement($user)) {
             $user->removeProduct($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Prospect>
+     */
+    public function getProspects(): Collection
+    {
+        return $this->prospects;
+    }
+
+    public function addProspect(Prospect $prospect): static
+    {
+        if (!$this->prospects->contains($prospect)) {
+            $this->prospects->add($prospect);
+            $prospect->addProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProspect(Prospect $prospect): static
+    {
+        if ($this->prospects->removeElement($prospect)) {
+            $prospect->removeProduit($this);
         }
 
         return $this;

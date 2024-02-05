@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use DateTime;
+use Doctrine\DBAL\Types\Types;
 use ORM\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
@@ -25,14 +27,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "string", length: 180, unique: true)]
+    #[ORM\Column(type: "string", length: 180, nullable: false, unique: true)]
     #[Assert\NotBlank(message: "Le nom d'utilisateur est obligatoire")]
     #[Assert\Length(
         min: 4,
         max: 15,
-        minMessage: "Votre nom d'utilisateur doit contenir au moins quatre caractères",
-        maxMessage: "Votre nom d'utilisateur doit contenir au maximum quinze caractères"
+        minMessage: "Le nom d'utilisateur doit contenir au moins quatre caractères",
+        maxMessage: "Le nom d'utilisateur doit contenir au maximum quinze caractères"
     )]
+    #[Assert\Regex(
+        pattern: "/^[^\s,;:]+$/",
+        message: "Le nom d'utilisateur ne doit pas contenir d'espaces, de virgules, de points-virgules ou de deux-points"
+    )]
+
     private $username;
 
     #[ORM\Column(type: "json")]
@@ -45,8 +52,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Length(
         min: 2,
         max: 10,
-        minMessage: "Votre prénom doit contenir au moins deux caractères",
-        maxMessage: "Votre prénom doit contenir au maximum dix caractères"
+        minMessage: "Le prénom doit contenir au moins deux caractères",
+        maxMessage: "Le prénom doit contenir au maximum dix caractères"
+    )]
+    #[Assert\Regex(
+        pattern: "/^[^\s,;:]+$/",
+        message: "Votre prénom ne doit pas contenir d'espaces, de virgules, de points-virgules ou de deux-points"
     )]
     private $firstname;
 
@@ -54,8 +65,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Length(
         min: 2,
         max: 10,
-        minMessage: "Votre nom doit contenir au moins deux caractères",
-        maxMessage: "Votre nom doit contenir au maximum dix caractères"
+        minMessage: "Le nom doit contenir au moins deux caractères",
+        maxMessage: "Le nom doit contenir au maximum dix caractères"
+    )]
+    #[Assert\Regex(
+        pattern: "/^[^\s,;:]+$/",
+        message: "Le nom ne doit pas contenir d'espaces, de virgules, de points-virgules ou de deux-points"
     )]
     private $lastname;
 
@@ -97,6 +112,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'cmrl', targetEntity: Client::class)]
     private Collection $clients;
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $creatAt = null;
+
 
 
 
@@ -107,6 +125,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->prospects = new ArrayCollection();
         $this->prospections = new ArrayCollection();
         $this->clients = new ArrayCollection();
+    }
+
+    /**
+     * Permet de mettre en place la date de création
+     * 
+     * @ORM\PrePersist
+     * 
+     * @return void
+     */
+    #[ORM\PrePersist]
+    public function prePersist()
+    {
+        if (empty($this->creatAt)) {
+            $timezone = new \DateTimeZone('Europe/Paris'); // Remplacez par le fuseau horaire approprié pour +1 heur
+            $this->creatAt = new \Datetime('now', $timezone);
+        }
     }
 
     public function getId(): ?int
@@ -439,4 +473,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getCreatAt(): ?\DateTimeInterface
+    {
+        return $this->creatAt;
+    }
+
+    public function setCreatAt(\DateTimeInterface $creatAt): static
+    {
+        $this->creatAt = new DateTime();
+
+        return $this;
+    }
 }

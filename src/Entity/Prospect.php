@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 
-use App\Entity\Relance;
+
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProspectRepository;
@@ -88,13 +88,17 @@ class Prospect
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $creatAt;
 
-
-
     #[ORM\OneToMany(mappedBy: 'prospect', targetEntity: Relanced::class, cascade: ["persist"])]
     private Collection $relanceds;
 
     #[ORM\OneToMany(mappedBy: 'prospect', targetEntity: History::class)]
     private Collection $histories;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $activites = null;
+
+    #[ORM\ManyToMany(targetEntity: Product::class, inversedBy: 'prospects', cascade: ["persist"])]
+    private Collection $produit;
 
     public function __construct()
     {
@@ -102,6 +106,7 @@ class Prospect
 
         $this->relanceds = new ArrayCollection();
         $this->histories = new ArrayCollection();
+        $this->produit = new ArrayCollection();
     }
 
     /**
@@ -215,7 +220,7 @@ class Prospect
         return $this->brithAt;
     }
 
-    public function setBrithAt(\DateTimeInterface $brithAt): self
+    public function setBrithAt(?\DateTimeInterface $brithAt): self
     {
         $this->brithAt = $brithAt;
 
@@ -440,6 +445,42 @@ class Prospect
                 $history->setProspect(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getActivites(): ?string
+    {
+        return $this->activites;
+    }
+
+    public function setActivites(?string $activites): static
+    {
+        $this->activites = $activites;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProduit(): Collection
+    {
+        return $this->produit;
+    }
+
+    public function addProduit(Product $produit): static
+    {
+        if (!$this->produit->contains($produit)) {
+            $this->produit->add($produit);
+        }
+
+        return $this;
+    }
+
+    public function removeProduit(Product $produit): static
+    {
+        $this->produit->removeElement($produit);
 
         return $this;
     }

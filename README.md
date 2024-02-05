@@ -641,3 +641,9 @@ public function prePersist()
         $this->creatAt = new \Datetime('now', $timezone);
     }
 }
+
+## pour que soit la date naissance peut envoie null ; il faut ajouter ?
+ public function setBrithAt(?\DateTimeInterface $brithAt): self
+{}
+## humanize on twig pour render en majisqule:
+https://symfony.com/doc/current/reference/twig_reference.html

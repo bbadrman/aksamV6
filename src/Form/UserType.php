@@ -2,60 +2,52 @@
 
 namespace App\Form;
 
-use App\Entity\Fonction;
-use App\Entity\Team;
-use App\Entity\User; 
-use App\Entity\Product;
+use App\Entity\User;
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\ProductRepository;
-use App\Repository\TeamRepository;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType; 
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class UserType extends AbstractType
 
-{ 
-   
+{
+
     private $productRepository;
-    
-    public function __construct(ProductRepository $productRepository){
+
+    public function __construct(ProductRepository $productRepository)
+    {
         $this->productRepository = $productRepository;
     }
-         
+
 
 
     public function buildForm(FormBuilderInterface $builder,  array $options): void
-    {   
-    
-        
-              
-        $builder
-                
+    {
 
-        ->add('username', Type\TextType::class, [
-            'label' => 'Username',
-            'error_bubbling' => false,      
-            'required' => true,
-            'attr' => [
-                'placeholder' => "Merci de saisir Username"
-            ]
-        ])
+
+
+        $builder
+
+            ->add('username', Type\TextType::class, [
+                'label' => 'Username',
+                'error_bubbling' => false,
+                'required' => true,
+
+                'attr' => [
+                    'placeholder' => 'Merci de saisir Username',
+                ],
+            ])
             ->add('fonctions')
             ->add('roles', ChoiceType::class, [
                 'choices' => [
-                     
-                        'Tous' => 'ROLE_ADMIN',
-                        'Chef Equipe'   => 'ROLE_TEAM',
-                    
-                       
+
+                    'Tous' => 'ROLE_ADMIN',
+                    'Chef Equipe'   => 'ROLE_TEAM',
+
+
                     '*-----Prospects-----*' => [
                         'Gestion Prospects' => 'ROLE_PROS',
                         'Ajouter Prospect'  => 'ROLE_ADD_PROS',
@@ -77,7 +69,7 @@ class UserType extends AbstractType
                         'Ajouter RH' => 'ROLE_ADD_RH',
                         'Edite RH' => 'ROLE_EDIT_RH',
                     ],
-                        
+
                     '*-----Clients-----*' => [
                         'Gestion Clients' => 'ROLE_CLIENT',
                         'Ajouter Client' => 'ROLE_ADD_CLIENT',
@@ -86,9 +78,9 @@ class UserType extends AbstractType
                 ],
 
 
-                
+
                 'required' => false,
-                'multiple' => true, 
+                'multiple' => true,
                 'label' => 'Rôles',
                 'attr' => [
                     'placeholder' => '--choisir une fonction--',
@@ -97,19 +89,19 @@ class UserType extends AbstractType
 
             ->add('firstname', Type\TextType::class, [
                 'label' => 'Prénom',
-                'required' => false,
+                'required' => true,
                 'attr' => [
                     'placeholder' => 'Merci de saisir le prénom'
                 ]
             ])
             ->add('lastname', Type\TextType::class, [
                 'label' => 'Nom',
-                'required' => false,
+                'required' => true,
                 'attr' => [
                     'placeholder' => 'Merci de saisir le nom'
                 ]
             ])
-            
+
             ->add('embuchAt', Type\DateType::class, [
                 'label' => "Date d'embauche",
 
@@ -118,6 +110,7 @@ class UserType extends AbstractType
             ])
             ->add('remuneration', Type\MoneyType::class, [
                 'label' => 'remuneration',
+                'required' => false,
                 'attr' => [
 
                     'placeholder' => 'Tapez   en Dhs',
@@ -128,7 +121,7 @@ class UserType extends AbstractType
                 ],
 
             ])
-            
+
             ->add('password', Type\RepeatedType::class, [
                 'type' => Type\PasswordType::class,
                 'required' => true,
@@ -150,7 +143,7 @@ class UserType extends AbstractType
             ])
             ->add('gender', Type\ChoiceType::class, [
                 'label' => 'Gender',
-                'required' => true,
+
                 'choices' => [
                     'Male' => 1,
                     'Female' => 0
@@ -161,7 +154,7 @@ class UserType extends AbstractType
 
             ->add('status', Type\ChoiceType::class, [
                 'label' => 'Status',
-                'required' => true,
+
                 'choices' => [
                     'Active' => 1,
                     'Desactive' => 0
@@ -169,45 +162,12 @@ class UserType extends AbstractType
                 'expanded' => true,
                 'multiple' => false
             ])
-            
-            ->add('products') 
+
+            ->add('products')
             ->add('teams');
-             
-            
-            }
-    
-        //     $formModifier = function (FormInterface $form, Team $team = null) {
-        //         $product = $team === null ? [] : $this->productRepository->findByTeamOrderedByAscName($team);
-            
-        //         $form->add('products', EntityType::class, [
-        //             'class' => Product::class,
-        //             'choice_label' => 'name',
-        //             'multiple' => true,
-        //             'disabled' => $team === null,
-        //             'placeholder' => 'Choose a product',
-        //             'choices' => $product,
-        //             'required' => false
-        //         ]);
-        //     };
+    }
 
-        //     $builder->addEventListener(
-        //         FormEvents::PRE_SET_DATA,
-        //         function (FormEvent $event) use ($formModifier) {
-        //             $data = $event->getData();
-    
-        //             $formModifier($event->getForm(), $data->getTeams());
-        //         }
-        //     ); 
 
-        //     $builder->get('teams')->addEventListener(
-        //         FormEvents::POST_SUBMIT,
-        //         function (FormEvent $event) use ($formModifier) {
-        //             $team = $event->getForm()->getData();
-    
-        //             $formModifier($event->getForm()->getParent(), $team);
-        //         }
-        //     );
-        // }
 
     public function configureOptions(OptionsResolver $resolver)
     {

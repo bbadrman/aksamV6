@@ -2,24 +2,18 @@
 
 namespace App\Controller;
 
-use App\Entity\Team;
 use App\Entity\User;
 use App\Form\UserType;
-use App\Entity\Product;
 use App\Search\SearchUser;
 use App\Form\SearchUserType;
-use App\Repository\TeamRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
 
@@ -38,20 +32,21 @@ class UserController extends AbstractController
     /**
      * @Route("/", name="user_index", methods={"GET"})
      */
-    public function index(UserRepository $userRepository, TeamRepository $teamRepository, Request $request): Response
+    public function index(UserRepository $userRepository, Request $request): Response
     {
-        
+
         $data = new SearchUser();
         $data->page = $request->get('page', 1);
-        
+
         $form = $this->createForm(SearchUserType::class, $data);
         $form->handleRequest($request);
         $users = $userRepository->findSearchUser($data);
-        $teams = $teamRepository->findAll();
-        
+
+
+
         return $this->render('user/index.html.twig', [
             'users' => $users,
-            'teams' => $teams,
+
             'search_form' => $form->createView()
         ]);
     }
@@ -60,17 +55,16 @@ class UserController extends AbstractController
      * @Route("/nouveau-utilisateur", name="user_new", methods={"GET","POST"})
      * @IsGranted("ROLE_ADMIN", message="Tu ne peut pas acces a cet ressource")
      */
-    public function new(Request $request, UserPasswordHasherInterface $encoder ): Response
+    public function new(Request $request, UserPasswordHasherInterface $encoder): Response
     {
         $user = new User();
-      
+
         $form = $this->createForm(UserType::class, $user);
-      
+
         $form->handleRequest($request);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
             foreach ($user->getFonctions() as $fonction) {
                 $fonction->addUser($user);
             }
@@ -78,7 +72,7 @@ class UserController extends AbstractController
             foreach ($user->getProducts() as $product) {
                 $product->addUser($user);
             }
-            
+
             // $user->setStatus(1);
             //  $data = $form->getData();
             //   dd($data);
@@ -123,16 +117,16 @@ class UserController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             // foreach ($user->getFonctions() as $fonction) {
             //     $fonction->addUser($user);
             // }
-             
+
             $userRepository->add($user, true);
             $password = $encoder->hashPassword($user, $user->getPassword());
             $user->setPassword($password);
-           
-        //    $this->entityManager->persist($user);
+
+            //    $this->entityManager->persist($user);
             $this->entityManager->flush();
             // dd($user);
             $this->addFlash('success', 'Votre User a été modifié avec succès!');
@@ -166,16 +160,13 @@ class UserController extends AbstractController
      * @Route("/activer/{id}", name="activer")
      */
 
-    public function activer(User $user)  {
+    public function activer(User $user)
+    {
 
-        $user->setStatus(($user->getStatus())?false:true);
+        $user->setStatus(($user->getStatus()) ? false : true);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
         return new Response("true");
-
     }
-
-   
-
 }

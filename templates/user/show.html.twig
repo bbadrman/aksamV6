@@ -216,6 +216,17 @@
 						{% endfor %}
 					</td>
 				</tr>
+				<tr>
+					<th>Date de creation
+					</th>
+					<td>
+						{% if user.creatAt is not empty %}
+							{{ user.creatAt |  date('d/m/Y, H:i:s')}}
+						{% else %}
+							Aucun
+						{% endif %}
+					</td>
+				</tr>
 			</tbody>
 		</table>
 	</div>

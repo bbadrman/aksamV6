@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Product;
 use App\Entity\Team;
 use App\Entity\User;
 use Type\IntegerType;
@@ -100,20 +101,16 @@ class ProspectType extends AbstractType
                 ]
             ])
             ->add('brithAt', BirthdayType::class, [
-                'label' => 'Date de Naissance   (obligatoir)',
-                'widget' => 'single_text'
+                'label' => 'Date de Naissance ',
+                'widget' => 'single_text',
+                'required' => false,
             ])
-            ->add('source', Type\ChoiceType::class, [
-                'label' => 'Source ',
+            ->add('source', Type\TextType::class, [
+                'label' => 'Source',
                 'required' => true,
-                'placeholder' => '--Merci de selectie-- ',
-                'choices' => [
-
-                    'Saisie manuelle' => 'Saisie manuelle',
-                    'Revendeur' => 'Revendeur',
-                ],
-                'expanded' => false,
-                'multiple' => false
+                'data' => '1', // Valeur affichée
+                // 'mapped' => false, // Ne pas mapper ce champ avec l'entité
+                'attr' => ['readonly' => true], // Rend le champ en lecture seule
             ])
             ->add('motifSaise', Type\ChoiceType::class, [
                 'label' => 'Motive de saisier ',
@@ -125,6 +122,7 @@ class ProspectType extends AbstractType
                     'Avenant' => '3',
                     'Ancienne contrat' => '4',
                     'Propre site' => '5',
+                    'Revendeur' => '6',
                 ],
                 'expanded' => false,
                 'multiple' => false
@@ -134,8 +132,8 @@ class ProspectType extends AbstractType
                 'required' => false,
                 'placeholder' => '--Merci de selectie-- ',
                 'choices' => [
-                    'Particuliers' =>  'Particuliers',
-                    'Professionnels' => 'Professionnels',
+                    'Particulier' =>  '1',
+                    'Professionnel' => '2',
                 ],
                 'expanded' => false,
                 'multiple' => false
@@ -149,7 +147,7 @@ class ProspectType extends AbstractType
             ])
             ->add('codePost', Type\IntegerType::class, [
                 'label' => 'Code Postal (obligatoir)',
-                'constraints' => new Length(['min' => 4,  'minMessage' => 'le code postale doit etre quatre caactaire mini', 'max' => 5, 'maxMessage' => 'le code postale doite etre 5 caractaire max']),
+                'constraints' => new Length(['min' => 5,  'minMessage' => 'le code postale doit etre quatre caactaire mini', 'max' => 5, 'maxMessage' => 'le code postale doite etre 5 caractaire max']),
                 'attr' => [
                     'placeholder' => 'Merci de saisir le Code Postal',
                 ]
@@ -202,6 +200,27 @@ class ProspectType extends AbstractType
                         'Échéance' => 3,
                         'Non-paiement' => 4,
                         'Sinistre' =>  5
+                    ],
+                    'expanded' => false,
+                    'multiple' => false
+                ]
+            )
+            ->add('produit')
+            ->add(
+                'activites',
+                Type\ChoiceType::class,
+                [
+                    'label' => 'Activites ',
+                    'required' => false,
+                    'placeholder' => '--Merci de selectie-- ',
+                    'choices' => [
+                        'TPM' =>  1,
+                        'VTC' =>  2,
+                        'Sociéte' => 3,
+                        'Décenale' => 4,
+                        'Dommage' =>  5,
+                        'Marchandise' =>  6,
+                        'Négociant' =>  7
                     ],
                     'expanded' => false,
                     'multiple' => false

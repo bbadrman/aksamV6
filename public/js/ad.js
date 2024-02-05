@@ -305,8 +305,7 @@ function setupDisplayControl(fieldId, containerId, targetValue) {
 }
 
 // Configuration des différents champs de formulaire
-setupDisplayControl('prospect_typeProspect', 'subcategory-container', 'Professionnels');
-setupDisplayControl('prospect_source', 'subMotiv-container', 'Saisie manuelle');
+setupDisplayControl('prospect_typeProspect', 'subcategory-container', '2');
 setupDisplayControl('prospect_lastAssure', 'subResil-container', 'Oui');
 
 
@@ -314,6 +313,9 @@ setupDisplayControl('prospect_lastAssure', 'subResil-container', 'Oui');
 //select motiveRelanced pour afficher la ajouter client quand on click sur pasage contart
 //select motiveRelanced pour afficher la calandrie et comment quand on click sur rndv
 var resilField = document.getElementById('relanced_motifRelanced');
+var commentField = document.getElementById('MotivRelcoment-container'); // Changer l'ID ici
+
+
 var subresilContainer1 = document.getElementById('subMotivRelc-container');
 var subresilContainer2 = document.getElementById('subMotivContrat-container');
 
@@ -322,15 +324,32 @@ if (resilField !== null) {
 		if (resilField.value === '1') {
 			subresilContainer1.style.display = 'block';
 			subresilContainer2.style.display = 'none';
+			commentField.style.display = 'block'; // Afficher le champ comment
+
 		} else if (resilField.value === '10') {
 			subresilContainer1.style.display = 'none';
 			subresilContainer2.style.display = 'block';
-		} else {
+			commentField.style.display = 'block'; // Cacher le champ comment
+
+		}
+		else if (resilField.value === '2' || resilField.value === '3' || resilField.value === '4' || resilField.value === '5' || resilField.value === '6' || resilField.value === '7' || resilField.value === '8' || resilField.value === '9') {
 			subresilContainer1.style.display = 'none';
 			subresilContainer2.style.display = 'none';
+			commentField.style.display = 'block'; // Cacher le champ comment
+
+		}
+		else {
+			subresilContainer1.style.display = 'none';
+			subresilContainer2.style.display = 'none';
+			commentField.style.display = 'none'; // Cacher le champ comment
+
 		}
 	});
 }
+
+
+
+
 
 // var resilField = document.getElementById('relanced_motifRelanced');
 // var subresilContainer1 = document.getElementById('subMotivRelc-container');

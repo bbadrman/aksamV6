@@ -81,8 +81,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             // joiner les tables en relation manytomany avec fonction
             ->leftJoin('u.fonctions', 'f')
             //relation manytomany avec product apartir team
-            ->leftJoin('u.products', 'p');
-
+            ->leftJoin('u.products', 'p')
+            ->orderBy('u.id', 'asc');
 
         if (!empty($search->q)) {
             $query = $query

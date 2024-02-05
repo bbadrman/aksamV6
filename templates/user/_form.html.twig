@@ -1,4 +1,3 @@
- 
 <div class="form-panel">
 	<h4 class="mb">
 		<i class="fa fa-plus-square-o"></i>
@@ -6,7 +5,7 @@
 	</h4>
 
 	{{ form_start(form, {'attr': {'class': 'form-horizontal style-form'}}) }}
-     
+
 	<div class="col-sm-2 col-sm-2 control-label"></div>
 	<div class="col-sm-8">
 		{% if not form.vars.valid %}
@@ -31,11 +30,11 @@
 			</label>
 			<div class="col-sm-6">
 				{{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
-			 
+
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="form-group">
 		<div class="form-group col-sm-6">
 			<label class="col-sm-4 col-sm-4 control-label">
@@ -95,14 +94,14 @@
 		<div class="form-group col-sm-6">
 			<label class="col-sm-5 col-sm-5 control-label">
 				{{ form_label(form.remuneration) }}
-				<span class="text-danger">*</span>
+
 			</label>
 			<div class="col-sm-5">
 				{{ form_widget(form.remuneration, {'attr': {'class': 'form-control'}}) }}
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="form-group">
 
 		<div class="form-group col-sm-6">
@@ -193,26 +192,25 @@
 		</div>
 
 	</div>
-	
 
 
 	<div class="form-group  ">
-			<div class="col-lg-offset-5 col-lg-12">
-				<button class="btn btn-info">{{ button_label|default('Ajouter') }}</button>
-			</div>
+		<div class="col-lg-offset-5 col-lg-12">
+			<button class="btn btn-info">{{ button_label|default('Ajouter') }}</button>
+		</div>
 	</div>
 
 	<div class="form-group  ">
-			<div class="col-lg-offset-5 col-lg-12">
-				<button class="btn btn-theme" value="back" onclick="history.go(-1)">Retour</button>
-			</div>
+		<div class="col-lg-offset-5 col-lg-12">
+			<button class="btn btn-theme" value="back" onclick="history.go(-1)">Retour</button>
+		</div>
 	</div>
 
 
-		{{ form_rest(form) }}
-		{{ form_end(form) }}
+	{{ form_rest(form) }}
+	{{ form_end(form) }}
 
-	 
+
 </div>
 
 
@@ -269,8 +267,8 @@
 		</div>
 	</div>
 </div>
- 
- 
+
+
 {# # END- AddGoupeModal # #}
 
 {# # AddProductModal # #}
@@ -326,9 +324,8 @@
 		</div>
 	</div>
 </div>
- 
-{# # END- AddProductModal # #}
 
+{# # END- AddProductModal # #}
 
 
 {# # AddFonctioModal # #}
@@ -379,10 +376,8 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-				<button type="button" class="btn btn-primary fonction_new">Ajouter</button> 
+				<button type="button" class="btn btn-primary fonction_new">Ajouter</button>
 			</div>
 		</div>
 	</div>
-</div>
- </div>
-{# # END- AddFonctioModal # #}
+</div></div>{# # END- AddFonctioModal # #}

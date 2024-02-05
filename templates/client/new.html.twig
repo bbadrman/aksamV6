@@ -5,10 +5,10 @@
 
 {% block body %}
 	<div class="container">
-	
+
 		<section class="content-header">
 			<h1>
-				clients  
+				clients
 				<small>Gestion</small>
 			</h1>
 			<ol class="breadcrumb">
@@ -23,15 +23,32 @@
 
 		<!-- FORM -->
 		{% block form %}
-		<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-			<div class="row mt">
-				<div class="col-lg-12">
-					{{ include('client/_form.html.twig') }}
+			<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+				<div class="row mt">
+					<div class="col-lg-12">
+						{{ include('client/_form.html.twig') }}
+					</div>
 				</div>
 			</div>
-			</div>
 		{% endblock %}
-	
+
 	</div>
 	<!-- END FORM -->
+{% endblock %}
+
+{% block javascripts %}
+
+	{{ parent() }}
+
+
+	<script src='/js/ad.js'></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js"></script>
+
+	<script>
+
+		$('.selectchoice').select2();
+	</script>
+
+
 {% endblock %}

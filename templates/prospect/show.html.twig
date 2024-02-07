@@ -55,8 +55,8 @@
 					<thead>
 						<tr>
 							{# <div id="relance-div" class="btn-group pull-right" style="margin-right: 5px;">
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													Relance
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												</div> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											Relance
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										</div> #}
 							<div class="btn-group pull-right" style="margin-right: 5px;">
 								{% if is_granted('ROLE_ADMIN') == true %}
 									<button type="button" class="btn btn-danger">Action</button>
@@ -75,8 +75,8 @@
 										</a>
 									</li>
 									{# <li class="show-delete">
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																									{{ include('prospect/_delete_form.html.twig') }}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																								</li> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											{{ include('prospect/_delete_form.html.twig') }}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										</li> #}
 									<li role="separator" class="divider"></li>
 									<li>
 										<a href="{{ path('app_table_liste') }}">
@@ -86,7 +86,7 @@
 									</li>
 									<li></li>
 									{# <a href="{{ path('app_relance', {'id': prospect.id}) }}" class="btn btn-primary">Relance</a>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										<i class="fa fa-undo"></i>																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						Planifier																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						</a> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												<i class="fa fa-undo"></i>																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						Planifier																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						</a> #}
 								</li>
 							</ul>
 
@@ -147,22 +147,25 @@
 						</tr>
 						<tr>
 							<th>Source</th>
-							<td>{{ prospect.source }}</td>
+							<td>
+								{% if prospect.source == 1 %}
+									Saisie manuelle
+								{% elseif prospect.source == 2 %}
+									Site pub
+								{% endif %}
+							</td>
 						</tr>
 						<tr>
 							<th>Motive de saisir</th>
 
 							<td>
-								{% if prospect.motifSaise == 0 %}
+								{% if prospect.motifSaise  is null %}
 									Autre
-								{% endif %}
-								{% if prospect.motifSaise == 1 %}
+								{% elseif prospect.motifSaise == 1 %}
 									Parrainage
-								{% endif %}
-								{% if prospect.motifSaise == 2 %}
+								{% elseif prospect.motifSaise == 2 %}
 									Appel Entrant
-								{% endif %}
-								{% if prospect.motifSaise == 3 %}
+								{% elseif prospect.motifSaise == 3 %}
 									Avenant
 								{% endif %}
 
@@ -170,11 +173,25 @@
 						</tr>
 						<tr>
 							<th>Type Prospect</th>
-							<td>{{ prospect.typeProspect }}</td>
+							<td>
+								{% if prospect.typeProspect  is null %}
+									Pas remplir
+								{% elseif prospect.typeProspect == 1 %}
+									Particulier
+								{% elseif prospect.typeProspect == 2 %}
+									Particulier
+								{% endif %}
+							</td>
 						</tr>
 						<tr>
 							<th>Raison Sociale</th>
-							<td>{{ prospect.raisonSociale }}</td>
+							<td>
+								{% if prospect.raisonSociale is not null %}
+									{{ prospect.raisonSociale }}
+								{% else %}
+									Pas encore rempli
+								{% endif %}
+							</td>
 						</tr>
 						<tr>
 							<th>Code Postal</th>
@@ -183,31 +200,41 @@
 
 						<tr>
 							<th>Assure</th>
-							<td>{{ prospect.assure }}</td>
+							<td>
+								{% if prospect.assure is not null %}
+									{{ prospect.assure }}
+								{% else %}
+									Pas encore rempli
+								{% endif %}
+							</td>
 						</tr>
 						<tr>
-							<th>LastAssure</th>
-							<td>{{ prospect.lastAssure }}</td>
+							<th>Ancienne assurance résilié</th>
+							<td>
+
+								{% if prospect.lastAssure is not null %}
+									{{ prospect.lastAssure }}
+								{% else %}
+									Pas encore rempli
+								{% endif %}
+
+
+							</td>
 						</tr>
 						<tr>
-							<th>MotifResil</th>
+							<th>Motif Resil</th>
 							<td>
 								{% if prospect.motifResil is null %}
 									Autre
-								{% endif %}
-								{% if prospect.motifResil == 1 %}
+								{% elseif prospect.motifResil == 1 %}
 									Aggravation de risque
-								{% endif %}
-								{% if prospect.motifResil == 2 %}
+								{% elseif prospect.motifResil == 2 %}
 									Amiable
-								{% endif %}
-								{% if prospect.motifResil == 3 %}
+								{% elseif prospect.motifResil == 3 %}
 									Échéance
-								{% endif %}
-								{% if prospect.motifResil == 4 %}
+								{% elseif prospect.motifResil == 4 %}
 									Non-paiement
-								{% endif %}
-								{% if prospect.motifResil == 5 %}
+								{% elseif prospect.motifResil == 5 %}
 									Sinistre
 								{% endif %}
 							</td>
@@ -227,6 +254,44 @@
 									<a href="#" style="color:red;">
 										En Attend
 									</a>
+								{% endif %}
+							</td>
+						</tr>
+						<tr>
+							<th>Produit</th>
+							<td style="color:blue;">
+								{% if prospect.produit is not empty %}
+									{% for produit in prospect.produit %}
+										{{ produit.name }}
+										{% if not loop.last %},
+										{% endif %}
+									{% endfor %}
+								{% else %}
+									<a href="#" style="color:red;">Pas Encore Rempli</a>
+								{% endif %}
+							</td>
+						</tr>
+						<tr>
+							<th>Activité
+							</th>
+							<td style="color:blue;">
+
+								{% if prospect.activites is null %}
+									Pas encore rempli
+								{% elseif  prospect.activites == 1 %}
+									TPM
+								{% elseif prospect.activites == 2 %}
+									VTC
+								{% elseif prospect.activites == 3 %}
+									Sociéte
+								{% elseif prospect.activites == 4 %}
+									Décenale
+								{% elseif prospect.activites == 5 %}
+									Dommage
+								{% elseif prospect.activites == 6 %}
+									Marchandise
+								{% elseif prospect.activites == 7 %}
+									Négociant
 								{% endif %}
 							</td>
 						</tr>

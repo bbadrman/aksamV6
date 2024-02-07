@@ -90,6 +90,18 @@ class ClientRepository extends ServiceEntityRepository
                 ->setParameter('team', "%{$search->team}%");
         }
 
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
+            $queryBuilder
+                ->andWhere('c.creatAt >= :d')
+                ->setParameter('d', $search->d);
+        }
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
+            $queryBuilder
+                ->andWhere('c.creatAt <= :dd')
+                ->setParameter('dd', $search->dd);
+        }
         if (!empty($search->k)) {
             $queryBuilder
                 ->andWhere('h.username LIKE :k')

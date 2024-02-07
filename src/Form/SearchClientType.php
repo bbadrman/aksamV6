@@ -47,6 +47,8 @@ class SearchClientType extends AbstractType
         foreach ($comrclsForTeam as $comrcl) {
             $comrclChoices[$comrcl->getUsername()] = $comrcl->getUsername();
         }
+
+
         $builder
             ->add('f', Type\TextType::class, [
                 'label' => 'Prénom',
@@ -95,6 +97,26 @@ class SearchClientType extends AbstractType
                 'placeholder' => '--Selectie-- ',
                 'choices' => $comrclChoices,
                 'required' => false
+            ])->add('d', Type\DateType::class, [
+                'label' => "Du :",
+
+                'widget' => 'single_text',
+
+
+                'attr' => [
+                    'placeholder' => "date format: yyyy-mm-dd."
+                ],
+                'required' => false
+            ])
+
+            ->add('dd', Type\DateType::class, [
+                'label' => "Ou :",
+
+                'widget' => 'single_text',
+                'attr' => [
+                    'placeholder' => "date format: yyyy-mm-dd."
+                ],
+                'required' => false
             ]);
     }
 
@@ -106,9 +128,10 @@ class SearchClientType extends AbstractType
             'csrf_protection' => false
         ]);
     }
-
-    public function getBlockPrefix(): string
-    {
-        return '';
-    }
+    // il faut cahe cette function if you wanted to table change of page 
+    // pour afficher la page suivant , si no la table toujour reste en meme page
+    // public function getBlockPrefix(): string
+    // {
+    //     return '';
+    // }
 }

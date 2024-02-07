@@ -41,4 +41,13 @@ class SearchClient
      * @var string
      */
     public  $k = '';
+    /**
+     * @var string
+     */
+    public $d;
+
+    /**
+     * @var string
+     */
+    public $dd;
 }

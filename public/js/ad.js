@@ -392,7 +392,7 @@ function showFullText(element) {
 	}
 }
 
-// submut deux button
+// submut deux button en meme temps
 document.addEventListener('DOMContentLoaded', function () {
 	const relanceSubmitButton = document.querySelector('#relance-submit');
 	const clientSubmitButton = document.querySelector('#client-submit');

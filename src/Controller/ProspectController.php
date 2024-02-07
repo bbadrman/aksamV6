@@ -64,7 +64,7 @@ class ProspectController extends AbstractController
 
         $user = $security->getUser();
         if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
-            // admi peut voire toutes les nouveaux prospects
+            // admin peut voire toutes les nouveaux prospects
             $prospect =  $prospectRepository->findByUserPaAffecter($data, null);
         } elseif (in_array('ROLE_TEAM', $user->getRoles(), true)) {
             // chef peut voire toutes les nouveaux prospects atacher a leur equipe

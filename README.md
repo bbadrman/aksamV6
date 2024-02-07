@@ -647,3 +647,12 @@ public function prePersist()
 {}
 ## humanize on twig pour render en majisqule:
 https://symfony.com/doc/current/reference/twig_reference.html
+
+## probleme de pagination:
+ si je passe a l autre page et la page sera vide en fonctionalite de cache la table , 
+ alors il faut cache cette fonction sur searchEntityType.php
+  
+      public function getBlockPrefix(): string
+      {
+         return '';
+      }

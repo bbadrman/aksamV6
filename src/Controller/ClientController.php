@@ -42,6 +42,7 @@ class ClientController extends AbstractController
         $form = $this->createForm(SearchClientType::class, $data);
         $form->handleRequest($this->requestStack->getCurrentRequest());
         $client = [];
+
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
 
             $user = $security->getUser();

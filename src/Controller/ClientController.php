@@ -46,7 +46,7 @@ class ClientController extends AbstractController
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
 
             $user = $security->getUser();
-            if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
                 // admi peut voire toutes les nouveaux client
                 $client =  $clientRepository->findClientAdmin($data, null);
             } elseif (in_array('ROLE_TEAM', $user->getRoles(), true)) {

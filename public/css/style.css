@@ -882,7 +882,7 @@ ul.top-menu>li>a:focus {
 
 /* MAIN CHART CONFIGURATION */
 .main-chart {
-    padding-top: 20px;
+    padding-top: 30px;
 }
 
 .border-head h3 {
@@ -898,9 +898,9 @@ ul.top-menu>li>a:focus {
 }
 
 .custom-bar-chart {
-    height: 290px;
+    height: 390px;
     margin-top: 20px;
-    margin-left: 10px;
+    margin-left: 60px;
     position: relative;
     border-bottom: 1px solid #c9cdd7;
 }
@@ -1071,7 +1071,7 @@ PANELS CONFIGURATIONS
 
 .green-panel .green-header {
     background: #43b1a9;
-    padding: 3px;
+    padding: 2px;
     margin-bottom: 15px;
 }
 
@@ -4164,3 +4164,59 @@ ul.chat-available-user li a:hover {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
+
+/* table dynamique */
+/* .custom-table {
+    border-collapse: collapse;
+    width: 100%;
+    border: solid 1px #c0c0c0;
+    font-family: open sans;
+    font-size: 11px
+}
+
+.custom-table th,
+.custom-table td {
+    text-align: left;
+    padding: 8px;
+    border: solid 1px #c0c0c0
+}
+
+.custom-table th {
+    color: #000080
+}
+
+.custom-table tr:nth-child(odd) {
+    background-color: #f7f7ff
+}
+
+.custom-table>thead>tr {
+    background-color: #dde8f7 !important
+}
+
+.tbtn {
+    border: 0;
+    outline: 0;
+    background-color: transparent;
+    font-size: 13px;
+    cursor: pointer
+}
+
+.toggler {
+    display: none
+}
+
+.toggler1 {
+    display: table-row;
+}
+
+.custom-table a {
+    color: #0033cc;
+}
+
+.custom-table a:hover {
+    color: #f00;
+}
+
+.page-header {
+    background-color: #eee;
+} */

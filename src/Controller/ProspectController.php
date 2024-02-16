@@ -63,7 +63,7 @@ class ProspectController extends AbstractController
 
 
         $user = $security->getUser();
-        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
             // admin peut voire toutes les nouveaux prospects
             $prospect =  $prospectRepository->findByUserPaAffecter($data, null);
         } elseif (in_array('ROLE_TEAM', $user->getRoles(), true)) {
@@ -98,7 +98,7 @@ class ProspectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
 
             $user = $security->getUser();
-            if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
                 // admi peut voire toutes les no traite
                 $prospect =  $prospectRepository->findAvenir($data, null);
             } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
@@ -123,31 +123,7 @@ class ProspectController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/client", name="app_client", methods={"GET", "POST"})
-     */
-    public function client(Request $request, ProspectRepository $prospectRepository, Security $security): Response
-    {
-        $data = new SearchProspect();
-        $data->page = $request->query->get('page', 1);
-        $form = $this->createForm(SearchProspectType::class, $data);
-        $form->handleRequest($this->requestStack->getCurrentRequest());
-        $user = $security->getUser();
-        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
 
-            $prospect =  $prospectRepository->findClient($data, null);
-        } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
-            // chef peut voire toutes les no traite atacher a leur equipe
-            $prospect =  $prospectRepository->findClientChef($data, $user, null);
-        } else {
-            // cmrcl peut voire seulement les no traite  atacher a lui
-            $prospect =  $prospectRepository->findClientCmrcl($data, $user, null);
-        }
-        return $this->render('prospect/index.html.twig', [
-            'prospects' => $prospect,
-            'search_form' => $form->createView()
-        ]);
-    }
     /**
      * @Route("/new", name="app_prospect_new", methods={"GET", "POST"})
      */
@@ -159,7 +135,9 @@ class ProspectController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-
+            foreach ($prospect->getProduit() as $product) {
+                $product->addProspect($prospect);
+            }
 
             $prospect->setAutor($this->getUser());
             $prospectRepository->add($prospect, true);
@@ -176,7 +154,7 @@ class ProspectController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_prospect_show", methods={"GET", "POST"}) 
+     * @Route("/show/{id}", name="app_prospect_show", methods={"GET", "POST"}) 
      */
     public function show(Prospect $prospect,  Request $request,  HistoryRepository $historyRepository)
     {
@@ -315,7 +293,8 @@ class ProspectController extends AbstractController
 
 
     /**
-     * @Route("/{id}", name="app_prospect_delete", methods={"POST"})
+     * @Route("/{id}", name="app_prospect_delete", methods={"POST"}) 
+     * @IsGranted("ROLE_ADMIN", message="Tu ne peut pas acces a cet ressource")
      */
     public function delete(Request $request, Prospect $prospect, ProspectRepository $prospectRepository): Response
     {
@@ -323,6 +302,7 @@ class ProspectController extends AbstractController
             $prospectRepository->remove($prospect, true);
         }
 
-        return $this->redirectToRoute('app_table_liste', [], Response::HTTP_SEE_OTHER);
+        $this->addFlash('info', ' Prospect a été supprime avec succès!');
+        return $this->redirect($request->headers->get('referer'));
     }
 }

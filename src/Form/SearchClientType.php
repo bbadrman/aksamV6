@@ -34,7 +34,7 @@ class SearchClientType extends AbstractType
         }
 
         $user = $this->security->getUser();
-        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
             $comrclsForTeam = $this->userRepository->findAll();
         } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
             $comrclsForTeam = $this->userRepository->findComrclByteamOrderedByAscName($team);

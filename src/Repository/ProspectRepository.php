@@ -56,6 +56,39 @@ class ProspectRepository extends ServiceEntityRepository
         }
     }
 
+    public function findProspectsByMonth(int $year, int $month): array
+    {
+        $startDate = new \DateTime("$year-$month-01");
+        $endDate = (clone $startDate)->add(new \DateInterval('P1M'));
+
+        $qb = $this->createQueryBuilder('p')
+            ->andWhere('p.creatAt >= :start_date')
+            ->andWhere('p.creatAt < :end_date')
+            ->setParameter('start_date', $startDate)
+            ->setParameter('end_date', $endDate)
+            ->getQuery();
+
+        return $qb->getResult();
+    }
+
+    public function findByMonthAndTeam(int $year, int $month, int $teamId): array
+    {
+        $startDate = new \DateTime("$year-$month-01");
+        $endDate = (clone $startDate)->add(new \DateInterval('P1M'));
+
+        $qb = $this->createQueryBuilder('p')
+            ->andWhere('p.creatAt >= :start_date')
+            ->andWhere('p.creatAt < :end_date')
+            ->andWhere('p.team = :team_id')
+            ->setParameter('start_date', $startDate)
+            ->setParameter('end_date', $endDate)
+            ->setParameter('team_id', $teamId)
+            ->getQuery();
+
+        return $qb->getResult();
+    }
+
+
 
 
 

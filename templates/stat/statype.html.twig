@@ -1,0 +1,249 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques des prospects
+{% endblock %}
+
+{% block body %}
+	<p>Choisir une année :</p>
+	<ul>
+		{% for y in (currentYear - 1)..(currentYear  ) %}
+
+
+			<a class="btn btn-success day" href="{{ path('prospects_statype', {'year': y, 'month': month}) }}">{{ y }}</a>
+
+
+		{% endfor %}
+	</ul>
+
+	<p>Choisir un mois :</p>
+	<ul>
+		{% for m in 1..12 %}
+
+
+			<a class="btn btn-success day" href="{{ path('prospects_statype', {'year': year, 'month': m}) }}">{{ m }}</a>
+
+
+		{% endfor %}
+	</ul>
+
+	<h1>Statistiques des prospects pour
+		{{ month ?? '...' }}/{{ year ?? '....' }}</h1>
+	<p>Nombre de prospects créés pour le mois
+		{{ month ?? '...' }}
+		de l'année
+		{{ year ?? '....' }}
+		:
+		<span class="btn btn-primary">
+			{{ prospects|length }}</span>
+	</p>
+	<h2>Les type des prospects par Source</h2>
+	<div class="col-lg-8 main-chart">
+		<style>
+			table,
+			th,
+			td {
+				border: 3px solid black;
+				border-radius: 10px;
+				border-style: double;
+				border-collapse: collapse;
+
+
+			}
+			th,
+			td {
+				border: 3px solid black;
+				border-radius: 10px;
+				border-style: double;
+				height: 90px;
+				text-align: center;
+				vertical-align: middle !important; /* Forcer l'alignement vertical */
+				padding: 10px; /* Ajoutez un padding pour éviter que le contenu ne touche le bord */
+				margin: 0;
+			}
+		</style>
+		<table class="table table-striped table-advance table-hover">
+			<thead>
+				<tr>
+
+					<th rowspan="2">Prospect</th>
+
+					<th colspan="4">Pro</th>
+					<th colspan="4">Part</th>
+				</tr>
+				<tr>
+					<th>Prd1</th>
+					<th>Prd2</th>
+					<th>Prd2</th>
+					<th>Prd2</th>
+					<th>Prd1</th>
+					<th>Prd2</th>
+					<th>Prd2</th>
+					<th>Prd2</th>
+				</tr>
+				<tr>
+					<th>act1</th>
+					<th>act1</th>
+					<th>act1</th>
+					<th>act1</th>
+					<th>act1</th>
+					<th>act1</th>
+					<th>act1</th>
+					<th>act1</th>
+				</tr>
+
+			</thead>
+
+
+			<tbody>
+				<tr style="text-align:left;">
+					<td>saisir</td>
+
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source == 1  )|length ) }}</span>
+					</td>
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source is null  )|length ) }}</span>
+					</td>
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source is null  )|length ) }}</span>
+					</td>
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source is null  )|length ) }}</span>
+					</td>
+
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+
+
+				</tr>
+				<tr style="text-align:left;">
+					<td>Parinage</td>
+
+
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source == 1  )|length ) }}</span>
+					</td>
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source is null  )|length ) }}</span>
+					</td>
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source is null  )|length ) }}</span>
+					</td>
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source is null  )|length ) }}</span>
+					</td>
+
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+
+
+				</tr>
+				<tr style="text-align:left;">
+					<td>Appl entr</td>
+
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source == 1  )|length ) }}</span>
+					</td>
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source is null  )|length ) }}</span>
+					</td>
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source is null  )|length ) }}</span>
+					</td>
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source is null  )|length ) }}</span>
+					</td>
+
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+
+
+				</tr>
+				<tr style="text-align:left;">
+					<td>Aveneant</td>
+
+
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source == 1  )|length ) }}</span>
+					</td>
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source is null  )|length ) }}</span>
+					</td>
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source is null  )|length ) }}</span>
+					</td>
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source is null  )|length ) }}</span>
+					</td>
+
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+
+
+				</tr>
+				<tr style="text-align:left;">
+
+					<td>Parinage</td>
+
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source == 1  )|length ) }}</span>
+					</td>
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source is null  )|length ) }}</span>
+					</td>
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source is null  )|length ) }}</span>
+					</td>
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source is null  )|length ) }}</span>
+					</td>
+
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+
+
+				</tr>
+
+				<tr>
+					<td>
+						site
+					</td>
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+				</tr>
+				<tr>
+					<td>
+						revedeur
+					</td>
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+					<td>15</td>
+				</tr>
+
+			</tbody>
+		</table>
+
+
+	</div>
+{% endblock %}

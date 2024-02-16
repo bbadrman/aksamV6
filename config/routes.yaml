@@ -1,7 +1,31 @@
-#index:
+# index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
 # api_entrypoint:
 #     path: /api
 #     methods: GET
- 
+# prospects_stats:
+#     path: /prospects/stats/{year}/{month}
+#     defaults:
+#       year: 2024 # Default year
+#       month: 01 # Default month
+#     requirements:
+#       year: '\d{4}'
+#       month: '\d{1,2}'
+# prospects_stats_team:
+#     path: /prospects/stats/team/{year}/{month}
+#     defaults:
+#       year: 2024 # Année par défaut
+#       month: 01 # Mois par défaut
+#     requirements:
+#       year: '\d{4}'
+#       month: '\d{1,2}'
+
+# prospects_stats_cmrcl:
+#     path: /prospects/stats/cmrcl/{year}/{month}
+#     defaults:
+#       year: 2024 # Année par défaut
+#       month: 01 # Mois par défaut
+#     requirements:
+#       year: '\d{4}'
+#       month: '\d{1,2}'

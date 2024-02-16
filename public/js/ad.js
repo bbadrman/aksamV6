@@ -515,3 +515,16 @@ $(document).ready(function () {
 // 		}
 // 	});
 // }
+
+function playNotificationSound() {
+	const audio = new Audio('/assets/sounds/notification-soundtone360.mp3');
+	audio.play();
+}
+
+$.ajax({
+	url: 'http://localhost:92/api/prospects',
+	success: function (data) {
+		// Process prospect data
+		playNotificationSound();
+	}
+});

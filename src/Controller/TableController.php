@@ -57,7 +57,7 @@ class TableController extends AbstractController
         $prospect = [];
 
 
-        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
             // admi peut voire toutes les nouveaux prospects
             $prospect =  $prospectRepository->findUnjoing($data, null);
         } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
@@ -92,7 +92,7 @@ class TableController extends AbstractController
         $prospect = [];
 
 
-        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
             // admi peut voire toutes les no traite
             $prospect =  $prospectRepository->findNonTraiter($data, null);
         } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
@@ -127,7 +127,7 @@ class TableController extends AbstractController
         $prospect = [];
 
 
-        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
             // admi peut voire toutes les relance du jour
             $prospect =  $prospectRepository->findRelanced($data, null);
         } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
@@ -162,7 +162,7 @@ class TableController extends AbstractController
         $prospect = [];
 
 
-        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
             // admi peut voire toutes les relance du jour
             $prospect =  $prospectRepository->findRelancesNonTraitees($data, null);
             // $numberOfProspects = count($prospect);

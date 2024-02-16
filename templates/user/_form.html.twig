@@ -26,10 +26,18 @@
 		<div class="form-group col-sm-6">
 			<label class="col-sm-4 col-sm-4 control-label">
 				{{ form_label(form.username) }}
-				<span class="text-danger">*</span>
+				<span class="text-danger" style="font-size: 1.5em;">*</span>
+
 			</label>
 			<div class="col-sm-6">
-				{{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
+				{{ form_widget(form.username, {
+                'attr': {
+                    'class': 'form-control',
+                    'pattern': '^[^\s,;:]+$',
+                    'data-error': "Le nom d'utilisateur ne doit pas contenir d'espaces, de virgules, de points-virgules ou de deux-points"
+                },
+				'required': true
+            }) }}
 
 			</div>
 		</div>
@@ -39,7 +47,7 @@
 		<div class="form-group col-sm-6">
 			<label class="col-sm-4 col-sm-4 control-label">
 				{{ form_label(form.password.first) }}
-				<span class="text-danger">*</span>
+				<span class="text-danger" style="font-size: 1.5em;">*</span>
 			</label>
 			<div class="col-sm-5">
 				{{ form_widget(form.password.first, {'attr': {'class': 'form-control'}}) }}
@@ -49,7 +57,8 @@
 		<div class="form-group col-sm-6">
 			<label class="col-sm-5 col-sm-5 control-label">
 				{{ form_label(form.password.second) }}
-				<span class="text-danger">*</span>
+				<span class="text-danger" style="font-size: 1.5em;">*</span>
+
 			</label>
 			<div class="col-sm-5">
 				{{ form_widget(form.password.second, {'attr': {'class': 'form-control'}}) }}
@@ -61,7 +70,8 @@
 		<div class="form-group col-sm-6">
 			<label class="col-sm-4 col-sm-4 control-label">
 				{{ form_label(form.firstname) }}
-				<span class="text-danger">*</span>
+				<span class="text-danger" style="font-size: 1.5em;">*</span>
+
 			</label>
 			<div class="col-sm-5">
 				{{ form_widget(form.firstname, {'attr': {'class': 'form-control'}}) }}
@@ -71,7 +81,8 @@
 		<div class="form-group col-sm-6">
 			<label class="col-sm-5 col-sm-5 control-label">
 				{{ form_label(form.lastname ) }}
-				<span class="text-danger">*</span>
+				<span class="text-danger" style="font-size: 1.5em;">*</span>
+
 			</label>
 			<div class="col-sm-5">
 				{{ form_widget(form.lastname, {'attr': {'class': 'form-control'}}) }}
@@ -84,7 +95,8 @@
 		<div class="form-group col-sm-6">
 			<label class="col-sm-4 col-sm-4 control-label">
 				{{ form_label(form.embuchAt) }}
-				<span class="text-danger">*</span>
+				<span class="text-danger" style="font-size: 1.5em;">*</span>
+
 			</label>
 			<div class="col-sm-5">
 				{{ form_widget(form.embuchAt, {'attr': {'class': 'form-control'}}) }}
@@ -107,7 +119,6 @@
 		<div class="form-group col-sm-6">
 			<label class="col-sm-4 col-sm-4 control-label">
 				Les Equipes
-				<span class="text-danger">*</span>
 			</label>
 			<div class="col-sm-5">
 				{{ form_widget(form.teams, {'attr': {'class': 'form-control'}}) }}
@@ -119,7 +130,6 @@
 		<div class="form-group col-sm-6">
 			<label class="col-sm-5 col-sm-5 control-label">
 				Les Produits
-				<span class="text-danger">*</span>
 			</label>
 			<div class="col-sm-5">
 				{{ form_widget(form.products, {'attr': {'class': 'form-control selectchoice'}}) }}
@@ -134,7 +144,6 @@
 		<div class="form-group col-sm-6">
 			<label class="col-sm-4 col-sm-4 control-label">
 				Nom de fonction
-				<span class="text-danger">*</span>
 			</label>
 			<div class="col-sm-5">
 				{{ form_widget(form.fonctions, {'attr': {'class': 'form-control selectchoice'}}) }}
@@ -147,7 +156,6 @@
 		<div class="form-group col-sm-6">
 			<label class="col-sm-5 col-sm-5 control-label">
 				Les Permissions
-				<span class="text-danger">*</span>
 			</label>
 
 			<div class="col-sm-5">
@@ -162,7 +170,7 @@
 
 		<div class="form-group col-sm-6">
 			<label class="col-sm-4 col-sm-4 control-label">
-				{{ form_label(form.status) }}
+				Status
 
 			</label>
 			<div class="col-sm-5">
@@ -178,8 +186,9 @@
 
 		<div class="form-group col-sm-6">
 			<label class="col-sm-5 col-sm-5 control-label">
-				{{ form_label(form.gender) }}
-				<span class="text-danger"></span>
+				Gender
+				<span class="text-danger" style="font-size: 1.5em;">*</span>
+
 			</label>
 			<div class="col-sm-5">
 				{% for child in form.gender %}
@@ -240,7 +249,8 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label">
 							Equipe
-							<span class="text-danger">*</span>
+							<span class="text-danger" style="font-size: 1.5em;">*</span>
+
 						</label>
 						<div class="col-sm-9">
 							<input type="text" id="team_name" name="team[name]" required="required" placeholder="Merci de saisir le nom de l'équipe" class="name form-control">
@@ -297,7 +307,8 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label">
 							Produit
-							<span class="text-danger">*</span>
+							<span class="text-danger" style="font-size: 1.5em;">*</span>
+
 						</label>
 						<div class="col-sm-9">
 							<input type="text" id="product_name" name="products[name]" required="required" placeholder="Merci de saisir le nom du produit" class="name form-control">
@@ -354,7 +365,8 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label">
 							Fonction
-							<span class="text-danger">*</span>
+							<span class="text-danger" style="font-size: 1.5em;">*</span>
+
 						</label>
 						<div class="col-sm-9">
 							<input type="text" id="fonction_name" name="fonction[name]" required="required" placeholder="Merci de saisir le nom du fonction" class="name form-control">

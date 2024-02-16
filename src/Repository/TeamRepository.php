@@ -82,7 +82,40 @@ class TeamRepository extends ServiceEntityRepository
         );
     }
 
+    public function findByMonth(int $year, int $month): array
+    {
+        $startDate = new \DateTime("$year-$month-01");
+        $endDate = (clone $startDate)->add(new \DateInterval('P1M'));
 
+        $qb = $this->createQueryBuilder('t')
+            ->join('t.prospects', 'p')
+            ->andWhere('p.creatAt >= :start_date')
+            ->andWhere('p.creatAt < :end_date')
+            ->setParameter('start_date', $startDate)
+            ->setParameter('end_date', $endDate)
+            ->getQuery();
+
+        return $qb->getResult();
+    }
+
+
+    public function findByMonthAndTeam(int $year, int $month, int $teamId): array
+    {
+        $startDate = new \DateTime("$year-$month-01");
+        $endDate = (clone $startDate)->add(new \DateInterval('P1M'));
+
+        $qb = $this->createQueryBuilder('t')
+            ->join('t.prospects', 'p')
+            ->andWhere('p.creatAt >= :start_date')
+            ->andWhere('p.creatAt < :end_date')
+            ->andWhere('t.id = :team_id') // Ajoutez cette condition pour filtrer par équipe
+            ->setParameter('start_date', $startDate)
+            ->setParameter('end_date', $endDate)
+            ->setParameter('team_id', $teamId) // Assurez-vous de passer l'ID de l'équipe ici
+            ->getQuery();
+
+        return $qb->getResult();
+    }
 
 
 

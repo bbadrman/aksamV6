@@ -38,7 +38,7 @@ class DashboardController extends AbstractController
     {
         $data = new SearchProspect();
         $user = $security->getUser();
-        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
 
             // je recupere les prospects qui son pas encors affecter
             $data->page = $request->query->get('page', 1);

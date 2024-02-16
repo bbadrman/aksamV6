@@ -114,7 +114,7 @@ class ProspectType extends AbstractType
             ])
             ->add('motifSaise', Type\ChoiceType::class, [
                 'label' => 'Motive de saisier ',
-                'required' => false,
+                'required' => true,
                 'placeholder' => '--Merci de selectie-- ',
                 'choices' => [
                     'Parrainage' => '1',
@@ -129,7 +129,7 @@ class ProspectType extends AbstractType
             ])
             ->add('typeProspect', Type\ChoiceType::class, [
                 'label' => 'Type Pospect ',
-                'required' => false,
+                'required' => true,
                 'placeholder' => '--Merci de selectie-- ',
                 'choices' => [
                     'Particulier' =>  '1',
@@ -205,13 +205,17 @@ class ProspectType extends AbstractType
                     'multiple' => false
                 ]
             )
-            ->add('produit')
+            ->add('produit', EntityType::class, [
+                'class' => Product::class,
+                'required' => true, // Rend le champ obligatoire
+                // Autres options
+            ])
             ->add(
                 'activites',
                 Type\ChoiceType::class,
                 [
                     'label' => 'Activites ',
-                    'required' => false,
+                    'required' => true,
                     'placeholder' => '--Merci de selectie-- ',
                     'choices' => [
                         'TPM' =>  1,

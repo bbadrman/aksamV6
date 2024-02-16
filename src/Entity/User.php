@@ -27,7 +27,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: "string", length: 180, nullable: false, unique: true)]
+
     #[Assert\NotBlank(message: "Le nom d'utilisateur est obligatoire")]
     #[Assert\Length(
         min: 4,
@@ -39,7 +39,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         pattern: "/^[^\s,;:]+$/",
         message: "Le nom d'utilisateur ne doit pas contenir d'espaces, de virgules, de points-virgules ou de deux-points"
     )]
-
+    #[ORM\Column(type: "string", length: 180, nullable: false, unique: true)]
+    #[Assert\Type(type: "string", message: "Le nom d'utilisateur doit être une chaîne de caractères")]
     private $username;
 
     #[ORM\Column(type: "json")]

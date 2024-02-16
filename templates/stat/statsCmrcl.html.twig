@@ -1,0 +1,147 @@
+{# templates/prospect/stats_by_team.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques des prospects par équipe
+{% endblock %}
+
+{% block body %}
+
+	<p>Choisir une année :</p>
+	<ul>
+		{% for y in (currentYear - 1)..(currentYear  ) %}
+
+			<a class="btn btn-success day" href="{{ path('prospects_stats_cmrcl', {'year': y, 'month': month}) }}">{{ y }}</a>
+
+		{% endfor %}
+	</ul>
+
+	<p>Choisir un mois :</p>
+	<ul>
+		{% for m in 1..12 %}
+
+			<a class="btn btn-success day" href="{{ path('prospects_stats_cmrcl', {'year': year, 'month': m}) }}">{{ m }}</a>
+
+		{% endfor %}
+	</ul>
+	<h1>Statistiques des prospects par équipe pour
+		{{ month }}/{{ year }}</h1>
+
+	<table class="table table-striped table-advance table-hover">
+		<thead>
+
+			<tr>
+
+
+				<th>Equipe</th>
+				<th>Total</th>
+				<th>Saisier</th>
+				<th>Site Pub</th>
+
+				<th>Particulier</th>
+				<th>Professionnel</th>
+				<th>Autre</th>
+
+				<th>Parrainage</th>
+				<th>Appel Entrant</th>
+				<th>Avenant</th>
+				<th>Ancienne contrat</th>
+				<th>Propre site</th>
+				<th>Revendeur</th>
+				<th>Autre</th>
+
+				<th>TPM</th>
+				<th>VTC</th>
+				<th>Sociéte</th>
+				<th>Décenale</th>
+				<th>Dommage</th>
+				<th>Marchandise</th>
+				<th>Négociant</th>
+				<th>Null</th>
+
+
+			</tr>
+		</thead>
+
+
+		<tbody>
+
+			{% for teams in team %}
+				{% for user in teams.users %}
+					<tr style="text-align:left;">
+						<td>
+							<span class="btn btn">
+								{{  user  }}
+							</span>
+						</td>
+						<td>
+							<span class="btn btn " style="background-color:#FFFF00;">
+								{{ " %02d"|format( user.prospections | length) }}</span>
+						</td>
+						<td>
+							<span class="btn btn-danger">{{ " %02d"|format(  user.prospections|filter(p => p.source == 1  )|length )}}</span>
+						</td>
+						<td>
+							<span class="btn btn-danger">{{ " %02d"|format(  user.prospections|filter(p => p.source is null  )|length )}}</span>
+						</td>
+						<td>
+							<span class="btn btn-success day">{{ " %02d"|format(  user.prospections|filter(p => p.typeProspect == 1  )|length )}}</span>
+						</td>
+						<td>
+							<span class="btn btn-success day">{{ " %02d"|format(  user.prospections|filter(p => p.typeProspect == 2  )|length )}}</span>
+						</td>
+						<td>
+							<span class="btn btn-success day">{{ " %02d"|format(  user.prospections|filter(p => p.typeProspect is null  )|length )}}</span>
+						</td>
+						<td>
+							<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format(  user.prospections|filter(p => p.motifSaise == 1  )|length )}}</span>
+						</td>
+						<td>
+							<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format(  user.prospections|filter(p => p.motifSaise == 2  )|length )}}</span>
+						</td>
+						<td>
+							<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format(  user.prospections|filter(p => p.motifSaise == 3  )|length )}}</span>
+						</td>
+						<td>
+							<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format(  user.prospections|filter(p => p.motifSaise == 4  )|length )}}</span>
+						</td>
+						<td>
+							<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format(  user.prospections|filter(p => p.motifSaise == 5  )|length )}}</span>
+						</td>
+						<td>
+							<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format(  user.prospections|filter(p => p.motifSaise == 6  )|length )}}</span>
+						</td>
+						<td>
+							<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format(  user.prospections|filter(p => p.motifSaise is null  )|length )}}</span>
+						</td>
+
+						<td>
+							<span class='btn btn' style="background-color:Violet;">{{ " %02d"|format(  user.prospections|filter(p => p.activites == 1  )|length )}}</span>
+						</td>
+						<td>
+							<span class='btn btn' style="background-color:Violet;">{{ " %02d"|format(  user.prospections|filter(p => p.activites == 2  )|length )}}</span>
+						</td>
+						<td>
+							<span class='btn btn' style="background-color:Violet;">{{ " %02d"|format(  user.prospections|filter(p => p.activites == 3  )|length )}}</span>
+						</td>
+						<td>
+							<span class='btn btn' style="background-color:Violet;">{{ " %02d"|format(  user.prospections|filter(p => p.activites == 4  )|length )}}</span>
+						</td>
+						<td>
+							<span class='btn btn' style="background-color:Violet;">{{ " %02d"|format(  user.prospections|filter(p => p.activites == 5  )|length )}}</span>
+						</td>
+						<td>
+							<span class='btn btn' style="background-color:Violet;">{{ " %02d"|format(  user.prospections|filter(p => p.activites == 6  )|length )}}</span>
+						</td>
+						<td>
+							<span class='btn btn' style="background-color:Violet;">{{ " %02d"|format(  user.prospections|filter(p => p.activites == 7  )|length )}}</span>
+						</td>
+						<td>
+							<span class='btn btn' style="background-color:Violet;">{{ " %02d"|format(  user.prospections|filter(p => p.activites is null  )|length )}}</span>
+						</td>
+					</tr>
+				{% endfor %}
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

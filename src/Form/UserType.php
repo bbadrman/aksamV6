@@ -31,15 +31,16 @@ class UserType extends AbstractType
 
         $builder
 
+
             ->add('username', Type\TextType::class, [
                 'label' => 'Username',
                 'error_bubbling' => false,
                 'required' => true,
-
                 'attr' => [
                     'placeholder' => 'Merci de saisir Username',
                 ],
             ])
+
             ->add('fonctions')
             ->add('roles', ChoiceType::class, [
                 'choices' => [
@@ -109,7 +110,7 @@ class UserType extends AbstractType
 
             ])
             ->add('remuneration', Type\MoneyType::class, [
-                'label' => 'remuneration',
+                'label' => 'Rémunération',
                 'required' => false,
                 'attr' => [
 

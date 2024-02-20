@@ -77,11 +77,11 @@
 					<td>
 						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source == 1  )|length ) }}</span>
 					</td>
-
+					{# <td>{{product|length}}</td>  = 7 #}
 					{% for product in products %}
 						{# <td>{{product|length}}</td> #}
-						<td>{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.typeProspect == 1)|length) }}</td>
 						<td>{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.typeProspect == 2)|length) }}</td>
+						<td>{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.typeProspect == 1)|length) }}</td>
 
 
 					{% endfor %}
@@ -166,8 +166,8 @@
 					</td>
 					{% for product in products %}
 						{# <td>{{product|length}}</td> #}
-						<td>{{ "%02d"|format(product.prospects|filter(h => h.source is null and h.typeProspect == 1)|length) }}</td>
 						<td>{{ "%02d"|format(product.prospects|filter(h => h.source is null and h.typeProspect == 2)|length) }}</td>
+						<td>{{ "%02d"|format(product.prospects|filter(h => h.source is null and h.typeProspect == 1)|length) }}</td>
 
 					{% endfor %}
 				</tr>
@@ -180,8 +180,8 @@
 					</td>
 					{% for product in products %}
 						{# <td>{{product|length}}</td> #}
-						<td>{{ "%02d"|format(product.prospects|filter(h => h.source == 2 and h.typeProspect == 1)|length) }}</td>
 						<td>{{ "%02d"|format(product.prospects|filter(h => h.source == 2 and h.typeProspect == 2)|length) }}</td>
+						<td>{{ "%02d"|format(product.prospects|filter(h => h.source == 2 and h.typeProspect == 1)|length) }}</td>
 
 					{% endfor %}
 				</tr>

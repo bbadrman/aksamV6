@@ -2,14 +2,12 @@
 
 namespace App\Form;
 
-use App\Entity\Product;
 use App\Entity\Team;
 use App\Entity\User;
-use Type\IntegerType;
+use App\Entity\Product;
 use App\Entity\Prospect;
 use App\Repository\TeamRepository;
 use App\Repository\UserRepository;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
@@ -17,7 +15,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -27,6 +24,7 @@ class ProspectType extends AbstractType
 {
 
     private $userRepository;
+
 
     public function __construct(UserRepository $userRepository)
     {
@@ -207,9 +205,11 @@ class ProspectType extends AbstractType
             )
             ->add('produit', EntityType::class, [
                 'class' => Product::class,
-                'required' => true, // Rend le champ obligatoire
-                // Autres options
+                'choices' => $options['product_choices'],
+                'multiple' => true, // Assuming `produit` is a collection
+                'required' => true,
             ])
+
             ->add(
                 'activites',
                 Type\ChoiceType::class,
@@ -344,6 +344,7 @@ class ProspectType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Prospect::class,
             'editing' => false,
+            'product_choices' => [],
 
         ]);
     }

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ProductRepository;
 use App\Repository\TeamRepository;
 use App\Repository\ProspectRepository;
 use Symfony\Component\HttpFoundation\Response;
@@ -75,13 +76,16 @@ class StatProspController extends AbstractController
         ]);
     }
     #[Route('/prospects/statstype/{year}/{month}', name: 'prospects_statype', requirements: ['year' => '\d{4}', 'month' => '\d{1,2}'])]
-    public function prospectsStatsType(int $year, int $month, ProspectRepository $prospectRepository): Response
+    public function prospectsStatsType(int $year, int $month, ProspectRepository $prospectRepository, ProductRepository $productRepository): Response
     {
+        $product = $productRepository->findAll();
         $prospects = $prospectRepository->findProspectsByMonth($year, $month);
         $currentYear = (int) date('Y');
 
         return $this->render('stat/statype.html.twig', [
+            'products' => $product,
             'prospects' => $prospects,
+
             'year' => $year,
             'month' => $month,
             'currentYear' => $currentYear,

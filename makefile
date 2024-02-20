@@ -34,7 +34,7 @@ symfony-dmm:
 	docker-compose exec web php bin/console doctrine:migrations:migrate
 symfony-dfl:
 	docker-compose exec web php bin/console doctrine:fixtures:load
-symfony-cc:
+c-c:
 	docker-compose exec web php bin/console cache:clear
 kill:
 	docker-compose kill

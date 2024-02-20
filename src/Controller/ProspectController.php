@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Form\GsmType;
 use App\Entity\Client;
 use App\Entity\History;
+use App\Entity\Product;
 use App\Entity\Prospect;
 use App\Entity\Relanced;
 use App\Form\ClientType;
@@ -130,7 +131,11 @@ class ProspectController extends AbstractController
     public function new(Request $request, ProspectRepository $prospectRepository): Response
     {
         $prospect = new Prospect();
-        $form = $this->createForm(ProspectType::class, $prospect);
+        $productChoices = $this->entityManager->getRepository(Product::class)->createQueryBuilder('p')->getQuery()->getResult();
+
+        $form = $this->createForm(ProspectType::class, $prospect, [
+            'product_choices' => $productChoices,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

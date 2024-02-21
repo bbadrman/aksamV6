@@ -10,6 +10,7 @@ use App\Repository\UserRepository;
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -18,6 +19,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: "user")]
+#[UniqueEntity('username', message: "username est deja utilise")]
 #[ApiResource]
 
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -36,9 +38,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         maxMessage: "Le nom d'utilisateur doit contenir au maximum quinze caractères"
     )]
     #[Assert\Regex(
-        pattern: "/^[^\s,;:]+$/",
-        message: "Le nom d'utilisateur ne doit pas contenir d'espaces, de virgules, de points-virgules ou de deux-points"
+        pattern: "/^[a-z0-9_-]{3,15}$/",
+        message: "Votre prénom ne doit pas contenir d'espaces, de virgules, de points-virgules ou de deux-points"
     )]
+
     #[ORM\Column(type: "string", length: 180, nullable: false, unique: true)]
     #[Assert\Type(type: "string", message: "Le nom d'utilisateur doit être une chaîne de caractères")]
     private $username;

@@ -30,14 +30,7 @@
 
 			</label>
 			<div class="col-sm-6">
-				{{ form_widget(form.username, {
-                'attr': {
-                    'class': 'form-control',
-                    'pattern': '^[^\s,;:]+$',
-                    'data-error': "Le nom d'utilisateur ne doit pas contenir d'espaces, de virgules, de points-virgules ou de deux-points"
-                },
-				'required': true
-            }) }}
+				{{ form_widget(form.username ) }}
 
 			</div>
 		</div>

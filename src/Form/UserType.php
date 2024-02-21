@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class UserType extends AbstractType
 
@@ -35,10 +36,12 @@ class UserType extends AbstractType
             ->add('username', Type\TextType::class, [
                 'label' => 'Username',
                 'error_bubbling' => false,
+                'empty_data' => '',
                 'required' => true,
                 'attr' => [
                     'placeholder' => 'Merci de saisir Username',
                 ],
+
             ])
 
             ->add('fonctions')

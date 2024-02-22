@@ -77,35 +77,62 @@
 					<td>
 						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source == 1  )|length ) }}</span>
 					</td>
-					{# <td>{{product|length}}</td>  = 7 #}
+
+					{# <td>{{products|length}}</td> #}
+
 					{% for product in products %}
 						{# <td>{{product|length}}</td> #}
-						<td>{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.typeProspect == 2)|length) }}</td>
-						<td>{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.typeProspect == 1)|length) }}</td>
+						{# saisi manule et pro  #}
+							<td>
+						{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.typeProspect == 2)|length) }}
+						</td>
+						{# saisi manule et particulier  #}
+							<td>
+						{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.typeProspect == 1)|length) }}
+					</td>
 
 
-					{% endfor %}
+				{% endfor %}
 
 
 				</tr>
-				<tr class="expanded-content" style="background-color:#AFEEEE;">
-					<td style="text-align: left;">Parrainage</td>
+					<tr class="expanded-content" style="background-color:#AFEEEE;"> <td style="text-align: left;">Parrainage</td>
 
-
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source == 1 and p.motifSaise == 1 )|length ) }}</span>
+					</td>
 					{% for product in products %}
-						<td>00</td>
-						<td>{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.motifSaise == 1)|length) }}</td>
+
+						{# <td>{{ "%02d"|format(product.prospects|filter(h => h.source == 1 )|length) }}</td> #}
+
+						{# source=saisi manule et typeProspect=pro  motifSaise = parinage  #}
+							<td>
+						{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.typeProspect == 2 and h.motifSaise == 1)|length) }}
+							{# source=saisi manule et typeProspect=particulier  motifSaise = parinage  #}
+						</td>
+						<td>{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.typeProspect == 1 and h.motifSaise == 1)|length) }}
+						</td>
+
 					{% endfor %}
 
 
 				</tr>
 				<tr class="expanded-content" style="background-color:#AFEEEE;">
 					<td style="text-align: left;">Appel Entrant</td>
-
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source == 1 and p.motifSaise == 2 )|length ) }}</span>
+					</td>
 					{% for product in products %}
-						<td>00</td>
-						<td>{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.motifSaise == 2)|length) }}</td>
 
+						{# <td>{{ "%02d"|format(product.prospects|filter(h => h.source == 1 )|length) }}</td> #}
+
+						{# source=saisi manule et typeProspect=pro  motifSaise = Appel  #}
+							<td>
+						{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.typeProspect == 2 and h.motifSaise == 2)|length) }}
+							{# source=saisi manule et typeProspect=particulier  motifSaise = Appel  #}
+						</td>
+						<td>{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.typeProspect == 1 and h.motifSaise == 2)|length) }}
+						</td>
 
 					{% endfor %}
 
@@ -114,10 +141,20 @@
 				<tr class="expanded-content" style="background-color:#AFEEEE;">
 					<td style="text-align: left;">Avenant</td>
 
-
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source == 1 and p.motifSaise == 3 )|length ) }}</span>
+					</td>
 					{% for product in products %}
-						<td>00</td>
-						<td>{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.motifSaise == 3)|length) }}</td>
+
+
+						{# source=saisi manule et typeProspect=pro  motifSaise = Avenant  #}
+						<td>
+							{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.typeProspect == 2 and h.motifSaise == 3)|length) }}
+							{# source=saisi manule et typeProspect=particulier  motifSaise = Avenant  #}
+						</td>
+						<td>{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.typeProspect == 1 and h.motifSaise == 3)|length) }}
+						</td>
+
 					{% endfor %}
 
 
@@ -125,34 +162,59 @@
 
 				<tr class="expanded-content" style="background-color:#AFEEEE;">
 					<td style="text-align: left;">Ancienne contrat</td>
-
-
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source == 1 and p.motifSaise == 4 )|length ) }}</span>
+					</td>
 					{% for product in products %}
-						<td>00</td>
-						<td>{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.motifSaise == 4)|length) }}</td>
 
+
+						{# source=saisi manule et typeProspect=pro  motifSaise = Ancienne  #}
+						<td>
+							{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.typeProspect == 2 and h.motifSaise == 4)|length) }}
+							{# source=saisi manule et typeProspect=particulier  motifSaise = Ancienne  #}
+						</td>
+						<td>{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.typeProspect == 1 and h.motifSaise == 4)|length) }}
+						</td>
 
 					{% endfor %}
-
 
 				</tr>
 
 				<tr class="expanded-content" style="background-color:#AFEEEE;">
 					<td style="text-align: left;">Propre site</td>
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source == 1 and p.motifSaise == 5 )|length ) }}</span>
+					</td>
 					{% for product in products %}
-						<td>00</td>
-						<td>{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.motifSaise == 5)|length) }}</td>
 
+
+						{# source=saisi manule et typeProspect=pro  motifSaise = Propre  #}
+						<td>
+							{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.typeProspect == 2 and h.motifSaise == 5)|length) }}
+							{# source=saisi manule et typeProspect=particulier  motifSaise = Propre  #}
+						</td>
+						<td>{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.typeProspect == 1 and h.motifSaise == 5)|length) }}
+						</td>
 
 					{% endfor %}
+
 				</tr>
 
 				<tr class="expanded-content" style="background-color:#AFEEEE;">
 					<td style="text-align: left;">Revendeur</td>
+					<td>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source == 1 and p.motifSaise == 6 )|length ) }}</span>
+					</td>
 					{% for product in products %}
-						<td>00</td>
-						<td>{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.motifSaise == 6)|length) }}</td>
 
+
+						{# source=saisi manule et typeProspect=pro  motifSaise = Revendeur  #}
+						<td>
+							{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.typeProspect == 2 and h.motifSaise == 6)|length) }}
+							{# source=saisi manule et typeProspect=particulier  motifSaise = Revendeur  #}
+						</td>
+						<td>{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.typeProspect == 1 and h.motifSaise == 6)|length) }}
+						</td>
 
 					{% endfor %}
 				</tr>

@@ -84,6 +84,7 @@ class StatProspController extends AbstractController
 
         return $this->render('stat/statype.html.twig', [
             'products' => $product,
+            // dd($product),
             'prospects' => $prospects,
 
             'year' => $year,

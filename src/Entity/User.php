@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: "user")]
-#[UniqueEntity('username', message: "username est deja utilise")]
+#[UniqueEntity('username', message: "Ce nom d'utilisateur a déjà été utilisé!")]
 #[ApiResource]
 
 class User implements UserInterface, PasswordAuthenticatedUserInterface

@@ -47,6 +47,22 @@ class ProductRepository extends ServiceEntityRepository
             ->orderBy('c.name', 'ASC');
     }
 
+    public function findStat(): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->leftJoin('p.prospects', 'prospect')
+            ->andWhere('prospect.source = :source')
+            ->andWhere('prospect.typeProspect = :typeProspect')
+            ->andWhere('prospect.motifSaise = :motifSaise')
+            ->setParameter('source', 1)
+            ->setParameter('typeProspect', 2)
+            ->setParameter('motifSaise', 1)
+            ->distinct() // Ajout de distinct() ici
+            ->getQuery();
+
+        return $qb->getResult();
+    }
+
     // public function findByTeamOrderedByAscName(Team $team): array
     // {
     //     return $this->createQueryBuilder('c')

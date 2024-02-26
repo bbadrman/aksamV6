@@ -249,8 +249,8 @@ class ProspectController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $prospectRepository->add($prospect, true);
-            foreach ($prospect->getRelanceds() as $fonction) {
-                $fonction->setProspect($prospect);
+            foreach ($prospect->getRelanceds() as $relance) {
+                $relance->setProspect($prospect);
             }
 
             // history of prospect affect
@@ -294,12 +294,45 @@ class ProspectController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/{id}/editsup", name="app_prospect_editsup", methods={"GET", "POST"}) 
+     * @IsGranted("ROLE_SUPER_ADMIN", message="Tu ne peut pas acces a cet ressource") 
+     */
+    public function editsup(Request $request, Prospect $prospect, ProspectRepository $productRepository): Response
+    {
+
+        $productChoices = $this->entityManager->getRepository(Product::class)->createQueryBuilder('p')->getQuery()->getResult();
+
+        $form = $this->createForm(ProspectType::class, $prospect, [
+            'product_choices' => $productChoices,
+        ]);
+
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            foreach ($prospect->getProduit() as $product) {
+                $product->addProspect($prospect);
+            }
+
+            $productRepository->add($prospect, true);
+            $this->addFlash('info', 'Votre Prospect a été modifié avec succès!');
+            return $this->redirect($request->headers->get('referer'));
+        }
+
+        return $this->renderForm('prospect/edit.html.twig', [
+            'prospect' => $prospect,
+            'form' => $form,
+        ]);
+    }
+
 
 
 
     /**
      * @Route("/{id}", name="app_prospect_delete", methods={"POST"}) 
-     * @IsGranted("ROLE_ADMIN", message="Tu ne peut pas acces a cet ressource")
+     * @IsGranted("ROLE_SUPER_ADMIN", message="Tu ne peut pas acces a cet ressource") 
      */
     public function delete(Request $request, Prospect $prospect, ProspectRepository $prospectRepository): Response
     {

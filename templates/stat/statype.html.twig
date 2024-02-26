@@ -34,9 +34,10 @@
 		{{ year ?? '....' }}
 		:
 		<span class="btn btn-primary">
+
+
 			{{ prospects|length }}</span>
 	</p>
-	<h2>Les type des prospects par Source</h2>
 	<div class="col-lg-12 main-chart">
 
 
@@ -44,11 +45,13 @@
 			<thead>
 				<tr style="background-color:#48D1CC;">
 					<th rowspan="3">Prospect</th>
-					<th colspan="8">Professionnel</th>
-					<th colspan="8">Particulier</th>
+					<th rowspan="3">Total</th>
+					{# <th colspan="{{ "%02d"|format(products.prospect|filter(h => h.typeProspect == 2 )|length) }}">Professionnel</th> #}
+					<th colspan="{{ products|length }}">Professionnel</th>
+					<th colspan="{{ products|length }}">Particulier</th>
 				</tr>
 				<tr class="expandable-row" style="background-color:#48D1CC;">
-					<th rowspan="2">Total</th>
+
 					{% for prduct in products %}
 						<th>{{prduct}}</th>
 					{% endfor %}
@@ -75,33 +78,36 @@
 					<td style="text-align: left;">Saisie manuelle</td>
 
 					<td>
-						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source == 1  )|length ) }}</span>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source == 1    )|length) }}</span>
+						{# <span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source == 1 and p.typeProspect == 1   )|length ) }}</span> #}
 					</td>
 
-					{# <td>{{products|length}}</td> #}
 
 					{% for product in products %}
-						{# <td>{{product|length}}</td> #}
-						{# saisi manule et pro  #}
-							<td>
-						{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.typeProspect == 2)|length) }}
+						{# Filtrer les prospects de type 2 et source 1 #}
+						<td>
+							{{ "%02d"|format(product.prospects|filter(h => h.typeProspect == 2 and h.source == 1)|length) }}
 						</td>
-						{# saisi manule et particulier  #}
-							<td>
-						{{ "%02d"|format(product.prospects|filter(h => h.source == 1 and h.typeProspect == 1)|length) }}
-					</td>
+					{% endfor %}
 
-
-				{% endfor %}
+					{% for product in products %}
+						{# Filtrer les prospects de type 1 et source 1 #}
+						<td>
+							{{ "%02d"|format(product.prospects|filter(h => h.typeProspect == 1 and h.source == 1)|length) }}
+						</td>
+					{% endfor %}
 
 
 				</tr>
-					<tr class="expanded-content" style="background-color:#AFEEEE;"> <td style="text-align: left;">Parrainage</td>
+				<tr class="expanded-content" style="background-color:#AFEEEE;">
+					<td style="text-align: left;">Parrainage</td>
 
 					<td>
 						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source == 1 and p.motifSaise == 1 )|length ) }}</span>
 					</td>
+
 					{% for product in products %}
+
 
 						{# <td>{{ "%02d"|format(product.prospects|filter(h => h.source == 1 )|length) }}</td> #}
 
@@ -114,7 +120,6 @@
 						</td>
 
 					{% endfor %}
-
 
 				</tr>
 				<tr class="expanded-content" style="background-color:#AFEEEE;">
@@ -232,6 +237,8 @@
 						<td>{{ "%02d"|format(product.prospects|filter(h => h.source is null and h.typeProspect == 1)|length) }}</td>
 
 					{% endfor %}
+
+
 				</tr>
 				<tr style="background-color:#ADFF2F;">
 					<td style="text-align: left;">
@@ -246,6 +253,7 @@
 						<td>{{ "%02d"|format(product.prospects|filter(h => h.source == 2 and h.typeProspect == 1)|length) }}</td>
 
 					{% endfor %}
+
 				</tr>
 			</tbody>
 		</table>
@@ -261,4 +269,5 @@ $(this).nextUntil('.expandable-row').toggle();
 		</script>
 
 	</div>
+
 {% endblock %}

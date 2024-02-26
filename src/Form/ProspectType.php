@@ -215,7 +215,7 @@ class ProspectType extends AbstractType
                 Type\ChoiceType::class,
                 [
                     'label' => 'Activites ',
-                    'required' => true,
+                    'required' => false,
                     'placeholder' => '--Merci de selectie-- ',
                     'choices' => [
                         'TPM' =>  1,

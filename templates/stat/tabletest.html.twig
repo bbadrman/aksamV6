@@ -1,0 +1,139 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques des prospects par équipe
+{% endblock %}
+
+{% block body %}
+
+	<section class="content-header">
+
+		<h2>Statistique Des Equipes</h2>
+
+		<ol class="breadcrumb">
+			<li>
+				<a href="{{ path('dashboard') }}">
+					<i class="fa fa-dashboard"></i>
+					Tableau de bord</a>
+			</li>
+			<li class="active">
+				<a href="{{ path('app_table_liste') }}">
+					<i class="fa fa-users"></i>
+					Toutes les Tables</a>
+			</li>
+			<!-- NOTIFICATION DROPDOWN -->
+
+			<li id="header_notification_bar" class="dropdown">
+				<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+					<i class="fa fa-shopping-cart"></i>
+
+				</a>
+
+			</li>
+			<!-- END NOTIFICATION DROPDOWN -->
+		</ol>
+		<br>
+	</section>
+
+	<style>
+		.expanded-content {
+			display: none;
+		}
+	</style>
+
+	<p>Choisir une année :</p>
+	<ul>
+		{% for y in (currentYear - 1)..(currentYear  ) %}
+
+
+			<a class="btn btn-success day" href="{{ path('prospects_stats_table', {'year': y, 'month': month}) }}">{{ y }}</a>
+
+
+		{% endfor %}
+	</ul>
+
+	<p>Choisir un mois :</p>
+	<ul>
+		{% for m in 1..12 %}
+
+
+			<a class="btn btn-success day" href="{{ path('prospects_stats_table', {'year': year, 'month': m}) }}">{{ m }}</a>
+
+
+		{% endfor %}
+	</ul>
+	<h1>Statistiques des prospects par équipe pour
+		{{ month }}/{{ year }}</h1>
+
+
+	<table class="table table-striped table-advance table-hover">
+		<thead>
+			<tr>
+				<th>Prospect</th>
+				<th>Total</th>
+				<th>auto</th>
+				<th>Site Pub</th>
+
+				<th>Particulier</th>
+				<th>Professionnel</th>
+				<th>Autre</th>
+
+				<th>Parrainage</th>
+				<th>Appel Entrant</th>
+				<th>Avenant</th>
+				<th>Ancienne contrat</th>
+				<th>Propre site</th>
+				<th>Revendeur</th>
+				<th>Autre</th>
+
+				<th>TPM</th>
+				<th>VTC</th>
+				<th>Sociéte</th>
+				<th>Décenale</th>
+				<th>Dommage</th>
+				<th>Marchandise</th>
+				<th>Négociant</th>
+				<th>Null</th>
+
+			</tr>
+		</thead>
+		<tbody>
+
+			<tr>
+				<td>Saisie manuelle</td>
+				{% set prospectCount = 0 %}
+				{% for prospect in prospects %}
+					{% if prospect.source == 1 %}
+						{% set prospectCount = prospectCount + 1 %}
+					{% endif %}
+				{% endfor %}
+				<td>
+					<span class="btn btn-danger">{{ "%02d"|format(prospectCount) }}</span>
+				</td>
+
+
+			</tr>
+
+			<tr>
+				<td>
+					Saisie manuelle</td>
+			</tr>
+			<tr>
+				<td>
+					Saisie manuelle</td>
+			</tr>
+
+
+		</tbody>
+
+
+	</tbody>
+</table>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script>
+	$(document).ready(function () {
+$('.expandable-row').click(function () {
+$('.expanded-content').not($(this).nextAll('.expanded-content')).hide();
+$(this).nextUntil('.expandable-row').toggle();
+});
+});
+</script>{% endblock %}

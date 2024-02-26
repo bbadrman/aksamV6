@@ -63,27 +63,39 @@ class StatProspController extends AbstractController
             'currentYear' => $currentYear,
         ]);
     }
-    #[Route('/prospects/tabledynmq', name: 'prospects_stats_table',)]
-    public function tabledymn(TeamRepository $teamRepository): Response
+    #[Route('/prospects/tabledynmq/{year}/{month}', name: 'prospects_stats_table',)]
+    public function tabledymn(int $year, int $month, ProspectRepository $prospectRepository, ProductRepository $productRepository): Response
     {
-        $team = $teamRepository->findAll();
+        $product = $productRepository->findProductByMonth($year, $month);
 
 
-        return $this->render('stat/tablejs.html.twig', [
+        $prospects = $prospectRepository->findProspectsByMonth($year, $month);
+        $currentYear = (int) date('Y');
 
-            'team' => $team,
+        return $this->render('stat/tabletest.html.twig', [
+
+            'products' => $product,
+            // dd($product),
+            'prospects' => $prospects,
+
+            'year' => $year,
+            'month' => $month,
+            'currentYear' => $currentYear,
 
         ]);
     }
     #[Route('/prospects/statstype/{year}/{month}', name: 'prospects_statype', requirements: ['year' => '\d{4}', 'month' => '\d{1,2}'])]
     public function prospectsStatsType(int $year, int $month, ProspectRepository $prospectRepository, ProductRepository $productRepository): Response
     {
-        $product = $productRepository->findAll();
+        $product = $productRepository->findProductByMonth($year, $month);
+        $products = $productRepository->findAll();
+
         $prospects = $prospectRepository->findProspectsByMonth($year, $month);
         $currentYear = (int) date('Y');
 
         return $this->render('stat/statype.html.twig', [
             'products' => $product,
+            'product' => $products,
             // dd($product),
             'prospects' => $prospects,
 

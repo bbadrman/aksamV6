@@ -78,22 +78,22 @@
 					<td style="text-align: left;">Saisie manuelle</td>
 
 					<td>
-						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source == 1    )|length) }}</span>
+						<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source == 1  )|length) }}</span>
 						{# <span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source == 1 and p.typeProspect == 1   )|length ) }}</span> #}
 					</td>
 
 
 					{% for product in products %}
-						{# Filtrer les prospects de type 2 et source 1 #}
+						{# Filtrer les prospects de type Part et source 1 #}
 						<td>
-							{{ "%02d"|format(product.prospects|filter(h => h.typeProspect == 2 and h.source == 1)|length) }}
+							{{ "%02d"|format(product.prospects|filter(h => h.typeProspect == 2 and h.source == 1)|length  ) }}
 						</td>
 					{% endfor %}
 
 					{% for product in products %}
-						{# Filtrer les prospects de type 1 et source 1 #}
+						{# Filtrer les prospects de type Part et source 1 #}
 						<td>
-							{{ "%02d"|format(product.prospects|filter(h => h.typeProspect == 1 and h.source == 1)|length) }}
+							{{ "%02d"|format(product.prospects|filter(h => h.typeProspect == 1 and h.source == 1)|length  ) }}
 						</td>
 					{% endfor %}
 

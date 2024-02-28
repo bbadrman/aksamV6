@@ -430,6 +430,24 @@ $(document).ready(function () {
 	table.searchPanes.resizePanes();
 });
 
+
+//persist le champs activite
+// document.addEventListener("DOMContentLoaded", function () {
+// 	var typeProspectField = document.getElementById("{{ form.typeProspect.vars.id }}");
+// 	var activitesField = document.getElementById("{{ form.activites.vars.id }}");
+// 	var subcategoryContainer = document.getElementById("subcategory-container");
+
+// 	typeProspectField.addEventListener("change", function () {
+// 		if (typeProspectField.value === '2') {
+// 			subcategoryContainer.style.display = "block";
+// 			activitesField.setAttribute('required', 'required');
+// 		} else {
+// 			subcategoryContainer.style.display = "none";
+// 			activitesField.removeAttribute('required');
+// 		}
+// 	});
+// });
+
 // pour passer au path client quen on click sur passage en contart
 // document.addEventListener('DOMContentLoaded', function () {
 // 	const motifRelanced = document.getElementById('relanced_motifRelanced'); // Assurez-vous de remplacer 'relanced_motifRelanced' par l'ID réel de votre champ de formulaire
@@ -516,10 +534,10 @@ $(document).ready(function () {
 // 	});
 // }
 
-function playNotificationSound() {
-	const audio = new Audio('/assets/sounds/notification-soundtone360.mp3');
-	audio.play();
-}
+// function playNotificationSound() {
+// 	const audio = new Audio('/assets/sounds/notification-soundtone360.mp3');
+// 	audio.play();
+// }
 
 $.ajax({
 	url: 'http://localhost:92/api/prospects',
@@ -528,5 +546,4 @@ $.ajax({
 		playNotificationSound();
 	}
 });
-
 

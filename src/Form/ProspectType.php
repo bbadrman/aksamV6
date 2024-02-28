@@ -15,10 +15,12 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ProspectType extends AbstractType
 {
@@ -134,8 +136,11 @@ class ProspectType extends AbstractType
                     'Professionnel' => '2',
                 ],
                 'expanded' => false,
-                'multiple' => false
+                'multiple' => false,
+
             ])
+
+
             ->add('raisonSociale', TextType::class, [
                 'label' => 'Raison sociale ',
                 'required' => false,
@@ -208,6 +213,7 @@ class ProspectType extends AbstractType
                 'choices' => $options['product_choices'],
                 'multiple' => true, // Assuming `produit` is a collection
                 'required' => true,
+
             ])
 
             ->add(
@@ -224,10 +230,14 @@ class ProspectType extends AbstractType
                         'Décenale' => 4,
                         'Dommage' =>  5,
                         'Marchandise' =>  6,
-                        'Négociant' =>  7
+                        'Négociant' =>  7,
+                        'Prof auto' =>  8
                     ],
                     'expanded' => false,
-                    'multiple' => false
+                    'multiple' => false,
+                    // 'constraints' => [
+                    //     new Callback([$this, 'validateActivites'])
+                    // ]
                 ]
             )
 
@@ -239,7 +249,7 @@ class ProspectType extends AbstractType
                 'query_builder' => fn (TeamRepository $teamRepository) =>
                 $teamRepository->findAllTeamByAscNameQueryBuilder()
             ]);
-        // ->add('relanceds');
+
 
 
         $formModifier = function (FormInterface $form, Team $team = null) {
@@ -270,6 +280,34 @@ class ProspectType extends AbstractType
                 }
             }
         );
+
+
+
+        // $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+        //     $form = $event->getForm();
+        //     $data = $event->getData();
+
+        //     if (!isset($data['typeProspect'])) {
+        //         return;
+        //     }
+
+        //     $typeProspect = $data['typeProspect'];
+
+        //     if ($typeProspect === '2') { // Si le type de prospect est professionnel
+        //         $form->add('activites',  Type\ChoiceType::class, [
+        //             'label' => 'Activites ',
+        //             'placeholder' => '--Merci de sélectionner-- ',
+        //             'choices' => [
+        //                 'Prof auto' => 8
+        //             ],
+        //             'expanded' => false,
+        //             'multiple' => false,
+        //         ]);
+        //     } else {
+        //         // Ajoutez d'autres options pour d'autres types de prospect si nécessaire
+        //     }
+        // });
+
 
 
 
@@ -346,6 +384,8 @@ class ProspectType extends AbstractType
             'editing' => false,
             'product_choices' => [],
 
+
+
         ]);
     }
 
@@ -362,4 +402,17 @@ class ProspectType extends AbstractType
             }
         }
     }
+
+
+    // public function validateActivites($data, ExecutionContextInterface $context)
+    // {
+    //     $typeProspect = $context->getRoot()->get('typeProspect')->getData();
+    //     // Vérifiez si le type de prospect est défini et est "Professionnel" ('2')
+    //     if (isset($data[$typeProspect]) && $data['typeProspect'] === '2' && empty($data['activites'])) {
+    //         // Ajouter une violation de contrainte
+    //         $context->buildViolation('Le champ Activites est requis pour le prospect professionnel.')
+    //             ->atPath('activites')
+    //             ->addViolation();
+    //     }
+    // }
 }

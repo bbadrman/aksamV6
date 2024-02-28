@@ -53,25 +53,26 @@
 					{{ form_row(form.motifSaise) }}
 
 					{# <div id="subMotiv-container" style="display: none">
-																																								     {{ form_row(form.motifSaise) }}
-																																								 </div> #}
+																																																																																																																								     {{ form_row(form.motifSaise) }}
+																																																																																																																								 </div> #}
 					<div>
 						{{ form_label(form.produit, 'Produit') }}
 						{{ form_widget(form.produit, {'attr': {'class': 'form-control selectchoice'}}) }}
 					</div>
 
-					{{ form_row(form.typeProspect) }}
 
-
+					<div>
+						{{ form_row(form.typeProspect) }}
+					</div>
 					{# <div id="activites-div" style="display: none;">
-																																																																																	
-																																																																																</div> #}
+																																																																																																																																																																										
+																																																																																																																																																																									</div> #}
 					{# {{ form_row(form.raisonSociale) }} #}
-					{# <div id="subcategory-container" style="display: none"> {{ form_row(form.activites) }} #}
-						<div>
-					{{ form_row(form.activites) }}
+					{# <div id="subcategory-container" style="display: none"> {{ form_row(form.activites) }} #}<div>
+
 					</div>
 						<div id="subcategory-container" style="display: none"> {{ form_row(form.raisonSociale) }}
+						{{ form_row(form.activites) }}
 
 					</div>
 
@@ -83,7 +84,7 @@
 
 
 					{# {{ form_row(form.team) }} 
-																																																																																																																																																																																																																																																																				 {{ form_row(form.comrcl) }}  #}
+																																																																																																																																																																																																																																																																																																																																																				 {{ form_row(form.comrcl) }}  #}
 
 					{# {{ form_rest(form, {'render_rest': false}) }} #}
 					{% if is_granted ('ROLE_ADMIN') %}
@@ -119,6 +120,26 @@
 	</div>
 	{{ form_end(form) }}
 </div>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+var typeProspectField = document.getElementById("{{ form.typeProspect.vars.id }}");
+var activitesField = document.getElementById("{{ form.activites.vars.id }}");
+var subcategoryContainer = document.getElementById("subcategory-container");
+
+typeProspectField.addEventListener("change", function () {
+if (typeProspectField.value === '2') {
+subcategoryContainer.style.display = "block";
+activitesField.setAttribute('required', 'required');
+} else {
+subcategoryContainer.style.display = "none";
+activitesField.removeAttribute('required');
+}
+});
+});
+</script>
+
+
 {# {{ form_rest(form, {'exclude': ['hiddenField'], 'render_rest': false}) }} #}
 {# <script>
 	// Attachez une fonction à l'événement change du champ typeProspect

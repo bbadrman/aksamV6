@@ -149,6 +149,7 @@
 					<th>Dommage</th>
 					<th>Marchandise</th>
 					<th>Négociant</th>
+					<th>Prof Auto</th>
 					<th>Null</th>
 
 
@@ -180,6 +181,9 @@
 					</td>
 					<td>
 						<span class='btn btn' style="background-color:Violet;">{{ " %02d"|format( prospects|filter(p => p.activites == 7  )|length ) }}</span>
+					</td>
+					<td>
+						<span class='btn btn' style="background-color:Violet;">{{ " %02d"|format( prospects|filter(p => p.activites == 8  )|length ) }}</span>
 					</td>
 					<td>
 						<span class='btn btn' style="background-color:Violet;">{{ " %02d"|format( prospects|filter(p => p.activites is null  )|length ) }}</span>
@@ -286,9 +290,9 @@ var myDoughnut = new Chart(document.getElementById("serverstatus03").getContext(
 		</div>
 	</div>
 </div></div></div>{# <p>Liste des prospects créés :</p>
-																																																																																																																																																																																																															<ul>
-																																																																																																																																																																																																																{% for prospect in prospects %}
-																																																																																																																																																																																																																	<li>{{ prospect.name }}
-																																																																																																																																																																																																																		{{ prospect.lastname }}</li>
-																																																																																																																																																																																																																{% endfor %}
-																																																																																																																																																																																																															</ul> #}{% endblock %}
+																																																																																																																																																																																																																	<ul>
+																																																																																																																																																																																																																		{% for prospect in prospects %}
+																																																																																																																																																																																																																			<li>{{ prospect.name }}
+																																																																																																																																																																																																																				{{ prospect.lastname }}</li>
+																																																																																																																																																																																																																		{% endfor %}
+																																																																																																																																																																																																																	</ul> #}{% endblock %}

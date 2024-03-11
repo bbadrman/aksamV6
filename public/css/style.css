@@ -4174,7 +4174,7 @@ ul.chat-available-user li a:hover {
     border-radius: 10px;
     border-style: double;
     border-collapse: collapse;
-    font-size: 22px;
+    font-size: 12px;
 }
 
 #ma-table th,
@@ -4184,11 +4184,18 @@ ul.chat-available-user li a:hover {
     border-style: double;
     height: 90px;
     text-align: center;
+
     vertical-align: middle !important;
     /* Forcer l'alignement vertical */
     padding: 10px;
     /* Ajoutez un padding pour éviter que le contenu ne touche le bord */
     margin: 0;
+    font-size: 18px;
+}
+
+#ma-table .btn {
+    font-size: 24px;
+    /* Ajustez cette valeur selon vos préférences */
 }
 
 #ma-table .expanded-content {

@@ -53,11 +53,11 @@
 					{{ form_row(form.motifSaise) }}
 
 					{# <div id="subMotiv-container" style="display: none">
-																																																																																																																								     {{ form_row(form.motifSaise) }}
-																																																																																																																								 </div> #}
+																																																																																																																																		     {{ form_row(form.motifSaise) }}
+																																																																																																																																		 </div> #}
 					<div>
-						{{ form_label(form.produit, 'Produit') }}
-						{{ form_widget(form.produit, {'attr': {'class': 'form-control selectchoice'}}) }}
+						{{ form_label(form.product, 'Produit') }}
+						{{ form_widget(form.product, {'attr': {'class': 'form-control selectchoice'}}) }}
 					</div>
 
 
@@ -65,8 +65,8 @@
 						{{ form_row(form.typeProspect) }}
 					</div>
 					{# <div id="activites-div" style="display: none;">
-																																																																																																																																																																										
-																																																																																																																																																																									</div> #}
+																																																																																																																																																																																				
+																																																																																																																																																																																			</div> #}
 					{# {{ form_row(form.raisonSociale) }} #}
 					{# <div id="subcategory-container" style="display: none"> {{ form_row(form.activites) }} #}<div>
 
@@ -84,7 +84,7 @@
 
 
 					{# {{ form_row(form.team) }} 
-																																																																																																																																																																																																																																																																																																																																																				 {{ form_row(form.comrcl) }}  #}
+																																																																																																																																																																																																																																																																																																																																																														 {{ form_row(form.comrcl) }}  #}
 
 					{# {{ form_rest(form, {'render_rest': false}) }} #}
 					{% if is_granted ('ROLE_ADMIN') %}

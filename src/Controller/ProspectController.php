@@ -146,7 +146,7 @@ class ProspectController extends AbstractController
             }
 
 
-            foreach ($prospect->getProduit() as $product) {
+            foreach ($prospect->getProduct() as $product) {
                 $product->addProspect($prospect);
             }
 
@@ -318,7 +318,7 @@ class ProspectController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            foreach ($prospect->getProduit() as $product) {
+            foreach ($prospect->getProduct() as $product) {
                 $product->addProspect($prospect);
             }
 

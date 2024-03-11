@@ -108,7 +108,7 @@ class ProspectType extends AbstractType
             ->add('source', Type\TextType::class, [
                 'label' => 'Source',
                 'required' => true,
-                'data' => '1', // Valeur affichée
+                'data' => '1', // Valeur affichée  afin de persiste par default au form 
                 // 'mapped' => false, // Ne pas mapper ce champ avec l'entité
                 'attr' => ['readonly' => true], // Rend le champ en lecture seule
             ])
@@ -208,10 +208,11 @@ class ProspectType extends AbstractType
                     'multiple' => false
                 ]
             )
-            ->add('produit', EntityType::class, [
+            ->add('product', EntityType::class, [
                 'class' => Product::class,
+                'placeholder' => '--Merci de selectie-- ',
                 'choices' => $options['product_choices'],
-                'multiple' => true, // Assuming `produit` is a collection
+                'multiple' => false, // Assuming `produit` is a collection
                 'required' => true,
 
             ])

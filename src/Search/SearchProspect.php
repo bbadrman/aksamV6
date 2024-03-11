@@ -79,4 +79,30 @@ class SearchProspect
      * @var int
      */
     public $motifRelanced;
+    /**
+     * @var int|null
+     */
+    public $y;
+    /**
+     * Récupère l'année de la recherche
+     * 
+     * @return int|null L'année de la recherche ou null si non définie
+     */
+    public function getYear(): ?int
+    {
+        // Récupérer l'année depuis la propriété de la classe
+        return $this->y;
+    }
+
+    private $month;
+
+    public function setMonth($month)
+    {
+        $this->month = $month;
+    }
+
+    public function getMonth()
+    {
+        return $this->month;
+    }
 }

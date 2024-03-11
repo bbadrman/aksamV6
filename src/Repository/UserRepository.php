@@ -130,6 +130,22 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getResult();
     }
 
+    public function findByComrclMonth(int $year, int $month): array
+    {
+        $startDate = new \DateTime("$year-$month-01");
+        $endDate = (clone $startDate)->add(new \DateInterval('P1M'));
+
+        $qb = $this->createQueryBuilder('t')
+            ->leftJoin('t.prospects', 'p')
+            ->andWhere('p.creatAt >= :start_date')
+            ->andWhere('p.creatAt < :end_date')
+            ->setParameter('start_date', $startDate)
+            ->setParameter('end_date', $endDate)
+            ->getQuery();
+
+        return $qb->getResult();
+    }
+
     // selectionner les user activer
     public function findActifeCorcl()
     {

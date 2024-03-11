@@ -50,6 +50,5 @@ networks:
     driver: bridge
 
 volumes:
-###> doctrine/doctrine-bundle ###
-  db-data:
-###< doctrine/doctrine-bundle ###
+  ###> doctrine/doctrine-bundle ###
+  db-data: ###< doctrine/doctrine-bundle ###

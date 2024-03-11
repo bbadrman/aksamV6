@@ -97,8 +97,15 @@ class Prospect
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $activites = null;
 
-    #[ORM\ManyToMany(targetEntity: Product::class, inversedBy: 'prospects', cascade: ["persist"])]
-    private Collection $produit;
+    #[ORM\ManyToOne(inversedBy: 'prospects')]
+    private ?Product $product = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $url = null;
+
+
+
+
 
     public function __construct()
     {
@@ -106,7 +113,6 @@ class Prospect
 
         $this->relanceds = new ArrayCollection();
         $this->histories = new ArrayCollection();
-        $this->produit = new ArrayCollection();
     }
 
     /**
@@ -461,26 +467,26 @@ class Prospect
         return $this;
     }
 
-    /**
-     * @return Collection<int, Product>
-     */
-    public function getProduit(): Collection
+    public function getProduct(): ?Product
     {
-        return $this->produit;
+        return $this->product;
     }
 
-    public function addProduit(Product $produit): static
+    public function setProduct(?Product $product): static
     {
-        if (!$this->produit->contains($produit)) {
-            $this->produit->add($produit);
-        }
+        $this->product = $product;
 
         return $this;
     }
 
-    public function removeProduit(Product $produit): static
+    public function getUrl(): ?string
     {
-        $this->produit->removeElement($produit);
+        return $this->url;
+    }
+
+    public function setUrl(?string $url): static
+    {
+        $this->url = $url;
 
         return $this;
     }

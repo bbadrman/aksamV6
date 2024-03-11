@@ -32,9 +32,8 @@ class Product
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'products', cascade: ['persist'])]
     private $users;
 
-    #[ORM\ManyToMany(targetEntity: Prospect::class, mappedBy: 'produit', cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Prospect::class)]
     private Collection $prospects;
-
 
 
 
@@ -120,7 +119,7 @@ class Product
     {
         if (!$this->prospects->contains($prospect)) {
             $this->prospects->add($prospect);
-            $prospect->addProduit($this);
+            $prospect->setProduct($this);
         }
 
         return $this;
@@ -129,7 +128,10 @@ class Product
     public function removeProspect(Prospect $prospect): static
     {
         if ($this->prospects->removeElement($prospect)) {
-            $prospect->removeProduit($this);
+            // set the owning side to null (unless already changed)
+            if ($prospect->getProduct() === $this) {
+                $prospect->setProduct(null);
+            }
         }
 
         return $this;

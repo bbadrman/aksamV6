@@ -4,13 +4,13 @@ namespace App\Repository;
 
 use App\Entity\User;
 use App\Entity\Prospect;
+use Doctrine\ORM\Query\Expr;
 use App\Search\SearchProspect;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Security\Core\Security;
 use Knp\Component\Pager\Pagination\PaginationInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
@@ -71,6 +71,27 @@ class ProspectRepository extends ServiceEntityRepository
         return $qb->getResult();
     }
 
+    public function findByMonthWithTeamAndProduct(int $year, int $month): array
+    {
+        $startDate = new \DateTime("$year-$month-01");
+        $endDate = (clone $startDate)->add(new \DateInterval('P1M'));
+
+        $qb = $this->createQueryBuilder('p')
+            ->andWhere('p.creatAt >= :start_date')
+            ->andWhere('p.creatAt < :end_date')
+            ->setParameter('start_date', $startDate)
+            ->setParameter('end_date', $endDate)
+            ->leftJoin('p.team', 't')
+            ->leftJoin('p.product', 'prod')
+            ->orderBy('t.name', 'ASC')
+            ->orderBy('prod.name', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+
+
+
     public function findByMonthAndTeam(int $year, int $month, int $teamId): array
     {
         $startDate = new \DateTime("$year-$month-01");
@@ -88,7 +109,59 @@ class ProspectRepository extends ServiceEntityRepository
         return $qb->getResult();
     }
 
+    public function findByMonthAndTeamt(int $teamId): array
+    {
+        $startDate = new \DateTime();
+        $endDate = (clone $startDate)->add(new \DateInterval('P1M'));
 
+        $qb = $this->createQueryBuilder('p')
+            ->andWhere('p.creatAt >= :start_date')
+            ->andWhere('p.creatAt < :end_date')
+            ->andWhere('p.team = :team_id')
+            ->setParameter('start_date', $startDate)
+            ->setParameter('end_date', $endDate)
+            ->setParameter('team_id', $teamId)
+            ->getQuery();
+
+        return $qb->getResult();
+    }
+
+    public function findByMonthAndComrcl(int $year, int $month, int $comrclId): array
+    {
+        $startDate = new \DateTime("$year-$month-01");
+        $endDate = (clone $startDate)->add(new \DateInterval('P1M'));
+
+        $qb = $this->createQueryBuilder('p')
+            ->andWhere('p.creatAt >= :start_date')
+            ->andWhere('p.creatAt < :end_date')
+            ->andWhere('p.comrcl = :comrcl_id')
+            ->setParameter('start_date', $startDate)
+            ->setParameter('end_date', $endDate)
+            ->setParameter('comrcl_id', $comrclId)
+            ->getQuery();
+
+        return $qb->getResult();
+    }
+
+
+    public function findByMonthTeamAndComrcl(int $year, int $month, int $teamId, int $comrclId): array
+    {
+        $startDate = new \DateTime("$year-$month-01");
+        $endDate = (clone $startDate)->add(new \DateInterval('P1M'));
+
+        $qb = $this->createQueryBuilder('p')
+            ->andWhere('p.creatAt >= :start_date')
+            ->andWhere('p.creatAt < :end_date')
+            ->andWhere('p.team = :team_id')
+            ->andWhere('p.comrcl = :comrcl_id')
+            ->setParameter('start_date', $startDate)
+            ->setParameter('end_date', $endDate)
+            ->setParameter('team_id', $teamId)
+            ->setParameter('comrcl_id', $comrclId)
+            ->getQuery();
+
+        return $qb->getResult();
+    }
 
 
 
@@ -102,7 +175,6 @@ class ProspectRepository extends ServiceEntityRepository
     public function findSearch(SearchProspect $search): PaginationInterface
     {
 
-
         $query = $this
             ->createQueryBuilder('u')
             ->select('u, t, f, h')
@@ -114,8 +186,6 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('u.relanceds', 'h')
 
             ->orderBy('u.id', 'DESC');
-
-
 
         if ((!empty($search->q))) {
             $query = $query
@@ -213,6 +283,34 @@ class ProspectRepository extends ServiceEntityRepository
         );
     }
 
+
+
+
+    /**
+     * Find the count of prospects within the specified date interval
+     * @param SearchProspect $search  
+     * @return int
+     */
+    public function findSearchStat(SearchProspect $search): int
+    {
+        $queryBuilder = $this->createQueryBuilder('u');
+        $queryBuilder->select('COUNT(u.id)');
+
+        $expr = $queryBuilder->expr();
+
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
+            $queryBuilder->andWhere($expr->gte('u.creatAt', ':d'))
+                ->setParameter('d', $search->d);
+        }
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
+            $queryBuilder->andWhere($expr->lte('u.creatAt', ':dd'))
+                ->setParameter('dd', $search->dd);
+        }
+
+        return (int) $queryBuilder->getQuery()->getSingleScalarResult();
+    }
 
     /**
      * Find list a prospect Relanced

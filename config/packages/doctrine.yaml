@@ -50,6 +50,7 @@ when@prod:
             result_cache_driver:
                 type: pool
                 pool: doctrine.result_cache_pool
+            enable_lazy_ghost_objects: true
 
     framework:
         cache:

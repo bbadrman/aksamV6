@@ -2,19 +2,24 @@
 
 namespace App\Controller;
 
-use App\Entity\Team;
-use App\Entity\Prospect;
 use App\Form\SearchStatType;
 use App\Search\SearchProspect;
 use App\Repository\TeamRepository;
+use App\Repository\UserRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProspectRepository;
-use App\Repository\UserRepository;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+
+/**
+ * @Route("/stats")
+ * @IsGranted("ROLE_ADMIN", message="Tu ne peut pas acces a cet ressource") 
+ * 
+ */
 
 class StatProspController extends AbstractController
 {
@@ -27,7 +32,7 @@ class StatProspController extends AbstractController
         $this->requestStack = $requestStack;
     }
 
-    #[Route('/prospects/stats/{year}/{month}', name: 'prospects_stats', requirements: ['year' => '\d{4}', 'month' => '\d{1,2}'])]
+    #[Route('/{year}/{month}', name: 'prospects_stats', requirements: ['year' => '\d{4}', 'month' => '\d{1,2}'])]
     public function prospectsStats(int $year, int $month, ProspectRepository $prospectRepository): Response
     {
         $prospects = $prospectRepository->findProspectsByMonth($year, $month);
@@ -41,7 +46,7 @@ class StatProspController extends AbstractController
         ]);
     }
 
-    #[Route('/prospects/statst/team', name: 'prospects_statst_team')]
+    #[Route('/team', name: 'prospects_statst_team')]
     public function prospectsStatsTeam(TeamRepository $teamRepository, ProspectRepository $prospectRepository): Response
     {
 
@@ -75,7 +80,7 @@ class StatProspController extends AbstractController
         ]);
     }
 
-    #[Route('/prospects/statstm/team', name: 'prospects_statstm_team')]
+    #[Route('/teams', name: 'prospects_statstm_team')]
     public function prospectsStatsTeamM(TeamRepository $teamRepository, ProspectRepository $prospectRepository): Response
     {
         $data = new SearchProspect();
@@ -106,7 +111,7 @@ class StatProspController extends AbstractController
     }
 
 
-    #[Route('/prospects/stats/team/{year}/{month}', name: 'prospects_stats_team', requirements: ['year' => '\d{4}', 'month' => '\d{1,2}'])]
+    #[Route('/team/{year}/{month}', name: 'prospects_stats_team', requirements: ['year' => '\d{4}', 'month' => '\d{1,2}'])]
     public function prospectsStatsTeamt(int $year, int $month, TeamRepository $teamRepository, ProductRepository $productRepository, ProspectRepository $prospectRepository, int $comrclId = null): Response
     {
 
@@ -144,7 +149,7 @@ class StatProspController extends AbstractController
         ]);
     }
 
-    #[Route('/prospects/stats/cmrcl/{year}/{month}', name: 'prospects_stats_cmrcl', requirements: ['year' => '\d{4}', 'month' => '\d{1,2}'])]
+    #[Route('/cmrcl/{year}/{month}', name: 'prospects_stats_cmrcl', requirements: ['year' => '\d{4}', 'month' => '\d{1,2}'])]
     public function prospectsStatsCmrcl(int $year, int $month, UserRepository $userRepository,  TeamRepository $teamRepository, ProspectRepository $prospectRepository): Response
     {
         $comrcls = $userRepository->findAll();
@@ -175,7 +180,7 @@ class StatProspController extends AbstractController
     }
 
 
-    #[Route('/prospects/statstype/{year}/{month}', name: 'prospects_statype', requirements: ['year' => '\d{4}', 'month' => '\d{1,2}'])]
+    #[Route('/statstype/{year}/{month}', name: 'prospects_statype', requirements: ['year' => '\d{4}', 'month' => '\d{1,2}'])]
     public function prospectsStatsType(int $year, int $month, ProspectRepository $prospectRepository, ProductRepository $productRepository): Response
     {
         $product = $productRepository->findProductByMonth($year, $month);
@@ -195,7 +200,7 @@ class StatProspController extends AbstractController
             'currentYear' => $currentYear,
         ]);
     }
-    #[Route('/prospects/product/{year}/{month}', name: 'prospects_statypet', requirements: ['year' => '\d{4}', 'month' => '\d{1,2}'])]
+    #[Route('/product/{year}/{month}', name: 'prospects_statypet', requirements: ['year' => '\d{4}', 'month' => '\d{1,2}'])]
     public function prospectsStatsTypeTest(int $year, int $month, ProspectRepository $prospectRepository, ProductRepository $productRepository): Response
     {
         $products = $productRepository->findAll();
@@ -221,7 +226,7 @@ class StatProspController extends AbstractController
 
         $currentYear = (int) date('Y');
 
-        return $this->render('stat/statypet.html.twig', [
+        return $this->render('stat/statProduct.html.twig', [
             'products' => $products,
             'prospectsByTeam' => $prospectsByTeam, // Nested structure with team & product counts
             'year' => $year,

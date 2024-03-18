@@ -227,6 +227,22 @@
 						{% endif %}
 					</td>
 				</tr>
+				<tr>
+					<th>Date d'accès
+					</th>
+
+
+					<td>
+
+
+						{% for acces in user.acces %}
+							{{acces.accessDate ? acces.accessDate|date('d/m/Y H:i:s') : 'pas acces' }}
+							<br>
+						{% endfor %}
+
+
+					</td>
+				</tr>
 			</tbody>
 		</table>
 	</div>

@@ -119,6 +119,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $creatAt = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $lastLoginDate = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Acces::class)]
+    private Collection $acces;
+
 
 
 
@@ -129,6 +135,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->prospects = new ArrayCollection();
         $this->prospections = new ArrayCollection();
         $this->clients = new ArrayCollection();
+        $this->acces = new ArrayCollection();
     }
 
     /**
@@ -485,6 +492,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCreatAt(\DateTimeInterface $creatAt): static
     {
         $this->creatAt = new DateTime();
+
+        return $this;
+    }
+
+    public function getLastLoginDate(): ?\DateTimeInterface
+    {
+        return $this->lastLoginDate;
+    }
+
+    public function setLastLoginDate(?\DateTimeInterface $lastLoginDate): static
+    {
+        $this->lastLoginDate = $lastLoginDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Acces>
+     */
+    public function getAcces(): Collection
+    {
+        return $this->acces;
+    }
+
+    public function addAcce(Acces $acce): static
+    {
+        if (!$this->acces->contains($acce)) {
+            $this->acces->add($acce);
+            $acce->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAcce(Acces $acce): static
+    {
+        if ($this->acces->removeElement($acce)) {
+            // set the owning side to null (unless already changed)
+            if ($acce->getUser() === $this) {
+                $acce->setUser(null);
+            }
+        }
 
         return $this;
     }

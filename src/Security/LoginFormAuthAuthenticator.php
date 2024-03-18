@@ -3,6 +3,8 @@
 namespace App\Security;
 
 use App\Entity\User;
+use App\Entity\Acces;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
@@ -27,10 +29,12 @@ class LoginFormAuthAuthenticator extends AbstractLoginFormAuthenticator
     private UrlGeneratorInterface $urlGenerator;
 
     private $entityManager;
-    public function __construct(UrlGeneratorInterface $urlGenerator, EntityManagerInterface  $entityManager)
+    private $userRepository;
+    public function __construct(UrlGeneratorInterface $urlGenerator, EntityManagerInterface  $entityManager, UserRepository $userRepository)
     {
         $this->urlGenerator = $urlGenerator;
         $this->entityManager = $entityManager;
+        $this->userRepository = $userRepository;
     }
 
     public function authenticate(Request $request): Passport
@@ -59,18 +63,25 @@ class LoginFormAuthAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        /** @var User $user */
+        $user = $token->getUser();
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
 
-        // For example:
-        // return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
-        // if ($this->denyAccessUnlessGranted('ROLE_ADMIN')) {
-        //     return new RedirectResponse($this->urlGenerator->generate('user_index'));
-        //              }else{
-        //                 return new RedirectResponse($this->urlGenerator->generate('dashboard'));
-        //              }
+        // // Créez une nouvelle instance de l'entité Acces
+        // $acces = new Acces();
+        // // Définissez la date d'accès sur la date actuelle
+        // $acces->setAccessDate(new \DateTime());
+        // // Associez l'utilisateur à l'entité Acces
+        // $acces->setUser($user);
+
+        // // Persistez l'entité Acces dans la base de données
+        // $this->entityManager->persist($acces);
+        // $this->entityManager->flush();
+
+
+
         /** @var User $user */
         $user = $token->getUser();
 
@@ -116,6 +127,7 @@ class LoginFormAuthAuthenticator extends AbstractLoginFormAuthenticator
 
         return new RedirectResponse($this->urlGenerator->generate('dashboard'));
     }
+
 
     protected function getLoginUrl(Request $request): string
     {

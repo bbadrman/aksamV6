@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>User List</title>
+	</head>
+	<body>
+		<table>
+			<thead>
+				<tr>
+					<th>User</th>
+					<th>Last Access Date</th>
+				</tr>
+			</thead>
+			<tbody>
+
+				<p>Dernière connexion :</p>
+
+
+				{% for user in users %}
+					<tr>
+						<td>{{ user.username }}</td>
+						{# <td>{{ user.lastLoginDate|date('d/m/Y H:i:s') }}</td> #}
+
+						{% set lastAccessDate = null %}
+						{% for access in user.acces %}
+							{% if access.accessDate %}
+								{% if not lastAccessDate or access.accessDate > lastAccessDate %}
+									{% set lastAccessDate = access.accessDate %}
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+						<td>{{ lastAccessDate ? lastAccessDate|date('d/m/Y H:i:s') : 'Pas d\'accès' }}</td> 
+					</tr>
+				{% endfor %} 
+			</tbody>
+		</table> 
+	</body>
+</html>  </td>
+					</tr>

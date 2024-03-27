@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\Prospect;
 use Doctrine\ORM\Query\Expr;
 use App\Search\SearchProspect;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
@@ -55,6 +56,23 @@ class ProspectRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+
+
+
+
+    public function findByDateInterval(\DateTimeInterface $startDate, \DateTimeInterface $endDate): array
+    {
+        return $this->createQueryBuilder('p')
+
+
+            ->where('p.creatAt BETWEEN :startDate AND :endDate')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery()
+            ->getResult();
+    }
+
 
     public function findProspectsByMonth(int $year, int $month): array
     {
@@ -109,39 +127,10 @@ class ProspectRepository extends ServiceEntityRepository
         return $qb->getResult();
     }
 
-    public function findByMonthAndTeamt(int $teamId): array
-    {
-        $startDate = new \DateTime();
-        $endDate = (clone $startDate)->add(new \DateInterval('P1M'));
 
-        $qb = $this->createQueryBuilder('p')
-            ->andWhere('p.creatAt >= :start_date')
-            ->andWhere('p.creatAt < :end_date')
-            ->andWhere('p.team = :team_id')
-            ->setParameter('start_date', $startDate)
-            ->setParameter('end_date', $endDate)
-            ->setParameter('team_id', $teamId)
-            ->getQuery();
 
-        return $qb->getResult();
-    }
 
-    public function findByMonthAndComrcl(int $year, int $month, int $comrclId): array
-    {
-        $startDate = new \DateTime("$year-$month-01");
-        $endDate = (clone $startDate)->add(new \DateInterval('P1M'));
 
-        $qb = $this->createQueryBuilder('p')
-            ->andWhere('p.creatAt >= :start_date')
-            ->andWhere('p.creatAt < :end_date')
-            ->andWhere('p.comrcl = :comrcl_id')
-            ->setParameter('start_date', $startDate)
-            ->setParameter('end_date', $endDate)
-            ->setParameter('comrcl_id', $comrclId)
-            ->getQuery();
-
-        return $qb->getResult();
-    }
 
 
     public function findByMonthTeamAndComrcl(int $year, int $month, int $teamId, int $comrclId): array
@@ -283,140 +272,6 @@ class ProspectRepository extends ServiceEntityRepository
         );
     }
 
-
-
-
-    /**
-     * Find the count of prospects within the specified date interval
-     * @param SearchProspect $search  
-     * @return int
-     */
-    public function findSearchStat(SearchProspect $search): int
-    {
-        $queryBuilder = $this->createQueryBuilder('u');
-        $queryBuilder->select('COUNT(u.id)');
-
-        $expr = $queryBuilder->expr();
-
-        if (!empty($search->d) && $search->d instanceof \DateTime) {
-            $queryBuilder->andWhere($expr->gte('u.creatAt', ':d'))
-                ->setParameter('d', $search->d);
-        }
-
-        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
-            $search->dd->setTime(23, 59, 59);
-            $queryBuilder->andWhere($expr->lte('u.creatAt', ':dd'))
-                ->setParameter('dd', $search->dd);
-        }
-
-        return (int) $queryBuilder->getQuery()->getSingleScalarResult();
-    }
-
-    /**
-     * Find list a prospect Relanced
-     * @param SearchProspect $search
-     * @return PaginationInterface
-     */
-    public function indRelanced(SearchProspect $search): PaginationInterface
-    {
-
-
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
-
-        $endOfDay = clone $today;
-        $endOfDay->setTime(23, 59, 59);
-
-        $query = $this->createQueryBuilder('p')
-            ->select('p, t, f, r')
-            ->leftJoin('p.relanceds', 'r')
-            ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
-            ->setParameter('startOfDay', $today)
-            ->setParameter('endOfDay', $endOfDay)
-
-            // joiner les tables en relation ManyToOne avec team
-            ->leftJoin('p.team', 't')
-
-
-            // joiner les tables en relation manytomany avec fonction
-            ->leftJoin('p.comrcl', 'f')
-
-            ->orderBy('p.id', 'DESC');
-
-
-
-        if ((!empty($search->q))) {
-            $query = $query
-                ->andWhere('p.name LIKE :q')
-
-                ->orderBy('p.id', 'desc')
-                ->setParameter('q', "%{$search->q}%");
-        }
-
-        if (!empty($search->m)) {
-            $query = $query
-                ->andWhere('p.lastname LIKE :m')
-                ->setParameter('m', "%{$search->m}%");
-        }
-        if (!empty($search->r)) {
-            $query = $query
-                ->andWhere('f.username LIKE :r')
-                ->setParameter('r', "%{$search->r}%");
-        }
-        if (!empty($search->g)) {
-            $query = $query
-                ->andWhere('p.email LIKE :g')
-                ->setParameter('g', "%{$search->g}%");
-        }
-        if (!empty($search->team)) {
-            $query = $query
-                ->andWhere('t.name LIKE :team')
-                ->setParameter('team', "%{$search->team}%");
-        }
-        if (!empty($search->l)) {
-            $query = $query
-                ->andWhere('p.phone LIKE :l')
-                ->orWhere('p.gsm LIKE :l')
-                ->setParameter('l', "%{$search->l}%");
-        }
-        if (!empty($search->c)) {
-            $query = $query
-                ->andWhere('p.city LIKE :c')
-                ->setParameter('c', "%{$search->c}%");
-        }
-
-        if (!empty($search->d) && $search->d instanceof \DateTime) {
-            $query = $query
-                ->andWhere('p.creatAt >= :d')
-                ->setParameter('d', $search->d);
-        }
-
-        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
-            $search->dd->setTime(23, 59, 59);
-            $query = $query
-                ->andWhere('p.creatAt <= :dd')
-                ->setParameter('dd', $search->dd);
-        }
-
-
-
-        if (!empty($search->s)) {
-            $query = $query
-                ->andWhere('p.raisonSociale LIKE :s')
-                ->setParameter('s', "%{$search->s}%");
-        }
-        if (!empty($search->source)) {
-            $query = $query
-                ->andWhere('p.source = :source')
-                ->setParameter('source', $search->source);
-        }
-        return $this->paginator->paginate(
-            $query,
-            $search->page,
-            10
-
-        );
-    }
 
     /**
      * Find list a prospect Relanced
@@ -642,30 +497,7 @@ class ProspectRepository extends ServiceEntityRepository
     }
 
 
-    // caclcule le total du prospect en panier
-    public function getProspectCountPanierJour()
-    {
-        $today = new \DateTime();
-        $today->setTime(0, 0, 0);
 
-        $endOfDay = clone $today;
-        $endOfDay->setTime(23, 59, 59);
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(p)')
-            ->from(Prospect::class, 'p')
-            ->leftJoin('p.histories', 'r')
-            ->where('p.team is NOT NULL')
-            ->andWhere("p.comrcl is NULL")
-
-            ->andWhere('r.actionDate BETWEEN :startOfDay AND :endOfDay')
-            // ->andWhere('p.creatAt BETWEEN :startOfDay AND :endOfDay')
-            ->setParameter('startOfDay', $today)
-            ->setParameter('endOfDay', $endOfDay);
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
-
-        return $result;
-    }
 
     /**
      * Find list a prospect Relanced no traités
@@ -2056,87 +1888,6 @@ class ProspectRepository extends ServiceEntityRepository
 
 
 
-    /**
-     * aussi il faut supremer parceque on supreme aussi index sur reafecrtcontroler
-     * @return Prospect[] Returns an array of Prospect objects
-     * @param SearchProspect $search
-     * @return PaginationInterface
-     */
-    public function findByUserAffecter(): array
-    {
-        // get selement les prospects qui sont affectter a un user
-        return $this->createQueryBuilder('p')
-            ->andWhere("p.comrcl != ''")
-            ->orWhere("p.team is NOT NULL")
-            ->orderBy('p.id', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
-
-
-    /**
-     * aussi comme fonct presedent
-     * @return Prospect[] Returns an array of Prospect objects
-     * @param SearchProspect $search
-     * @return PaginationInterface
-     */
-    public function findByUserAffecterChef(User $user, SearchProspect $search): PaginationInterface
-    {
-        $team = $user->getTeams();
-
-        $query = $this
-            ->createQueryBuilder('u')
-            ->select('u, t, f')
-            ->where('u.team = :team')
-            ->setParameter('team', $team)
-            ->andWhere("u.comrcl is NOT NULL")
-            ->andWhere("u.team is NOT NULL")
-            ->orderBy('u.id', 'DESC')
-            // joiner les tables en relation ManyToOne avec team
-            ->leftJoin('u.team', 't')
-            // joiner les tables en relation manytomany avec fonction
-            ->leftJoin('u.comrcl', 'f');
-        //relation manytomany avec product apartir team
-        // ->leftJoin('u.products', 'p');
-
-
-        if (!empty($search->q)) {
-            $query = $query
-
-                ->Where('u.name LIKE :q')
-                ->orWhere('u.lastname LIKE :q')
-                ->orWhere('u.email LIKE :q')
-                ->orWhere('u.city LIKE :q')
-                ->orWhere('u.codePost LIKE :q')
-                ->orWhere('u.gender LIKE :q')
-
-
-                // join les tables              
-                ->orWhere('t.name LIKE :q')
-                ->orWhere('f.username LIKE :q')
-                // ->orWhere('f.prospects LIKE :q')
-                ->orWhere('u.phone LIKE :q')
-                ->orWhere('u.gsm LIKE :q')
-                ->orderBy('u.id', 'DESC')
-                ->setParameter('q', "%{$search->q}%");
-        }
-
-
-
-        if (isset($search->source)) {
-            $query = $query
-                ->andWhere('u.source = :source')
-                ->setParameter('source', $search->source);
-        }
-
-        return $this->paginator->paginate(
-            $query,
-            $search->page,
-            10
-
-        );
-    }
-
     // afficher les prospects qui n ont pas du team et cmrcl
     /**
      * @return Prospect[] Returns an array of Prospect objects
@@ -2504,21 +2255,6 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('ddr', $search->ddr->format('Y-m-d H:i:s'));
         }
 
-        // if (!empty($search->dr)) {
-
-        //     $query = $query
-
-        //         ->andWhere('h.relacedAt >= :dr')
-        //         ->setParameter('dr', $search->dr->format('Y-m-d'));
-        // }
-        // if (!empty($search->ddr)) {
-        //     $search->ddr->modify('+23 hours 59 minutes 59 seconds');
-        //     $query = $query
-
-        //         ->andWhere('h.relacedAt <= :ddr')
-        //         ->setParameter('ddr', $search->ddr->format('Y-m-d H:i:s'));
-        // }
-
 
 
 
@@ -2713,24 +2449,6 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('ddr', $search->ddr->format('Y-m-d H:i:s'));
         }
 
-        // if (!empty($search->dr)) {
-
-        //     $query = $query
-
-        //         ->andWhere('h.relacedAt >= :dr')
-        //         ->setParameter('dr', $search->dr->format('Y-m-d'));
-        // }
-        // if (!empty($search->ddr)) {
-        //     $search->ddr->modify('+23 hours 59 minutes 59 seconds');
-        //     $query = $query
-
-        //         ->andWhere('h.relacedAt <= :ddr')
-        //         ->setParameter('ddr', $search->ddr->format('Y-m-d H:i:s'));
-        // }
-
-
-
-
         if (!empty($search->motifRelanced)) {
             $query = $query
 
@@ -2746,74 +2464,6 @@ class ProspectRepository extends ServiceEntityRepository
         );
     }
 
-    // afficher seulement les prospects qui apartient au chef d equipe et ne sont pas affiter au cmrcl
-    /**
-     * supreme avec fnc contrl
-     * @return Prospect[] Returns an array of Prospect objects
-     * @param SearchProspect $search
-     * @return PaginationInterface 
-     */
-    public function findByUserChefEquipe(SearchProspect $search, User $user): PaginationInterface
-    {
-        $team = $user->getTeams();
-
-        $query = $this->createQueryBuilder('p')
-            ->where('p.team = :team')
-            ->andWhere("p.comrcl is NULL")
-            ->orderBy('p.id', 'DESC')
-            ->setParameter('team', $team);
-
-        if ((!empty($search->q))) {
-            $query = $query
-                ->andWhere('p.name LIKE :q')
-
-                ->setParameter('q', "%{$search->q}%");
-        }
-        if (isset($search->m)) {
-            $query = $query
-                ->andWhere('p.lastname LIKE :m')
-                ->setParameter('m', "%{$search->m}%");
-        }
-        return $this->paginator->paginate(
-            $query,
-            $search->page,
-            10
-
-        );
-    }
-
-    // afficher seulement les relance du chef equipe
-    /**
-     * @return Prospect[] Returns an array of Prospect objects
-     * @param SearchProspect $search
-     * @return PaginationInterface 
-     */
-    public function findByRelanceChefEquipe(SearchProspect $search, User $user): PaginationInterface
-    {
-        $team = $user->getTeams();
-        $query = $this->createQueryBuilder('p')
-            ->where('p.team = :team')
-            ->orderBy('p.id', 'DESC')
-            ->setParameter('team', $team);
-
-        if ((!empty($search->q))) {
-            $query = $query
-                ->andWhere('p.name LIKE :q')
-
-                ->setParameter('q', "%{$search->q}%");
-        }
-        if (isset($search->m)) {
-            $query = $query
-                ->andWhere('p.lastname LIKE :m')
-                ->setParameter('m', "%{$search->m}%");
-        }
-        return $this->paginator->paginate(
-            $query,
-            $search->page,
-            10
-
-        );
-    }
 
     /**
      * @return Prospect[] Returns an array of Prospect objects  

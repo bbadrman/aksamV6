@@ -22,8 +22,13 @@
 	</div>
 
 	{# {{ form_widget(search_form.d, { 'attr': { 'style': 'display:none' } }) }}
-						{{ form_widget(search_form.dd, { 'attr': { 'style': 'display:none' } }) }} #}
+							{{ form_widget(search_form.dd, { 'attr': { 'style': 'display:none' } }) }} #}
 
 
 </div>
 {{ form_end(search_form) }}
+<script>
+	document.getElementById("reset-button").addEventListener("click", function () { // Réinitialisez les paramètres de l'URL à vide
+window.location.href = window.location.pathname;
+});
+</script>

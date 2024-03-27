@@ -200,7 +200,7 @@
 
 
 					<td>
-						<span class="btn btn " style="background-color:#FFD700;">{{ prospects|filter(p => p.team is not null  )|length }}</span>
+						<span class="btn btn " style="background-color:#FFD700;">{{ " %02d"|format( prospects|filter(p => p.team is not null  )|length) }}</span>
 					</td>
 					<td style="background-color:#41B9E1;">
 						<span class="btn btn-danger">{{ " %02d"|format(  prospects|filter(p => p.source == 1 and p.team is not null  )|length )}}</span>
@@ -261,17 +261,8 @@
 					<td>
 						<span class='btn btn' style="background-color:Violet;">{{ " %02d"|format(  prospects|filter(p => p.activites == 8 and p.team is not null   )|length )}}</span>
 					</td>
-					{# {% for product in products %}
-					
-											<td>
-												{{ "%02d"|format(product.prospects |length  ) }}
-											</td>
-					
-										{% endfor %} #}
-
 				</tr>
 				{% if app.request.get('_route') == 'prospects_stats_team' %}
-
 					{% for cmrclIdentifier, cmrclProspects in prospectsByCmrcl[teamName] %}
 						<tr class="expanded-content">
 
@@ -345,8 +336,6 @@
 					{% endfor %}
 				{% endif %}
 			{% endfor %}
-
-
 		</tbody>
 	</table>
 

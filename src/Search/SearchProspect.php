@@ -3,6 +3,7 @@
 namespace App\Search;
 
 use DateTime;
+use DateTimeInterface;
 
 class SearchProspect
 {
@@ -51,12 +52,12 @@ class SearchProspect
     public $s = '';
 
     /**
-     * @var string
+     * @var DateTimeInterface|null
      */
     public $d;
 
     /**
-     * @var string
+     * @var DateTimeInterface|null
      */
     public $dd;
     /**
@@ -104,5 +105,15 @@ class SearchProspect
     public function getMonth()
     {
         return $this->month;
+    }
+    // Dans la classe SearchProspect
+    public function getStartDate(): ?DateTimeInterface
+    {
+        return $this->d; // Supposons que 'd' représente la date de début dans votre formulaire
+    }
+
+    public function getEndDate(): ?\DateTimeInterface
+    {
+        return $this->dd; // Supposons que 'dd' représente la date de fin dans votre formulaire
     }
 }

@@ -39,95 +39,100 @@
 			display: none;
 		}
 	</style>
-	<div class="col-xs-12" style="float: right !important;">
-		<div class="row" style="margin-right: 10px;">
+	<div class="col-xs-12" style="float: left !important;">
+		<div class="row" style="margin-left: 10px;">
 			{% include 'stat/_search_form.html.twig' with {search_form: search_form} only %}
 		</div>
 	</div>
 
+	<hr>
 
 	<table id="ma-table" class="table table-striped table-advance table-hover ">
 		<thead>
 
 			<tr style="text-align: center;">
-				<th rowspan="2" style="background-color:#18B7BE;">Equipe</th>
-				<th rowspan="2" style="background-color:#FFD700;">Total</th>
-				<th colspan="2" style="background-color:#d9534f;">Source</th>
-				<th colspan="2" style="background-color:#5cb85c;">Type Prospect</th>
+				<th rowspan="2">Equipe</th>
+				<th rowspan="2">Total</th>
+				<th colspan="3">Source</th>
+				<th colspan="2">Type Prospect</th>
 
-				<th colspan="6" style="background-color:#41B9E1;">Motive de saisier</th>
-				<th colspan="8" style="background-color:Violet;">Activites</th>
+				<th colspan="6">Motive de saisier</th>
+				<th colspan="8">Activites</th>
 			</tr>
 			<tr style="text-align: center;">
 
-				<th style="background-color:#d9534f;">Saisier</th>
-				<th style="background-color:#d9534f;">Site Pub</th>
+				<th>Saisier</th>
+				<th>Site Pub</th>
+				<th>Revedeur</th>
 
-				<th style="background-color:#5cb85c;">Particulier</th>
-				<th style="background-color:#5cb85c;">Professionnel</th>
+				<th>Particulier</th>
+				<th>Professionnel</th>
 
 
-				<th style="background-color:#41B9E1;">Parrainage</th>
-				<th style="background-color:#41B9E1;">Appel
+				<th>Parrainage</th>
+				<th>Appel
 				</th>
-				<th style="background-color:#41B9E1;">Avenant</th>
-				<th style="background-color:#41B9E1;">Ancienne</th>
-				<th style="background-color:#41B9E1;">Propre site</th>
-				<th style="background-color:#41B9E1;">Revendeur</th>
+				<th>Avenant</th>
+				<th>Ancienne</th>
+				<th>Propre site</th>
+				<th>Revendeur</th>
 
 
-				<th style="background-color:Violet;">TPM</th>
-				<th style="background-color:Violet;">VTC</th>
-				<th style="background-color:Violet;">Sociéte</th>
-				<th style="background-color:Violet;">Décenale</th>
-				<th style="background-color:Violet;">Dommage</th>
-				<th style="background-color:Violet;">Marchandise</th>
-				<th style="background-color:Violet;">Négociant</th>
-				<th style="background-color:Violet;">Prof Auto</th>
+				<th>TPM</th>
+				<th>VTC</th>
+				<th>Sociéte</th>
+				<th>Décenale</th>
+				<th>Dommage</th>
+				<th>Marchandise</th>
+				<th>Négociant</th>
+				<th>Prof Auto</th>
 
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
 				<td>
-					<button class="btn btn" style="background-color:#18B7BE;">Total
+					<button class="btn btn" style="background-color:#87CEFA;">Total
 					</button>
 				</td>
 
 				<td>
-					<span class="btn btn-primary">
+					<span class="btn btn" style="background-color:	#00BFFF;">
 						{{ " %02d"|format(prospects|filter(p => p.team is not null  )|length )}}</span>
 				</td>
 
-				<td>
-					<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source == 1 and p.team is not null  )|length ) }}</span>
+				<td style="background-color:#cde4e2;">
+					<span class="btn btn" style="background-color:	#FFA07A;">{{ " %02d"|format( prospects|filter(p => p.source == 1 and p.team is not null  )|length ) }}</span>
 				</td>
 				<td>
-					<span class="btn btn-danger">{{ " %02d"|format( prospects|filter(p => p.source is null and p.team is not null )|length ) }}</span>
+					<span class="btn btn" style="background-color:	#FFA07A;">{{ " %02d"|format( prospects|filter(p => p.source is null and p.team is not null )|length ) }}</span>
 				</td>
 				<td>
-					<span class="btn btn-success day">{{ " %02d"|format(prospects|filter(p => p.typeProspect == 1 and p.team is not null )|length ) }}</span>
+					<span class="btn btn" style="background-color:	#FFA07A;">{{ " %02d"|format( prospects|filter(p => p.source == 2 and p.team is not null )|length ) }}</span>
 				</td>
 				<td>
-					<span class="btn btn-success day">{{ " %02d"|format( prospects|filter(p => p.typeProspect == 2 and p.team is not null )|length ) }}</span>
+					<span class="btn btn" style="background-color:	#98FB98;">{{ " %02d"|format(prospects|filter(p => p.typeProspect == 1 and p.team is not null )|length ) }}</span>
+				</td>
+				<td style="background-color:violet;">
+					<span class="btn btn" style="background-color:	#98FB98;">{{ " %02d"|format( prospects|filter(p => p.typeProspect == 2 and p.team is not null )|length ) }}</span>
 				</td>
 				<td>
-					<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 1 and p.team is not null )|length ) }}</span>
+					<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 1 and p.team is not null )|length ) }}</span>
 				</td>
 				<td>
-					<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 2 and p.team is not null )|length ) }}</span>
+					<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 2 and p.team is not null )|length ) }}</span>
 				</td>
 				<td>
-					<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 3 and p.team is not null )|length ) }}</span>
+					<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 3 and p.team is not null )|length ) }}</span>
 				</td>
 				<td>
-					<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 4 and p.team is not null )|length ) }}</span>
+					<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 4 and p.team is not null )|length ) }}</span>
 				</td>
 				<td>
-					<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 5 and p.team is not null )|length ) }}</span>
+					<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 5 and p.team is not null )|length ) }}</span>
 				</td>
 				<td>
-					<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 6 and p.team is not null )|length ) }}</span>
+					<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 6 and p.team is not null )|length ) }}</span>
 				</td>
 				<td>
 					<span class='btn btn' style="background-color:Violet;">{{ " %02d"|format( prospects|filter(p => p.activites == 1 and p.team is not null )|length ) }}</span>
@@ -158,49 +163,54 @@
 			{% for team in teams %}
 				<tr class="expandable-row">
 					<td>
-						<button class="btn btn" style="background-color:#18B7BE;">{{ team.name }}</button>
+						<button class="btn btn" style="background-color:#B0E0E6;">{{ team.name }}</button>
 					</td>
 					<td>
-						<span class="btn btn-primary">
+						<span class="btn btn" style="background-color:	#00BFFF;">
 							{{ " %02d"|format(prospects|filter(p => p.team is not null and p.team == team  )|length )}}</span>
 					</td>
-					<td>
-						<span class="btn btn-danger">
+					<td style="background-color:#cde4e2;">
+						<span class="btn btn" style="background-color:	#FFA07A;">
 							{{ " %02d"|format(prospects|filter(p => p.source == 1 and p.team == team)|length) }}
 						</span>
 					</td>
 					<td>
-						<span class="btn btn-danger">
+						<span class="btn btn" style="background-color:	#FFA07A;">
 							{{ " %02d"|format(prospects|filter(p => p.source is null and p.team == team)|length) }}
 						</span>
 					</td>
 					<td>
-						<span class="btn btn-success day">
-							{{ " %02d"|format(prospects|filter(p => p.typeProspect == 1 and p.team == team)|length) }}
+						<span class="btn btn" style="background-color:	#FFA07A;">
+							{{ " %02d"|format(prospects|filter(p => p.source == 2 and p.team == team)|length) }}
 						</span>
 					</td>
 					<td>
-						<span class="btn btn-success day">
+						<span class="btn btn" style="background-color:	#98FB98;">
+							{{ " %02d"|format(prospects|filter(p => p.typeProspect == 1 and p.team == team)|length) }}
+						</span>
+					</td>
+					<td style="background-color:violet;">
+						<span class="btn btn" style="background-color:	#98FB98;">
 							{{ " %02d"|format(prospects|filter(p => p.typeProspect == 2 and p.team == team)|length) }}
 						</span>
 					</td>
 					<td>
-						<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 1 and p.team == team )|length ) }}</span>
+						<span class="btn btn" style="background-color: #cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 1 and p.team == team )|length ) }}</span>
 					</td>
 					<td>
-						<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 2 and p.team == team )|length ) }}</span>
+						<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 2 and p.team == team )|length ) }}</span>
 					</td>
 					<td>
-						<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 3 and p.team == team )|length ) }}</span>
+						<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 3 and p.team == team )|length ) }}</span>
 					</td>
 					<td>
-						<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 4 and p.team == team )|length ) }}</span>
+						<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 4 and p.team == team )|length ) }}</span>
 					</td>
 					<td>
-						<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 5 and p.team == team )|length ) }}</span>
+						<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 5 and p.team == team )|length ) }}</span>
 					</td>
 					<td>
-						<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 6 and p.team == team )|length ) }}</span>
+						<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 6 and p.team == team )|length ) }}</span>
 					</td>
 					<td>
 						<span class='btn btn' style="background-color:Violet;">{{ " %02d"|format( prospects|filter(p => p.activites == 1 and p.team == team )|length ) }}</span>
@@ -236,47 +246,52 @@
 							</span>
 						</td>
 						<td>
-							<span class="btn btn-primary">
+							<span class="btn btn" style="background-color:	#00BFFF;">
 								{{ " %02d"|format(prospects|filter(p => p.comrcl is not null and p.comrcl == user)|length) }}
 							</span>
 						</td>
-						<td>
-							<span class="btn btn-danger">
+						<td style="background-color:#cde4e2;">
+							<span class="btn btn" style="background-color:	#FFA07A;">
 								{{ " %02d"|format(prospects|filter(p => p.source == 1 and p.comrcl == user)|length) }}
 							</span>
 						</td>
 						<td>
-							<span class="btn btn-danger">
+							<span class="btn btn" style="background-color:	#FFA07A;">
 								{{ " %02d"|format(prospects|filter(p => p.source is null and p.comrcl == user)|length) }}
 							</span>
 						</td>
 						<td>
-							<span class="btn btn-success day">
-								{{ " %02d"|format(prospects|filter(p => p.typeProspect == 1 and p.comrcl == user)|length) }}
+							<span class="btn btn" style="background-color:	#FFA07A;">
+								{{ " %02d"|format(prospects|filter(p => p.source == 2  and p.comrcl == user)|length) }}
 							</span>
 						</td>
 						<td>
-							<span class="btn btn-success day">
+							<span class="btn btn" style="background-color:	#98FB98;">
+								{{ " %02d"|format(prospects|filter(p => p.typeProspect == 1 and p.comrcl == user)|length) }}
+							</span>
+						</td>
+						<td style="background-color:violet;">
+							<span class="btn btn" style="background-color:	#98FB98;">
 								{{ " %02d"|format(prospects|filter(p => p.typeProspect == 2 and p.comrcl == user)|length) }}
 							</span>
 						</td>
 						<td>
-							<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 1 and p.comrcl == user )|length ) }}</span>
+							<span class="btn btn" style="background-color: #cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 1 and p.comrcl == user )|length ) }}</span>
 						</td>
 						<td>
-							<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 2 and p.comrcl == user )|length ) }}</span>
+							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 2 and p.comrcl == user )|length ) }}</span>
 						</td>
 						<td>
-							<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 3 and p.comrcl == user )|length ) }}</span>
+							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 3 and p.comrcl == user )|length ) }}</span>
 						</td>
 						<td>
-							<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 4 and p.comrcl == user )|length ) }}</span>
+							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 4 and p.comrcl == user )|length ) }}</span>
 						</td>
 						<td>
-							<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 5 and p.comrcl == user )|length ) }}</span>
+							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 5 and p.comrcl == user )|length ) }}</span>
 						</td>
 						<td>
-							<span class="btn btn" style="background-color:#41B9E1;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 6 and p.comrcl == user )|length ) }}</span>
+							<span class="btn btn" style="background-color:#cde4e2;">{{ " %02d"|format( prospects|filter(p => p.motifSaise == 6 and p.comrcl == user )|length ) }}</span>
 						</td>
 						<td>
 							<span class='btn btn' style="background-color:Violet;">{{ " %02d"|format( prospects|filter(p => p.activites == 1 and p.comrcl == user )|length ) }}</span>

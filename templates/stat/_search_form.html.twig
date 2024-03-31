@@ -1,15 +1,15 @@
 {{ form_start(search_form) }}
 
-<div class="col-xs-12" style="float: right !important;">
+<div class="col-xs-12" style="float: left !important;">
 
-	<div class="col-xs-1" style="padding-right: 1px;padding-left: 4px;">
+	<div class="col-xs-1" style="padding-left: 1px;padding-left: 4px;">
 		{{ form_row(search_form.d) }}
 	</div>
 
-	<div class="col-xs-1" style="padding-right: 1px;padding-left: 4px;">
+	<div class="col-xs-1" style="padding-left: 1px;padding-left: 4px;">
 		{{ form_row(search_form.dd) }}
 	</div>
-	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+	<div class="col-xs-1" style="padding-left: 2px;padding-left: 2px;">
 		<h1>
 			<button class="btn btn-primary btn search-btn" type="submit">
 				<i class="fa fa-search" aria-hidden="true"></i>
@@ -20,9 +20,6 @@
 			</button>
 		</h1>
 	</div>
-
-	{# {{ form_widget(search_form.d, { 'attr': { 'style': 'display:none' } }) }}
-							{{ form_widget(search_form.dd, { 'attr': { 'style': 'display:none' } }) }} #}
 
 
 </div>

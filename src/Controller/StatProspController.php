@@ -60,18 +60,15 @@ class StatProspController extends AbstractController
         $teams = $teamRepository->findAll();
         $prospects = [];
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
             $startDate = $data->getStartDate();
             $endDate = $data->getEndDate();
             $prospects = $prospectRepository->findByDateInterval($startDate, $endDate);
         } else {
             // Sinon, affichez tous les prospects
-            $prospects = $prospectRepository->findAll();
+            $prospects = [];
         }
 
-        // $calendrie = $prospectRepository->findByCalendrie($data);
-        // // Optionnel : obtenir le nombre total de prospects pour affichage
-        // $totalProspectsCount = $prospectRepository->findAll();
 
 
         return $this->render('stat/calendrie.html.twig', [

@@ -82,42 +82,42 @@ class TeamRepository extends ServiceEntityRepository
         );
     }
 
-    public function findByMonth(int $year, int $month): array
-    {
-        $startDate = new \DateTime("$year-$month-01");
-        $endDate = (clone $startDate)->add(new \DateInterval('P1M'));
+    // public function findByMonth(int $year, int $month): array
+    // {
+    //     $startDate = new \DateTime("$year-$month-01");
+    //     $endDate = (clone $startDate)->add(new \DateInterval('P1M'));
 
-        $qb = $this->createQueryBuilder('t')
-            ->leftJoin('t.prospects', 'p')
-            ->andWhere('p.creatAt >= :start_date')
-            ->andWhere('p.creatAt < :end_date')
-            ->setParameter('start_date', $startDate)
-            ->setParameter('end_date', $endDate)
-            ->getQuery();
+    //     $qb = $this->createQueryBuilder('t')
+    //         ->leftJoin('t.prospects', 'p')
+    //         ->andWhere('p.creatAt >= :start_date')
+    //         ->andWhere('p.creatAt < :end_date')
+    //         ->setParameter('start_date', $startDate)
+    //         ->setParameter('end_date', $endDate)
+    //         ->getQuery();
 
-        return $qb->getResult();
-    }
-
-
-
-    public function findByMonthAndComrcl(int $year, int $month, int $cmrlId): array
-    {
-        $startDate = new \DateTime("$year-$month-01");
-        $endDate = (clone $startDate)->add(new \DateInterval('P1M'));
-
-        $qb = $this->createQueryBuilder('t')
-            ->join('t.prospects', 'p')
-            ->andWhere('p.creatAt >= :start_date')
-            ->andWhere('p.creatAt < :end_date')
-            ->andWhere('t.id = :comrcl_id') // Assurez-vous que le nom du paramètre correspond à celui de la méthode
-            ->setParameter('start_date', $startDate)
-            ->setParameter('end_date', $endDate)
-            ->setParameter('comrcl_id', $cmrlId) // Assurez-vous que le nom du paramètre correspond à celui de la méthode
-            ->getQuery();
+    //     return $qb->getResult();
+    // }
 
 
-        return $qb->getResult();
-    }
+
+    // public function findByMonthAndComrcl(int $year, int $month, int $cmrlId): array
+    // {
+    //     $startDate = new \DateTime("$year-$month-01");
+    //     $endDate = (clone $startDate)->add(new \DateInterval('P1M'));
+
+    //     $qb = $this->createQueryBuilder('t')
+    //         ->join('t.prospects', 'p')
+    //         ->andWhere('p.creatAt >= :start_date')
+    //         ->andWhere('p.creatAt < :end_date')
+    //         ->andWhere('t.id = :comrcl_id') // Assurez-vous que le nom du paramètre correspond à celui de la méthode
+    //         ->setParameter('start_date', $startDate)
+    //         ->setParameter('end_date', $endDate)
+    //         ->setParameter('comrcl_id', $cmrlId) // Assurez-vous que le nom du paramètre correspond à celui de la méthode
+    //         ->getQuery();
+
+
+    //     return $qb->getResult();
+    // }
 
 
 
@@ -147,6 +147,7 @@ class TeamRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('c')->orderBy('c.name', 'ASC');
     }
+
     //    /**
     //     * @return Team[] Returns an array of Team objects
     //     */ 

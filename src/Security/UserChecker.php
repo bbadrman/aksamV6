@@ -19,17 +19,20 @@ class UserChecker implements UserCheckerInterface
 
     public function checkPreAuth(UserInterface $user)
     {
+
         if (!$user instanceof AppUser) {
             return;
         }
 
         if (!$user->getStatus()) {
+
             throw new CustomUserMessageAccountStatusException('Votre compte n\'est pas actif, voir avec l\'administrateur');
         }
     }
 
     public function checkPostAuth(UserInterface $user)
     {
+
         if (!$user instanceof AppUser) {
             return;
         }

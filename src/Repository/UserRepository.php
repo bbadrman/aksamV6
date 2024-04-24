@@ -66,6 +66,20 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->add($user, true);
     }
 
+
+    public function findOnlineUsers()
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT u
+            FROM App\Entity\User u
+            WHERE u.lastLogin >= :cutoffTime'
+        )->setParameter('cutoffTime', new \DateTime('-3500 minutes'));
+
+        return $query->getResult();
+    }
+
     /**
      * Find list a user by a search form
      * @param SearchUser $search

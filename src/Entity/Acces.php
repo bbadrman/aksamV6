@@ -23,6 +23,11 @@ class Acces
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $accessDate = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $logoutDate = null;
+
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -48,6 +53,17 @@ class Acces
     public function setAccessDate(?\DateTimeInterface $accessDate): static
     {
         $this->accessDate = $accessDate;
+
+        return $this;
+    }
+    public function getLogoutDate(): ?\DateTimeInterface
+    {
+        return $this->logoutDate;
+    }
+
+    public function setLogoutDate(?\DateTimeInterface $logoutDate): self
+    {
+        $this->logoutDate = $logoutDate;
 
         return $this;
     }

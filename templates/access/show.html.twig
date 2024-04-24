@@ -82,15 +82,40 @@
 					<td>Utilisateur</td>
 
 					<td>Date d'accès</td>
+					<td>Date de sortie</td>
 				</tr>
 				<tr>
 					<td>{{ user.username }}</td>
+					{# <td>
+																										{% for acces in user.acces|reverse %}
+																											{{ acces.accessDate|date('d/m/Y H:i:s') }}
+																											{% if acces.logoutDate is not empty %}
+																												-
+																												{{ acces.logoutDate|date('d/m/Y H:i:s') }}
+																											{% endif %}
+																											<br>
+																										{% endfor %}
+																									</td> #}
+
+
 					<td>
 						{% for acces in user.acces|reverse %}
-							{{acces.accessDate ? acces.accessDate|date('d/m/Y H:i:s') : 'pas acces' }}
+							{% if acces.accessDate is not empty %}
+								{{ acces.accessDate|date('d/m/Y H:i:s') }}
+							{% endif %}
 							<br>
 						{% endfor %}
 					</td>
+					<td>
+						{% for acces in user.acces|reverse %}
+							{% if acces.logoutDate is not empty %}
+								{{ acces.logoutDate|date('d/m/Y H:i:s') }}
+							{% endif %}
+							<br>
+						{% endfor %}
+					</td>
+
+
 				</tr>
 			</tbody>
 		</table>

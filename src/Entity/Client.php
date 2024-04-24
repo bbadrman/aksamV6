@@ -66,8 +66,13 @@ class Client
     public function prePersist(): void
     {
         if (empty($this->creatAt)) {
-            $this->creatAt = new \DateTime();
+            $timezone = new \DateTimeZone('Europe/Paris'); // Remplacez par le fuseau horaire approprié pour +1 heur
+            $this->creatAt = new \Datetime('now', $timezone);
         }
+
+        // if (empty($this->creatAt)) {
+        //     $this->creatAt = new \DateTime();
+        // }
     }
 
     public function getId(): ?int

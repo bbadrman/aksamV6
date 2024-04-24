@@ -514,6 +514,7 @@ voila l'error qui j'ai:
             "@auto-scripts"
         ]
     },
+
   ## Error en prod :
       -First Error: A 500 Internal Server Error is a generic error message that indicates something went wrong on the server. It doesn't provide much information about the specific problem, but there are a few things you can do to try to fix it.
       - Fix : i fixet the error message par migration instante ete modifi en entitie (champ null)
@@ -656,3 +657,30 @@ https://symfony.com/doc/current/reference/twig_reference.html
       {
          return '';
       }
+## gerer la session  :
+j ai crer une event  qui ecoute a chaque entrer au session 
+
+AuthenticationSeccessSubscriber.php
+
+et en service.yaml:
+App\EventSubscriber\AuthenticationSuccessSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
+## bug en cas de supprimer un fichier et rest au mémoire de la application  cash  il mettre a jour autoload a l aide du cdm 👍
+composer dump-autoload
+
+## show online and offline user and force logout by Admin
+1-create  UserDisconnecter.php script  to push  $user->setIsConnect(false); on logout
+2-create  UserLogoutSubscriber.php  for Déconnectez l'utilisateur si son statut n'est pas enligne  
+   if (!$user->isIsConnect()) {
+             
+
+            // Rediriger l'utilisateur vers la page de connexion
+            $response = new RedirectResponse('/deconnexion');
+            $event->setResponse($response);
+        }
+3- in service.yaml :
+           - { name: 'kernel.event_subscriber' }
+    App\Security\UserDisconnecter:
+        arguments: ['@doctrine.orm.entity_manager', '@security.helper']
+4- view show page on controller   public function userList name="user_acces"  

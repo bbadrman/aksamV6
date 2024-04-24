@@ -10,7 +10,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-
 /**
  * @Route("/access")
  * 
@@ -25,16 +24,39 @@ class AccessController extends AbstractController
     public function userList(AccesRepository $userAccessLogRepository, UserRepository $userRepository): Response
     {
         $users = $userRepository->findAll();
-        $userAccessLogs = [];
+
+        // Heure actuelle
+        $currentTime = new \DateTime();
+
+        // Déterminer les utilisateurs en ligne et hors ligne
+        $onlineUsers = [];
+        $offlineUsers = [];
+
+
         foreach ($users as $user) {
-            $userAccessLogs[$user->getId()] = $userAccessLogRepository->findBy(['user' => $user]);
+            // Check if the user has logged out within the last 15 minutes
+            $lastLogout = $user->isIsConnect(true) && $user->getStatus(true);
+
+            if ($lastLogout) {
+                // User has logged out within the last 15 minutes, considered online
+                $onlineUsers[] = $user;
+            } else {
+                // Otherwise, the user is considered offline
+                $offlineUsers[] = $user;
+            }
         }
 
+
+
         return $this->render('access/index.html.twig', [
-            'users' => $users,
-            'userAccessLogs' => $userAccessLogs,
+            'onlineUsers' => $onlineUsers,
+            'offlineUsers' => $offlineUsers,
         ]);
     }
+
+
+
+
 
     /**
      * @Route("/afficher/{id}", name="user_acces_show", methods={"GET"})

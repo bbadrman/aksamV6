@@ -34,7 +34,7 @@ class RelancedType extends AbstractType
                 'choices' => [
                     'Prise de Contact' => [
                         'Rendez-vous' => '1',
-                        'Unjoing' => '2',
+                        'Injoignable' => '2',
 
                     ],
                     'Attente Close' => '4',

@@ -232,7 +232,8 @@ class ProspectType extends AbstractType
                         'Dommage' =>  5,
                         'Marchandise' =>  6,
                         'Négociant' =>  7,
-                        'Prof auto' =>  8
+                        'Prof auto' =>  8,
+                        'Garage' => 9
                     ],
                     'expanded' => false,
                     'multiple' => false,

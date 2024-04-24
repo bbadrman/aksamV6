@@ -126,6 +126,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $acces;
 
 
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $lastLogin = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $logoutDate  = null;
+
+    #[ORM\Column]
+    private ?bool $IsConnect = false;
+
 
 
     public function __construct()
@@ -534,6 +543,41 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $acce->setUser(null);
             }
         }
+
+        return $this;
+    }
+    public function getLastLogin(): ?\DateTimeInterface
+    {
+        return $this->lastLogin;
+    }
+
+    public function setLastLogin(?\DateTimeInterface $lastLogin): self
+    {
+        $this->lastLogin = $lastLogin;
+
+        return $this;
+    }
+
+    public function getLogoutDate(): ?\DateTimeInterface
+    {
+        return $this->logoutDate;
+    }
+
+    public function setLogoutDate(\DateTimeInterface $logoutDate): self
+    {
+        $this->logoutDate = $logoutDate;
+
+        return $this;
+    }
+
+    public function isIsConnect(): ?bool
+    {
+        return $this->IsConnect;
+    }
+
+    public function setIsConnect(bool $IsConnect): self
+    {
+        $this->IsConnect = $IsConnect;
 
         return $this;
     }

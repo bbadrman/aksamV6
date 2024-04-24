@@ -2,12 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Acces;
 use App\Entity\User;
+use App\Entity\Acces;
 use App\Form\UserType;
 use App\Search\SearchUser;
 use App\Form\SearchUserType;
 use App\Repository\UserRepository;
+use App\Security\UserDisconnecter;
 use App\Repository\AccesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 
 
@@ -170,5 +172,47 @@ class UserController extends AbstractController
         $this->entityManager->flush();
 
         return new Response("true");
+    }
+
+
+
+    /**
+     * @Route("/decont/{id}", name="deconect")
+     */
+
+    public function deconect(User $user)
+    {
+
+        $user->setStatus(($user->isIsConnect()) ? false : true);
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+
+        return new Response("true");
+    }
+
+    /**
+     * @Route("/user/{id}/disconnect", name="user_disconnect")
+     */
+    public function disconnect(User $user, UserDisconnecter $userDisconnecter, Request $request): Response
+    {
+        // Votre logique de contrôle d'accès
+
+        // Déconnecter l'utilisateur
+        $userDisconnecter->disconnectUser($user, $request);
+
+        return $this->redirectToRoute('user_acces');
+    }
+
+
+    /**
+     * @Route("/user/{id}/logout", name="user_logout")
+     */
+    public function logoutUser(User $user): Response
+    {
+        // Déconnecter l'utilisateur spécifié
+        // Vous pouvez utiliser le service de déconnexion personnalisé que nous avons créé précédemment
+        // ou toute autre logique de déconnexion nécessaire
+
+        return $this->redirectToRoute('user_acces');
     }
 }

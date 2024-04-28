@@ -31,8 +31,7 @@
 		<thead>
 			<tr>
 				<th>Utilisateur</th>
-				<th>Dernière Connexion</th>
-				<th>Dernière Déconnexion</th>
+				<th>Dernière Accès</th>
 
 
 			</tr>
@@ -43,20 +42,29 @@
 			<tbody>
 				<tr>
 					<td>{{ user.username }}</td>
-					<td>{{ user.lastlogin|date('d/m/Y H:i:s') }}</td>
-					<td>{{ user.logoutdate|date('d/m/Y H:i:s') }}</td>
+					{% set lastAccess = user.acces|last %}
+					{% if lastAccess is not null %}
+						<td>{{ lastAccess.accessDate|date('d/m/Y H:i:s') }}</td>
+
+					{% else %}
+						<td>Aucun accès récent</td>
+
+					{% endif %}
+
+
+					{# <td>{{ user.logoutdate|date('d/m/Y H:i:s') }}</td> #}
 
 
 					{# <td>
-																																																																							<label class="form-switch mt-2">
-																																																																	
-																																																																								<input type="checkbox" {{(user.IsConnect) ? 'checked' : ''}} data-id="{{user.id}}" id="dynamic-button">
-																																																																	
-																																																																								<span class="slider"></span>
-																																																																	
-																																																																							</label>
-																																																																	
-																																																																						</td> #}
+																																																																																																																																																																																																									<label class="form-switch mt-2">
+																																																																																																																																																																																																			
+																																																																																																																																																																																																										<input type="checkbox" {{(user.IsConnect) ? 'checked' : ''}} data-id="{{user.id}}" id="dynamic-button">
+																																																																																																																																																																																																			
+																																																																																																																																																																																																										<span class="slider"></span>
+																																																																																																																																																																																																			
+																																																																																																																																																																																																									</label>
+																																																																																																																																																																																																			
+																																																																																																																																																																																																								</td> #}
 
 					<td>
 						{% if user.isConnect %}
@@ -82,8 +90,7 @@
 		<thead>
 			<tr>
 				<th>User</th>
-				<th>Dernière Connexion</th>
-				<th>Dernière Déconnexion</th>
+				<th>Dernière Sortie</th>
 
 
 			</tr>
@@ -93,8 +100,17 @@
 			<tbody>
 				<tr>
 					<td>{{ user.username }}</td>
-					<td>{{ user.lastlogin|date('d/m/Y H:i:s') }}</td>
-					<td>{{ user.logoutdate|date('d/m/Y H:i:s') }}</td>
+
+					{% if user.acces is not empty %}
+						{% set lastAccess = user.acces|last %}
+						<td>{{ lastAccess.logoutDate|date('d/m/Y H:i:s') }}</td>
+					{% else %}
+						<td>Aucun sortie récent</td>
+					{% endif %}
+
+					{# <td>
+																																																																																																															{{ acces.accessDate|date('d/m/Y H:i:s') }}</td>
+																																																																																																														<td>{{ acces.logoutDate|date('d/m/Y H:i:s') }}</td> #}
 
 
 					<td>
@@ -118,30 +134,30 @@
 	</table>
 
 	{# {% for user in users %}
-																																																																																																																																																	<tr>
-																																																																																																																																																		<td>{{ user.username }}</td>
-																																																																																																																																																		{% set lastAccessDate = null %}
-																																																																																																																																																		{% for access in user.acces %}
-																																																																																																																																																			{% if access.accessDate %}
-																																																																																																																																																				{% if not lastAccessDate or access.accessDate > lastAccessDate %}
-																																																																																																																																																					{% set lastAccessDate = access.accessDate %}
-																																																																																																																																																				{% endif %}
-																																																																																																																																																			{% endif %}
-																																																																																																																																																		{% endfor %}
-																																																																																																																																																		{% if lastAccessDate is not null %}
-																																																																																																																																																			<td>{{  lastAccessDate|date('d/m/Y H:i:s')   }}</td>
-																																																																																																																																																		{% else %}	
-																																																																																																																																																			<td>Pas d'acces</td>
-																																																																																																																																																		{% endif %}
-																																																																																																																																													
-																																																																																																																																													
-																																																																																																																																																		<td class="btn-toolbar">
-																																																																																																																																																			<a href="{{ path('user_acces_show', {'id': user.id}) }}" class="btn btn-success btn-xs">
-																																																																																																																																																				<i class="fa fa-eye"></i>
-																																																																																																																																																			</a>
-																																																																																																																																																		</td>
-																																																																																																																																																	</tr>
-																																																																																																																																																{% endfor %} #}
+																																																																																																																																																																											<tr>
+																																																																																																																																																																												<td>{{ user.username }}</td>
+																																																																																																																																																																												{% set lastAccessDate = null %}
+																																																																																																																																																																												{% for access in user.acces %}
+																																																																																																																																																																													{% if access.accessDate %}
+																																																																																																																																																																														{% if not lastAccessDate or access.accessDate > lastAccessDate %}
+																																																																																																																																																																															{% set lastAccessDate = access.accessDate %}
+																																																																																																																																																																														{% endif %}
+																																																																																																																																																																													{% endif %}
+																																																																																																																																																																												{% endfor %}
+																																																																																																																																																																												{% if lastAccessDate is not null %}
+																																																																																																																																																																													<td>{{  lastAccessDate|date('d/m/Y H:i:s')   }}</td>
+																																																																																																																																																																												{% else %}	
+																																																																																																																																																																													<td>Pas d'acces</td>
+																																																																																																																																																																												{% endif %}
+																																																																																																																																																																							
+																																																																																																																																																																							
+																																																																																																																																																																												<td class="btn-toolbar">
+																																																																																																																																																																													<a href="{{ path('user_acces_show', {'id': user.id}) }}" class="btn btn-success btn-xs">
+																																																																																																																																																																														<i class="fa fa-eye"></i>
+																																																																																																																																																																													</a>
+																																																																																																																																																																												</td>
+																																																																																																																																																																											</tr>
+																																																																																																																																																																										{% endfor %} #}
 
 </table>{% endblock %}{% block javascripts %}
 {{ parent() }}

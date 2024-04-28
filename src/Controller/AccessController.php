@@ -21,9 +21,10 @@ class AccessController extends AbstractController
     /**
      * @Route("/users", name="user_acces")
      */
-    public function userList(AccesRepository $userAccessLogRepository, UserRepository $userRepository): Response
+    public function userList(AccesRepository $userAccessLogRepository, UserRepository $userRepository, AccesRepository $acessRepository): Response
     {
         $users = $userRepository->findAll();
+        $acces = $acessRepository->findAll();
 
         // Heure actuelle
         $currentTime = new \DateTime();
@@ -51,6 +52,7 @@ class AccessController extends AbstractController
         return $this->render('access/index.html.twig', [
             'onlineUsers' => $onlineUsers,
             'offlineUsers' => $offlineUsers,
+            'acces' => $acces
         ]);
     }
 

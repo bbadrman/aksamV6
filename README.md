@@ -670,7 +670,10 @@ App\EventSubscriber\AuthenticationSuccessSubscriber:
 composer dump-autoload
 
 ## show online and offline user and force logout by Admin
-1-create  UserDisconnecter.php script  to push  $user->setIsConnect(false); on logout
+1-create service  UserDisconnecter.php script  to push    function disconnectUser
+ pour que soit quand click sur button deconnecte en temps real 
+2- create eventSubscriber  LogoutSubscriber.php $user->setIsConnect(false)   function onLogout
+pour envoye isconnect = 0 u base donnee afin de savoire status du user onligne or offligne
 2-create  UserLogoutSubscriber.php  for Déconnectez l'utilisateur si son statut n'est pas enligne  
    if (!$user->isIsConnect()) {
              
@@ -684,3 +687,70 @@ composer dump-autoload
     App\Security\UserDisconnecter:
         arguments: ['@doctrine.orm.entity_manager', '@security.helper']
 4- view show page on controller   public function userList name="user_acces"  
+
+## Branchement site laravel avec l'application
+il suffit de met cet script sur le controller qui gere la form dans notre cas:
+public function store(Request $request)
+    {
+        // Enregistrer les données localement
+        $fiche = new Fiche;
+        $fiche->nom = $request->input('nom');
+        $fiche->prenom = $request->input('prenom');
+        $fiche->activite1 = $request->input('demarrage');
+        $fiche->raison_sociale = $request->input('raison_sociale');
+        $fiche->assure = $request->input('assure');
+        $fiche->ancienne = $request->input('ancienne');
+        $fiche->motif = $request->input('motif');
+        $fiche->telephone = $request->input('tele');
+        $fiche->email = $request->input('email');
+        $fiche->date_fiche = now();
+        $fiche->id_produit = 10;
+        $fiche->id_traitement = 1;
+        $fiche->dublique = 0;
+        $fiche->id_source = 1;
+        $fiche->id_motifcloture = 1;
+        $fiche->save();
+        $request->session()->flash('status', 'formulaire');
+
+        // Envoyer les données à l'API
+        $data = [
+            'name' => $request->input('nom'),
+            'lastname' => $request->input('prenom'),
+            'phone' => $request->input('tele'),
+            'email' => $request->input('email'),
+            'raisonSociale' => $request->input('raison_sociale'),
+            'assure' => $request->input('assure'),
+            'lastAssure' => $request->input('ancienne'),
+            'typeProspect' => "2",
+            'activites' => "4",
+            'url' => "6",
+            'product_id' => 5
+        ];
+
+        // Convertir les données en JSON
+        $jsonData = json_encode($data);
+
+        // Initialisation de cURL
+        $curl = curl_init();
+
+        // Options de cURL
+        curl_setopt_array($curl, [
+            CURLOPT_URL => 'http://aksama-assurance.azurewebsites.net/api/prospects',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => $jsonData,
+            CURLOPT_HTTPHEADER => [
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($jsonData)
+            ],
+        ]);
+
+        // Exécution de la requête cURL
+        $response = curl_exec($curl);
+
+        // Fermer la session cURL
+        curl_close($curl);
+
+        // Redirection après traitement
+        return redirect('/assurance/professionel');
+    }

@@ -33,19 +33,19 @@ class StatProspController extends AbstractController
     }
 
 
-    #[Route('/{year}/{month}', name: 'prospects_stats', requirements: ['year' => '\d{4}', 'month' => '\d{1,2}'])]
-    public function prospectsStats(int $year, int $month, ProspectRepository $prospectRepository): Response
-    {
-        $prospects = $prospectRepository->findProspectsByMonth($year, $month);
-        $currentYear = (int) date('Y');
+    // #[Route('/{year}/{month}', name: 'prospects_stats', requirements: ['year' => '\d{4}', 'month' => '\d{1,2}'])]
+    // public function prospectsStats(int $year, int $month, ProspectRepository $prospectRepository): Response
+    // {
+    //     $prospects = $prospectRepository->findProspectsByMonth($year, $month);
+    //     $currentYear = (int) date('Y');
 
-        return $this->render('stat/stats.html.twig', [
-            'prospects' => $prospects,
-            'year' => $year,
-            'month' => $month,
-            'currentYear' => $currentYear,
-        ]);
-    }
+    //     return $this->render('stat/stats.html.twig', [
+    //         'prospects' => $prospects,
+    //         'year' => $year,
+    //         'month' => $month,
+    //         'currentYear' => $currentYear,
+    //     ]);
+    // }
 
 
 
@@ -81,65 +81,8 @@ class StatProspController extends AbstractController
     }
 
 
-    // afficher par button mois
-    #[Route('/team/{year}/{month}', name: 'prospects_stats_team', requirements: ['year' => '\d{4}', 'month' => '\d{1,2}'])]
-    public function prospectsStatsTeamt(int $year, int $month, TeamRepository $teamRepository, ProductRepository $productRepository, ProspectRepository $prospectRepository, int $comrclId = null): Response
-    {
-
-        $teams = $teamRepository->findAll();
-        $prospectsByTeam = [];
-        $prospectsByCmrcl = [];
-
-        // Statistiques par équipe
-        foreach ($teams as $team) {
-            $prospectsByTeam[$team->getName()] = $prospectRepository->findByMonthAndTeam($year, $month, $team->getId(), $comrclId);
-        }
-
-        // Statistiques par commercial pour chaque équipe
-        foreach ($teams as $team) {
-            $users = $team->getUsers();
-            foreach ($users as $user) {
-                $prospectsByCmrcl[$team->getName()][$user->getUserIdentifier()] = $prospectRepository->findByMonthTeamAndComrcl($year, $month, $team->getId(), $user->getId());
-            }
-        }
-        $product = $productRepository->findProductByMonth($year, $month);
-        $prospects = $prospectRepository->findProspectsByMonth($year, $month);
-        $currentYear = (int) date('Y');
-
-        return $this->render('stat/tableteam.html.twig', [
-            'prospectsByTeam' => $prospectsByTeam,
-            'prospects' => $prospects,
-            'team' =>  $teams,
-            'year' => $year,
-            'month' => $month,
-            'currentYear' => $currentYear,
-            'prospectsByCmrcl' => $prospectsByCmrcl,
-            'products' => $product,
 
 
-        ]);
-    }
-
-    #[Route('/statstype/{year}/{month}', name: 'prospects_statype', requirements: ['year' => '\d{4}', 'month' => '\d{1,2}'])]
-    public function prospectsStatsType(int $year, int $month, ProspectRepository $prospectRepository, ProductRepository $productRepository): Response
-    {
-        $product = $productRepository->findProductByMonth($year, $month);
-        $products = $productRepository->findAll();
-
-        $prospects = $prospectRepository->findProspectsByMonth($year, $month);
-        $currentYear = (int) date('Y');
-
-        return $this->render('stat/statype.html.twig', [
-            'products' => $product,
-            'product' => $products,
-            // dd($product),
-            'prospects' => $prospects,
-
-            'year' => $year,
-            'month' => $month,
-            'currentYear' => $currentYear,
-        ]);
-    }
 
 
     #[Route('/product/{year}/{month}', name: 'prospects_product', requirements: ['year' => '\d{4}', 'month' => '\d{1,2}'])]

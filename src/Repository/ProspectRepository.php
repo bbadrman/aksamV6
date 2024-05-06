@@ -1466,6 +1466,12 @@ class ProspectRepository extends ServiceEntityRepository
             ->andWhere('r.prospect IS NULL')
             ->andWhere('p.creatAt <= :yesterday')
             ->setParameter('yesterday', $yesterday)
+            // pas encour passe un jeur de la date de history actionDate
+            ->leftJoin('p.histories', 'h') // Jointure avec l'entité History
+            ->andWhere('h.actionDate <= :endOfYesterday') // Filtre par date d'action de l'historique
+            ->setParameter('endOfYesterday', $yesterday)
+
+
             // Aucune relation avec relanced
 
             ->orderBy('p.id', 'DESC');
@@ -2111,14 +2117,19 @@ class ProspectRepository extends ServiceEntityRepository
         // $today->setTime(0, 0, 0);
 
         $yesterday = new \DateTime('yesterday');
-        $yesterday->setTime(23, 59, 59); // La fin de la journée d'hier
-        // get selement les prospects qui n'as pas encors affectter a un user
+        $yesterday->setTime(23, 59, 59); // La fin de la journée d'hier 
         $query = $this->createQueryBuilder('p')
             ->select('p')
             ->andWhere('p.comrcl = :val')
             ->setParameter('val', $id)
             // ->leftJoin('p.relanceds', 'r')
-            // ->andWhere('(r.motifRelanced IS NULL)')
+            // ->andWhere('(r.motifRelanced IS NULL)')£$*
+            //doit etre relanceds null 
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.prospect IS NULL')
+            ->leftJoin('p.histories', 'h') // Jointure avec l'entité History
+            ->andWhere('h.actionDate >= :endOfYesterday') // Filtre par date d'action de l'historique
+            ->setParameter('endOfYesterday', $yesterday)
 
             // ->andWhere('p.creatAt >= :startOfDay')
             // ->setParameter('startOfDay', $today)

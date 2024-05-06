@@ -63,10 +63,11 @@
 					</section>
 				</section>
 				<!-- END body -->
-
-				<footer class="fd-flex fx-col">
-					{% include "footer.html.twig" %}
-				</footer>
+				{% block footer %}
+					<footer>
+						{% include "footer.html.twig" %}
+					</footer>
+				{% endblock %}
 			</section>
 
 

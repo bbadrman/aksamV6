@@ -73,7 +73,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-
+    // utilise pas  
     public function findProspectsByMonth(int $year, int $month): array
     {
         $startDate = new \DateTime("$year-$month-01");
@@ -108,7 +108,7 @@ class ProspectRepository extends ServiceEntityRepository
     }
 
 
-
+    // utilise pas 
 
     public function findByMonthAndTeam(int $year, int $month, int $teamId): array
     {
@@ -132,7 +132,7 @@ class ProspectRepository extends ServiceEntityRepository
 
 
 
-
+    // il faut verifie cet function n'utilse pas 
     public function findByMonthTeamAndComrcl(int $year, int $month, int $teamId, int $comrclId): array
     {
         $startDate = new \DateTime("$year-$month-01");
@@ -1472,7 +1472,6 @@ class ProspectRepository extends ServiceEntityRepository
             ->setParameter('endOfYesterday', $yesterday)
 
 
-            // Aucune relation avec relanced
 
             ->orderBy('p.id', 'DESC');
         if ((!empty($search->q))) {
@@ -2239,45 +2238,104 @@ class ProspectRepository extends ServiceEntityRepository
             // ->setParameter('startOfDay', $today)
             ->orderBy('p.id', 'DESC');
 
+
+
+
         if ((!empty($search->q))) {
-            $query = $query
+            $query
                 ->andWhere('p.name LIKE :q')
 
                 ->setParameter('q', "%{$search->q}%");
         }
         if (isset($search->m)) {
-            $query = $query
+            $query
                 ->andWhere('p.lastname LIKE :m')
                 ->setParameter('m', "%{$search->m}%");
         }
 
-        //sherche par relance
+        if (isset($search->source)) {
+
+            $query
+
+                ->andWhere('p.source = :source')
+
+                ->setParameter('source', $search->source);
+        }
+
+        if (isset($search->g)) {
+
+            $query
+
+                ->andWhere('p.email LIKE :g')
+
+                ->setParameter('g', "%{$search->g}%");
+        }
+
+        if (isset($search->c)) {
+
+            $query
+
+                ->andWhere('p.city LIKE :c')
+
+                ->setParameter('c', "%{$search->c}%");
+        }
+
+        if (isset($search->l)) {
+
+            $query
+
+                ->andWhere('p.phone LIKE :l')
+
+                ->setParameter('l', "%{$search->l}%");
+        }
+
+        if (isset($search->s)) {
+
+            $query
+
+                ->andWhere('p.raisonSociale LIKE :s')
+
+                ->setParameter('s', "%{$search->s}%");
+        }
+
+
+        if (!empty($search->motifRelanced)) {
+            $query
+
+                ->andWhere('h.motifRelanced = :motifRelanced')
+                ->setParameter('motifRelanced', $search->motifRelanced);
+        }
+
+
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
+            $query
+                ->andWhere('p.creatAt >= :d')
+                ->setParameter('d', $search->d);
+        }
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
+            $query
+                ->andWhere('p.creatAt <= :dd')
+                ->setParameter('dd', $search->dd);
+        }
+        //cherche par relance
 
         if (!empty($search->dr) && $search->dr instanceof \DateTime) {
-            $query = $query
+            $query
                 ->andWhere('h.relacedAt >= :dr')
                 ->setParameter('dr', $search->dr->format('Y-m-d'));
         }
 
         if (!empty($search->ddr) && $search->ddr instanceof \DateTime) {
             $search->ddr->setTime(23, 59, 59); // Fix time to end of the day
-            $query = $query
+            $query
                 ->andWhere('h.relacedAt <= :ddr')
                 ->setParameter('ddr', $search->ddr->format('Y-m-d H:i:s'));
         }
 
-
-
-
-        if (!empty($search->motifRelanced)) {
-            $query = $query
-
-                ->andWhere('h.motifRelanced = :motifRelanced')
-                ->setParameter('motifRelanced', $search->motifRelanced);
-        }
-
         return $this->paginator->paginate(
-            $query,
+            $query->getQuery(), // Exécuter la requête avec les filtres
             $search->page,
             10
 
@@ -2402,18 +2460,27 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('q', "%{$search->q}%");
         }
 
-        if (!empty($search->d) && $search->d instanceof \DateTime) {
+        if (!empty($search->d) && $search->d instanceof \DateTime && !empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59); // Set end date to include the whole day
             $query = $query
                 ->andWhere('p.creatAt >= :d')
-                ->setParameter('d', $search->d);
-        }
-
-        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
-            $search->dd->setTime(23, 59, 59);
-            $query = $query
+                ->setParameter('d', $search->d)
                 ->andWhere('p.creatAt <= :dd')
                 ->setParameter('dd', $search->dd);
         }
+
+        // if (!empty($search->d) && $search->d instanceof \DateTime) {
+        //     $query = $query
+        //         ->andWhere('p.creatAt >= :d')
+        //         ->setParameter('d', $search->d);
+        // }
+
+        // if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+        //     $search->dd->setTime(23, 59, 59);
+        //     $query = $query
+        //         ->andWhere('p.creatAt <= :dd')
+        //         ->setParameter('dd', $search->dd);
+        // }
 
 
         if (isset($search->m)) {

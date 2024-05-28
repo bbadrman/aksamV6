@@ -94,7 +94,7 @@ class ProspectType extends AbstractType
                 ]
             ])
             ->add('adress', Type\TextareaType::class, [
-                'label' => 'Address complét (obligatoir)',
+                'label' => 'Addresse complét (obligatoir)',
 
                 'attr' => [
                     'placeholder' => 'Address compltét du client',
@@ -113,7 +113,7 @@ class ProspectType extends AbstractType
                 'attr' => ['readonly' => true], // Rend le champ en lecture seule
             ])
             ->add('motifSaise', Type\ChoiceType::class, [
-                'label' => 'Motive de saisier ',
+                'label' => 'Motive de saisir ',
                 'required' => true,
                 'placeholder' => '--Merci de selectie-- ',
                 'choices' => [

@@ -68,7 +68,9 @@
 
 
 								<div class="green-header">
-									<h2>PROSPECTS NON TRAITÉS</h2>
+									<h2>PROSPECTS NON TRAITÉS  &emsp;
+										<i class="fa fa-question-circle-o" style="color: blue;" aria-hidden="true" title="Ce tableau contient les prospects pour lesquelles ne font aucune action de relance."></i>
+									</h2>
 								</div>
 								<a href="{{path('notrait_index')}}">
 									<i class="fa fa-calendar-times-o fa-4x" aria-hidden="true"></i>
@@ -116,7 +118,9 @@
 
 
 									<div class="green-header">
-										<h2>RECHERCHE</h2>
+										<h2>RECHERCHE  &emsp;
+											<i class="fa fa-question-circle-o" style="color: blue;" aria-hidden="true" title="Tous les prospects enregistrés."></i>
+										</h2>
 									</div>
 
 									<a href="{{ path('prospect_search')}}">
@@ -133,11 +137,14 @@
 
 							<div
 								class="col-md-3 col-sm-3 mb">
+
 								<!-- REVENUE PANEL -->
 								<div class="green-panel pn">
 
 									<div class="green-header">
-										<h2>RELANCES DU JOUR</h2>
+										<h2>RELANCES DU JOUR &emsp;
+											<i class="fa fa-question-circle-o" style="color: blue;" aria-hidden="true" title="Les prospects programmés pour aujourd'hui."></i>
+										</h2>
 									</div>
 
 									<a href="{{ path('relancejour_index')}}">
@@ -163,7 +170,9 @@
 
 
 									<div class="green-header">
-										<h2>RELANCES A VENIR</h2>
+										<h2 alt="info">RELANCES A VENIR &emsp;
+											<i class="fa fa-question-circle-o" style="color: blue;" aria-hidden="true" title="Les prospects qui sont lancés dans les jours à venir à partir de demain."></i>
+										</h2>
 									</div>
 
 									<a href="{{path('avenir_index')}}">
@@ -184,12 +193,15 @@
 							</div>
 							<div
 								class="col-md-3 col-sm-3 mb">
+
 								<!-- REVENUE PANEL -->
 								<div class="green-panel pn">
 
 
 									<div class="green-header">
-										<h2>RELANCES NON TRAITÉS</h2>
+										<h2>RELANCES NON TRAITÉES   &emsp;
+											<i class="fa fa-question-circle-o" style="color: blue;" aria-hidden="true" title="Les prospects qui ont été contactés pour un rendez-vous et qui ne prennent aucune action."></i>
+										</h2>
 									</div>
 									<a href="{{path('relancenotraite_index')}}">
 										<i class="fa fa-calendar-times-o fa-4x" aria-hidden="true"></i>

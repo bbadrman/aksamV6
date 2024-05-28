@@ -52,9 +52,9 @@ class SearchController extends AbstractController
             } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
                 // chef peut chercher toutes les prospects atacher a leur equipe
                 $prospect = $prospectRepository->findAllChefSearch($data, $user);
-            } else {
+            } elseif (in_array('ROLE_USER', $user->getRoles(), true)) {
                 // cmrcl peut chercher seulement les prospects atacher a lui
-                $prospect = $prospectRepository->findByUserAffecterCmrcl($data, $user, null);
+                $prospect = $prospectRepository->findByUserAffecterCmrcl($data, $user);
             }
 
             return $this->render('prospect/index.html.twig', [

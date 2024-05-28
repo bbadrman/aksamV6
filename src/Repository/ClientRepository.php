@@ -219,7 +219,18 @@ class ClientRepository extends ServiceEntityRepository
                 ->setParameter('g', "%{$search->g}%");
         }
 
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
+            $query = $query
+                ->andWhere('c.creatAt >= :d')
+                ->setParameter('d', $search->d);
+        }
 
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
+            $query = $query
+                ->andWhere('c.creatAt <= :dd')
+                ->setParameter('dd', $search->dd);
+        }
         if (!empty($search->t)) {
             $query = $query
                 ->orWhere('c.phone LIKE :t')

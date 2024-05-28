@@ -65,7 +65,7 @@
 									Nom du fonction</th>
 								<th>
 									<i class="fa fa-address-book"></i>
-									Username</th>
+									Utilisateur</th>
 								<th>
 									<i class="fa fa-amazon"></i>
 									Description du fonction</th>
@@ -79,9 +79,12 @@
 								<tr>
 									<td>{{ fonction.id }}</td>
 									<td>{{ fonction.name }}</td>
-									<td> {% for user in fonction.users %}
-											{{  user  }} <br>
-										{% endfor %}</td>
+									<td>
+										{% for user in fonction.users %}
+											{{  user  }}
+											<br>
+										{% endfor %}
+									</td>
 									<td>{{ fonction.description }}</td>
 									<td class="btn-toolbar">
 										<a href="{{ path('fonction_show', {'id': fonction.id}) }}" class="btn btn-success btn-xs">

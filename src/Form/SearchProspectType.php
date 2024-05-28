@@ -34,27 +34,40 @@ class SearchProspectType extends AbstractType
     public function buildForm(FormBuilderInterface $builder,  array $options): void
     {
 
+        // Supposons que l'utilisateur a une relation avec une équipe via une propriété 'team'
+        // et que votre entité User a une méthode getTeam() pour obtenir cette équipe.
+
+
+
+
         $teamRepository = $this->entityManager->getRepository(Team::class);
         $teams = $teamRepository->findAll();
         $teamChoices = [];
         foreach ($teams as $team) {
             $teamChoices[$team->getName()] = $team->getName();
         }
-        $user = $this->security->getUser();
-        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
-            $comrclsForTeam = $this->userRepository->findAll();
-        } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
-            $comrclsForTeam = $this->userRepository->findComrclByteamOrderedByAscName($team);
-        } else {
-            // cmrcl peut voire seulement les no traite  atacher a lui
-            $comrclsForTeam =  [];
-        }
-        // Transformez la liste de commerciaux en un tableau utilisable pour les choix dans le formulaire
-        $comrclChoices = [];
-        foreach ($comrclsForTeam as $comrcl) {
-            $comrclChoices[$comrcl->getUsername()] = $comrcl->getUsername();
-        }
 
+
+
+        $user = $this->security->getUser();
+        if ($user  instanceof User) {
+            $team = $user->getTeams(); // Assurez-vous que cette méthode existe et retourne l'équipe de l'utilisateur
+
+            if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+                $comrclsForTeam = $this->userRepository->findAll();
+            } else if (in_array('ROLE_TEAM', $user->getRoles(), true) && $team) {
+                $comrclsForTeam = $team === null ? [] :  $this->userRepository->findComrclByteamOrderedByAscName($team);
+            } else {
+                // cmrcl peut voir seulement les non traités attachés à lui
+                $comrclsForTeam =  [];
+            }
+
+            // Transformez la liste de commerciaux en un tableau utilisable pour les choix dans le formulaire
+            $comrclChoices = [];
+            foreach ($comrclsForTeam as $comrcl) {
+                $comrclChoices[$comrcl->getUsername()] = $comrcl->getUsername();
+            }
+        }
 
         // $userRepository = $this->entityManager->getRepository(User::class);
         // $comrcls = $userRepository->findAll();

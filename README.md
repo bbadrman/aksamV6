@@ -691,6 +691,8 @@ pour envoye isconnect = 0 u base donnee afin de savoire status du user onligne o
 ## Branchement site laravel avec l'application
 il suffit de met cet script sur le controller qui gere la form dans notre cas:
 public function store(Request $request)
+
+App/Http/Controller/homeController.php
     {
         // Enregistrer les données localement
         $fiche = new Fiche;

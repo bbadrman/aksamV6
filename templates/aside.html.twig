@@ -8,11 +8,11 @@
 		<a href="{% if app.user is not null %} {{ path('user_show', {'id':app.user.id }) }}{% else %} {{ asset('images/no-image.png') }}{% endif %}">
 
 			<img src="
-																																																																																																																																																																																																																																																																																																																																																																						{% if app.user is not null %}
-																																																																																																																																																																																																																																																																																																																																																																							{{ asset('images/aksamLogo.jpeg') }}
-																																																																																																																																																																																																																																																																																																																																																																					 	{% else %}
-																																																																																																																																																																																																																																																																																																																																																																							{{ asset('images/no-image.png') }}
-																																																																																																																																																																																																																																																																																																																																																																						{% endif %}" class="img-circle" width="80" alt="">
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										{% if app.user is not null %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											{{ asset('images/aksamLogo.jpeg') }}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																									 	{% else %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											{{ asset('images/no-image.png') }}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										{% endif %}" class="img-circle" width="80" alt="">
 		</a>
 
 	</p>
@@ -21,28 +21,28 @@
 	<h5
 		class="centered">
 		{# {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-																																																																																																																																																																														{% set user = app.user %}
-																																																																																																																																																																														{% set roles = user.getRoles() %}
-																																																																																																																																																																													{% if roles is not empty %}
-																																																																																																																																																																															{% for role in roles %}
-																																																																																																																																																																																<p>  
-																																																																																																																																																																																		 {% if role == "ROLE_TEAM" %}
-																																																																																																																																																																																			 Chef d'equipe<br>
-																																																																																																																																																																																		 {% elseif role == "ROLE_SUPER_ADMIN" %}
-																																																																																																																																																																																			 Directeur <br>
-																																																																																																																																																																																		 {% elseif role == "ROLE_ADMIN" %}
-																																																																																																																																																																																			 Admin<br> 				
-																																																																																																																																																																																		 {% elseif role == "ROLE_PROS" %}
-																																																																																																																																																																																			 Commercial<br> 
-																																																																																																																																																																																		 {% elseif role == "ROLE_ADD_PROS" %}
-																																																																																																																																																																																			 Ajouter Prospect<br> 
-																																																																																																																																																																																		 {% elseif role == "ROLE_EDIT_PROS" %}
-																																																																																																																																																																																			 Edite Prospect<br>
-																																																																																																																																																																																		 {% endif %}
-																																																																																																																																																																														        </p>
-																																																																																																																																																																													        {% endfor %}
-																																																																																																																																																																													{% endif %}
-																																																																																																																																																																												{% endif %} #}
+																																																																																																																																																																																																																																																																																{% set user = app.user %}
+																																																																																																																																																																																																																																																																																{% set roles = user.getRoles() %}
+																																																																																																																																																																																																																																																																															{% if roles is not empty %}
+																																																																																																																																																																																																																																																																																	{% for role in roles %}
+																																																																																																																																																																																																																																																																																		<p>  
+																																																																																																																																																																																																																																																																																				 {% if role == "ROLE_TEAM" %}
+																																																																																																																																																																																																																																																																																					 Chef d'equipe<br>
+																																																																																																																																																																																																																																																																																				 {% elseif role == "ROLE_SUPER_ADMIN" %}
+																																																																																																																																																																																																																																																																																					 Directeur <br>
+																																																																																																																																																																																																																																																																																				 {% elseif role == "ROLE_ADMIN" %}
+																																																																																																																																																																																																																																																																																					 Admin<br> 				
+																																																																																																																																																																																																																																																																																				 {% elseif role == "ROLE_PROS" %}
+																																																																																																																																																																																																																																																																																					 Commercial<br> 
+																																																																																																																																																																																																																																																																																				 {% elseif role == "ROLE_ADD_PROS" %}
+																																																																																																																																																																																																																																																																																					 Ajouter Prospect<br> 
+																																																																																																																																																																																																																																																																																				 {% elseif role == "ROLE_EDIT_PROS" %}
+																																																																																																																																																																																																																																																																																					 Edite Prospect<br>
+																																																																																																																																																																																																																																																																																				 {% endif %}
+																																																																																																																																																																																																																																																																																        </p>
+																																																																																																																																																																																																																																																																															        {% endfor %}
+																																																																																																																																																																																																																																																																															{% endif %}
+																																																																																																																																																																																																																																																																														{% endif %} #}
 
 
 		{% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -144,6 +144,17 @@
 {% endif %}
 <!-- END Clients -->
 
+<!-- END Aide -->
+{% if is_granted("ROLE_ADMIN")  == false %}
+	<li class="sub-menu">
+		<a class="nav-link" href="/documents/ModOPcommercial.pdf" target="_blank">
+			<i class="fa fa-question-circle" aria-hidden="true" style="font-size: 20px;"></i>
+			<span>Aide</span>
+		</a>
+	</li>
+	<!-- END Aide -->
+{% endif %}
+
 <!-- Pramétres -->
 
 {% if is_granted('ROLE_ADMIN')  == true %}
@@ -158,7 +169,6 @@
 			class="sub">
 
 			<!-- USERS -->
-
 			<li class="sub-menu">
 
 				<a class="nav-link {% if page in ['user_index', 'user_new', 'user_edit', 'user_show'] %}active{% endif %}" href="javascript:;">
@@ -178,36 +188,32 @@
 					</li>
 				</ul>
 			</li>
-
 			<!-- END USERS -->
 
 
 			<!--fonction-->
-			<ul>
-				<li class="sub-menu">
+			<li class="sub-menu">
 
-					<a class="nav-link {% if page in ['fonction_index', 'fonction_new', 'fonction_show', 'fonction_edit'  ] %}active{% endif %}" href="javascript:;">
-						<i class="fa fa-tags"></i>
-						<span>Fonction</span>
-					</a>
+				<a class="nav-link {% if page in ['fonction_index', 'fonction_new', 'fonction_show', 'fonction_edit'  ] %}active{% endif %}" href="javascript:;">
+					<i class="fa fa-tags"></i>
+					<span>Fonction</span>
+				</a>
 
-					<ul class="sub">
+				<ul class="sub">
 
-						<li>
-							<a href="{{ path('fonction_new') }}">Ajouter une fonction</a>
+					<li>
+						<a href="{{ path('fonction_new') }}">Ajouter une fonction</a>
 
-						</li>
+					</li>
 
-						<li>
-							<a href="{{ path('fonction_index') }}">Gérer les fonction</a>
-						</li>
-					</ul>
-				</li>
-			</ul>
+					<li>
+						<a href="{{ path('fonction_index') }}">Gérer les fonction</a>
+					</li>
+				</ul>
+			</li>
 			<!-- END fonction -->
 
 			<!-- Produits -->
-
 			<li class="sub-menu">
 
 				<a class="nav-link {% if page in ['app_product_index', 'app_product_new', 'app_product_show', 'app_product_edit'] %}active{% endif %}" href="javascript:;">
@@ -224,12 +230,9 @@
 					</li>
 				</ul>
 			</li>
-
 			<!-- END Produits -->
 
-
 			<!-- Equipe -->
-
 			<li class="sub-menu">
 				<a class="nav-link {% if page in ['app_team_new', 'app_team_index', 'app_team_show', 'app_team_edit'] %}active{% endif %}" href="javascript:;">
 					<i class="fa fa-users"></i>
@@ -245,46 +248,28 @@
 					</li>
 				</ul>
 			</li>
-
 			<!-- END Equipe -->
-			{% if is_granted("ROLE_USER")  == true %}
-				<li class="sub-menu">
 
+			<!-- Ringover -->
+			<li class="sub-menu">
+				<a class="nav-link " href="{{ path('ringover-api') }}">
+					<i class="fa fa-upload" aria-hidden="true"></i>
+					<span>Appels
+					</span>
+				</a>
 
-					<a class="nav-link " href="{{ path('ringover-api') }}">
-						<i class="fa fa-upload" aria-hidden="true"></i>
-						<span>Appels
-						</span>
-					</a>
+			</li>
+			<!-- END Ringover -->
 
-				</li>
-			{% endif %}
+			<!-- Aide -->
+			<li class="sub-menu">
+				<a class="nav-link" href="/documents/ModOP.pdf" target="_blank">
+					<i class="fa fa-question-circle" aria-hidden="true" style="font-size: 20px;"></i>
+					<span>Aide</span>
+				</a>
+			</li>
+			<!--END Aide -->
 		</ul>
 	</li>
 {% endif %}
-
 <!-- END Prammetre -->
-<!--  Sdandar -->
-{# {% if is_granted('ROLE_STAND') or is_granted('ROLE_ADD_STAND') or is_granted('ROLE_EDIT_STAND') == true %}
-										<li class="sub-menu">
-								
-											<a class="nav-link {% if page in ['store_index', 'store_new', 'store_show', '#'] %}active{% endif %}" href="javascript:;">
-												<i class="fa fa-volume-control-phone "></i>
-												<span>Standard</span>
-											</a>
-								
-											<ul class="sub">
-												{% if is_granted('ROLE_ADD_STAND')  == true %}
-													<li>
-														<a href="#">Ajouter une Sdandar</a>
-													</li>
-												{% endif %}
-												{% if is_granted('ROLE_EDIT_STAND') == true %}
-													<li>
-														<a href="#">Gérer les Sdandar</a>
-													</li>
-												{% endif %}
-											</ul>
-										</li>
-									{% endif %} #}
-<!-- END  Sdandar -->

@@ -2347,7 +2347,7 @@ class ProspectRepository extends ServiceEntityRepository
     /**
      * a verifie deplcated
      * @return Prospect[] Returns an array of Prospect objects 
-     * @param SearchProspect $search
+     * @param SearchProspect $searchfind
      * @return PaginationInterface
      */
     public function findAllSearch(SearchProspect $search): PaginationInterface

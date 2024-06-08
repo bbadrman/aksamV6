@@ -1069,24 +1069,38 @@ PANELS CONFIGURATIONS
     background: #4ECDC4;
 }
 
+.red-panel {
+    text-align: center;
+    background: #aa2605;
+}
+
 .green-panel .green-header {
     background: #43b1a9;
     padding: 2px;
     margin-bottom: 15px;
 }
 
-.green-panel h5 {
+.red-panel .green-header {
+    background: #871f06;
+    padding: 2px;
+    margin-bottom: 15px;
+}
+
+.green-panel h5,
+.red-panel h5 {
     color: white;
     font-weight: 200;
     margin-top: 10px;
 }
 
-.green-panel h3 {
+.green-panel h3,
+.red-panel h3 {
     color: white;
     font-weight: 100;
 }
 
-.green-panel p {
+.green-panel p,
+.red-panel p {
     color: white;
 }
 

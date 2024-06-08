@@ -38,7 +38,7 @@
 						<div class="col-md-4 col-sm-3 mb">
 						{% endif %}
 						<!-- REVENUE PANEL -->
-						<div class="green-panel pn">
+						<div class="green-panel pn" id="notif-container">
 
 
 							<div class="green-header">
@@ -48,7 +48,7 @@
 								<i class="fa fa-newspaper-o fa-4x" aria-hidden="true"></i>
 
 								{% if is_granted('ROLE_ADMIN')  == true %}
-									<h1>{{ " %02d"|format(stats.prospectspasaffect ) }}</h1>
+									<h1 id="notif">{{ " %02d"|format(stats.prospectspasaffect ) }}</h1>
 								{% elseif is_granted('ROLE_TEAM') == true %}
 									<h1>{{ " %02d"|format(stats.prospectsChefNv ) }}</h1>
 								{% elseif is_granted('ROLE_USER') == true %}
@@ -248,5 +248,6 @@
 						</div>
 					</div>
 				</div>
+
 
 			{% endblock %}

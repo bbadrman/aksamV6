@@ -24,7 +24,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -81,6 +83,40 @@ class ProspectController extends AbstractController
             'prospects' => $prospect,
             'search_form' => $form->createView()
         ]);
+    }
+
+    /**
+     * afficher les nouveaux prospects 
+     * @Route("/newprospectApi", name="newprospectApi_index", methods={"GET", "POST"}) 
+     */
+    public function newprospectApi(
+        Request $request,
+        ProspectRepository $prospectRepository,
+        Security $security,
+        SerializerInterface $serializer
+    ): JsonResponse {
+        $data = new SearchProspect();
+        $data->page = $request->query->get('page', 1);
+        $form = $this->createForm(SearchProspectType::class, $data);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+        $prospect = [];
+
+        $user = $security->getUser();
+        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            // admin peut voire toutes les nouveaux prospects
+            $prospect =  $prospectRepository->findByUserPaAffecter($data, null);
+        } elseif (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+            // chef peut voire toutes les nouveaux prospects atacher a leur equipe
+            $prospect =  $prospectRepository->findByChefAffecter($data,  $user, null);
+        } else {
+            // cmrcl peut voire seulement les nouveaux prospects atacher a lui
+            $prospect =  $prospectRepository->findByCmrclAffecter($data, $user, null);
+        }
+
+        // Sérialiser les prospects
+        $jsonData = $serializer->serialize($prospect, 'json');
+
+        return new JsonResponse($jsonData, 200, [], true);
     }
 
     /**

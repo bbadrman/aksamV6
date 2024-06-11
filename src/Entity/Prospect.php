@@ -58,7 +58,7 @@ class Prospect
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $raisonSociale;
 
-    #[ORM\Column(type: 'integer', nullable: true)]
+    #[ORM\Column(type: 'string', nullable: true)]
     private $codePost;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -270,12 +270,12 @@ class Prospect
         return $this;
     }
 
-    public function getCodePost(): ?int
+    public function getCodePost(): ?string
     {
         return $this->codePost;
     }
 
-    public function setCodePost(?int $codePost): self
+    public function setCodePost(?string $codePost): self
     {
         $this->codePost = $codePost;
 

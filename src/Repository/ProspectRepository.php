@@ -1998,6 +1998,87 @@ class ProspectRepository extends ServiceEntityRepository
 
         );
     }
+    // afficher les nouveaux prospects via api pour avoire notification
+    public function findAllNewProspects(SearchProspect $search): array
+    {
+        $query = $this->createQueryBuilder('p')
+            ->select('p, t, f')
+            ->andWhere("p.comrcl is NULL")
+            ->andWhere("p.team is NULL")
+            ->orderBy('p.id', 'DESC')
+            ->leftJoin('p.team', 't')
+            ->leftJoin('p.comrcl', 'f');
+
+        if (!empty($search->q)) {
+            $query = $query
+                ->andWhere('p.name LIKE :q')
+                ->setParameter('q', "%{$search->q}%");
+        }
+
+        if (!empty($search->m)) {
+            $query = $query
+                ->andWhere('p.lastname LIKE :m')
+                ->setParameter('m', "%{$search->m}%");
+        }
+
+        if (!empty($search->r)) {
+            $query = $query
+                ->andWhere('f.username LIKE :r')
+                ->setParameter('r', "%{$search->r}%");
+        }
+
+        if (!empty($search->g)) {
+            $query = $query
+                ->andWhere('p.email LIKE :g')
+                ->setParameter('g', "%{$search->g}%");
+        }
+
+        if (!empty($search->team)) {
+            $query = $query
+                ->andWhere('t.name LIKE :team')
+                ->setParameter('team', "%{$search->team}%");
+        }
+
+        if (!empty($search->l)) {
+            $query = $query
+                ->andWhere('p.phone LIKE :l')
+                ->orWhere('p.gsm LIKE :l')
+                ->setParameter('l', "%{$search->l}%");
+        }
+
+        if (!empty($search->c)) {
+            $query = $query
+                ->andWhere('p.city LIKE :c')
+                ->setParameter('c', "%{$search->c}%");
+        }
+
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
+            $query = $query
+                ->andWhere('p.creatAt >= :d')
+                ->setParameter('d', $search->d);
+        }
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
+            $query = $query
+                ->andWhere('p.creatAt <= :dd')
+                ->setParameter('dd', $search->dd);
+        }
+
+        if (!empty($search->s)) {
+            $query = $query
+                ->andWhere('p.raisonSociale LIKE :s')
+                ->setParameter('s', "%{$search->s}%");
+        }
+
+        if (!empty($search->source)) {
+            $query = $query
+                ->andWhere('p.source = :source')
+                ->setParameter('source', $search->source);
+        }
+
+        return $query->getQuery()->getResult();
+    }
 
     // afficher les prospects qui n ont pas du team et cmrcl
     /**

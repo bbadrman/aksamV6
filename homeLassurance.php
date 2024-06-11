@@ -1,12 +1,12 @@
-text/x-generic HomeController.php ( PHP script, UTF-8 Unicode text )
 <?php
 
 namespace App\Http\Controllers;
 
 use App\Models\Automobile;
 use App\Models\Fiche;
-use App\Models\Flotte;
+use App\Models\transporteur;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
@@ -14,53 +14,56 @@ class HomeController extends Controller
     public function store(Request $request)
     {
 
-        $auto = new Flotte();
+        $auto = new Transporteur();
         $fiche = new Fiche;
+
 
         $auto->nom = $request->input('nom');
         $auto->prenom = $request->input('prenom');
+        $auto->raison = $request->input('raison');
         $auto->activite = $request->input('activite');
-        $auto->activite1 = $request->input('activite1');
-        $auto->raison_sociale = $request->input('raison_sociale');
         $auto->assure = $request->input('assure');
         $auto->ancienne = $request->input('ancienne');
         $auto->motif = $request->input('motif');
         $auto->code_postal = $request->input('code');
         $auto->email = $request->input('email');
         $auto->telephone = $request->input('tele');
+        $auto->date_transporteur = date("Y-m-d H:i:s");
 
-        $fiche->nom = $request->input('nom');
-        $fiche->prenom = $request->input('prenom');
-        $fiche->activite = $request->input('activite');
-        $fiche->activite1 = $request->input('activite1');
-        $fiche->raison_sociale = $request->input('raison_sociale');
-        $fiche->assure = $request->input('assure');
-        $fiche->ancienne = $request->input('ancienne');
-        $fiche->motif = $request->input('motif');
-        $fiche->code_postal = $request->input('code');
-        $fiche->email = $request->input('email');
-        $fiche->telephone = $request->input('tele');
-        $fiche->date_fiche = date("Y-m-d H:i:s");
-        $fiche->id_produit = 5;
-        $fiche->id_traitement = 1;
-        $fiche->id_motifcloture = 1;
-        $fiche->id_source = 1;
-        $fiche->dublique = 0;
+
+
+
 
 
         if ($auto->ancienne == "NON")
             $auto->motif = "pas de motif";
 
+        $fiche->nom = $request->input('nom');
+        $fiche->prenom = $request->input('prenom');
+        $fiche->raison_sociale = $request->input('raison');
+        $fiche->activite = $request->input('activite');
+        $fiche->assure = $request->input('assure');
+        $fiche->ancienne = $request->input('ancienne');
+        $fiche->motif = $request->input('motif');
+        $fiche->code_postal = $request->input('code');
+        $fiche->telephone = $request->input('tele');
+        $fiche->email = $request->input('email');
+        $fiche->date_fiche = date("Y-m-d H:i:s");
+        $fiche->id_produit = 3;
+        $fiche->id_traitement = 1;
+        $fiche->dublique = 0;
+        $fiche->id_source = 1;
+        $fiche->id_motifcloture = 1;
 
-        if ($fiche->ancienne == "NON")
-            $fiche->motif = "pas de motif";
+
+
+
 
 
         $auto->save();
         $fiche->save();
 
         $request->session()->flash('status', 'formulaire');
-
         // Envoyer les données à l'API
         $data = [
             'name' => $request->input('nom'),
@@ -73,8 +76,8 @@ class HomeController extends Controller
             'motifResil' => $request->input('motif'),
             'codePost' => $request->input('code_postal'),
             'typeProspect' => "2",
-            'activites' => "8",
-            'url' => "9",
+            'activites' => "1",
+            'url' => "11",
             'product_id' => 6
         ];
 
@@ -101,8 +104,7 @@ class HomeController extends Controller
 
         // Fermer la session cURL
         curl_close($curl);
-
-        return redirect('/assurance/resilie');
+        return redirect('/assurance/transporteur');
     }
 
     public function index()

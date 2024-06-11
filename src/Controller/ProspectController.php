@@ -86,7 +86,7 @@ class ProspectController extends AbstractController
     }
 
     /**
-     * afficher les nouveaux prospects 
+     * afficher les nouveaux prospects via API
      * @Route("/newprospectApi", name="newprospectApi_index", methods={"GET", "POST"}) 
      */
     public function newprospectApi(
@@ -104,7 +104,7 @@ class ProspectController extends AbstractController
         $user = $security->getUser();
         if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
             // admin peut voire toutes les nouveaux prospects
-            $prospect =  $prospectRepository->findByUserPaAffecter($data, null);
+            $prospect =  $prospectRepository->findAllNewProspects($data, null);
         } elseif (in_array('ROLE_TEAM', $user->getRoles(), true)) {
             // chef peut voire toutes les nouveaux prospects atacher a leur equipe
             $prospect =  $prospectRepository->findByChefAffecter($data,  $user, null);

@@ -619,7 +619,7 @@ voila l'error qui j'ai:
         }
     }
     
-   # au form du site pub
+ # au form du site pub
   $telephone = $_POST['phone'];
 // Formatage du numéro de téléphone en ajoutant le préfixe "+33"
     $telephone = '+33' . substr($telephone, 1); // Supposant que le numéro commence par "0"
@@ -756,3 +756,8 @@ App/Http/Controller/homeController.php
         // Redirection après traitement
         return redirect('/assurance/professionel');
     }
+## Notification:
+
+- il faut ajouter the worker.js et fichie main.js 
+- il faut crée une fonction pour avoir les prospect au format json 
+- include le fichier worker au page que tu veux affichier notification

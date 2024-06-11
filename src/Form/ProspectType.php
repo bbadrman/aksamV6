@@ -148,7 +148,7 @@ class ProspectType extends AbstractType
                     'placeholder' => 'Raison sociale',
                 ]
             ])
-            ->add('codePost', Type\IntegerType::class, [
+            ->add('codePost', TextType::class, [
                 'label' => 'Code Postal (obligatoir)',
                 'constraints' => new Length(['min' => 5,  'minMessage' => 'le code postale doit etre quatre caactaire mini', 'max' => 5, 'maxMessage' => 'le code postale doite etre 5 caractaire max']),
                 'attr' => [
@@ -202,7 +202,9 @@ class ProspectType extends AbstractType
                         'Amiable' =>  2,
                         'Échéance' => 3,
                         'Non-paiement' => 4,
-                        'Sinistre' =>  5
+                        'Sinistre' =>  5,
+                        'Suspension de permis' => 6,
+                        'Fausse déclaration' => 7
                     ],
                     'expanded' => false,
                     'multiple' => false

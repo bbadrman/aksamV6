@@ -14,14 +14,14 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 
 class ProspectAffectType extends AbstractType
 {
-    private $userRepository;
 
-    public function __construct(UserRepository $userRepository)
+
+    public function __construct(private UserRepository $userRepository, private Security $security)
     {
-        $this->userRepository = $userRepository;
     }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -37,8 +37,9 @@ class ProspectAffectType extends AbstractType
             ]);
 
         $formModifier = function (FormInterface $form, Team $team = null) {
+            $user =  $this->security->getUser();
 
-            $comrcl = $team === null ? [] : $this->userRepository->findComrclByteamOrderedByAscName($team);
+            $comrcl = $team === null ? [] : $this->userRepository->findComrclByteamOrderedByAscName($team, $user);
             //dd(team); //null
             //dd( $comrcl); //[]
             $form->add('comrcl', EntityType::class, [

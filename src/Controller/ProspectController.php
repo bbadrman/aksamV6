@@ -66,7 +66,7 @@ class ProspectController extends AbstractController
 
 
         $user = $security->getUser();
-        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true) || in_array('ROLE_AFFECT', $user->getRoles(), true)) {
             // admin peut voire toutes les nouveaux prospects
             $prospect =  $prospectRepository->findByUserPaAffecter($data, null);
         } elseif (in_array('ROLE_TEAM', $user->getRoles(), true)) {
@@ -102,7 +102,7 @@ class ProspectController extends AbstractController
         $prospect = [];
 
         $user = $security->getUser();
-        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true) || in_array('ROLE_AFFECT', $user->getRoles(), true)) {
             // admin peut voire toutes les nouveaux prospects
             $prospect =  $prospectRepository->findAllNewProspects($data, null);
         } elseif (in_array('ROLE_TEAM', $user->getRoles(), true)) {
@@ -120,7 +120,7 @@ class ProspectController extends AbstractController
     }
 
     /**
-     * les prospects a venir
+     * les Relances à venir
      * @Route("/avenir", name="avenir_index", methods={"GET", "POST"}) 
      */
     public function avenir(Request $request,  ProspectRepository $prospectRepository,  Security $security): Response
@@ -162,7 +162,7 @@ class ProspectController extends AbstractController
 
 
     /**
-     * @Route("/new", name="app_prospect_new", methods={"GET", "POST"})
+     * @Route("/new", name="app_prospect_new", methods={"GET", "POST"}) 
      */
     public function new(Request $request, ProspectRepository $prospectRepository): Response
     {
@@ -279,12 +279,14 @@ class ProspectController extends AbstractController
     }
 
     /**
+     * pour affecter 
      * @Route("/{id}/edit", name="app_prospect_edit", methods={"GET", "POST"}) 
      */
     public function edit(Request $request, Prospect $prospect, ProspectRepository $prospectRepository,  TeamRepository $teamRepository, Security $security): Response
     {
 
         $user = $security->getUser();
+
         $form = $this->createForm(ProspectAffectType::class, $prospect);
         $form->handleRequest($request);
 
@@ -337,6 +339,7 @@ class ProspectController extends AbstractController
     }
 
     /**
+     * pour edite prospect
      * @Route("/{id}/editsup", name="app_prospect_editsup", methods={"GET", "POST"}) 
      * @IsGranted("ROLE_SUPER_ADMIN", message="Tu ne peut pas acces a cet ressource") 
      */

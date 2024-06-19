@@ -46,7 +46,7 @@ class SearchController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
 
-            if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true) || in_array('ROLE_AFFECT', $user->getRoles(), true)) {
                 // admi peut chercher toutes les prospects
                 $prospect = $prospectRepository->findSearch($data, $user);
             } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {

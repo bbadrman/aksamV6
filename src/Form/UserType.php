@@ -53,9 +53,9 @@ class UserType extends AbstractType
 
 
                     '*-----Prospects-----*' => [
-                        'Gestion Prospects' => 'ROLE_PROS',
+                        'Affecter Prospects' => 'ROLE_AFFECT',
                         'Ajouter Prospect'  => 'ROLE_ADD_PROS',
-                        'Edite Prospect'    => 'ROLE_EDIT_PROS',
+                        'Traiter Prospect'    => 'ROLE_EDIT_PROS',
                     ],
                     '*-----Standard-----*' => [
                         'Gestion Standard' => 'ROLE_STAND',

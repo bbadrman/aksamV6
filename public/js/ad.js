@@ -256,40 +256,90 @@ $('document').ready(function () {
 
 });
 
+
+//Select Dynamique with API
+
+
+$(document).ready(function () {
+	handleTeamChange('#prospect_team', '#prospect_comrcl');
+	handleTeamChange('#prospect_affect_team', '#prospect_affect_comrcl');
+	function handleTeamChange(teamId, comercialId) {
+		const prospectTeam = $(teamId);
+		const prospectCommercial = $(comercialId);
+		if (prospectTeam.length && prospectCommercial.length) {
+			if (!prospectTeam.val().length) {
+				prospectCommercial.parent().hide();
+
+			} else {
+				loadCommercials();
+			}
+			function loadCommercials() {
+				const currentValue = prospectTeam.val();
+				const commercialvalue = prospectCommercial.val();
+
+				if (!currentValue.length) {
+					return;
+				}
+				$.ajax({
+					url: "/team/teams-api", success: function (result) {
+						prospectCommercial.empty()
+						const options = result.find(function (item) {
+							return item.id == currentValue;
+						});
+						prospectCommercial.append(new Option());
+
+						options?.commercials?.map(function (item) {
+							prospectCommercial.append(new Option(item.username, item.id));
+						})
+						prospectCommercial.val(commercialvalue).change();
+						prospectCommercial.parent().show();
+						console.log('RESULT', options);
+					}
+				});
+			}
+			prospectTeam.change(function () {
+				loadCommercials();
+			})
+			console.log('HEre im 2')
+
+		}
+	}
+})
+
 //select dynamique
 
 
-document.addEventListener('DOMContentLoaded', function () {
-	const teamSelectEl = document.getElementById('prospect_team');
-	teamSelectEl.addEventListener('change', function (e) {
-		// console.log('okok');
-		const formEl = teamSelectEl.closest('form');
-		// console.log("formEl: " + formEl);
+// document.addEventListener('DOMContentLoaded', function () {
+// 	const teamSelectEl = document.getElementById('prospect_team');
+// 	teamSelectEl.addEventListener('change', function (e) {
+// 		// console.log('okok');
+// 		const formEl = teamSelectEl.closest('form');
+// 		// console.log("formEl: " + formEl);
 
-		fetch(formEl.action, {
-			method: formEl.method,
-			body: new FormData(formEl)
-		})
-			.then(response => response.text())
-			.then(html => {
-
-
-				const parser = new DOMParser();
-				const doc = parser.parseFromString(html, 'text/html');
-				const newComrclFormFieldEl = doc.getElementById('prospect_comrcl');
+// 		fetch(formEl.action, {
+// 			method: formEl.method,
+// 			body: new FormData(formEl)
+// 		})
+// 			.then(response => response.text())
+// 			.then(html => {
 
 
-				newComrclFormFieldEl.addEventListener('change', function (e) {
-					e.target.classList.remove('is-invalid');
-				});
-				document.getElementById('prospect_comrcl').replaceWith(newComrclFormFieldEl);
+// 				const parser = new DOMParser();
+// 				const doc = parser.parseFromString(html, 'text/html');
+// 				const newComrclFormFieldEl = doc.getElementById('prospect_comrcl');
 
-			})
-			.catch(function (err) {
-				console.warn('Something went wrong.', err);
-			});
-	});
-});
+
+// 				newComrclFormFieldEl.addEventListener('change', function (e) {
+// 					e.target.classList.remove('is-invalid');
+// 				});
+// 				document.getElementById('prospect_comrcl').replaceWith(newComrclFormFieldEl);
+
+// 			})
+// 			.catch(function (err) {
+// 				console.warn('Something went wrong.', err);
+// 			});
+// 	});
+// });
 
 
 

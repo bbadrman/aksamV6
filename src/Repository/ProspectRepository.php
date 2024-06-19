@@ -274,6 +274,9 @@ class ProspectRepository extends ServiceEntityRepository
 
 
     /**
+     * affichier les prospect avenir pour admin
+     * je doit modifie cet fn afin de disparer prospc quand an faire une action
+     * dans ce cas il dispare demain
      * Find list a prospect Relanced
      * @param SearchProspect $search
      * @return PaginationInterface
@@ -289,8 +292,8 @@ class ProspectRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('p')
 
             ->select('p, t, f, r')
-            ->leftJoin('p.relanceds', 'r')
 
+            ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.relacedAt > :tomorrow')
             ->setParameter('tomorrow', $tomorrow)
 

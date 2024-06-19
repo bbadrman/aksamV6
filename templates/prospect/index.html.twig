@@ -59,8 +59,8 @@
 		</ol>
 		<br>
 		{# {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')  == true %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																<a href="{{ path('app_prospect_new') }}" class="btn btn-primary">Ajouter Prospect</a>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																														          	{% endif %} #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																				<a href="{{ path('app_prospect_new') }}" class="btn btn-primary">Ajouter Prospect</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		          	{% endif %} #}
 	</section>
 	<div class="col-xs-12" style="float: right !important;">
 		<div class="row" style="margin-right: 10px;">
@@ -78,22 +78,22 @@
 					<thead>
 
 						<tr>
-							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true %}
+							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true or is_granted('ROLE_AFFECT') %}
 								<th>Source</th>
 								<th>Site</th>
 								<th>Type</th>
 							{% endif %}
 
-							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true %}
+							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true or is_granted('ROLE_AFFECT') %}
 								<th>Autor</th>
 								<th>Commercial</th>
 
 							{% endif %}
-							{% if is_granted('ROLE_ADMIN')  == true %}
+							{% if is_granted('ROLE_ADMIN')  == true or is_granted('ROLE_AFFECT') %}
 								<th>Equipe</th>
 							{% endif %}
 
-							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true %}
+							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true or is_granted('ROLE_AFFECT') %}
 								<th>Status</th>
 							{% endif %}
 
@@ -126,7 +126,7 @@
 							{# <th>Ancienne</th>#}
 							{# <th>Motife Resil</th> #}
 
-								{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true %}
+								{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true or is_granted('ROLE_AFFECT') %}
 									<th>
 								option
 							</th>
@@ -144,7 +144,7 @@
 
 					{% for prospect in prospects %}
 						<tr>
-							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true %}
+							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true or is_granted('ROLE_AFFECT')%}
 								<td>
 									{% if prospect.source is null %}
 								Site pub
@@ -177,12 +177,15 @@
 								{% elseif prospect.url == 9 %}
 									<a href="https://assurance-flotte-entreprise.fr" target="_blank" title="https://assurance-flotte-entreprise.fr">flotte</a>
 								{% elseif prospect.url == 10 %}
-									<a href="https://assurance-vehicule-pro.fr" target="_blank" title="https://assurance-vehicule-pro.fr">vehicule</a>
+									<a href="https://assurance-vehicule-pro.fr" target="_blank" title="https://assurance-vehicule-pro.fr">vehicule-pro</a>
 								{% elseif prospect.url == 11 %}
 									<a href="https://lassurance-des-transporteurs.fr" target="_blank" title="https://lassurance-des-transporteurs.fr/">transporteurs</a>
 								{% elseif prospect.url == 12 %}
-									<a href="https://assurance-vehicules-professionnels.fr" target="_blank" title="https://assurance-vehicules-professionnels.fr">vehicules-pro</a>
-
+									<a href="https://assurance-vehicules-professionnels.fr" target="_blank" title="https://assurance-vehicules-professionnels.fr">vehicules-prof</a>
+								{% elseif prospect.url == 13 %}
+									<a href="https://assurance-engins-chantier.fr" target="_blank" title="https://assurance-engins-chantier.fr">engins</a>
+								{% elseif prospect.url == 14 %}
+									<a href="https://assurance-professionnels-auto.fr" target="_blank" title="https://assurance-professionnels-auto.fr">prof-auto</a>
 								{% endif %}
 							</td>
 						</td>
@@ -211,7 +214,7 @@
 
 						</td>
 					{% endif %}
-					{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true %}
+					{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true or is_granted('ROLE_AFFECT')%}
 						<td>
 							{% if prospect.autor  is not empty %}
 
@@ -227,7 +230,7 @@
 						</td>
 
 
-						{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true %}
+						{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true or is_granted('ROLE_AFFECT')%}
 							<td>
 
 								{% if prospect.comrcl is not empty %}
@@ -243,7 +246,7 @@
 							</td>
 						{% endif %}
 					{% endif %}
-					{% if is_granted('ROLE_ADMIN') == true %}
+					{% if is_granted('ROLE_ADMIN') == true or is_granted('ROLE_AFFECT') %}
 						<td>
 
 							{% if prospect.team is not empty %}
@@ -256,7 +259,7 @@
 					{% endif %}
 
 
-					{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true %}
+					{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true or is_granted('ROLE_AFFECT') %}
 						<td>
 							{% if prospect.comrcl and prospect.team is not empty %}
 								<button class='btn btn' style="background-color:Violet;">Commercial
@@ -331,7 +334,7 @@
 						{% endif %}
 
 
-						{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') %}
+						{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') or is_granted('ROLE_AFFECT') %}
 							<td>
 								{{ render(controller('App\\Controller\\ProspectController::edit',{'id':prospect.id}))}}
 
@@ -360,8 +363,8 @@
 
 		</tbody>
 	{% endfor %}{# {% if  app.user and app.user == prospect.comrcl %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		 	  Tableau
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																			  {% endif %} #}</tbody>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						 	  Tableau
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							  {% endif %} #}</tbody>
 <tfoot class="text-right">
 	<tr>
 
@@ -372,10 +375,10 @@
 
 	</tr>
 </tfoot></table></div></div></div>{% endblock %}{% block javascripts %}{{ parent() }}<script src='/js/ad.js'>// {
-																																																																																											// # $(document).ready(function () {
-																																																																																											// $("#reset-button").click(function () {
-																																																																																											// $("#my-form .alert").empty();
-																																																																																											// });
-																																																																																											// });
-																																																																																											// #
-																																																																																											// }</script>{% endblock %}
+																																																																																																													// # $(document).ready(function () {
+																																																																																																													// $("#reset-button").click(function () {
+																																																																																																													// $("#my-form .alert").empty();
+																																																																																																													// });
+																																																																																																													// });
+																																																																																																													// #
+																																																																																																													// }</script>{% endblock %}

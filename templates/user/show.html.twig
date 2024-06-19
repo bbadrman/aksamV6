@@ -78,10 +78,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<th>Identifiant</th>
-					<td>{{ user.id }}</td>
-				</tr>
+
 
 				<tr>
 					<th>Username</th>
@@ -151,12 +148,14 @@
 							{% if role == "ROLE_CHEF" %}
 								Chef d'equipe<br>
 							{% elseif role == "ROLE_ADMIN" %}
-								Directeur Generale<br>
+								Directeur
+								<br>
 							{% elseif role == "ROLE_ADMIN" %}
 								Tous<br>
-
 							{% elseif role == "ROLE_STAND" %}
 								Gestion Standard
+							{% elseif role == "ROLE_AFFECT" %}
+								Affecter prospect
 								<br>
 							{% elseif role == "ROLE_ADD_STAND" %}
 								Ajouter Standard<br>
@@ -189,7 +188,7 @@
 							{% elseif role == "ROLE_ADD_PROS" %}
 								Ajouter Prospect<br>
 							{% elseif role == "ROLE_EDIT_PROS" %}
-								Edite Prospect<br>
+								Traiter Prospect<br>
 							{% endif %}
 						{% endfor %}
 					</td>

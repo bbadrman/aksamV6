@@ -28,13 +28,13 @@
 			</div>
 			{% set url = path('app_prospect_edit', {'id': prospect.id}) %}
 			{{ form_start(form, {'action':url}) }}
-			{% if is_granted ('ROLE_ADMIN') %}
+			{% if is_granted ('ROLE_ADMIN') or is_granted ('ROLE_AFFECT')   %}
 				<div class="modal-body">
 					{{form_row(form.team)}}
 				</div>
 				{# <div class="modal-body">
-																																																																					{{form_row(form.comrcl, { 'attr' : { 'style':'display:none'} }) }}
-																																																																				</div> #}
+																																																																									{{form_row(form.comrcl, { 'attr' : { 'style':'display:none'} }) }}
+																																																																								</div> #}
 			{% else %}
 
 				{{ form_widget(form.team, { 'attr' : { 'style':'display:none'} }) }}
@@ -100,8 +100,8 @@
 
 							<td>
 								{# <span class="btn btn-primary">
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																{{ "%02d"|format((teams.prospects|filter(p => p.comrcl is null and p.team is not null and p.creatAt|date('Y-m-d')  == "now"|date('Y-m-d')))|length) }}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															</span> #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																								{{ "%02d"|format((teams.prospects|filter(p => p.comrcl is null and p.team is not null and p.creatAt|date('Y-m-d')  == "now"|date('Y-m-d')))|length) }}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							</span> #}
 								<span class="btn btn-primary">
 									{# {{ "%02d"|format((teams.prospects|filter(p => p.comrcl is null and p.team is not null ))|length) }} #}
 									{# {{ "%02d"|format( teams.prospects|filter(p =>  p.comrcl is  null  and p.creatAt|date('Y-m-d') == "now"|date('Y-m-d'))|length) }} #}

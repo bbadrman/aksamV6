@@ -135,6 +135,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     public function findComrclByteamOrderedByAscName(Team $team): array
     {
+        dd($team);
         return $this->createQueryBuilder('u')
             ->where('u.teams = :team')
             // ->leftJoin('u.teams', 't')

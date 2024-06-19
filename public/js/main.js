@@ -25,17 +25,22 @@ if ('Notification' in window && 'Worker' in window) {
 } else {
     alert('Your browser does not support Web Workers or Notifications.');
 }
-
+let userRole = 'ROLE_ADMIN';
 let notificationSound;
+
+
 
 // Function to initialize the sound
 function initNotificationSound() {
     if (!notificationSound) {
-        notificationSound = new Audio('/sounds/notification-soundtone360.mp3');
+        if (userRole === 'ROLE_ADMIN') {
+            notificationSound = new Audio('/sounds/noutifactionAksamAdmin.mp3');
+        } else {
+            notificationSound = new Audio('/sounds/noutifactionAksamAdmin.mp3');
+        }
         notificationSound.load(); // Preload the sound
     }
 }
-
 // Function to show a notification
 function showNotification(prospectionCount) {
     console.log('SHOW', Notification.permission);

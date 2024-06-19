@@ -71,6 +71,39 @@ class TeamController extends AbstractController
             'user' => $jsonData
         ]);
     }
+
+    /**
+     * return team and commercial with api
+     * @Route("/teams-api", name="teams_api", methods={"GET"})
+     */
+    public function testuserTesApi(TeamRepository $teamRepository): Response
+    {
+        // Récupérer toutes les équipes avec leurs commerciaux
+        $teams = $teamRepository->findAll();
+
+        // Préparer les données à retourner
+        $jsonData = [];
+        foreach ($teams as $team) {
+            $commercials = [];
+            foreach ($team->getUsers() as $commercial) {
+                $commercials[] = [
+                    'id' => $commercial->getId(),
+                    'username' => $commercial->getUsername(),
+                    // Ajoutez d'autres propriétés de l'utilisateur que vous souhaitez inclure
+                ];
+            }
+            $jsonData[] = [
+                'id' => $team->getId(),
+                'name' => $team->getName(),
+                'commercials' => $commercials,
+            ];
+        }
+
+        // Retourner les données au format JSON
+        return $this->json($jsonData, Response::HTTP_OK);
+    }
+
+
     /**
      * @Route("/new-team", name="team_new", methods={"GET", "POST"})
      */

@@ -8,6 +8,7 @@ use App\Search\SearchTeam;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Security\Core\Security;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
@@ -25,10 +26,12 @@ class TeamRepository extends ServiceEntityRepository
      * @var PaginatorInterface
      */
     private $paginator;
-    public function __construct(ManagerRegistry $registry, PaginatorInterface $paginator)
+    private $user;
+    public function __construct(ManagerRegistry $registry, PaginatorInterface $paginator, Security $user)
     {
         parent::__construct($registry, Team::class);
         $this->paginator = $paginator;
+        $this->user = $user;
     }
 
     public function add(Team $entity, bool $flush = false): void
@@ -123,6 +126,8 @@ class TeamRepository extends ServiceEntityRepository
 
     public function findAllTeamByAscNameQueryBuilder(): QueryBuilder
     {
+        //$team = $this->user->getUser()->getRoles();
+
         return $this->createQueryBuilder('c')
             ->orderBy('c.name', 'ASC');
     }

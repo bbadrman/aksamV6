@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Team;
+use App\Repository\ClientRepository;
 use App\Search\SearchClient;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,12 +17,14 @@ class SearchClientType extends AbstractType
 {
     private $entityManager;
     private $userRepository;
+    private $clientRepository;
     private $security;
 
-    public function __construct(EntityManagerInterface $entityManager, UserRepository $userRepository, Security $security)
+    public function __construct(EntityManagerInterface $entityManager, ClientRepository $clientRepository, UserRepository $userRepository, Security $security)
     {
         $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;
+        $this->clientRepository = $clientRepository;
         $this->security = $security;
     }
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -34,15 +37,15 @@ class SearchClientType extends AbstractType
         }
 
         $user = $this->security->getUser();
+
         if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
             $comrclsForTeam = $this->userRepository->findAll();
         } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
             $comrclsForTeam = $this->userRepository->findComrclByteamOrderedByAscName($team);
         } else {
-            // cmrcl peut voire seulement les no traite  atacher a lui
+
             $comrclsForTeam =  [];
         }
-        // Transformez la liste de commerciaux en un tableau utilisable pour les choix dans le formulaire
         $comrclChoices = [];
         foreach ($comrclsForTeam as $comrcl) {
             $comrclChoices[$comrcl->getUsername()] = $comrcl->getUsername();

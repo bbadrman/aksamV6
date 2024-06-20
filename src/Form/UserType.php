@@ -50,8 +50,7 @@ class UserType extends AbstractType
 
                     'Tous' => 'ROLE_ADMIN',
                     'Chef Equipe'   => 'ROLE_TEAM',
-
-
+                    'Commercial'   => 'ROLE_COMERC',
                     '*-----Prospects-----*' => [
                         'Affecter Prospects' => 'ROLE_AFFECT',
                         'Ajouter Prospect'  => 'ROLE_ADD_PROS',

@@ -510,7 +510,11 @@ class ProspectRepository extends ServiceEntityRepository
 
     public function RelancesNonTraiteesChef(SearchProspect $search, User $user): PaginationInterface
     {
-        $team = $user->getTeams();
+        $teams = $user->getTeams();
+
+        if ($teams->isEmpty()) {
+            return [];
+        }
 
         $yesterday = new \DateTime('yesterday');
         $yesterday->setTime(23, 59, 59); // La fin de la journée d'hier
@@ -525,8 +529,8 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('p.relanceds', 'r')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
-            ->where('p.team = :team')
-            ->setParameter('team', $team)
+            ->where('p.team IN (:teams)')
+            ->setParameter('teams', $teams)
 
 
             ->andWhere('(r.motifRelanced IS NULL OR r.motifRelanced = 1)')
@@ -737,7 +741,10 @@ class ProspectRepository extends ServiceEntityRepository
      */
     public function findAvenirChef(SearchProspect $search, User $user): PaginationInterface
     {
-        $team = $user->getTeams();
+        $teams = $user->getTeams();
+        if ($teams->isEmpty()) {
+            return [];
+        }
 
         $tomorrow = new \DateTime('tomorrow');
         $tomorrow->setTime(0, 0, 0);
@@ -746,8 +753,8 @@ class ProspectRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('p')
 
             ->select('p, t, f, r')
-            ->where('p.team = :team')
-            ->setParameter('team', $team)
+            ->where('p.team IN (:teams)')
+            ->setParameter('teams', $teams)
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.relacedAt >= :tomorrow')
             ->setParameter('tomorrow', $tomorrow)
@@ -1063,7 +1070,10 @@ class ProspectRepository extends ServiceEntityRepository
      */
     public function findRelancedChef(SearchProspect $search, User $user): PaginationInterface
     {
-        $team = $user->getTeams();
+        $teams = $user->getTeams();
+        if ($teams->isEmpty()) {
+            return [];
+        }
 
         $today = new \DateTime();
         $today->setTime(0, 0, 0);
@@ -1073,8 +1083,8 @@ class ProspectRepository extends ServiceEntityRepository
 
         $query = $this->createQueryBuilder('p')
             ->select('p, f, r')
-            ->where('p.team = :team')
-            ->setParameter('team', $team)
+            ->where('p.team IN (:teams)')
+            ->setParameter('teams', $teams)
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
             ->setParameter('startOfDay', $today)
@@ -1366,11 +1376,15 @@ class ProspectRepository extends ServiceEntityRepository
         $yesterday = clone $now;
         $yesterday->modify('-24 hours');
 
-        $team = $user->getTeams();
+        $teams = $user->getTeams();
+        if ($teams->isEmpty()) {
+            return [];
+        }
+
         $query = $this->createQueryBuilder('p')
             ->select('p, f, r')
-            ->where('p.team = :team')
-            ->setParameter('team', $team)
+            ->where('p.team IN (:teams)')
+            ->setParameter('teams', $teams)
 
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
@@ -1647,12 +1661,15 @@ class ProspectRepository extends ServiceEntityRepository
      */
     public function findUnjoingChef(SearchProspect $search, User $user): PaginationInterface
     {
-        $team = $user->getTeams();
+        $teams = $user->getTeams();
+        if ($teams->isEmpty()) {
+            return [];
+        }
 
         $query = $this->createQueryBuilder('p')
             ->select('p, f')
-            ->where('p.team = :team')
-            ->setParameter('team', $team)
+            ->where('p.team IN (:teams)')
+            ->setParameter('teams', $teams)
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.motifRelanced = 2')
 
@@ -2083,8 +2100,9 @@ class ProspectRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
-    // afficher les prospects qui n ont pas du team et cmrcl
+
     /**
+     * afficher afficher les nouveaux prospects du chef
      * @return Prospect[] Returns an array of Prospect objects
      * 
      * @param SearchProspect $search
@@ -2100,22 +2118,13 @@ class ProspectRepository extends ServiceEntityRepository
         // get selement les prospects qui n'as pas encors affectter a un user
         $query = $this->createQueryBuilder('p')
             ->select('p, t, f')
-            ->where('p.team = :team')
-            ->setParameter('team', $team)
-            // ->andWhere('p.creatAt >= :startOfDay')
-            // ->setParameter('startOfDay', $today)
-            ->andWhere("p.comrcl is NULL")
-
-            ->orderBy('p.id', 'DESC')
-            // si tu veux disparer prospect apres l affectation  il decommenter cet ligne
-            // ->andWhere("p.comrcl is NULL")
-
-            // joiner les tables en relation ManyToOne avec team
             ->leftJoin('p.team', 't')
-
-            // joiner les tables en relation manytomany avec fonction
-            ->leftJoin('p.comrcl', 'f');
-
+            ->leftJoin('p.comrcl', 'f')
+            ->where('p.team IN (:team)')
+            ->andWhere('p.team IS NOT NULL')
+            ->andWhere('p.comrcl IS NULL') // Filtrer les prospects non affectés à un commercial
+            ->setParameter('team', $team)
+            ->orderBy('p.id', 'DESC');
 
         if ((!empty($search->q))) {
             $query = $query
@@ -2513,9 +2522,10 @@ class ProspectRepository extends ServiceEntityRepository
         );
     }
 
-    // afecher seulement les prospects qui partient de panier du chef findByUserChefEquipe
+
 
     /**
+     * afecher seulement les prospects qui partient de panier du chef findByUserChefEquipe
      * deplicated voire emplacement
      * @return Prospect[] Returns an array of Prospect objects 
      * @param SearchProspect $search
@@ -2524,16 +2534,20 @@ class ProspectRepository extends ServiceEntityRepository
     public function findAllChefSearch(SearchProspect $search, User $user): PaginationInterface
     {
         // get selement les prospects qui n'as pas encors affectter a un user
-        $team = $user->getTeams();
+        $teams = $user->getTeams();
+        if ($teams->isEmpty()) {
+            return [];
+        }
+
         $query = $this
             ->createQueryBuilder('p')
             ->select('p,  h')
 
             // joiner les tables en relation ManyToOne avec team
-            ->where('p.team = :team')
+            ->where('p.team IN (:teams)')
             // ->andWhere("p.comrcl is NULL")
             ->leftJoin('p.relanceds', 'h')
-            ->setParameter('team', $team)
+            ->setParameter('teams', $teams)
             ->orderBy('p.id', 'DESC');
 
 
@@ -2632,13 +2646,17 @@ class ProspectRepository extends ServiceEntityRepository
      */
     public function findOneByChef(User $user): array
     {
-        $team = $user->getTeams();
+        $teams = $user->getTeams();
+
+        if ($teams->isEmpty()) {
+            return [];
+        }
 
         $qb = $this->createQueryBuilder('p')
-            ->where('p.team = :team')
+            ->where('p.team IN (:teams)')
             ->andWhere("p.comrcl is NOT NULL")
-            ->orderBy('p.id', 'DESC')
-            ->setParameter('team', $team);
+            ->setParameter('teams', $teams)
+            ->orderBy('p.id', 'DESC');
 
         $prospects = $qb->getQuery()->getResult();
 

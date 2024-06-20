@@ -136,7 +136,11 @@ class ClientRepository extends ServiceEntityRepository
     public function findClientChef(SearchClient $search, User $user): PaginationInterface
     {
 
-        $team = $user->getTeams();
+        $teams = $user->getTeams();
+
+        if ($teams->isEmpty()) {
+            return [];
+        }
 
         $query = $this->createQueryBuilder('c')
             ->select('c, r')
@@ -144,8 +148,10 @@ class ClientRepository extends ServiceEntityRepository
 
             ->leftJoin('c.cmrl', 'r')
 
-            ->andwhere('c.team = :team')
-            ->setParameter('team', $team)
+            ->where('c.team IN (:teams)')
+
+            ->setParameter('teams', $teams)
+
             ->orderBy('c.id', 'DESC');
 
         if ((!empty($search->f))) {
@@ -181,6 +187,30 @@ class ClientRepository extends ServiceEntityRepository
             $search->page,
             10
         );
+    }
+
+
+    public function findClientByteamForChef(User $user): array
+    {
+        $teams = $user->getTeams();
+
+        if ($teams->isEmpty()) {
+            return [];
+        }
+
+        return $this->createQueryBuilder('c')
+            ->select('c, r')
+
+
+            ->leftJoin('c.cmrl', 'r')
+
+            ->where('c.team IN (:teams)')
+
+            ->setParameter('teams', $teams)
+
+            ->orderBy('c.id', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 
     /**

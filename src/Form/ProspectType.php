@@ -244,84 +244,11 @@ class ProspectType extends AbstractType
                     // ]
                 ]
             )
-
-            ->add('team', EntityType::class, [
-                'class' => Team::class,
-                'choice_label' => 'name',
-                'required' => false,
-                'placeholder' => '--Choose a Team--',
-                'query_builder' => fn (TeamRepository $teamRepository) =>
-                $teamRepository->findAllTeamByAscNameQueryBuilder()
-            ]);
+            ->add('team')
+            ->add('comrcl');
 
 
 
-        $formModifier = function (FormInterface $form, Team $team = null) {
-
-            $comrcl = $team === null ? [] : $this->userRepository->findComrclByteamOrderedByAscName($team);
-            //dd(team); //null
-            //dd( $comrcl); //[]
-            $form->add('comrcl', EntityType::class, [
-                'class' => User::class,
-                'required' => false,
-                'choice_label' => 'username',
-                // 'disabled' => $team === null,
-                'placeholder' => '--Choose a Comercial--',
-                'choices' => $comrcl
-            ]);
-        };
-
-
-        $builder->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($formModifier, $options) {
-                $data = $event->getData();
-                //dd($data);
-                $formModifier($event->getForm(), $data->getTeam());
-                if ($options['editing'] === false) {
-
-                    $formModifier($event->getForm(), $data->getTeam());
-                }
-            }
-        );
-
-
-
-        // $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-        //     $form = $event->getForm();
-        //     $data = $event->getData();
-
-        //     if (!isset($data['typeProspect'])) {
-        //         return;
-        //     }
-
-        //     $typeProspect = $data['typeProspect'];
-
-        //     if ($typeProspect === '2') { // Si le type de prospect est professionnel
-        //         $form->add('activites',  Type\ChoiceType::class, [
-        //             'label' => 'Activites ',
-        //             'placeholder' => '--Merci de sélectionner-- ',
-        //             'choices' => [
-        //                 'Prof auto' => 8
-        //             ],
-        //             'expanded' => false,
-        //             'multiple' => false,
-        //         ]);
-        //     } else {
-        //         // Ajoutez d'autres options pour d'autres types de prospect si nécessaire
-        //     }
-        // });
-
-
-
-
-        $builder->get('team')->addEventListener(
-            FormEvents::POST_SUBMIT,
-            function (FormEvent $event) use ($formModifier) {
-                $team = $event->getForm()->getData();
-                $formModifier($event->getForm()->getParent(), $team);
-            }
-        );
 
         //pour reformater le numero nationnal
         $builder->addEventListener(
@@ -348,38 +275,7 @@ class ProspectType extends AbstractType
                 }
             }
         );
-
-
-
-        if ($options['editing']) {
-            $builder->remove('motifResil')
-                ->remove('assure')
-                ->remove('lastAssure')
-                ->remove('gsm')
-                ->remove('raisonSociale')
-                ->remove('typeProspect')
-                ->remove('source')
-                ->remove('brithAt')
-                ->remove('adress')
-                ->remove('city')
-                ->remove('gender')
-                ->remove('email')
-                ->remove('gender')
-                ->remove('phone')
-                ->remove('lastname')
-                ->remove('motifSaise')
-                ->remove('codePost')
-                // ->remove('comrcl')
-                ->remove('name');
-        }
     }
-
-    //     public function buildView(FormView $view, FormInterface $form, array $options)
-    // {
-    //     parent::buildView($view, $form, $options);
-
-    //     $view->vars['comrcl'] = $form->get('comrcl')->createView();
-    // }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
@@ -387,8 +283,6 @@ class ProspectType extends AbstractType
             'data_class' => Prospect::class,
             'editing' => false,
             'product_choices' => [],
-
-
 
         ]);
     }
@@ -406,17 +300,4 @@ class ProspectType extends AbstractType
             }
         }
     }
-
-
-    // public function validateActivites($data, ExecutionContextInterface $context)
-    // {
-    //     $typeProspect = $context->getRoot()->get('typeProspect')->getData();
-    //     // Vérifiez si le type de prospect est défini et est "Professionnel" ('2')
-    //     if (isset($data[$typeProspect]) && $data['typeProspect'] === '2' && empty($data['activites'])) {
-    //         // Ajouter une violation de contrainte
-    //         $context->buildViolation('Le champ Activites est requis pour le prospect professionnel.')
-    //             ->atPath('activites')
-    //             ->addViolation();
-    //     }
-    // }
 }

@@ -23,22 +23,18 @@ class SearchProspectType extends AbstractType
 {
     private $entityManager;
     private $userRepository;
+    private $teamRepository;
     private $security;
 
-    public function __construct(EntityManagerInterface $entityManager, UserRepository $userRepository, Security $security)
+    public function __construct(EntityManagerInterface $entityManager, TeamRepository $teamRepository, UserRepository $userRepository, Security $security)
     {
         $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;
+        $this->teamRepository = $teamRepository;
         $this->security = $security;
     }
     public function buildForm(FormBuilderInterface $builder,  array $options): void
     {
-
-        // Supposons que l'utilisateur a une relation avec une équipe via une propriété 'team'
-        // et que votre entité User a une méthode getTeam() pour obtenir cette équipe.
-
-
-
 
         $teamRepository = $this->entityManager->getRepository(Team::class);
         $teams = $teamRepository->findAll();
@@ -51,7 +47,7 @@ class SearchProspectType extends AbstractType
 
         $user = $this->security->getUser();
         if ($user  instanceof User) {
-            $team = $user->getTeams(); // Assurez-vous que cette méthode existe et retourne l'équipe de l'utilisateur
+            $teams = $user->getTeams(); // Assurez-vous que cette méthode existe et retourne l'équipe de l'utilisateur
 
             if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
                 $comrclsForTeam = $this->userRepository->findAll();
@@ -68,7 +64,6 @@ class SearchProspectType extends AbstractType
                 $comrclChoices[$comrcl->getUsername()] = $comrcl->getUsername();
             }
         }
-
         // $userRepository = $this->entityManager->getRepository(User::class);
         // $comrcls = $userRepository->findAll();
         // $comrclChoices = [];

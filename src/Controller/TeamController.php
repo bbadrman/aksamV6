@@ -149,7 +149,7 @@ class TeamController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($team->getUsers() as $user) {
-                $user->setTeams($team);
+                $user->addTeam($team);
             }
             $teamRepository->add($team, true);
             $this->addFlash('success', 'Equipe a été ajouté avec succès!');
@@ -182,7 +182,7 @@ class TeamController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             foreach ($team->getUsers() as $user) {
-                $user->setTeams($team);
+                $user->addTeam($team);
             }
 
             $teamRepository->add($team, true);

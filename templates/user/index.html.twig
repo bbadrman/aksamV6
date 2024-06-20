@@ -134,8 +134,8 @@
 
 							{% for user in users %}
 								{# {% set Oui = '<span class="label label-success">Active</span>' %}
-																																                             {% set Non  = '<span class="label label-warning">Desactive</span>' %}
-																																								<tr> #}
+																																								                             {% set Non  = '<span class="label label-warning">Desactive</span>' %}
+																																																<tr> #}
 
 
 								<td>{{ user.firstname }}
@@ -154,10 +154,10 @@
 								<td>
 
 									{# {% if user.status %}
-																																														<a href="{{ path('activer', {'id': user.id})}}"  ><button class="btn btn-danger" onclick="disableUser({{ user.id }})">Disable</button></a>
-																																													{% else %}
-																																														<a href="{{ path('activer', {'id': user.id})}}"  ><button class="btn btn-success" onclick="enableUser({{ user.id }})">Enable</button></a>
-																																													{% endif %} #}
+																																																							<a href="{{ path('activer', {'id': user.id})}}"  ><button class="btn btn-danger" onclick="disableUser({{ user.id }})">Disable</button></a>
+																																																						{% else %}
+																																																							<a href="{{ path('activer', {'id': user.id})}}"  ><button class="btn btn-success" onclick="enableUser({{ user.id }})">Enable</button></a>
+																																																						{% endif %} #}
 
 
 									<label class="form-switch mt-2">
@@ -172,19 +172,19 @@
 
 								<td>
 
-									{% if user.teams is not empty %}
-										{{ user.teams }}
-									{% else %}
-										Aucun
-									{% endif %}
+
+									{% for team in user.teams %}
+										{{  team  }}
+										<br>
+									{% endfor %}
 
 
 								</td>
 
 								<td>
 									{# {% for product in user.teams.products %}
-																																															{{  product  }} <br>
-																																														{% endfor %} #}
+																																																								{{  product  }} <br>
+																																																							{% endfor %} #}
 
 
 									{% for product in user.products %}
@@ -221,7 +221,7 @@
 										{% if is_granted('ROLEs_ADMIN') == true %}
 
 											{# <a hreff="#" class="btn primary press modal-tigger" data-target="DeleteStoreModal" data-id="{{user.id}}"  data-title="{{user.firstname}}">open</a>
-																																																								 #}
+																																																																			 #}
 											{% set form_title = '<i class="fa fa-trash-o"></i>' %}
 											{{ include('user/_delete_form.html.twig', {
                                                     'form_title': form_title

@@ -145,7 +145,7 @@
 					<td>
 						{% for role in user.roles %}
 
-							{% if role == "ROLE_CHEF" %}
+							{% if role == "ROLE_TEAM" %}
 								Chef d'equipe<br>
 							{% elseif role == "ROLE_ADMIN" %}
 								Directeur
@@ -198,11 +198,10 @@
 					<th>Parmis l'équipe
 					</th>
 					<td>
-						{% if user.teams is not empty %}
-							{{ user.teams }}
-						{% else %}
-							Aucun
-						{% endif %}
+						{% for team in user.teams %}
+							{{  team  }}
+							<br>
+						{% endfor %}
 					</td>
 				</tr>
 				<tr>

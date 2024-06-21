@@ -52,61 +52,42 @@
 
 					{{ form_row(form.motifSaise) }}
 
-					{# <div id="subMotiv-container" style="display: none">
-																																																																																																																																		     {{ form_row(form.motifSaise) }}
-																																																																																																																																		 </div> #}
+					{# <div id="subMotiv-container" style="display: none"> 																																																																																																																																														     {{ form_row(form.motifSaise) }}
+																																																																																																																																																																																																																																																																																																																																 </div> #}
 					<div>
 						{{ form_label(form.product, 'Produit') }}
 						{{ form_widget(form.product, {'attr': {'class': 'form-control selectchoice'}}) }}
 					</div>
-
-
 					<div>
 						{{ form_row(form.typeProspect) }}
 					</div>
-					{# <div id="activites-div" style="display: none;">
-																																																																																																																																																																																				
-																																																																																																																																																																																			</div> #}
-					{# {{ form_row(form.raisonSociale) }} #}
-					{# <div id="subcategory-container" style="display: none"> {{ form_row(form.activites) }} #}<div>
-
-					</div>
-						<div id="subcategory-container" style="display: none"> {{ form_row(form.raisonSociale) }}
+					<div></div>
+					<div id="subcategory-container" style="display: none">
+						{{ form_row(form.raisonSociale) }}
 						{{ form_row(form.activites) }}
-
 					</div>
 
 					{{ form_row(form.assure) }}
 					{{ form_row(form.lastAssure) }}
+
 					<div id="subResil-container" style="display: none">
 						{{ form_row(form.motifResil) }}
 					</div>
-
-
-					{# {{ form_row(form.team) }} 
-																																																																																																																																																																																																																																																																																																																																																														 {{ form_row(form.comrcl) }}  #}
-
-					{# {{ form_rest(form, {'render_rest': false}) }} #}
-					{% if is_granted ('ROLE_ADMIN') %}
-						{{ form_row(form.team) }}
-
-					{% else %}
-
-						{{ form_widget(form.team, { 'attr' : { 'style':'display:none'} }) }}
-
-
-					{% endif %}
-
-					{% if is_granted ('ROLE_ADMIN') or is_granted ('ROLE_TEAM')  %}
-
-						{{ form_row(form.comrcl) }}
-
-					{% else %}
-
-						{{ form_widget(form.comrcl, { 'attr' : { 'style':'display:none'} }) }}
-
-					{% endif %}
-					{# {{ form_row(form.relanceds) }} #}
+					<div>
+						{% if is_granted ('ROLE_ADMIN') or is_granted ('ROLE_ADD_PROS') %}
+							{{ form_row(form.team) }}
+						{% else %}
+							{{ form_widget(form.team, { 'attr' : { 'style':'display:none'} }) }}
+						{% endif %}
+					</div>
+					<div>
+						{% if is_granted ('ROLE_ADMIN') or is_granted ('ROLE_TEAM')  or is_granted ('ROLE_ADD_PROS') %}
+							{{ form_row(form.comrcl) }}
+						{% else %}
+							{{ form_widget(form.comrcl, { 'attr' : { 'style':'display:none'} }) }}
+						{% endif %}
+						{# {{ form_row(form.relanceds) }} #}
+					</div>
 
 				</div>
 			</div>

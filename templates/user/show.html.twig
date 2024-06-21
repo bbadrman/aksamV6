@@ -145,6 +145,7 @@
 					<td>
 						{% for role in user.roles %}
 
+
 							{% if role == "ROLE_TEAM" %}
 								Chef d'equipe<br>
 							{% elseif role == "ROLE_ADMIN" %}
@@ -152,6 +153,10 @@
 								<br>
 							{% elseif role == "ROLE_ADMIN" %}
 								Tous<br>
+							{% elseif role == "ROLE_COMERC" %}
+								Commercial<br>
+							{% elseif role == "ROLE_TEAM" %}
+								Chef Equipe<br>
 							{% elseif role == "ROLE_STAND" %}
 								Gestion Standard
 							{% elseif role == "ROLE_AFFECT" %}

@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Team -Aksam{% endblock %}
+{% block title %}New Team -Aksam
+{% endblock %}
 
 {% block body %}
 	<div class="container">
@@ -24,41 +25,36 @@
 			<div class="row mt">
 				<div class="col-lg-12">
 
-                {{ include('team/_form.html.twig') }}
+					{{ include('team/_form.html.twig') }}
 
-                </div>
+				</div>
 			</div>
 		{% endblock %}
 	</div>
 	<!-- END FORM -->
 {% endblock %}
 
- {% block stylesheets %}
-{{ parent() }}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" />
+{% block stylesheets %}
+	{{ parent() }}
 {% endblock %}
 
 {% block javascripts %}
 
 	{{ parent() }}
 
+	<script src='/js/ad.js'></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js"></script>
 
-	<script src='/js/ad.js'>
-    </script>	
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js" ></script>
-	
 	<script>
-	$('#team_products').select2();
-	
-	// let $user_fonctions = $('#user_fonctions')
-	// $user_fonctions.click(e => {
-	// 	e.preventDefault()
-	// 	$('#user_fonctions').slideDown();
-	// 	$user_fonctions.slideUp();
-	// })
-	
-    </script>
+		$('#team_products').select2();
 
-	
+// let $user_fonctions = $('#user_fonctions')
+// $user_fonctions.click(e => {
+// e.preventDefault()
+// $('#user_fonctions').slideDown();
+// $user_fonctions.slideUp();
+// })
+	</script>
+
+
 {% endblock %}
-

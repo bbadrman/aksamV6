@@ -169,6 +169,7 @@ class Team
     {
         if ($this->users->removeElement($user)) {
             $user->removeTeam($this);
+            //$this->users->removeElement($user);
         }
 
         return $this;

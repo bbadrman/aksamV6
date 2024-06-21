@@ -2,25 +2,19 @@
 
 namespace App\Form;
 
-use App\Entity\Team;
-use App\Entity\User;
 use App\Entity\Product;
 use App\Entity\Prospect;
-use App\Repository\TeamRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ProspectType extends AbstractType
 {
@@ -281,7 +275,7 @@ class ProspectType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Prospect::class,
-            'editing' => false,
+            // 'editing' => true,
             'product_choices' => [],
 
         ]);

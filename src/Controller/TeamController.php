@@ -181,9 +181,13 @@ class TeamController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            foreach ($team->getUsers() as $user) {
-                $user->addTeam($team);
-            }
+
+            // foreach ($team->getUsers() as $user) {
+            //     $user->addTeam($team);
+            //     //$user->removeTeam($team);
+            // }
+
+
 
             $teamRepository->add($team, true);
 

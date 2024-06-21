@@ -43,9 +43,9 @@
 									{% if is_granted('ROLE_ADMIN')  == true or is_granted('ROLE_AFFECT')  == true %}
 										<h1 id="notif">{{ " %02d"|format(stats.prospectspasaffect ) }}</h1>
 									{% elseif is_granted('ROLE_TEAM') == true %}
-										<h1>{{ " %02d"|format(stats.prospectsChefNv ) }}</h1>
+										<h1 id="notif">{{ " %02d"|format(stats.prospectsChefNv ) }}</h1>
 									{% elseif is_granted('ROLE_USER') == true %}
-										<h1>{{ " %02d"|format(stats.prospectsCmrclNv ) }}</h1>
+										<h1 id="notif">{{ " %02d"|format(stats.prospectsCmrclNv ) }}</h1>
 									{% endif %}
 								</a>
 							</div>
@@ -80,7 +80,7 @@
 								</div>
 							{% endif %}
 							<!-- AJOUTER PROSPECT -->
-							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true or is_granted('ROLE_ADD_PROS') == true   %}
+							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') or is_granted('ROLE_ADD_PROS') == true   %}
 								<div class="col-md-3 col-sm-3 mb">
 									<div class="green-panel pn">
 										<div class="green-header">

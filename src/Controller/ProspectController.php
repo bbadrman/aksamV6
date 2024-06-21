@@ -107,7 +107,7 @@ class ProspectController extends AbstractController
             $prospect =  $prospectRepository->findAllNewProspects($data, null);
         } elseif (in_array('ROLE_TEAM', $user->getRoles(), true)) {
             // chef peut voire toutes les nouveaux prospects atacher a leur equipe
-            $prospect =  $prospectRepository->findByChefAffecter($data,  $user, null);
+            $prospect =  $prospectRepository->findByChefAffecterApi($data,  $user, null);
         } else {
             // cmrcl peut voire seulement les nouveaux prospects atacher a lui
             $prospect =  $prospectRepository->findByCmrclAffecter($data, $user, null);

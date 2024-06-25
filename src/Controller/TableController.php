@@ -24,10 +24,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class TableController extends AbstractController
 {
 
-    private $requestStack;
-    public function __construct(RequestStack $requestStack)
-    {
-        $this->requestStack = $requestStack;
+    public function __construct(
+
+        private RequestStack $requestStack,
+        private ProspectRepository $prospectRepository,
+        private Security $security
+    ) {
     }
 
     /**
@@ -46,26 +48,28 @@ class TableController extends AbstractController
      * afficher les prospects injoiniable
      * @Route("/unjoinable", name="app_unjoinable", methods={"GET", "POST"}) 
      */
-    public function unjoinable(Request $request,  ProspectRepository $prospectRepository, Security $security, StatsService $statsService): Response
+    public function unjoinable(Request $request): Response
 
     {
         $data = new SearchProspect();
         $data->page = $request->query->get('page', 1);
         $form = $this->createForm(SearchProspectType::class, $data);
         $form->handleRequest($this->requestStack->getCurrentRequest());
-        $user = $security->getUser();
+
+        $user = $this->security->getUser();
+        $roles = $user->getRoles();
         $prospect = [];
 
 
-        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
             // admi peut voire toutes les nouveaux prospects
-            $prospect =  $prospectRepository->findUnjoing($data, null);
-        } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+            $prospect =  $this->prospectRepository->findUnjoing($data, null);
+        } else if (in_array('ROLE_TEAM', $roles, true)) {
             // chef peut voire toutes les nouveaux prospects atacher a leur equipe
-            $prospect =  $prospectRepository->findUnjoingChef($data,  $user, null);
+            $prospect =  $this->prospectRepository->findUnjoingChef($data,  $user, null);
         } else {
             // cmrcl peut voire seulement les nouveaux prospects atacher a lui
-            $prospect =  $prospectRepository->findUnjoingCmrcl($data, $user, null);
+            $prospect =  $this->prospectRepository->findUnjoingCmrcl($data, $user, null);
         }
 
 
@@ -79,7 +83,7 @@ class TableController extends AbstractController
      * afficher les prospect no traiter 
      * @Route("/notrait", name="notrait_index", methods={"GET", "POST"}) 
      */
-    public function notrait(Request $request,  ProspectRepository $prospectRepository,  Security $security): Response
+    public function notrait(Request $request): Response
 
     {
         $data = new SearchProspect();
@@ -87,20 +91,22 @@ class TableController extends AbstractController
         $form = $this->createForm(SearchProspectType::class, $data);
         $form->handleRequest($this->requestStack->getCurrentRequest());
 
-        $user = $security->getUser();
+
+        $user = $this->security->getUser();
+        $roles = $user->getRoles();
 
         $prospect = [];
 
 
-        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
             // admi peut voire toutes les no traite
-            $prospect =  $prospectRepository->findNonTraiter($data, null);
-        } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+            $prospect =  $this->prospectRepository->findNonTraiter($data, null);
+        } else if (in_array('ROLE_TEAM', $roles, true)) {
             // chef peut voire toutes les no traite atacher a leur equipe
-            $prospect =  $prospectRepository->findNonTraiterChef($data, $user, null);
+            $prospect =  $this->prospectRepository->findNonTraiterChef($data, $user, null);
         } else {
             // cmrcl peut voire seulement les no traite  atacher a lui
-            $prospect =  $prospectRepository->findNonTraiterCmrcl($data, $user, null);
+            $prospect =  $this->prospectRepository->findNonTraiterCmrcl($data, $user, null);
         }
 
 
@@ -115,27 +121,29 @@ class TableController extends AbstractController
      * afficher les relance du jour
      * @Route("/relance", name="relancejour_index", methods={"GET", "POST"}) 
      */
-    public function relancejour(Request $request,  ProspectRepository $prospectRepository,  Security $security): Response
+    public function relancejour(Request $request,): Response
 
     {
         $data = new SearchProspect();
         $data->page = $request->query->get('page', 1);
         $form = $this->createForm(SearchProspectType::class, $data);
         $form->handleRequest($this->requestStack->getCurrentRequest());
-        $user = $security->getUser();
+
+        $user = $this->security->getUser();
+        $roles = $user->getRoles();
 
         $prospect = [];
 
 
-        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+        if (in_array('ROLE_SUPER_ADMIN',  $roles, true) || in_array('ROLE_ADMIN',  $roles, true)) {
             // admi peut voire toutes les relance du jour
-            $prospect =  $prospectRepository->findRelanced($data, null);
-        } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+            $prospect =  $this->prospectRepository->findRelanced($data, null);
+        } else if (in_array('ROLE_TEAM',  $roles, true)) {
             // chef peut voire toutes les relance du jour atacher a leur equipe
-            $prospect =  $prospectRepository->findRelancedChef($data, $user, null);
+            $prospect =  $this->prospectRepository->findRelancedChef($data, $user, null);
         } else {
             // cmrcl peut voire seulement les relance du jour  atacher a lui
-            $prospect =  $prospectRepository->findRelancedCmrcl($data, $user, null);
+            $prospect =  $this->prospectRepository->findRelancedCmrcl($data, $user, null);
         }
 
 
@@ -150,29 +158,29 @@ class TableController extends AbstractController
      * afficher les relance du jour
      * @Route("/relancenotraite", name="relancenotraite_index", methods={"GET", "POST"}) 
      */
-    public function relancenotraite(Request $request,  ProspectRepository $prospectRepository,  Security $security): Response
+    public function relancenotraite(Request $request): Response
 
     {
         $data = new SearchProspect();
         $data->page = $request->query->get('page', 1);
         $form = $this->createForm(SearchProspectType::class, $data);
         $form->handleRequest($this->requestStack->getCurrentRequest());
-        $user = $security->getUser();
-
+        $user = $this->security->getUser();
+        $roles = $user->getRoles();
         $prospect = [];
 
 
-        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
             // admi peut voire toutes les relance du jour
-            $prospect =  $prospectRepository->findRelancesNonTraitees($data, null);
+            $prospect =  $this->prospectRepository->findRelancesNonTraitees($data, null);
             // $numberOfProspects = count($prospect);
             // dd($numberOfProspects);
-        } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+        } else if (in_array('ROLE_TEAM', $roles, true)) {
             // chef peut voire toutes les relance du jour atacher a leur equipe
-            $prospect =  $prospectRepository->RelancesNonTraiteesChef($data, $user, null);
+            $prospect =   $this->prospectRepository->RelancesNonTraiteesChef($data, $user, null);
         } else {
             // cmrcl peut voire seulement les relance du jour  atacher a lui
-            $prospect =  $prospectRepository->RelancesNonTraiteesCmrcl($data, $user, null);
+            $prospect =   $this->prospectRepository->RelancesNonTraiteesCmrcl($data, $user, null);
         }
 
 

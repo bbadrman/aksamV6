@@ -27,7 +27,7 @@ class Prospect
 
     private $name;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', nullable: true, length: 255)]
 
     private $lastname;
 

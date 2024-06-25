@@ -23,15 +23,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class ClientController extends AbstractController
 {
-    private $requestStack;
-    private $entityManager;
 
-    public function __construct(RequestStack $requestStack, EntityManagerInterface $entityManager)
+
+    public function __construct(private RequestStack $requestStack, private EntityManagerInterface $entityManager)
     {
-
-        $this->requestStack = $requestStack;
-        $this->entityManager = $entityManager;
     }
+
+
+
     /**
      * @Route("/", name="client_index", methods={"GET"})
      */
@@ -60,11 +59,13 @@ class ClientController extends AbstractController
 
             return $this->render('client/index.html.twig', [
                 'clients' => $client,
+                dd($client),
                 'search_form' => $form->createView()
             ]);
         }
         return $this->render('client/search.html.twig', [
             'clients' => $client,
+
             'search_form' => $form->createView()
         ]);
     }

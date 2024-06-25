@@ -20,12 +20,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class DashboardController extends AbstractController
 {
 
-    private $requestStack;
 
-    public function __construct(RequestStack $requestStack)
-    {
 
-        $this->requestStack = $requestStack;
+    public function __construct(
+        private RequestStack $requestStack,
+        private ProspectRepository $prospectRepository,
+        private UserRepository $userRepository,
+        private  TeamRepository $teamRepository,
+        private StatsService $statsService,
+        private Security $security
+    ) {
     }
 
     /**
@@ -34,44 +38,44 @@ class DashboardController extends AbstractController
      
      * @return Response  
      */
-    public function index(Request $request,  ProspectRepository $prospectRepository, UserRepository $userRepository,  TeamRepository $teamRepository,  StatsService $statsService,  Security $security, RequestStack $requestStack): Response
+    public function index(Request $request,): Response
     {
         $data = new SearchProspect();
-        $user = $security->getUser();
+        $user = $this->security->getUser();
         if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
 
             // je recupere les prospects qui son pas encors affecter
             $data->page = $request->query->get('page', 1);
-            $prospect =  $prospectRepository->findAllSearch($data);
+            $prospect =  $this->prospectRepository->findAllSearch($data);
             // $prospectpas = $prospectRepository->findByUserPaAffecter();
             $request->getSession()->set('security', count($prospect));
             // $this->requestStack->getSession()->set('security', count($prospectpas));
         } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
 
             // je recupe seulement les prospects affecter au mon equipe
-            $prospect =  $prospectRepository->findOneByChef($user);
+            $prospect =  $this->prospectRepository->findOneByChef($user);
             $request->getSession()->set('security', count($prospect));
             // dd($prospect);
 
         } else {
 
-            $prospect =  $prospectRepository->findByUserConect($data, $user);
+            $prospect =  $this->prospectRepository->findByUserConect($data, $user);
 
             $request->getSession()->set('security', count($prospect));
         }
 
 
-        $requestStack->getSession()->set('security', count($prospect));
+        $this->requestStack->getSession()->set('security', count($prospect));
 
         // generer les données avec statistiques
-        $stats    = $statsService->getStats();
-        $prosStat =  $prospectRepository->findAll();
+        $stats    = $this->statsService->getStats();
+        $prosStat =  $this->prospectRepository->findAll();
 
         //si tu veux quand tu deconnecter redirect to connexion:
         // $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $users = $userRepository->findAll();
-        $team = $teamRepository->findByTeamConect($user);
-        $teams = $teamRepository->findAll();
+        $users = $this->userRepository->findAll();
+        $team = $this->teamRepository->findByTeamConect($user);
+        $teams = $this->teamRepository->findAll();
         // $teams = [];
         // dd($teams);  
         return $this->render('dashboard/index.html.twig', [
@@ -111,7 +115,7 @@ class DashboardController extends AbstractController
      * @return Response  
      */
 
-    public function list(TeamRepository $teamRepository, ProspectRepository $prospectRepository)
+    public function list(TeamRepository $teamRepository)
     {
 
         $teams = $teamRepository->findAll();

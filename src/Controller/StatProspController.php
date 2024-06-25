@@ -24,46 +24,33 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class StatProspController extends AbstractController
 {
 
-    private $requestStack;
 
-    public function __construct(RequestStack $requestStack)
-    {
-
-        $this->requestStack = $requestStack;
+    public function __construct(
+        private RequestStack $requestStack,
+        private TeamRepository $teamRepository,
+        private ProspectRepository $prospectRepository,
+        private ProductRepository $productRepository
+    ) {
     }
 
-
-    // #[Route('/{year}/{month}', name: 'prospects_stats', requirements: ['year' => '\d{4}', 'month' => '\d{1,2}'])]
-    // public function prospectsStats(int $year, int $month, ProspectRepository $prospectRepository): Response
-    // {
-    //     $prospects = $prospectRepository->findProspectsByMonth($year, $month);
-    //     $currentYear = (int) date('Y');
-
-    //     return $this->render('stat/stats.html.twig', [
-    //         'prospects' => $prospects,
-    //         'year' => $year,
-    //         'month' => $month,
-    //         'currentYear' => $currentYear,
-    //     ]);
-    // }
 
 
 
 
     #[Route('/calendrie', name: 'prospects_calandri')]
-    public function prospectsCalendrie(TeamRepository $teamRepository, ProspectRepository $prospectRepository): Response
+    public function prospectsCalendrie(): Response
     {
         $data = new SearchProspect();
         $form = $this->createForm(SearchStatType::class, $data);
         $form->handleRequest($this->requestStack->getCurrentRequest());
 
-        $teams = $teamRepository->findAll();
+        $teams = $this->teamRepository->findAll();
         $prospects = [];
 
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
             $startDate = $data->getStartDate();
             $endDate = $data->getEndDate();
-            $prospects = $prospectRepository->findByDateInterval($startDate, $endDate);
+            $prospects = $this->prospectRepository->findByDateInterval($startDate, $endDate);
         } else {
             // Sinon, affichez tous les prospects
             $prospects = [];
@@ -86,12 +73,12 @@ class StatProspController extends AbstractController
 
 
     #[Route('/product/{year}/{month}', name: 'prospects_product', requirements: ['year' => '\d{4}', 'month' => '\d{1,2}'])]
-    public function prospectsStatsTypeTest(int $year, int $month, ProspectRepository $prospectRepository, ProductRepository $productRepository): Response
+    public function prospectsStatsTypeTest(int $year, int $month): Response
     {
-        $products = $productRepository->findAll();
+        $products = $this->productRepository->findAll();
 
         // Fetch all prospects with team and product information for the month
-        $prospects = $prospectRepository->findByMonthWithTeamAndProduct($year, $month);
+        $prospects = $this->prospectRepository->findByMonthWithTeamAndProduct($year, $month);
 
         // Group prospects by team
         $prospectsByTeam = [];

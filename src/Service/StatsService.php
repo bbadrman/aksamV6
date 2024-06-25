@@ -115,6 +115,7 @@ class StatsService
         return $result;
     }
 
+
     // les nouveaux prospects cree ce jour affecter a mon equipe
     public function getProspectChefNv(User $user): int
     {

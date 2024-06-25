@@ -46,7 +46,7 @@ class ProspectType extends AbstractType
 
                     'placeholder' => 'Tapez le Prénom du Client'
                 ],
-                'required' => true,
+                'required' => false,
 
             ])
             ->add('phone', Type\TelType::class, [
@@ -83,13 +83,14 @@ class ProspectType extends AbstractType
             ])
             ->add('city', Type\TextType::class, [
                 'label' => 'Ville ',
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Ville du client',
                 ]
             ])
             ->add('adress', Type\TextareaType::class, [
                 'label' => 'Addresse complét (obligatoir)',
-
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Address compltét du client',
                 ]

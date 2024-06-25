@@ -39,48 +39,45 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ProspectController extends AbstractController
 {
 
-    private $requestStack;
-    private $entityManager;
 
-    public function __construct(RequestStack $requestStack, EntityManagerInterface $entityManager)
-    {
 
-        $this->requestStack = $requestStack;
-        $this->entityManager = $entityManager;
+    public function __construct(
+        private  RequestStack $requestStack,
+        private  EntityManagerInterface $entityManager,
+        private  ProspectRepository $prospectRepository,
+        private  Security $security
+    ) {
     }
 
 
-
-    /**
-     * afficher les nouveaux prospects 
-     * @Route("/newprospect", name="newprospect_index", methods={"GET", "POST"}) 
-     */
-    public function newprospect(Request $request,  ProspectRepository $prospectRepository,  Security $security): Response
+    // afficher les nouveaux prospects 
+    #[Route('/newprospect', name: 'newprospect_index', methods: ['GET', 'POST'])]
+    public function newprospect(Request $request): Response
 
     {
         $data = new SearchProspect();
         $data->page = $request->query->get('page', 1);
         $form = $this->createForm(SearchProspectType::class, $data);
         $form->handleRequest($this->requestStack->getCurrentRequest());
-        $prospect = [];
 
 
-        $user = $security->getUser();
-        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true) || in_array('ROLE_AFFECT', $user->getRoles(), true)) {
-            // admin peut voire toutes les nouveaux prospects
-            $prospect =  $prospectRepository->findByUserPaAffecter($data, null);
-        } elseif (in_array('ROLE_TEAM', $user->getRoles(), true)) {
-            // chef peut voire toutes les nouveaux prospects atacher a leur equipe
-            $prospect =  $prospectRepository->findByChefAffecter($data,  $user, null);
+
+        $user = $this->security->getUser();
+        $roles = $user->getRoles();
+        $prospects = [];
+
+        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_AFFECT', $roles, true)) {
+            $prospects = $this->prospectRepository->findByUserPaAffecter($data);
+        } elseif (in_array('ROLE_TEAM', $roles, true)) {
+            $prospects = $this->prospectRepository->findByChefAffecter($data, $user);
         } else {
-            // cmrcl peut voire seulement les nouveaux prospects atacher a lui
-            $prospect =  $prospectRepository->findByCmrclAffecter($data, $user, null);
+            $prospects = $this->prospectRepository->findByCmrclAffecter($data, $user);
         }
 
 
 
         return $this->render('prospect/index.html.twig', [
-            'prospects' => $prospect,
+            'prospects' => $prospects,
             'search_form' => $form->createView()
         ]);
     }
@@ -91,39 +88,36 @@ class ProspectController extends AbstractController
      */
     public function newprospectApi(
         Request $request,
-        ProspectRepository $prospectRepository,
-        Security $security,
         SerializerInterface $serializer
     ): JsonResponse {
-        $data = new SearchProspect();
-        $data->page = $request->query->get('page', 1);
-        $form = $this->createForm(SearchProspectType::class, $data);
-        $form->handleRequest($this->requestStack->getCurrentRequest());
-        $prospect = [];
 
-        $user = $security->getUser();
-        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true) || in_array('ROLE_AFFECT', $user->getRoles(), true)) {
+
+        $user = $this->security->getUser();
+        $roles = $user->getRoles();
+        $prospects = [];
+
+        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_AFFECT', $roles, true)) {
             // admin peut voire toutes les nouveaux prospects
-            $prospect =  $prospectRepository->findAllNewProspects($data, null);
-        } elseif (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+            $prospects =  $this->prospectRepository->findAllNewProspectsApi();
+        } elseif (in_array('ROLE_TEAM', $roles, true)) {
             // chef peut voire toutes les nouveaux prospects atacher a leur equipe
-            $prospect =  $prospectRepository->findByChefAffecterApi($data,  $user, null);
+            $prospects =  $this->prospectRepository->findByChefAffecterApi($user, null);
         } else {
             // cmrcl peut voire seulement les nouveaux prospects atacher a lui
-            $prospect =  $prospectRepository->findByCmrclAffecter($data, $user, null);
+            $prospects =  $this->prospectRepository->findByCmrclAffecterApi($user, null);
         }
 
         // Sérialiser les prospects
-        $jsonData = $serializer->serialize($prospect, 'json');
+        $jsonData = $serializer->serialize($prospects, 'json');
 
         return new JsonResponse($jsonData, 200, [], true);
     }
 
     /**
-     * les Relances à venir
-     * @Route("/avenir", name="avenir_index", methods={"GET", "POST"}) 
+     * les Relances à venir 
      */
-    public function avenir(Request $request,  ProspectRepository $prospectRepository,  Security $security): Response
+    #[Route('/avenir', name: 'avenir_index', methods: ['GET', 'POST'])]
+    public function avenir(Request $request,    Security $security): Response
 
     {
         $data = new SearchProspect();
@@ -131,19 +125,23 @@ class ProspectController extends AbstractController
         $form = $this->createForm(SearchProspectType::class, $data);
         $form->handleRequest($this->requestStack->getCurrentRequest());
 
+        $user = $this->security->getUser();
+        $roles = $user->getRoles();
+
+
         $prospect = [];
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
 
             $user = $security->getUser();
-            if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
                 // admi peut voire toutes les no traite
-                $prospect =  $prospectRepository->findAvenir($data, null);
-            } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+                $prospect =  $this->prospectRepository->findAvenir($data, null);
+            } else if (in_array('ROLE_TEAM', $roles, true)) {
                 // chef peut voire toutes les no traite atacher a leur equipe
-                $prospect =  $prospectRepository->findAvenirChef($data, $user, null);
+                $prospect =  $this->prospectRepository->findAvenirChef($data, $user, null);
             } else {
                 // cmrcl peut voire seulement les no traite  atacher a lui
-                $prospect =  $prospectRepository->findAvenirCmrcl($data, $user, null);
+                $prospect =  $this->prospectRepository->findAvenirCmrcl($data, $user, null);
             }
 
 
@@ -161,10 +159,9 @@ class ProspectController extends AbstractController
     }
 
 
-    /**
-     * @Route("/new", name="app_prospect_new", methods={"GET", "POST"}) 
-     */
-    public function new(Request $request, ProspectRepository $prospectRepository): Response
+
+    #[Route('/new', name: 'app_prospect_new', methods: ['GET', 'POST'])]
+    public function new(Request $request,): Response
     {
         $prospect = new Prospect();
         $productChoices = $this->entityManager->getRepository(Product::class)->createQueryBuilder('p')->getQuery()->getResult();
@@ -187,7 +184,7 @@ class ProspectController extends AbstractController
             }
 
             $prospect->setAutor($this->getUser());
-            $prospectRepository->add($prospect, true);
+            $this->prospectRepository->add($prospect, true);
 
             $this->addFlash('success', 'Votre Prospect a été ajouté avec succès!');
             return $this->redirectToRoute('newprospect_index', [], Response::HTTP_SEE_OTHER);
@@ -200,9 +197,8 @@ class ProspectController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/show/{id}", name="app_prospect_show", methods={"GET", "POST"}) 
-     */
+
+    #[Route('/show/{id}', name: 'app_prospect_show', methods: ['GET', 'POST'])]
     public function show(Prospect $prospect,  Request $request,  HistoryRepository $historyRepository)
     {
         $client = HttpClient::create();
@@ -282,17 +278,17 @@ class ProspectController extends AbstractController
      * pour affecter 
      * @Route("/{id}/edit", name="app_prospect_edit", methods={"GET", "POST"}) 
      */
-    public function edit(Request $request, Prospect $prospect, ProspectRepository $prospectRepository,  TeamRepository $teamRepository, Security $security): Response
+    public function edit(Request $request, Prospect $prospect,   TeamRepository $teamRepository): Response
     {
 
-        $user = $security->getUser();
+        $user = $this->security->getUser();
 
         $form = $this->createForm(ProspectAffectType::class, $prospect);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $prospectRepository->add($prospect, true);
+            $this->prospectRepository->add($prospect, true);
             foreach ($prospect->getRelanceds() as $relance) {
                 $relance->setProspect($prospect);
             }
@@ -343,7 +339,7 @@ class ProspectController extends AbstractController
      * @Route("/{id}/editsup", name="app_prospect_editsup", methods={"GET", "POST"}) 
      * @IsGranted("ROLE_SUPER_ADMIN", message="Tu ne peut pas acces a cet ressource") 
      */
-    public function editsup(Request $request, Prospect $prospect, ProspectRepository $productRepository): Response
+    public function editsup(Request $request, Prospect $prospect): Response
     {
 
         $productChoices = $this->entityManager->getRepository(Product::class)->createQueryBuilder('p')->getQuery()->getResult();
@@ -361,7 +357,7 @@ class ProspectController extends AbstractController
                 $product->addProspect($prospect);
             }
 
-            $productRepository->add($prospect, true);
+            $this->prospectRepository->add($prospect, true);
             $this->addFlash('info', 'Votre Prospect a été modifié avec succès!');
             return $this->redirect($request->headers->get('referer'));
         }

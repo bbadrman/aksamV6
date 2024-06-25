@@ -19,12 +19,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class ProductController extends AbstractController
 {
-    private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+
+    public function __construct(private EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
+
     /**
      * @Route("/", name="app_product_index", methods={"GET"}) 
      */

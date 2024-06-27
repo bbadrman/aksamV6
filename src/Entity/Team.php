@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\History;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TeamRepository;
 use ApiPlatform\Metadata\ApiResource;
@@ -33,8 +34,6 @@ class Team
 
 
     #[ORM\OneToMany(targetEntity: Prospect::class, mappedBy: "team")]
-
-
     private $prospects;
 
     #[ORM\OneToMany(mappedBy: 'team', targetEntity: Client::class)]
@@ -43,6 +42,9 @@ class Team
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'teams', cascade: ['persist'])]
     private Collection $users;
 
+    #[ORM\OneToMany(mappedBy: 'team', targetEntity: History::class)]
+    private Collection $histors;
+
 
     public function __construct()
     {
@@ -50,6 +52,7 @@ class Team
         $this->prospects = new ArrayCollection();
         $this->clients = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->histors = new ArrayCollection();
     }
 
     public function getId(): ?int

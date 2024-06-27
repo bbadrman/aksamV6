@@ -50,14 +50,14 @@ class Relanced
         }
     }
 
-    #[ORM\PrePersist]
-    #[ORM\PreUpdate]
-    public function updateRelacedAt(): void
-    {
-        if ($this->motifRelanced === '10') {
-            $this->relacedAt = new \DateTime();
-        }
-    }
+    // #[ORM\PrePersist]
+    // #[ORM\PreUpdate]
+    // public function updateRelacedAt(): void
+    // {
+    //     if ($this->motifRelanced === '10') {
+    //         $this->relacedAt = new \DateTime();
+    //     }
+    // }
 
     public function getId(): ?int
     {
@@ -80,14 +80,16 @@ class Relanced
     {
         return $this->relacedAt;
     }
+
     // si le relance en rdv pursit avec la date donne sino avec datenow
     public function setRelacedAt(?\DateTimeInterface $relacedAt): static
     {
-        if ($this->motifRelanced === '1') {
-            $this->relacedAt = $relacedAt;
-        } else {
-            $this->relacedAt = new \DateTime();
-        }
+        $this->relacedAt = $relacedAt;
+        // if ($this->motifRelanced === '1') {
+        //     $this->relacedAt = $relacedAt;
+        // } else {
+        //     $this->relacedAt = new \DateTime();
+        // }
 
         return $this;
     }

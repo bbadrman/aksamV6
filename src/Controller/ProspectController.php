@@ -15,6 +15,7 @@ use App\Form\RelancedType;
 use App\Search\SearchProspect;
 use App\Form\ProspectAffectType;
 use App\Form\SearchProspectType;
+use App\Repository\ClientRepository;
 use App\Repository\TeamRepository;
 use App\Repository\HistoryRepository;
 use App\Repository\ProspectRepository;
@@ -84,7 +85,7 @@ class ProspectController extends AbstractController
 
     /**
      * afficher les nouveaux prospects via API
-     * @Route("/newprospectApi", name="newprospectApi_index", methods={"GET", "POST"}) 
+     * @Route("/newprospectApi",  methods={"GET"}) 
      */
     public function newprospectApi(
         Request $request,
@@ -94,7 +95,7 @@ class ProspectController extends AbstractController
 
         $user = $this->security->getUser();
         $roles = $user->getRoles();
-        $prospects = [];
+        $prospects = 0;
 
         if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_AFFECT', $roles, true)) {
             // admin peut voire toutes les nouveaux prospects
@@ -109,7 +110,7 @@ class ProspectController extends AbstractController
 
         // Sérialiser les prospects
         $jsonData = $serializer->serialize($prospects, 'json');
-
+        dd($prospects);
         return new JsonResponse($jsonData, 200, [], true);
     }
 
@@ -216,35 +217,12 @@ class ProspectController extends AbstractController
         $gsmForm->handleRequest($request);
 
         if ($gsmForm->isSubmitted() && $gsmForm->isValid()) {
+            $this->entityManager->persist($prospect);
+            $this->entityManager->flush();
         }
 
-        $client = new Client();
-        // //ajouter client apartir de crée contrat
-        $prospectFirstName = $prospect->getName();
-        $prospectLastName = $prospect->getLastName();
-        $raisonSociale = $prospect->getRaisonSociale();
-        $team = $prospect->getTeam();
-        $cmrl = $prospect->getComrcl();
-        $date =   new \DateTime();
 
-
-        $client->setFirstName($prospectFirstName);
-        $client->setLastName($prospectLastName);
-        $client->setRaisonSociale($raisonSociale);
-        $client->setTeam($team);
-        $client->setCmrl($cmrl);
-        $client->setCreatAt($date);
-
-
-        $clientForm = $this->createForm(ClientType::class, $client);
-        $clientForm->handleRequest($request);
-
-        if ($clientForm->isSubmitted() && $clientForm->isValid()) {
-            // $clientRepository->add($client, true);
-            $this->entityManager->persist($client);
-            $this->addFlash('success', 'client ajoutée avec succès.');
-        }
-
+        // Gerer les relance 
         $relance = new Relanced();
         $relance->setProspect($prospect);
 
@@ -258,7 +236,49 @@ class ProspectController extends AbstractController
 
             // return $this->redirectToRoute('app_prospect_show', ['id' => $prospect->getId()]);
         }
-        $this->entityManager->flush();
+
+        // //ajouter client apartir de crée contrat
+        $clientEntity = new Client();
+        $clientEntity->setFirstName($prospect->getName());
+        $clientEntity->setLastName($prospect->getLastName());
+        $clientEntity->setRaisonSociale($prospect->getRaisonSociale());
+        $clientEntity->setTeam($prospect->getTeam());
+        $clientEntity->setCmrl($prospect->getComrcl());
+        $clientEntity->setCreatAt(new \DateTime());
+
+
+        // Handle the Client form submission
+        $clientForm = $this->createForm(ClientType::class, $clientEntity);
+        $clientForm->handleRequest($request);
+
+        //dd($clientForm);
+        if ($clientForm->isSubmitted()) {
+            if ($clientForm->isValid()) {
+                // Debugging output
+                $this->addFlash('debug', 'Client form is valid and submitted.');
+
+                $this->entityManager->persist($clientEntity);
+                $this->entityManager->flush(); // Flush ici pour s'assurer que les données sont enregistrées
+                $this->addFlash('success', 'Client ajouté avec succès.');
+            } else {
+                // Debugging output
+                $this->addFlash('debug', 'Client form is submitted but not valid.');
+
+                // Display errors
+                $errors = $clientForm->getErrors(true, false);
+                foreach ($errors as $error) {
+                    $this->addFlash('error', $error->getMessage());
+                }
+            }
+        }
+        // Flush here for Relance if not already flushed
+        if (!$clientForm->isSubmitted() || !$clientForm->isValid()) {
+            $this->entityManager->flush();
+        }
+
+
+
+        //$this->entityManager->flush();
 
         // $teamHistory = $this->getDoctrine()->getRepository(History::class)->findBy(['prospect' => $prospect]);
         $teamHistory = $historyRepository->findBy(['prospect' => $prospect]);

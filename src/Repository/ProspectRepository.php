@@ -255,10 +255,10 @@ class ProspectRepository extends ServiceEntityRepository
             ->setParameter('tomorrow', $tomorrow)
 
             //pour que soit seulement les motif not 2
-            ->andWhere('NOT EXISTS (
-                SELECT 1 FROM App\Entity\Relanced otherR
-                WHERE otherR.prospect = p AND otherR.motifRelanced = 2
-            )')
+            // ->andWhere('NOT EXISTS (
+            //     SELECT 1 FROM App\Entity\Relanced otherR
+            //     WHERE otherR.prospect = p AND otherR.motifRelanced = 2
+            // )')
 
             // joiner les tables en relation ManyToOne avec team
             ->leftJoin('p.team', 't')
@@ -361,7 +361,8 @@ class ProspectRepository extends ServiceEntityRepository
             ->select('p, t, f, r')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
-            ->leftJoin('p.relanceds', 'r', 'WITH', 'r.motifRelanced = 1')
+            ->leftJoin('p.relanceds', 'r')
+            //->leftJoin('p.relanceds', 'r', 'WITH', 'r.motifRelanced = 1')
 
             // ->leftJoin('p.relanceds', 'r') 
 
@@ -487,16 +488,12 @@ class ProspectRepository extends ServiceEntityRepository
             ->where('p.team IN (:teams)')
             ->setParameter('teams', $teams)
 
-
-            ->andWhere('(r.motifRelanced IS NULL OR r.motifRelanced = 1)')
+            //->andWhere('(r.motifRelanced IS NULL OR r.motifRelanced = 1)') 
 
             ->andWhere('r.relacedAt >= :dayBeforeYesterday AND r.relacedAt <= :yesterday')
             ->setParameter('dayBeforeYesterday', $dayBeforeYesterday)
             ->setParameter('yesterday', $yesterday)
-            ->andWhere('p.comrcl is NOT NULL')
-
-
-
+            //->andWhere('p.comrcl is NOT NULL') 
 
             ->andWhere('p.id NOT IN (
                 SELECT pr.id FROM App\Entity\Prospect pr
@@ -599,12 +596,12 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('p.comrcl', 'f')
             ->andWhere('p.comrcl = :val')
             ->setParameter('val', $id)
-            ->andWhere('(r.motifRelanced IS NULL OR r.motifRelanced = 1)')
+            //->andWhere('(r.motifRelanced IS NULL OR r.motifRelanced = 1)')
 
             ->andWhere('r.relacedAt >= :dayBeforeYesterday AND r.relacedAt <= :yesterday')
             ->setParameter('dayBeforeYesterday', $dayBeforeYesterday)
             ->setParameter('yesterday', $yesterday)
-            ->andWhere('p.comrcl is NOT NULL')
+            //->andWhere('p.comrcl is NOT NULL')
 
 
             ->andWhere('p.id NOT IN (
@@ -612,7 +609,6 @@ class ProspectRepository extends ServiceEntityRepository
                 JOIN pr.relanceds rel
                 WHERE rel.relacedAt > :endOfYesterday
             )')->setParameter('endOfYesterday', $yesterday);
-
 
         if ((!empty($search->q))) {
             $query = $query
@@ -715,10 +711,10 @@ class ProspectRepository extends ServiceEntityRepository
             ->setParameter('tomorrow', $tomorrow)
 
 
-            ->andWhere('NOT EXISTS (
-                SELECT 1 FROM App\Entity\Relanced otherR
-                WHERE otherR.prospect = p AND otherR.motifRelanced = 2
-            )')
+            // ->andWhere('NOT EXISTS (
+            //     SELECT 1 FROM App\Entity\Relanced otherR
+            //     WHERE otherR.prospect = p AND otherR.motifRelanced = 2
+            // )')
             // joiner les tables en relation ManyToOne avec team
             ->leftJoin('p.team', 't')
 
@@ -829,10 +825,10 @@ class ProspectRepository extends ServiceEntityRepository
             //     WHERE otherR.prospect = p AND otherR.motifRelanced != 1
             // )')
 
-            ->andWhere('NOT EXISTS (
-                SELECT 1 FROM App\Entity\Relanced otherR
-                WHERE otherR.prospect = p AND otherR.motifRelanced = 2
-            )')
+            // ->andWhere('NOT EXISTS (
+            //     SELECT 1 FROM App\Entity\Relanced otherR
+            //     WHERE otherR.prospect = p AND otherR.motifRelanced = 2
+            // )')
             // joiner les tables en relation ManyToOne avec team
             ->leftJoin('p.team', 't')
 
@@ -935,16 +931,18 @@ class ProspectRepository extends ServiceEntityRepository
             ->select('p, r')
 
             ->leftJoin('p.relanceds', 'r')
-            ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
+            ->Where('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
             ->setParameter('startOfDay', $today)
             ->setParameter('endOfDay', $endOfDay)
-            ->andWhere('r.motifRelanced = 1')
+            //->andWhere('r.motifRelanced = 1')
+            // ->andWhere('r.motifRelanced IN (:motifs)')
+            // ->setParameter('motifs', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
 
             // joiner les tables en relation manytomany avec fonction
             // ->leftJoin('p.comrcl', 'f')
 
-            ->orderBy('p.id', 'DESC');
+            ->orderBy('p.id', 'ASC');
 
 
 
@@ -1044,7 +1042,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
             ->setParameter('startOfDay', $today)
             ->setParameter('endOfDay', $endOfDay)
-            ->andWhere('r.motifRelanced = 1')
+            //->andWhere('r.motifRelanced = 1')
 
 
             // joiner les tables en relation manytomany avec fonction
@@ -1131,7 +1129,6 @@ class ProspectRepository extends ServiceEntityRepository
     public function findRelancedCmrcl(SearchProspect $search, $id): PaginationInterface
     {
 
-
         $today = new \DateTime();
         $today->setTime(0, 0, 0);
 
@@ -1140,20 +1137,16 @@ class ProspectRepository extends ServiceEntityRepository
 
         $query = $this->createQueryBuilder('p')
             ->select('p, r')
-            ->andWhere('p.comrcl = :val')
+            ->Where('p.comrcl = :val')
             ->setParameter('val', $id)
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
             ->setParameter('startOfDay', $today)
             ->setParameter('endOfDay', $endOfDay)
-            ->andWhere('r.motifRelanced = 1')
+            //->andWhere('r.motifRelanced = 1') 
 
-
-            // joiner les tables en relation manytomany avec fonction
-
-
+            // joiner les tables en relation manytomany avec fonction 
             ->orderBy('p.id', 'DESC');
-
 
 
         if ((!empty($search->q))) {
@@ -1200,7 +1193,6 @@ class ProspectRepository extends ServiceEntityRepository
                 ->andWhere('p.creatAt <= :dd')
                 ->setParameter('dd', $search->dd);
         }
-
 
 
         if (!empty($search->s)) {
@@ -1344,7 +1336,9 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
             ->andWhere('p.team IS NOT NULL')  // chef d'equipe affecté 
-            ->andWhere('p.comrcl IS NOT NULL')
+            //->andWhere('p.comrcl IS NOT NULL')
+            ->andWhere('p.comrcl IS NULL OR p.comrcl = :val') // Filtrer les prospects no affectés et affect au chef aussi
+            ->setParameter('val', $user)
             ->andWhere('p.creatAt <= :yesterday')
             ->setParameter('yesterday', $yesterday)
             ->leftJoin('p.comrcl', 'f')
@@ -1963,23 +1957,27 @@ class ProspectRepository extends ServiceEntityRepository
         );
     }
     // afficher les nouveaux prospects via api pour avoire notification
-    public function findAllNewProspectsApi(): array
+    // public function findAllNewProspectsApi(): array
+    // {
+    //     $query = $this->createQueryBuilder('p')
+    //         ->select('p')
+    //         ->andWhere("p.comrcl is NULL")
+    //         ->andWhere("p.team is NULL");
+    //     return $query->getQuery()->getResult();
+    // }
+
+    public function findAllNewProspectsApi(): int
     {
         $query = $this->createQueryBuilder('p')
-            ->select('p, t, f')
+            ->select('COUNT(p.id)')
             ->andWhere("p.comrcl is NULL")
-            ->andWhere("p.team is NULL")
-            ->orderBy('p.id', 'DESC')
-            ->leftJoin('p.team', 't')
-            ->leftJoin('p.comrcl', 'f');
+            ->andWhere("p.team is NULL");
 
-
-        return $query->getQuery()->getResult();
+        return (int) $query->getQuery()->getSingleScalarResult();
     }
 
-
     /**
-     * afficher afficher les nouveaux prospects du chef
+     * return prospect affect aux equipes du chef ou bien au chef meme
      * @return Prospect[] Returns an array of Prospect objects
      * 
      * @param SearchProspect $search
@@ -1987,20 +1985,24 @@ class ProspectRepository extends ServiceEntityRepository
      */
     public function findByChefAffecter(SearchProspect $search, User $user): PaginationInterface
     {
-        $team = $user->getTeams();
+        //$team = $user->getTeams();
         // $today = new \DateTime();
         // $today->setTime(0, 0, 0);
 
-
+        $team = $user->getTeams();
+        if ($team->isEmpty()) {
+            return [];
+        }
         // get selement les prospects qui n'as pas encors affectter a un user
         $query = $this->createQueryBuilder('p')
             ->select('p, t, f')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
-            ->where('p.team IN (:team)')
+            ->where('p.team IN (:teams) ')
+            ->setParameter('teams', $team)
             ->andWhere('p.team IS NOT NULL')
-            ->andWhere('p.comrcl IS NULL') // Filtrer les prospects non affectés à un commercial
-            ->setParameter('team', $team)
+            ->andWhere('p.comrcl IS NULL OR p.comrcl = :val') // Filtrer les prospects no affectés et affect au chef aussi
+            ->setParameter('val', $user)
             ->orderBy('p.id', 'DESC');
 
         if ((!empty($search->q))) {
@@ -2094,7 +2096,7 @@ class ProspectRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
-    // afficher les prospects qui n ont pas du team et cmrcl
+    // afficher les prospects qui sont affect au cmrcl
     /**
      * @return Prospect[] Returns an array of Prospect objects
      * 
@@ -2112,8 +2114,8 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('p.relanceds', 'r')
             ->leftJoin('p.histories', 'h')
             ->where('p.comrcl = :val')
-            ->andWhere('r.prospect IS NULL')
-            ->andWhere('h.actionDate >= :endOfYesterday')
+            // ->andWhere('r.prospect IS NULL')
+            // ->andWhere('h.actionDate >= :endOfYesterday')
             ->setParameter('val', $id)
             ->setParameter('endOfYesterday', $yesterday)
             ->orderBy('p.id', 'DESC');

@@ -17,21 +17,21 @@ class ClientType extends AbstractType
         $builder
             ->add('firstname', Type\TextType::class, [
                 'label' => 'Prénom',
-                'required' => true,
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Merci de saisir le prénom du client'
                 ]
             ])
             ->add('lastname', Type\TextType::class, [
                 'label' => 'Nom',
-                'required' => true,
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Merci de saisir le nom du client'
                 ]
             ])
             ->add('phone', Type\TextType::class, [
                 'label' => 'Téléphone 2',
-                'required' => true,
+                'required' => false,
                 'attr' => [
                     'placeholder' => 'Merci de saisir le numéro de téléphone'
                 ]

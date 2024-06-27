@@ -105,7 +105,7 @@ class StatsService
         $qb = $this->manager->createQueryBuilder();
         $qb->select('COUNT(p)')
             ->from('App\Entity\Prospect', 'p')
-            ->andWhere("p.comrcl is NULL")
+            ->Where("p.comrcl is NULL")
             ->andWhere("p.team is NULL");
 
 
@@ -131,8 +131,10 @@ class StatsService
         $qb->select('COUNT(DISTINCT p.id)')
             ->from('App\Entity\Prospect', 'p')
             ->where('p.team IN (:teams)')
-            ->andWhere('p.comrcl IS NULL')
-            ->setParameter('teams', $teams);
+            //->andWhere('p.comrcl IS NULL')
+            ->andWhere('p.comrcl IS NULL OR p.comrcl = :val')
+            ->setParameter('teams', $teams)
+            ->setParameter('val', $user);
         // ->andWhere('p.creatAt >= :startOfDay')
 
         // ->setParameter('startOfDay', $today);
@@ -181,7 +183,7 @@ class StatsService
 
 
 
-    // caclcule le total du prospect relancer à venir
+    // caclcule le total du prospect relancer à venir pour admin
     public function getProspectRelanceAvenir()
     {
         $today = new \DateTime('tomorrow');
@@ -194,12 +196,12 @@ class StatsService
 
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.relacedAt >= :tomorrow')
-            ->setParameter('tomorrow', $today)
-            //pour count seuelement qui ont motifrlc 1 pas avec les coumun
-            ->andWhere('NOT EXISTS (
-                SELECT 1 FROM App\Entity\Relanced otherR
-                WHERE otherR.prospect = p AND otherR.motifRelanced = 2
-            )');
+            ->setParameter('tomorrow', $today);
+        //pour count seuelement qui ont motifrlc 1 pas avec les coumun
+        // ->andWhere('NOT EXISTS (
+        //     SELECT 1 FROM App\Entity\Relanced otherR
+        //     WHERE otherR.prospect = p AND otherR.motifRelanced = 2
+        // )');
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
 
@@ -226,10 +228,10 @@ class StatsService
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.relacedAt >= :tomorrow')
 
-            ->andWhere('NOT EXISTS (
-                SELECT 1 FROM App\Entity\Relanced otherR
-                WHERE otherR.prospect = p AND otherR.motifRelanced = 2
-            )')
+            // ->andWhere('NOT EXISTS (
+            //     SELECT 1 FROM App\Entity\Relanced otherR
+            //     WHERE otherR.prospect = p AND otherR.motifRelanced = 2
+            // )')
             ->setParameter('teams', $teams)
             ->setParameter('tomorrow', $today);;
 
@@ -255,11 +257,13 @@ class StatsService
             ->setParameter('val', $id)
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.relacedAt >= :tomorrow')
-            ->setParameter('tomorrow', $today)
-            ->andWhere('NOT EXISTS (
-                SELECT 1 FROM App\Entity\Relanced otherR
-                WHERE otherR.prospect = p AND otherR.motifRelanced = 2
-            )');
+            ->setParameter('tomorrow', $today);
+        // ->andWhere('NOT EXISTS (
+        //     SELECT 1 FROM App\Entity\Relanced otherR
+        //     WHERE otherR.prospect = p AND otherR.motifRelanced = 2
+        // )');
+
+
 
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
@@ -282,8 +286,8 @@ class StatsService
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
             ->setParameter('startOfDay', $today)
-            ->setParameter('endOfDay', $endOfDay)
-            ->andWhere('r.motifRelanced = 1');
+            ->setParameter('endOfDay', $endOfDay);
+        // ->andWhere('r.motifRelanced = 1');
 
 
         $query = $qb->getQuery();
@@ -313,7 +317,7 @@ class StatsService
             ->where('p.team IN (:teams)')
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
-            ->andWhere('r.motifRelanced = 1')
+            //->andWhere('r.motifRelanced = 1')
             ->setParameter('teams', $teams)
             ->setParameter('startOfDay', $today)
             ->setParameter('endOfDay', $endOfDay);
@@ -342,8 +346,8 @@ class StatsService
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
             ->setParameter('startOfDay', $today)
-            ->setParameter('endOfDay', $endOfDay)
-            ->andWhere('r.motifRelanced = 1');;
+            ->setParameter('endOfDay', $endOfDay);
+        //->andWhere('r.motifRelanced = 1');
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
 
@@ -497,7 +501,9 @@ class StatsService
             ->andWhere('r.prospect IS NULL')
 
             ->andWhere('p.team IS NOT NULL')  // chef d'equipe affecté 
-            ->andWhere('p.comrcl IS NOT NULL')
+            //->andWhere('p.comrcl IS NOT NULL')
+            ->andWhere('p.comrcl IS NULL OR p.comrcl = :val') // Filtrer les prospects no affectés et affect au chef aussi
+            ->setParameter('val', $user)
             ->andWhere('p.creatAt <= :yesterday')
             ->setParameter('teams', $teams)
             ->setParameter('yesterday', $yesterday)

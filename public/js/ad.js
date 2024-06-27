@@ -371,20 +371,17 @@ var subresilContainer2 = document.getElementById('subMotivContrat-container');
 
 if (resilField !== null) {
 	resilField.addEventListener('change', function () {
-		if (resilField.value === '1') {
+		if (resilField.value === '1' || resilField.value === '2' || resilField.value === '3' || resilField.value === '4' || resilField.value === '5' || resilField.value === '6' || resilField.value === '7' || resilField.value === '8' || resilField.value === '9') {
 			subresilContainer1.style.display = 'block';
 			subresilContainer2.style.display = 'none';
 			commentField.style.display = 'block'; // Afficher le champ comment
 
 		} else if (resilField.value === '10') {
-			subresilContainer1.style.display = 'none';
+			//pour rederct to rout 
+			//window.location.href = "/client/new-client";
+			// pour manipilie les champs
+			subresilContainer1.style.display = 'block';
 			subresilContainer2.style.display = 'block';
-			commentField.style.display = 'block'; // Cacher le champ comment
-
-		}
-		else if (resilField.value === '2' || resilField.value === '3' || resilField.value === '4' || resilField.value === '5' || resilField.value === '6' || resilField.value === '7' || resilField.value === '8' || resilField.value === '9') {
-			subresilContainer1.style.display = 'none';
-			subresilContainer2.style.display = 'none';
 			commentField.style.display = 'block'; // Cacher le champ comment
 
 		}

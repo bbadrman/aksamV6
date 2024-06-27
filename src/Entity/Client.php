@@ -21,19 +21,16 @@ class Client
     #[ORM\Column(type: "integer")]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Length(min: 2, max: 10, minMessage: "Le prénom doit contenir au moins deux caractères", maxMessage: "Le prénom doit contenir au maximum dix caractères")]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $firstname;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Length(min: 2, max: 10, minMessage: "Le nom doit contenir au moins deux caractères", maxMessage: "Le nom doit contenir au maximum dix caractères")]
     private $lastname;
 
-    #[ORM\Column(type: 'string', length: 20)]
+    #[ORM\Column(type: 'string', length: 20, nullable: true)]
     private $phone;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    #[Assert\Email(message: "Adresse e-mail non valide")]
     private $email;
 
     #[ORM\Column(length: 255, nullable: true)]

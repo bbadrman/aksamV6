@@ -37,7 +37,7 @@ class RelancedType extends AbstractType
                         'Injoignable' => '2',
 
                     ],
-                    'Attente Close' => '4',
+                    'Attente DOC' => '4',
                     'Tarification' => '5',
                     'Prise de Décision ' => '6',
                     'Cloture ' => [
@@ -49,7 +49,8 @@ class RelancedType extends AbstractType
                     ],
                 ],
                 'expanded' => false,
-                'multiple' => false
+                'multiple' => false,
+                'attr' => ['id' => 'motifRelanced']
             ])
             ->add('relacedAt', DateTimeType::class, [
                 'label' => 'Date de Relance *',

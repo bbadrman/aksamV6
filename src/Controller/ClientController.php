@@ -13,7 +13,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -25,7 +27,7 @@ class ClientController extends AbstractController
 {
 
 
-    public function __construct(private RequestStack $requestStack, private EntityManagerInterface $entityManager)
+    public function __construct(private RequestStack $requestStack, private EntityManagerInterface $entityManager, private ClientRepository $clientRepository,)
     {
     }
 
@@ -34,7 +36,7 @@ class ClientController extends AbstractController
     /**
      * @Route("/", name="client_index", methods={"GET"})
      */
-    public function index(Request $request,  ClientRepository $clientRepository,  Security $security): Response
+    public function index(Request $request,  Security $security): Response
     {
         $data = new SearchClient();
         $data->page = $request->query->get('page', 1);
@@ -47,19 +49,19 @@ class ClientController extends AbstractController
             $user = $security->getUser();
             if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
                 // admi peut voire toutes les nouveaux client
-                $client =  $clientRepository->findClientAdmin($data, null);
+                $client =  $this->clientRepository->findClientAdmin($data, null);
             } elseif (in_array('ROLE_TEAM', $user->getRoles(), true)) {
                 // chef peut voire toutes les nouveaux client atacher a leur equipe
-                $client =  $clientRepository->findClientChef($data,  $user, null);
+                $client =  $this->clientRepository->findClientChef($data,  $user, null);
             } else {
                 // cmrcl peut voire seulement les nouveaux client atacher a lui
-                $client =  $clientRepository->findClientCmrcl($data, $user, null);
+                $client =  $this->clientRepository->findClientCmrcl($data, $user, null);
             }
 
 
             return $this->render('client/index.html.twig', [
                 'clients' => $client,
-                dd($client),
+
                 'search_form' => $form->createView()
             ]);
         }
@@ -74,9 +76,8 @@ class ClientController extends AbstractController
      * @Route("/new", name="client_new", methods={"GET", "POST"})
      * @Route("/new/{id}", name="client_new_with_id", methods={"GET", "POST"}, requirements={"id"="\d+"})
      */
-    public function new(Request $request, ClientRepository $clientRepository, ProspectRepository  $prospectRepository, $id = null): Response
+    public function new(Request $request, $id = null): Response
     {
-
 
 
         $client = new Client();
@@ -84,7 +85,7 @@ class ClientController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $clientRepository->add($client, true);
+            $this->clientRepository->add($client, true);
             $this->addFlash('success', 'Le client a été ajouté avec succès!');
             return $this->redirectToRoute('client_new', [], Response::HTTP_SEE_OTHER);
         }
@@ -94,6 +95,45 @@ class ClientController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    /**
+     * @Route("/new-client", name="client_add", methods={"GET", "POST"}) 
+     */
+    public function add(Request $request, ValidatorInterface $validator): JsonResponse
+    {
+
+        $client = new Client();
+
+        //$client->setName($request->get('name'));
+
+        //$client->setDescription($request->get('description'));
+        // dump($fonction);
+        // die();
+        $errors = $validator->validate($client);
+
+        $errorMessages = array();
+
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
+                $errorMessages[] = $error->getMessage();
+            }
+            return $this->json([
+                'status' => 400,
+                'errors' => $errorMessages,
+            ]);
+        } else {
+            $this->entityManager->persist($client);
+            $this->entityManager->flush();
+
+            return $this->json([
+                'status' => 200,
+                'message' => 'Fonction a bien été ajouté',
+            ]);
+        }
+    }
+
+
+
 
 
     /**
@@ -111,13 +151,13 @@ class ClientController extends AbstractController
      * @Route("/{id}/edit", name="client_edit", methods={"GET", "POST"})
      * @IsGranted("ROLE_USER", message="Tu ne peut pas acces a cet ressource")
      */
-    public function edit(Request $request, Client $client, ClientRepository $clientRepository): Response
+    public function edit(Request $request, Client $client): Response
     {
         $form = $this->createForm(ClientType::class, $client);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $clientRepository->add($client, true);
+            $this->clientRepository->add($client, true);
             $this->addFlash('info', 'le Client a été modifié avec succès!');
             return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -131,10 +171,10 @@ class ClientController extends AbstractController
     /**
      * @Route("/{id}", name="client_delete", methods={"POST"}) 
      */
-    public function delete(Request $request, Client $client, ClientRepository $clientRepository): Response
+    public function delete(Request $request, Client $client): Response
     {
         if ($this->isCsrfTokenValid('delete' . $client->getId(), $request->request->get('_token'))) {
-            $clientRepository->remove($client, true);
+            $this->clientRepository->remove($client, true);
         }
         $this->addFlash('danger', 'le Client a été supprimé avec succès!');
         return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);

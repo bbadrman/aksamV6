@@ -138,7 +138,7 @@ class TeamRepository extends ServiceEntityRepository
     public function findByTeamConect($id): array
     {
 
-        return $this->createQueryBuilder('t')
+        $result =  $this->createQueryBuilder('t')
             ->join('t.users', 'u')
             ->andWhere('u.id = :val')
             ->setParameter('val', $id)
@@ -146,6 +146,9 @@ class TeamRepository extends ServiceEntityRepository
             ->setMaxResults(10)
             ->getQuery()
             ->getResult();
+
+
+        return $result;
     }
 
     public function findAllOrderByAscNameQuiryBuilder(): QueryBuilder

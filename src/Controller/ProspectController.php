@@ -315,8 +315,7 @@ class ProspectController extends AbstractController
 
             // history of prospect affect
             $teamHistory = new History();
-            $teamHistory->setProspect($prospect); // $prospect est votre instance de Prospect
-
+            $teamHistory->setProspect($prospect); // $prospect est votre instance de Prospect 
 
             if ($prospect->getTeam() !== null && $prospect->getComrcl() !== null) {
                 $actionType =  $prospect->getTeam()->getName() . ' et commercial ' . $prospect->getComrcl()->getUserIdentifier(); // Les deux sont associés
@@ -337,7 +336,6 @@ class ProspectController extends AbstractController
             $this->entityManager->flush();
 
 
-
             $this->addFlash('info', 'Votre Prospect a été affecté avec succès!');
             //pour reste a mon page 
             return $this->redirect($request->headers->get('referer'));
@@ -346,6 +344,7 @@ class ProspectController extends AbstractController
         }
         $teams = $teamRepository->findAll();
         $team = $teamRepository->findByTeamConect($user);
+
         return $this->renderForm('partials/_show_modal.html.twig', [
             'prospect' => $prospect,
             'form' => $form,

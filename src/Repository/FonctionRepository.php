@@ -22,11 +22,10 @@ class FonctionRepository extends ServiceEntityRepository
     /**
      * @var PaginatorInterface
      */
-    private $paginator;
-    public function __construct(ManagerRegistry $registry,  PaginatorInterface $paginator)
+
+    public function __construct(ManagerRegistry $registry, private  PaginatorInterface $paginator)
     {
         parent::__construct($registry, Fonction::class);
-        $this->paginator = $paginator;
     }
 
     public function add(Fonction $entity, bool $flush = false): void

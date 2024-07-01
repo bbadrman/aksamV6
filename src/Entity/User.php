@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use DateTime;
 use Doctrine\DBAL\Types\Types;
-use ORM\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use ApiPlatform\Metadata\ApiResource;

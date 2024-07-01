@@ -26,11 +26,9 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
  */
 class UserController extends AbstractController
 {
-    private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
     /**

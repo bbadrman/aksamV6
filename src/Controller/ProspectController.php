@@ -85,32 +85,35 @@ class ProspectController extends AbstractController
 
     /**
      * afficher les nouveaux prospects via API
-     * @Route("/newprospectApi",  methods={"GET"}) 
+     * @Route("/newprospectApi", name="newprospectApi_index", methods={"GET", "POST"}) 
      */
     public function newprospectApi(
         Request $request,
+        ProspectRepository $prospectRepository,
+        Security $security,
         SerializerInterface $serializer
     ): JsonResponse {
+        $data = new SearchProspect();
+        $data->page = $request->query->get('page', 1);
+        $form = $this->createForm(SearchProspectType::class, $data);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+        $prospect = [];
 
-
-        $user = $this->security->getUser();
-        $roles = $user->getRoles();
-        $prospects = 0;
-
-        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_AFFECT', $roles, true)) {
+        $user = $security->getUser();
+        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true) || in_array('ROLE_AFFECT', $user->getRoles(), true)) {
             // admin peut voire toutes les nouveaux prospects
-            $prospects =  $this->prospectRepository->findAllNewProspectsApi();
-        } elseif (in_array('ROLE_TEAM', $roles, true)) {
+            $prospect =  $prospectRepository->findAllNewProspectsApi($data, null);
+        } elseif (in_array('ROLE_TEAM', $user->getRoles(), true)) {
             // chef peut voire toutes les nouveaux prospects atacher a leur equipe
-            $prospects =  $this->prospectRepository->findByChefAffecterApi($user, null);
+            $prospect =  $prospectRepository->findByChefAffecter($data,  $user, null);
         } else {
             // cmrcl peut voire seulement les nouveaux prospects atacher a lui
-            $prospects =  $this->prospectRepository->findByCmrclAffecterApi($user, null);
+            $prospect =  $prospectRepository->findByCmrclAffecter($data, $user, null);
         }
 
         // Sérialiser les prospects
-        $jsonData = $serializer->serialize($prospects, 'json');
-        dd($prospects);
+        $jsonData = $serializer->serialize($prospect, 'json');
+
         return new JsonResponse($jsonData, 200, [], true);
     }
 

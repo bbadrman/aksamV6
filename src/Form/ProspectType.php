@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Entity\Product;
 use App\Entity\Prospect;
-use App\Repository\UserRepository;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
@@ -19,13 +18,6 @@ use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 class ProspectType extends AbstractType
 {
 
-    private $userRepository;
-
-
-    public function __construct(UserRepository $userRepository)
-    {
-        $this->userRepository = $userRepository;
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

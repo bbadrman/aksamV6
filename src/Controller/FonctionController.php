@@ -22,10 +22,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class FonctionController extends AbstractController
 {
-    private $entityManager;
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
     /**
@@ -65,9 +63,9 @@ class FonctionController extends AbstractController
         // dump($fonction);
         // die();
         $errors = $validator->validate($fonction);
-        
+
         $errorMessages = array();
-          
+
         if (count($errors) > 0) {
             foreach ($errors as $error) {
                 $errorMessages[] = $error->getMessage();

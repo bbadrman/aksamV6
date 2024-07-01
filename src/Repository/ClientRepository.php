@@ -5,10 +5,8 @@ namespace App\Repository;
 use App\Entity\User;
 use App\Entity\Client;
 use App\Search\SearchClient;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Component\Security\Core\Security;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
@@ -23,18 +21,10 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 class ClientRepository extends ServiceEntityRepository
 {
 
-    private $entityManager;
-    private $paginator;
-    private $security;
 
-
-    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager, PaginatorInterface $paginator, Security $security)
+    public function __construct(private ManagerRegistry $registry,  private PaginatorInterface $paginator)
     {
         parent::__construct($registry, Client::class);
-
-        $this->entityManager = $entityManager;
-        $this->paginator = $paginator;
-        $this->security = $security;
     }
 
 

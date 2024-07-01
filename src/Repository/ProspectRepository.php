@@ -3,13 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\User;
-use App\Entity\Prospect;;
-
+use App\Entity\Prospect;
 use App\Search\SearchProspect;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Component\Security\Core\Security;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
@@ -1956,7 +1953,7 @@ class ProspectRepository extends ServiceEntityRepository
 
         );
     }
-    // afficher les nouveaux prospects via api pour avoire notification
+    //afficher les nouveaux prospects via api pour avoire notification
     // public function findAllNewProspectsApi(): array
     // {
     //     $query = $this->createQueryBuilder('p')
@@ -1966,15 +1963,96 @@ class ProspectRepository extends ServiceEntityRepository
     //     return $query->getQuery()->getResult();
     // }
 
-    public function findAllNewProspectsApi(): int
+    public function findAllNewProspectsApi(SearchProspect $search): array
     {
         $query = $this->createQueryBuilder('p')
-            ->select('COUNT(p.id)')
+            ->select('p, t, f')
             ->andWhere("p.comrcl is NULL")
-            ->andWhere("p.team is NULL");
+            ->andWhere("p.team is NULL")
+            ->orderBy('p.id', 'DESC')
+            ->leftJoin('p.team', 't')
+            ->leftJoin('p.comrcl', 'f');
 
-        return (int) $query->getQuery()->getSingleScalarResult();
+        if (!empty($search->q)) {
+            $query = $query
+                ->andWhere('p.name LIKE :q')
+                ->setParameter('q', "%{$search->q}%");
+        }
+
+        if (!empty($search->m)) {
+            $query = $query
+                ->andWhere('p.lastname LIKE :m')
+                ->setParameter('m', "%{$search->m}%");
+        }
+
+        if (!empty($search->r)) {
+            $query = $query
+                ->andWhere('f.username LIKE :r')
+                ->setParameter('r', "%{$search->r}%");
+        }
+
+        if (!empty($search->g)) {
+            $query = $query
+                ->andWhere('p.email LIKE :g')
+                ->setParameter('g', "%{$search->g}%");
+        }
+
+        if (!empty($search->team)) {
+            $query = $query
+                ->andWhere('t.name LIKE :team')
+                ->setParameter('team', "%{$search->team}%");
+        }
+
+        if (!empty($search->l)) {
+            $query = $query
+                ->andWhere('p.phone LIKE :l')
+                ->orWhere('p.gsm LIKE :l')
+                ->setParameter('l', "%{$search->l}%");
+        }
+
+        if (!empty($search->c)) {
+            $query = $query
+                ->andWhere('p.city LIKE :c')
+                ->setParameter('c', "%{$search->c}%");
+        }
+
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
+            $query = $query
+                ->andWhere('p.creatAt >= :d')
+                ->setParameter('d', $search->d);
+        }
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
+            $query = $query
+                ->andWhere('p.creatAt <= :dd')
+                ->setParameter('dd', $search->dd);
+        }
+
+        if (!empty($search->s)) {
+            $query = $query
+                ->andWhere('p.raisonSociale LIKE :s')
+                ->setParameter('s', "%{$search->s}%");
+        }
+
+        if (!empty($search->source)) {
+            $query = $query
+                ->andWhere('p.source = :source')
+                ->setParameter('source', $search->source);
+        }
+
+        return $query->getQuery()->getResult();
     }
+
+    // public function findAllNewProspectsApi(): int
+    // {
+    //     $query = $this->createQueryBuilder('p')
+    //         ->select('COUNT(p.id)')
+    //         ->andWhere("p.comrcl is NULL")
+    //         ->andWhere("p.team is NULL");
+
+    //     return (int) $query->getQuery()->getSingleScalarResult();
+    // }
 
     /**
      * return prospect affect aux equipes du chef ou bien au chef meme

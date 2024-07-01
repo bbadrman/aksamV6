@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Team;
+
 use App\Entity\Product;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;

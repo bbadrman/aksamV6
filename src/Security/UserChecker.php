@@ -10,11 +10,10 @@ use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusExce
 
 class UserChecker implements UserCheckerInterface
 {
-    private $security;
 
-    public function __construct(Security $security)
+
+    public function __construct(private Security $security)
     {
-        $this->security = $security;
     }
 
     public function checkPreAuth(UserInterface $user)

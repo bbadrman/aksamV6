@@ -15,12 +15,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class RelancedType extends AbstractType
 {
-    private $urlGenerator;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator)
-    {
-        $this->urlGenerator = $urlGenerator;
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {

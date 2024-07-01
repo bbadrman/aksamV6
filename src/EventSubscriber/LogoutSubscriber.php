@@ -10,14 +10,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class LogoutSubscriber implements EventSubscriberInterface
 {
-    private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             LogoutEvent::class => 'onLogout',

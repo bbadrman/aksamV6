@@ -3,14 +3,12 @@
 namespace App\Form;
 
 use App\Entity\User;
-use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\ProductRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Validator\Constraints\Regex;
 
 class UserType extends AbstractType
 

@@ -6,19 +6,14 @@ use App\Entity\User;
 use App\Entity\Acces;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class UserDisconnecter
 {
-    private $entityManager;
-    private $security;
 
-    public function __construct(EntityManagerInterface $entityManager, Security $security)
+
+    public function __construct(private EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
-        $this->security = $security;
     }
 
     public function disconnectUser(UserInterface $user, Request $request): void

@@ -26,12 +26,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     /**
      * @var PaginatorInterface
      */
-    private $paginator;
 
-    public function __construct(ManagerRegistry $registry, PaginatorInterface $paginator)
+    public function __construct(ManagerRegistry $registry, private PaginatorInterface $paginator)
     {
         parent::__construct($registry, User::class);
-        $this->paginator = $paginator;
     }
 
     public function add(User $entity, bool $flush = false): void

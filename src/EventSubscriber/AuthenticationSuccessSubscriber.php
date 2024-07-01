@@ -10,11 +10,9 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class AuthenticationSuccessSubscriber implements EventSubscriberInterface
 {
-    private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
     public static function getSubscribedEvents(): array

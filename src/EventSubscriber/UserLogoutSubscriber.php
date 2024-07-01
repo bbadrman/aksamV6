@@ -16,13 +16,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UserLogoutSubscriber implements EventSubscriberInterface
 {
-    private $entityManager;
-    private $security;
 
-    public function __construct(EntityManagerInterface $entityManager, Security $security)
+    public function __construct(private Security $security)
     {
-        $this->entityManager = $entityManager;
-        $this->security = $security;
     }
 
     public static function getSubscribedEvents(): array

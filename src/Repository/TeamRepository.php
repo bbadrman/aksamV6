@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use DateTime;
+
 use App\Entity\Team;
 use App\Search\SearchTeam;
 use Doctrine\ORM\QueryBuilder;
@@ -25,13 +25,10 @@ class TeamRepository extends ServiceEntityRepository
     /**
      * @var PaginatorInterface
      */
-    private $paginator;
-    private $user;
-    public function __construct(ManagerRegistry $registry, PaginatorInterface $paginator, Security $user)
+
+    public function __construct(ManagerRegistry $registry, private PaginatorInterface $paginator, private  Security $user)
     {
         parent::__construct($registry, Team::class);
-        $this->paginator = $paginator;
-        $this->user = $user;
     }
 
     public function add(Team $entity, bool $flush = false): void

@@ -21,17 +21,9 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class SearchProspectType extends AbstractType
 {
-    private $entityManager;
-    private $userRepository;
-    private $teamRepository;
-    private $security;
 
-    public function __construct(EntityManagerInterface $entityManager, TeamRepository $teamRepository, UserRepository $userRepository, Security $security)
+    public function __construct(private EntityManagerInterface $entityManager, private  UserRepository $userRepository, private Security $security)
     {
-        $this->entityManager = $entityManager;
-        $this->userRepository = $userRepository;
-        $this->teamRepository = $teamRepository;
-        $this->security = $security;
     }
     public function buildForm(FormBuilderInterface $builder,  array $options): void
     {

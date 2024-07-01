@@ -4,7 +4,6 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Entity\Prospect;
-use App\Entity\Relanced;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Security;
 
@@ -12,13 +11,10 @@ use Symfony\Component\Security\Core\Security;
 
 class StatsService
 {
-    private $manager;
-    private $security;
 
-    public function __construct(EntityManagerInterface $manager, Security $security)
+
+    public function __construct(private EntityManagerInterface $manager, private  Security $security)
     {
-        $this->manager = $manager;
-        $this->security = $security;
     }
     public function getStats()
     {

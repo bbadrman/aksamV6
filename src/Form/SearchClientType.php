@@ -15,17 +15,10 @@ use Symfony\Component\Form\Extension\Core\Type as Type;
 
 class SearchClientType extends AbstractType
 {
-    private $entityManager;
-    private $userRepository;
-    private $clientRepository;
-    private $security;
 
-    public function __construct(EntityManagerInterface $entityManager, ClientRepository $clientRepository, UserRepository $userRepository, Security $security)
+
+    public function __construct(private EntityManagerInterface $entityManager, private UserRepository $userRepository, private Security $security)
     {
-        $this->entityManager = $entityManager;
-        $this->userRepository = $userRepository;
-        $this->clientRepository = $clientRepository;
-        $this->security = $security;
     }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

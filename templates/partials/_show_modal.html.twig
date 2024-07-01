@@ -1,3 +1,8 @@
+<style>
+	.expanded-content {
+		display: none;
+	}
+</style>
 {# button affectation #}
 {% if prospect.comrcl and prospect.team is not empty %}
 	{# clore du butto affichie pour chef si comrcl et team is null #}
@@ -68,8 +73,8 @@
 			<tbody>
 				{# table des equipes #}
 				{% for teams in team %}
-					<tr style="text-align:left; font-size:20px;" class="expandable-row">
 
+					<tr class="expandable-row" style="text-align:left; font-size:20px;">
 						<td>
 							<span class="btn btn" style="background-color:rgb(117 190 218 / 0.5);">
 
@@ -77,73 +82,64 @@
 
 							</span>
 						</td>
-
 						<td>
-							{# <span class="btn btn-primary">
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																									{{ "%02d"|format((teams.prospects|filter(p => p.comrcl is null and p.team is not null and p.creatAt|date('Y-m-d')  == "now"|date('Y-m-d')))|length) }}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																								</span> #}
 							<span>
-								{# {{ "%02d"|format((teams.prospects|filter(p => p.comrcl is null and p.team is not null ))|length) }} #}
-								{# {{ "%02d"|format( teams.prospects|filter(p =>  p.comrcl is  null  and p.creatAt|date('Y-m-d') == "now"|date('Y-m-d'))|length) }} #}
-
-							{{ "%02d"|format( teams.prospects |filter(p => p.comrcl is  null and p.team is not null and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+								{{ "%02d"|format( teams.prospects |filter(p => p.comrcl is  null and p.team is not null and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
 
 
-						</span>
+							</span>
 						</td>
-							<td>
+						<td>
 
-								<span>
-								{# {{ "%02d"|format((teams.prospects|filter(p => p.comrcl is not null and p.team is not null ))|length) }} #}
-							{{ "%02d"|format( teams.prospects|filter(p =>  p.comrcl is not null and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
-
-
-						</span>
+							<span>
+								{{ "%02d"|format( teams.prospects|filter(p =>  p.comrcl is not null and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+							</span>
 						</td>
-							<td>
-								<span>
-							{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  1   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+						<td>
+							<span>
+								{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  1   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
 
-						</span>
+							</span>
 						</td>
-							<td>
-								<span>
-							{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  2    and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+						<td>
+							<span>
+								{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  2    and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
 
-						</span>
+							</span>
 						</td>
-							<td>
-								<span>
-							{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  3   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+						<td>
+							<span>
+								{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  3   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
 
-						</span>
+							</span>
 						</td>
-							<td>
-								<span>
-							{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  4     and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+						<td>
+							<span>
+								{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  4     and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
 
-						</span>
+							</span>
 						</td>
-							<td>
-								<span>
-									<strong>
-								{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise is null and p.source == 'Propre site'     and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
-							</strong>
-						</span>
+						<td>
+							<span>
+								<strong>
+									{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise is null and p.source == 'Propre site'     and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+								</strong>
+							</span>
 						</td>
-							<td>
-								<span>
-									<strong>
-								{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise is null and p.source == 'Revendeur'   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+						<td>
+							<span>
+								<strong>
+									{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise is null and p.source == 'Revendeur'   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
 
-							</strong>
-						</span>
-					</td>
+								</strong>
+							</span>
+						</td>
 					</tr>
 					{# table comrcl pour admin et support#}
-						{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AFFECT') == true %}
-							{% for user in teams.users %}
-								<tr style="text-align: left; font-size:20px;" class="expanded-content"> <td colspan="2">
+					{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AFFECT') == true %}
+						{% for user in teams.users %}
+							<tr class="expanded-content" style="text-align: left; font-size:20px;">
+								<td colspan="2">
 									<span>
 										{{  user  }}
 									</span>
@@ -153,7 +149,6 @@
 										{{ " %02d"|format(user.prospections|filter(p =>  p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
 									</span>
 								</td>
-
 								<td>
 									<span>
 										{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 1 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
@@ -188,8 +183,6 @@
 							</tr>
 						{% endfor %}
 					{% endif %}
-
-
 				{% endfor %}
 				{# fin table des equipes #}
 
@@ -258,8 +251,6 @@
 
 					{% endfor %}
 				{% endfor %}
-
-
 				{# fin table des commercial #}
 			</tbody>
 		</table>

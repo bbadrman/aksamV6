@@ -31,6 +31,9 @@ class TeamRepository extends ServiceEntityRepository
         parent::__construct($registry, Team::class);
     }
 
+    /**  
+     * @return void
+     */
     public function add(Team $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -40,6 +43,9 @@ class TeamRepository extends ServiceEntityRepository
         }
     }
 
+    /**  
+     * @return void
+     */
     public function remove(Team $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);

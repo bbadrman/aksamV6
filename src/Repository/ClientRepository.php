@@ -29,6 +29,9 @@ class ClientRepository extends ServiceEntityRepository
 
 
 
+    /**  
+     * @return void
+     */
     public function add(Client $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -38,6 +41,9 @@ class ClientRepository extends ServiceEntityRepository
         }
     }
 
+    /**  
+     * @return void
+     */
     public function remove(Client $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);

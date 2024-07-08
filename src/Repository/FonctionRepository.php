@@ -28,6 +28,9 @@ class FonctionRepository extends ServiceEntityRepository
         parent::__construct($registry, Fonction::class);
     }
 
+    /**  
+     * @return void
+     */
     public function add(Fonction $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -37,6 +40,9 @@ class FonctionRepository extends ServiceEntityRepository
         }
     }
 
+    /**  
+     * @return void
+     */
     public function remove(Fonction $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);

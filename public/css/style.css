@@ -4215,3 +4215,22 @@ ul.chat-available-user li a:hover {
 #ma-table .expanded-content {
     display: none;
 }
+
+.custom-red-text {
+    color: red;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.custom-blue-text {
+    color: rgb(0, 60, 255);
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.custom-gren-text {
+    color: rgb(154, 49, 210);
+    font-weight: bold;
+    font-size: 17px;
+
+}

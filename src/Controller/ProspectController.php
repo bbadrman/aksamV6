@@ -93,26 +93,25 @@ class ProspectController extends AbstractController
         Security $security,
         SerializerInterface $serializer
     ): JsonResponse {
-        $data = new SearchProspect();
-        $data->page = $request->query->get('page', 1);
-        $form = $this->createForm(SearchProspectType::class, $data);
-        $form->handleRequest($this->requestStack->getCurrentRequest());
+
         $prospect = [];
 
         $user = $security->getUser();
         if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true) || in_array('ROLE_AFFECT', $user->getRoles(), true)) {
             // admin peut voire toutes les nouveaux prospects
-            $prospect =  $prospectRepository->findAllNewProspectsApi($data, null);
+            $prospect =  $prospectRepository->findAllNewProspectsApi();
         } elseif (in_array('ROLE_TEAM', $user->getRoles(), true)) {
             // chef peut voire toutes les nouveaux prospects atacher a leur equipe
-            $prospect =  $prospectRepository->findByChefAffecter($data,  $user, null);
+            $prospect =  $prospectRepository->findByChefAffecterApi($user);
         } else {
             // cmrcl peut voire seulement les nouveaux prospects atacher a lui
-            $prospect =  $prospectRepository->findByCmrclAffecter($data, $user, null);
+            $prospect =  $prospectRepository->findByCmrclAffecterApi($user);
         }
 
         // Sérialiser les prospects
-        $jsonData = $serializer->serialize($prospect, 'json');
+        $jsonData = $serializer->serialize($prospect, 'json', [
+            'attributes' => ['id', 'name', 'email']
+        ]);
 
         return new JsonResponse($jsonData, 200, [], true);
     }

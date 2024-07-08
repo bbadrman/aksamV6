@@ -19,6 +19,9 @@ class ProspectType extends AbstractType
 {
 
 
+    /**  
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
@@ -68,7 +71,7 @@ class ProspectType extends AbstractType
                 'placeholder' => '--Merci de Choisir le genre--',
                 'choices' => [
                     'Male' => 1,
-                    'Female' => 0
+                    'Female' => 2
                 ],
                 'expanded' => false,
                 'multiple' => false
@@ -264,6 +267,9 @@ class ProspectType extends AbstractType
         );
     }
 
+    /**  
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

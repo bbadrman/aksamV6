@@ -12,6 +12,9 @@ use Symfony\Component\Form\Extension\Core\Type as Type;
 class SearchStatType extends AbstractType
 {
 
+    /**  
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder,  array $options): void
     {
 

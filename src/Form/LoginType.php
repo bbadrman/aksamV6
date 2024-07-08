@@ -11,16 +11,19 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class LoginType extends AbstractType
 {
+    /**  
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('_username', TextType::class, [
                 'label' => 'Usrname',
-               
+
                 'attr' => [
                     'placeholder' => 'Username de connexion',
                     'invalid_message' => 'Username Invalide',
-                   
+
                 ]
             ])
             ->add('_password', PasswordType::class, [
@@ -31,6 +34,9 @@ class LoginType extends AbstractType
             ]);
     }
 
+    /**  
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

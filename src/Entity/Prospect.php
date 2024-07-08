@@ -123,7 +123,7 @@ class Prospect
      * @return void
      */
     #[ORM\PrePersist]
-    public function prePersist()
+    public function prePersist(): void
     {
         if (empty($this->creatAt)) {
             $timezone = new \DateTimeZone('Europe/London'); // Remplacez par le fuseau horaire approprié pour +1 heur

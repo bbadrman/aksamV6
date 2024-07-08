@@ -44,7 +44,7 @@ class History
      * @return void
      */
     #[ORM\PrePersist]
-    public function prePersist()
+    public function prePersist(): void
     {
         if (empty($this->actionDate)) {
             $this->actionDate = new \Datetime();

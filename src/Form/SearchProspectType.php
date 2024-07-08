@@ -25,6 +25,9 @@ class SearchProspectType extends AbstractType
     public function __construct(private EntityManagerInterface $entityManager, private  UserRepository $userRepository, private Security $security)
     {
     }
+    /**  
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder,  array $options): void
     {
 

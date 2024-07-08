@@ -12,6 +12,10 @@ use Symfony\Component\Form\Extension\Core\Type as Type;
 
 class ClientType extends AbstractType
 {
+    /** 
+     * 
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -59,6 +63,9 @@ class ClientType extends AbstractType
             ]);
     }
 
+    /**  
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

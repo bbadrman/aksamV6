@@ -71,9 +71,10 @@
 								</td>
 
 									<td>
-									{% for user in team.users %}
-									{# {{  user.prospections | length   }} #}
-									{{ " %02d"|format(user.prospections|filter(p => p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d'))|length) }}
+									{% for user in team.users %}{# {{  user.prospections | length   }} #}
+									{# {{ " %02d"|format(user.prospections|filter(p => p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d'))|length) }} #}
+									{{ " %02d"|format(user.prospections|filter(p =>  p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 								<br>
 							{% endfor %}
 							</td>
@@ -81,7 +82,9 @@
 								<td>
 									{% for user in team.users %}
 									{# {{ user.prospections|filter(p => p.motifSaise == 1 )| length }} #}
-									{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 1 and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
+									{# {{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 1 and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }} #}
+									{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 1 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 
 								<br>
 							{% endfor %}
@@ -90,7 +93,8 @@
 								<td>
 									{% for user in team.users %}
 									{# {{ user.prospections|filter(p => p.motifSaise == 2 )| length }} #}
-									{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 2 and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d'))| length) }}
+									{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 2 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 
 								<br>
 							{% endfor %}
@@ -98,8 +102,8 @@
 
 								<td>
 									{% for user in team.users %}
-									{# {{ user.prospections|filter(p => p.motifSaise == 3 )| length }} #}
-									{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 3 and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d'))| length) }}
+									{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 3 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 
 								<br>
 							{% endfor %}
@@ -108,7 +112,8 @@
 								<td>
 									{% for user in team.users %}
 									{# {{ user.prospections|filter(p => p.motifSaise == 4 )| length }} #}
-									{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 4 and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d'))| length) }}
+									{{ " %02d"|format(user.prospections|filter(p => p.motifSaise == 4 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 
 								<br>
 							{% endfor %}
@@ -119,6 +124,7 @@
 									{# {{ user.prospections|filter(p => p.motifSaise is null and p.source == 'Propre site')| length }} #}
 									{{ " %02d"|format(user.prospections|filter(p => p.motifSaise is null and p.source == 'Propre site' and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d'))| length)  }}
 
+
 								<br>
 							{% endfor %}
 							</td>
@@ -126,7 +132,8 @@
 								<td>
 									{% for user in team.users %}
 									{# {{ user.prospections|filter(p => p.motifSaise is null and p.source == 'Revendeur' )| length }} #}
-									{{ " %02d"|format(user.prospections|filter(p => p.motifSaise is null and p.source == 'Revendeur' and p.creatAt|date('Y-m-d') == 'now'|date('Y-m-d') )| length) }}
+									{{ " %02d"|format(user.prospections|filter(p => p.motifSaise is null and p.source == 'Revendeur' and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
 
 								<br>
 							{% endfor %}

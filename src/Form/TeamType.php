@@ -14,15 +14,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TeamType extends AbstractType
 {
+    /**  
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name')
             ->add('description')
-           
+
             // ->add('products')
-            ->add('users')
-        ;
+            ->add('users');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

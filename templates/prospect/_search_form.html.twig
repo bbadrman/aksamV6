@@ -14,51 +14,63 @@
 		{{ form_widget(search_form.d, { 'attr': { 'style': 'display:none' } }) }}
 		{{ form_widget(search_form.dd, { 'attr': { 'style': 'display:none' } }) }}
 	{% endif %}
-	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-		{{ form_row(search_form.q) }}
-	</div>
-	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-		{{ form_row(search_form.m) }}
-	</div>
-	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-		{{ form_row(search_form.g) }}
-	</div>
-	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-		{{ form_row(search_form.c) }}
-	</div>
-	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-
-		{{ form_row(search_form.l) }}
-
-	</div>
-	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-		{{ form_row(search_form.s) }}
-	</div>
-	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-		{{ form_row(search_form.source) }}
-	</div>
-
-	{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')   == true %}
+	{% if app.request.get('_route') != 'newprospect_index' %}
 		<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-			{{ form_row(search_form.r) }}
+			{{ form_row(search_form.q) }}
+		</div>
+		<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+			{{ form_row(search_form.m) }}
+		</div>
+		<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+			{{ form_row(search_form.g) }}
+		</div>
+		<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+			{{ form_row(search_form.c) }}
+		</div>
+		<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+
+			{{ form_row(search_form.l) }}
+
+		</div>
+		<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+			{{ form_row(search_form.s) }}
+		</div>
+		<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+			{{ form_row(search_form.source) }}
+		</div>
+
+		{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')   == true %}
+			<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+				{{ form_row(search_form.r) }}
+			</div>
+		{% else %}
+			<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+				{{form_row(search_form.r, {'label': false, 'attr' : { 'style':'display:none'} }) }}
+			</div>
+		{% endif %}
+
+		<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+			{% if is_granted('ROLE_ADMIN')  == true %}
+
+				{{ form_row(search_form.team) }}
+
+			{% else %}
+
+				{{ form_row(search_form.team, {'label': false, 'attr': { 'style': 'display: none' } }) }}
+
+			{% endif %}
 		</div>
 	{% else %}
-		<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-			{{form_row(search_form.r, {'label': false, 'attr' : { 'style':'display:none'} }) }}
-		</div>
+		{{ form_widget(search_form.q, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.m, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.g, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.c, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.l, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.s, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.source, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.team, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.r, { 'attr': { 'style': 'display:none' } }) }}
 	{% endif %}
-
-	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
-		{% if is_granted('ROLE_ADMIN')  == true %}
-
-			{{ form_row(search_form.team) }}
-
-		{% else %}
-
-			{{ form_row(search_form.team, {'label': false, 'attr': { 'style': 'display: none' } }) }}
-
-		{% endif %}
-	</div>
 	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
 		<h1>
 			<button class="btn btn-primary btn search-btn" type="submit">

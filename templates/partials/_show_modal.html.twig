@@ -73,72 +73,72 @@
 			<tbody>
 				{# table des equipes #}
 				{% for teams in team %}
-
-					<tr class="expandable-row" style="text-align:left; font-size:20px;">
-						<td>
-							<span class="btn btn" style="background-color:rgb(117 190 218 / 0.5);">
-
-								{{ ( teams.name) }}
-
-							</span>
-						</td>
-						<td>
-							<span>
-								{{ "%02d"|format( teams.prospects |filter(p => p.comrcl is  null and p.team is not null and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
-
-
-							</span>
-						</td>
-						<td>
-
-							<span>
-								{{ "%02d"|format( teams.prospects|filter(p =>  p.comrcl is not null and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
-							</span>
-						</td>
-						<td>
-							<span>
-								{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  1   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
-
-							</span>
-						</td>
-						<td>
-							<span>
-								{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  2    and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
-
-							</span>
-						</td>
-						<td>
-							<span>
-								{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  3   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
-
-							</span>
-						</td>
-						<td>
-							<span>
-								{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  4     and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
-
-							</span>
-						</td>
-						<td>
-							<span>
-								<strong>
-									{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise is null and p.source == 'Propre site'     and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
-								</strong>
-							</span>
-						</td>
-						<td>
-							<span>
-								<strong>
-									{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise is null and p.source == 'Revendeur'   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
-
-								</strong>
-							</span>
-						</td>
-					</tr>
-					{# table comrcl pour admin et support#}
 					{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AFFECT') == true %}
+						<tr class="expandable-row" style="text-align:left; font-size:20px;">
+							<td>
+								<span class="btn btn" style="background-color:rgb(117 190 218 / 0.5);">
+
+									{{ ( teams.name) }}
+
+								</span>
+							</td>
+							<td>
+								<span>
+									{{ "%02d"|format( teams.prospects |filter(p => p.comrcl is  null and p.team is not null and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+
+								</span>
+							</td>
+							<td>
+
+								<span>
+									{{ "%02d"|format( teams.prospects|filter(p =>  p.comrcl is not null and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+								</span>
+							</td>
+							<td>
+								<span>
+									{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  1   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+								</span>
+							</td>
+							<td>
+								<span>
+									{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  2    and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+								</span>
+							</td>
+							<td>
+								<span>
+									{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  3   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+								</span>
+							</td>
+							<td>
+								<span>
+									{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise ==  4     and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+								</span>
+							</td>
+							<td>
+								<span>
+									<strong>
+										{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise is null and p.source == 'Propre site'     and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+									</strong>
+								</span>
+							</td>
+							<td>
+								<span>
+									<strong>
+										{{ " %02d"|format( teams.prospects|filter(p => p.motifSaise is null and p.source == 'Revendeur'   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+									</strong>
+								</span>
+							</td>
+						</tr>
+						{# table comrcl pour admin et support#}
+
 						{% for user in teams.users %}
-							<tr class="expanded-content" style="text-align: left; font-size:20px;">
+							<tr style="text-align: left; font-size:20px;">
 								<td colspan="2">
 									<span>
 										{{  user  }}

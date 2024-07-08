@@ -16,6 +16,9 @@ class UserDisconnecter
     {
     }
 
+    /**  
+     * @return void
+     */
     public function disconnectUser(UserInterface $user, Request $request): void
     {
 

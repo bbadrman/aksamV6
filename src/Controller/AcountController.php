@@ -34,8 +34,11 @@ class AcountController extends AbstractController
         );
     }
 
+
+
     /**
      * @Route("/deconnexion", name="app_logout")
+     * @return void
      */
     public function logout(): void
     {

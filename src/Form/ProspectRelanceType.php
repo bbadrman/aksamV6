@@ -24,6 +24,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 class ProspectRelanceType extends AbstractType
 {
 
+    /**  
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 
@@ -32,6 +35,9 @@ class ProspectRelanceType extends AbstractType
             ->add('relanceds');
     }
 
+    /**  
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

@@ -23,6 +23,9 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    /**  
+     * @return void
+     */
     public function add(Product $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -32,6 +35,9 @@ class ProductRepository extends ServiceEntityRepository
         }
     }
 
+    /**  
+     * @return void
+     */
     public function remove(Product $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);

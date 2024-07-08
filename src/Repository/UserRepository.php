@@ -41,6 +41,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         }
     }
 
+    /**  
+     * @return void
+     */
     public function remove(User $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
@@ -51,7 +54,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
-     * Used to upgrade (rehash) the user's password automatically over time.
+     * Used to upgrade (rehash) the user's password automatically over time. 
+     * @return void
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
@@ -103,7 +107,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
                 ->orWhere('u.lastname LIKE :q')
                 ->orWhere('u.remuneration LIKE :q')
                 ->orWhere('u.embuchAt LIKE :q')
-                ->orWhere('u.gender LIKE :q')
                 // join les tables              
                 ->orWhere('t.name LIKE :q')
                 ->orWhere('p.name LIKE :q')

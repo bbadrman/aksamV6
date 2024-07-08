@@ -52,9 +52,12 @@ RUN cd /usr/src && \
 ########## Increase PHP Configuration
 RUN echo "upload_max_filesize = 500M\n" \
     "post_max_size = 500M\n" \
+    "memory_limit = 512M\n" \ 
     >> /usr/local/etc/php/conf.d/maxsize.ini
 
-RUN echo 'max_execution_time = 300' >> /usr/local/etc/php/conf.d/maxexectime.ini;
+RUN echo 'max_execution_time = 300' >> /usr/local/etc/php/conf.d/maxexectime.ini; 
+
+
 
 
 ########## APACHE
@@ -63,7 +66,7 @@ RUN echo 'max_execution_time = 300' >> /usr/local/etc/php/conf.d/maxexectime.ini
 RUN a2enmod rewrite
 
 # Adding vhost
-COPY ./local/default.conf /etc/apache2/sites-available/000-default.conf
+COPY ./local/default.conf /etc/apache2/sites-available/000-default.conf 
 
 # Adding Symfony alias
 RUN echo '#!/bin/bash\nphp /var/www/html/bin/console "$@"' > /usr/bin/symfony && \

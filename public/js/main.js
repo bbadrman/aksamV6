@@ -47,7 +47,7 @@ function showNotification(prospectionCount) {
     if (Notification.permission === 'granted') {
         console.log('SEND NOTIF');
         new Notification('New Prospection', {
-            body: `You have a new ${prospectionCount} prospection!`,
+            body: `Vous avez ${prospectionCount} nouvelles prospections!`,
             //icon: '/icon.png' // Path to an icon image
         });
         if (notificationSound) {

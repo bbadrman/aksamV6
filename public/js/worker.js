@@ -10,8 +10,8 @@ self.addEventListener('message', function (e) {
             .then(response => response.json())
             .then(data => {
                 console.log('Worker resolved data', data);
-                if (data.length !== lastNewProspectionCount) {
-                    lastNewProspectionCount = data.length;
+                if (data !== lastNewProspectionCount) {
+                    lastNewProspectionCount = data;
                     self.postMessage(lastNewProspectionCount);
                 }
             })

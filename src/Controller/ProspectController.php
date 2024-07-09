@@ -83,38 +83,36 @@ class ProspectController extends AbstractController
         ]);
     }
 
+
     /**
-     * afficher les nouveaux prospects via API
-     * @Route("/newprospectApi", name="newprospectApi_index", methods={"GET", "POST"}) 
+     * Afficher les nouveaux prospects via API return Int
+     * @Route("/newprospectApi", name="newprospectApi_index", methods={"GET"}) 
      */
+
     public function newprospectApi(
-        Request $request,
         ProspectRepository $prospectRepository,
         Security $security,
         SerializerInterface $serializer
     ): JsonResponse {
-
         $prospect = [];
-
         $user = $security->getUser();
         if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true) || in_array('ROLE_AFFECT', $user->getRoles(), true)) {
-            // admin peut voire toutes les nouveaux prospects
-            $prospect =  $prospectRepository->findAllNewProspectsApi();
+            $prospect =  $prospectRepository->findAllNewProspectsApi(null);
         } elseif (in_array('ROLE_TEAM', $user->getRoles(), true)) {
             // chef peut voire toutes les nouveaux prospects atacher a leur equipe
-            $prospect =  $prospectRepository->findByChefAffecterApi($user);
+            $prospect =  $prospectRepository->findAllNewProspectsChefApi($user, null);
         } else {
             // cmrcl peut voire seulement les nouveaux prospects atacher a lui
-            $prospect =  $prospectRepository->findByCmrclAffecterApi($user);
+            $prospect =  $prospectRepository->findAllNewProspectsComercialApi($user, null);
         }
 
+
         // Sérialiser les prospects
-        $jsonData = $serializer->serialize($prospect, 'json', [
-            'attributes' => ['id', 'name', 'email']
-        ]);
+        $jsonData = $serializer->serialize($prospect, 'json');
 
         return new JsonResponse($jsonData, 200, [], true);
     }
+
 
     /**
      * les Relances à venir 

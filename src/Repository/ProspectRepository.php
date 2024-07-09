@@ -1903,69 +1903,30 @@ class ProspectRepository extends ServiceEntityRepository
 
         );
     }
-    //afficher les nouveaux prospects via api pour avoire notification
-    // public function findAllNewProspectsApi(): array
-    // {
-    //     $query = $this->createQueryBuilder('p')
-    //         ->select('p')
-    //         ->andWhere("p.comrcl is NULL")
-    //         ->andWhere("p.team is NULL");
-    //     return $query->getQuery()->getResult();
-    // }
 
-    public function findAllNewProspectsApi(): array
+    /**
+     * getnumber prospects for notifiy
+     */
+    //return with int pour admin
+    public function findAllNewProspectsApi(): int
     {
         $query = $this->createQueryBuilder('p')
-            ->select('DISTINCT p.id, p.name')
+            ->select('COUNT(p.id)')
             ->andWhere("p.comrcl is NULL")
             ->andWhere("p.team is NULL");
 
-        return $query->getQuery()->getResult();
+        return (int) $query->getQuery()->getSingleScalarResult();
     }
 
-    // public function findAllNewProspectsApi(): int
-    // {
-    //     $query = $this->createQueryBuilder('p')
-    //         ->select('COUNT(p.id)')
-    //         ->andWhere("p.comrcl is NULL")
-    //         ->andWhere("p.team is NULL");
-
-    //     return (int) $query->getQuery()->getSingleScalarResult();
-    // }
-
-    /**
-     * afficher afficher les nouveaux prospects du chef 
-     */
-    // public function findByChefAffecterApi(User $user): array
-    // {
-    //     $team = $user->getTeams();
-    //     // $today = new \DateTime();
-    //     // $today->setTime(0, 0, 0);
-
-    //     // get selement les prospects qui n'as pas encors affectter a un user
-    //     $query = $this->createQueryBuilder('p')
-    //         ->select('p, t, f')
-    //         ->leftJoin('p.team', 't')
-    //         ->leftJoin('p.comrcl', 'f')
-    //         ->where('p.team IN (:team)')
-    //         ->andWhere('p.team IS NOT NULL')
-    //         ->andWhere('p.comrcl IS NULL') // Filtrer les prospects non affectés à un commercial
-    //         ->setParameter('team', $team);
-
-    //     return $query->getQuery()->getResult();
-    // }
-
-
-    public function findByChefAffecterApi(User $user): array
+    //return with int pour chef
+    public function findAllNewProspectsChefApi(User $user): int
     {
-
         $team = $user->getTeams();
         if ($team->isEmpty()) {
             return [];
         }
-        // get selement les prospects qui n'as pas encors affectter a un user
         $query = $this->createQueryBuilder('p')
-            ->select('DISTINCT p.id, p.name')
+            ->select('COUNT(p.id)')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
             ->where('p.team IN (:teams) ')
@@ -1974,33 +1935,58 @@ class ProspectRepository extends ServiceEntityRepository
             ->andWhere('p.comrcl IS NULL OR p.comrcl = :user') // Filtrer les prospects no affectés et affect au chef aussi
             ->setParameter('user', $user);
 
-        return $query->getQuery()->getResult();
+        return (int) $query->getQuery()->getSingleScalarResult();
     }
 
-
-    public function findByCmrclAffecterApi($id): array
+    //return with int pour chef
+    public function findAllNewProspectsComercialApi($id): int
     {
 
         $yesterday = new \DateTime('yesterday');
-        $yesterday->setTime(23, 59, 59); // La fin de la journée d'hier 
+        $yesterday->setTime(23, 59, 59);
         $query = $this->createQueryBuilder('p')
-            ->select('DISTINCT p.id, p.name')
-            //->leftJoin('p.relanceds', 'r')
-            //->leftJoin('p.histories', 'h')
+            ->select('COUNT(p.id)')
             ->where('p.comrcl = :val')
-            //->andWhere('r.prospect IS NULL')
-            //->andWhere('h.actionDate >= :endOfYesterday')
             ->setParameter('val', $id)
             ->setParameter('endOfYesterday', $yesterday)
 
             ->andWhere('p.id NOT IN ( 
-                SELECT pr.id FROM App\Entity\Prospect pr
-                JOIN pr.relanceds rel
-                WHERE rel.relacedAt > :endOfYesterday
-            )')->setParameter('endOfYesterday', $yesterday);
+            SELECT pr.id FROM App\Entity\Prospect pr
+            JOIN pr.relanceds rel
+            WHERE rel.relacedAt > :endOfYesterday
+        )')->setParameter('endOfYesterday', $yesterday);
 
-        return $query->getQuery()->getResult();
+
+        return (int) $query->getQuery()->getSingleScalarResult();
     }
+
+
+
+
+
+    // public function findByCmrclAffecterApi($id): array
+    // {
+
+    //     $yesterday = new \DateTime('yesterday');
+    //     $yesterday->setTime(23, 59, 59); // La fin de la journée d'hier 
+    //     $query = $this->createQueryBuilder('p')
+    //         ->select('DISTINCT p.id, p.name')
+    //         //->leftJoin('p.relanceds', 'r')
+    //         //->leftJoin('p.histories', 'h')
+    //         ->where('p.comrcl = :val')
+    //         //->andWhere('r.prospect IS NULL')
+    //         //->andWhere('h.actionDate >= :endOfYesterday')
+    //         ->setParameter('val', $id)
+    //         ->setParameter('endOfYesterday', $yesterday)
+
+    //         ->andWhere('p.id NOT IN ( 
+    //             SELECT pr.id FROM App\Entity\Prospect pr
+    //             JOIN pr.relanceds rel
+    //             WHERE rel.relacedAt > :endOfYesterday
+    //         )')->setParameter('endOfYesterday', $yesterday);
+
+    //     return $query->getQuery()->getResult();
+    // }
 
 
 

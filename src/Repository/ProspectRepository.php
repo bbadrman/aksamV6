@@ -348,7 +348,7 @@ class ProspectRepository extends ServiceEntityRepository
     }
 
     /**
-     * Find list a prospect Relanced no traités --modifie--
+     * Find list a prospect Relanced no traités pour admin--modifie-- 
      * @param SearchProspect $search
      * @return PaginationInterface
      */
@@ -372,6 +372,7 @@ class ProspectRepository extends ServiceEntityRepository
             // ->Where('(r.motifRelanced = 1)') // r.motifRelanced selement = 1
             ->andWhere('r.relacedAt > :dayBeforeYesterday  ')
             ->setParameter('dayBeforeYesterday', $dayBeforeYesterday)
+
             ->andWhere('p.comrcl is NOT NULL')
             ->andWhere('p.team is NOT NULL')
             ->andWhere('p.id NOT IN ( 

@@ -54,6 +54,9 @@ class RelancedType extends AbstractType
                 'label' => 'Date de Relance *',
                 'required' => false,
                 'widget' => 'single_text',
+                'attr' => [
+                    'min' => (new \DateTime())->format('Y-m-d H:i')
+                ]
             ])
             ->add('comment', TextareaType::class, [
                 'attr' => ['class' => 'tinymce'],

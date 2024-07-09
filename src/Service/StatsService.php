@@ -353,7 +353,7 @@ class StatsService
 
 
 
-    // caclcule le total du relance Non traite 
+    // caclcule le total du relance Non traite pour admin
     public function getRelanceNonTraite()
     {
         $yesterday = new \DateTime('yesterday');
@@ -367,9 +367,10 @@ class StatsService
 
             ->leftJoin('p.relanceds', 'r')
 
-            ->Where('(r.motifRelanced = 1)') // r.motifRelanced selement = 1
+            //->Where('(r.motifRelanced = 1)') // r.motifRelanced selement = 1
             ->andWhere('r.relacedAt > :dayBeforeYesterday  ')
             ->setParameter('dayBeforeYesterday', $dayBeforeYesterday)
+
             ->andWhere('p.comrcl is NOT NULL')
             ->andWhere('p.team is NOT NULL');
 
@@ -378,6 +379,7 @@ class StatsService
             JOIN pr.relanceds rel
             WHERE rel.relacedAt > :endOfYesterday
         )')->setParameter('endOfYesterday', $yesterday);
+
 
 
         $query = $qb->getQuery();
@@ -404,7 +406,8 @@ class StatsService
             ->from(Prospect::class, 'p')
             ->leftJoin('p.relanceds', 'r')
             ->where('p.team IN (:teams)')
-            ->andWhere('(r.motifRelanced IS NULL OR r.motifRelanced = 1)')
+
+            //->andWhere('(r.motifRelanced IS NULL OR r.motifRelanced = 1)')
             ->andWhere('r.relacedAt BETWEEN :dayBeforeYesterday AND :yesterday')
             ->andWhere('p.comrcl IS NOT NULL')
             ->andWhere('p.id NOT IN (
@@ -438,7 +441,7 @@ class StatsService
             ->andWhere('p.comrcl = :val')
             ->setParameter('val', $id)
             ->leftJoin('p.relanceds', 'r')
-            ->andWhere('(r.motifRelanced IS NULL OR r.motifRelanced = 1)')
+            //->andWhere('(r.motifRelanced IS NULL OR r.motifRelanced = 1)')
 
             ->andWhere('r.relacedAt >= :dayBeforeYesterday AND r.relacedAt <= :yesterday')
             ->setParameter('dayBeforeYesterday', $dayBeforeYesterday)

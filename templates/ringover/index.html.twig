@@ -44,8 +44,8 @@
 		</ol>
 		<br>
 		{# {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')  == true %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																				<a href="{{ path('app_prospect_new') }}" class="btn btn-primary">Ajouter Prospect</a>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		          	{% endif %} #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																<a href="{{ path('app_prospect_new') }}" class="btn btn-primary">Ajouter Prospect</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																														          	{% endif %} #}
 	</section>
 
 	<div class="row mt">
@@ -67,6 +67,7 @@
 							<th>Numéro de l'appelant</th>
 							<th>Numéro appelé</th>
 							<th>Email de l'utilisateur</th>
+							<th>Record</th>
 							{# <th>record</th> #}
 
 
@@ -100,7 +101,10 @@
 								{% else %}
 									<td>No email data</td>
 								{% endif %}
-								<td>{{ call.record }}</td>
+
+								<td>
+									<audio audio controls src="{{ call.record }}"></audio>
+								</td>
 
 
 							</tr>

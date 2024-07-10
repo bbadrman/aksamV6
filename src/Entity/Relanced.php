@@ -12,6 +12,7 @@ use App\Repository\RelancedRepository;
 
 
 #[ORM\Entity(repositoryClass: RelancedRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 #[ApiResource]
 
 class Relanced
@@ -46,9 +47,12 @@ class Relanced
     public function prePersist(): void
     {
         if (empty($this->relacedAt)) {
-            $this->relacedAt = new \Datetime();
+            $timezone = new \DateTimeZone('Europe/London'); // Remplacez par le fuseau horaire approprié pour +1 heur
+
+            $this->relacedAt = new \Datetime('now', $timezone);
         }
     }
+
 
     // #[ORM\PrePersist]
     // #[ORM\PreUpdate]
@@ -85,10 +89,11 @@ class Relanced
     public function setRelacedAt(?\DateTimeInterface $relacedAt): static
     {
         $this->relacedAt = $relacedAt;
-        // if ($this->motifRelanced === '1') {
-        //     $this->relacedAt = $relacedAt;
-        // } else {
+        // if ($this->relacedAt == null) {
         //     $this->relacedAt = new \DateTime();
+        // } else {
+
+        //     $this->relacedAt = $relacedAt;
         // }
 
         return $this;

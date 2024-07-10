@@ -2059,7 +2059,7 @@ class ProspectRepository extends ServiceEntityRepository
     public function findByCmrclAffecter(SearchProspect $search, $id): PaginationInterface
     {
 
-
+        $startOfToday = new \DateTime('today');
         $yesterday = new \DateTime('yesterday');
         $yesterday->setTime(23, 59, 59); // La fin de la journée d'hier 
         $query = $this->createQueryBuilder('p')
@@ -2070,21 +2070,14 @@ class ProspectRepository extends ServiceEntityRepository
             // ->andWhere('r.prospect IS NULL')
             // ->andWhere('h.actionDate >= :endOfYesterday')
             ->setParameter('val', $id)
-            ->setParameter('endOfYesterday', $yesterday)
+            //->setParameter('endOfYesterday', $yesterday)
             ->orderBy('p.id', 'DESC');
 
         $query->andWhere('p.id NOT IN ( 
                 SELECT pr.id FROM App\Entity\Prospect pr
                 JOIN pr.relanceds rel
-                WHERE rel.relacedAt > :endOfYesterday
-            )')->setParameter('endOfYesterday', $yesterday);
-
-        // joiner les tables en relation ManyToOne avec team
-
-
-        // joiner les tables en relation manytomany avec fonction
-
-
+                WHERE rel.relacedAt >= :startOfToday
+            )')->setParameter('startOfToday', $yesterday);
 
 
 

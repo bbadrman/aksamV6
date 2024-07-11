@@ -251,24 +251,25 @@ class ProspectRepository extends ServiceEntityRepository
 
         $query = $this->createQueryBuilder('p')
 
-            ->select('p, t, f, r')
+            ->select('p,  r')
 
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.relacedAt > :tomorrow')
             ->setParameter('tomorrow', $tomorrow)
 
-            //pour que soit seulement les motif not 2
-            // ->andWhere('NOT EXISTS (
-            //     SELECT 1 FROM App\Entity\Relanced otherR
-            //     WHERE otherR.prospect = p AND otherR.motifRelanced = 2
-            // )')
+            //pour que n'affiche pas les motif not 7, 8, 9, 10 dans ce table
+            ->andWhere('NOT EXISTS (
+                SELECT 1 FROM App\Entity\Relanced otherR
+                WHERE otherR.prospect = p AND otherR.motifRelanced IN (7, 8, 9, 10)
+            )')
+
 
             // joiner les tables en relation ManyToOne avec team
-            ->leftJoin('p.team', 't')
+            //->leftJoin('p.team', 't')
 
 
             // joiner les tables en relation manytomany avec fonction
-            ->leftJoin('p.comrcl', 'f')
+            //->leftJoin('p.comrcl', 'f')
 
             ->orderBy('p.id', 'DESC');
 
@@ -2064,19 +2065,19 @@ class ProspectRepository extends ServiceEntityRepository
         $yesterday->setTime(23, 59, 59); // La fin de la journée d'hier 
         $query = $this->createQueryBuilder('p')
             ->select('p')
-            //->leftJoin('p.relanceds', 'r')
-            //->leftJoin('p.histories', 'h')
             ->where('p.comrcl = :val')
-            // ->andWhere('r.prospect IS NULL')
-            // ->andWhere('h.actionDate >= :endOfYesterday')
             ->setParameter('val', $id)
-            //->setParameter('endOfYesterday', $yesterday)
+            ->leftJoin('p.relanceds', 'r')
+            ->leftJoin('p.histories', 'h')
+            ->andWhere('r.prospect IS NULL')
+            ->andWhere('h.actionDate >= :endOfYesterday')
+            ->setParameter('endOfYesterday', $yesterday)
             ->orderBy('p.id', 'DESC');
 
         $query->andWhere('p.id NOT IN ( 
                 SELECT pr.id FROM App\Entity\Prospect pr
                 JOIN pr.relanceds rel
-                WHERE rel.relacedAt >= :startOfToday
+                WHERE rel.relacedAt > :startOfToday
             )')->setParameter('startOfToday', $yesterday);
 
 

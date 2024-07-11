@@ -151,14 +151,16 @@ class StatsService
         $qb->select('COUNT(DISTINCT p.id)')
             ->from('App\Entity\Prospect', 'p')
             ->andWhere('p.comrcl = :val')
-            ->setParameter('val', $id);
-        //->leftJoin('p.relanceds', 'r');
-        //->andWhere('r.prospect IS NULL');
+            ->setParameter('val', $id)
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.prospect IS NULL')
+            ->leftJoin('p.histories', 'h')
+            ->andWhere('h.actionDate >= :endOfYesterday')
+            ->setParameter('endOfYesterday', $yesterday);;
 
         // Ajoutez une condition spécifique à la jointure avec l'entité History pour filtrer les données
         // $qb->leftJoin('p.histories', 'h')
-        //     ->andWhere('h.actionDate >= :endOfYesterday')
-        //     ->setParameter('endOfYesterday', $yesterday);
+
 
         // Supprimez la condition inutile sur la même table
         // $qb->andWhere('p.creatAt >= :startOfDay')

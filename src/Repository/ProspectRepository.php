@@ -1950,6 +1950,10 @@ class ProspectRepository extends ServiceEntityRepository
             ->select('COUNT(p.id)')
             ->where('p.comrcl = :val')
             ->setParameter('val', $id)
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.prospect IS NULL')
+            ->leftJoin('p.histories', 'h')
+            ->andWhere('h.actionDate >= :endOfYesterday')
             ->setParameter('endOfYesterday', $yesterday)
 
             ->andWhere('p.id NOT IN ( 
@@ -1957,6 +1961,8 @@ class ProspectRepository extends ServiceEntityRepository
             JOIN pr.relanceds rel
             WHERE rel.relacedAt > :endOfYesterday
         )')->setParameter('endOfYesterday', $yesterday);
+
+
 
 
         return (int) $query->getQuery()->getSingleScalarResult();

@@ -2074,8 +2074,8 @@ class ProspectRepository extends ServiceEntityRepository
             ->where('p.comrcl = :val')
             ->setParameter('val', $id)
             ->leftJoin('p.relanceds', 'r')
-            ->leftJoin('p.histories', 'h')
             ->andWhere('r.prospect IS NULL')
+            ->leftJoin('p.histories', 'h')
             ->andWhere('h.actionDate >= :endOfYesterday')
             ->setParameter('endOfYesterday', $yesterday)
             ->orderBy('p.id', 'DESC');

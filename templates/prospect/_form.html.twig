@@ -53,7 +53,7 @@
 					{{ form_row(form.motifSaise) }}
 
 					{# <div id="subMotiv-container" style="display: none"> 																																																																																																																																														     {{ form_row(form.motifSaise) }}
-																																																																																																																																																																																																																																																																																																																																 </div> #}
+																																																																																																																																																																																																																																																																																																																																					 </div> #}
 					<div>
 						{{ form_label(form.product, 'Produit') }}
 						{{ form_widget(form.product, {'attr': {'class': 'form-control selectchoice'}}) }}
@@ -74,18 +74,14 @@
 						{{ form_row(form.motifResil) }}
 					</div>
 					<div>
-						{% if is_granted ('ROLE_ADMIN') or is_granted ('ROLE_ADD_PROS') %}
-							{{ form_row(form.team) }}
-						{% else %}
-							{{ form_widget(form.team, { 'attr' : { 'style':'display:none'} }) }}
-						{% endif %}
+
+						{{ form_widget(form.team, { 'attr' : { 'style':'display:none'} }) }}
+
 					</div>
 					<div>
-						{% if is_granted ('ROLE_ADMIN') or is_granted ('ROLE_TEAM')  or is_granted ('ROLE_ADD_PROS') %}
-							{{ form_row(form.comrcl) }}
-						{% else %}
-							{{ form_widget(form.comrcl, { 'attr' : { 'style':'display:none'} }) }}
-						{% endif %}
+
+						{{ form_widget(form.comrcl, { 'attr' : { 'style':'display:none'} }) }}
+
 						{# {{ form_row(form.relanceds) }} #}
 					</div>
 

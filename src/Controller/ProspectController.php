@@ -15,7 +15,6 @@ use App\Form\RelancedType;
 use App\Search\SearchProspect;
 use App\Form\ProspectAffectType;
 use App\Form\SearchProspectType;
-use App\Repository\ClientRepository;
 use App\Repository\TeamRepository;
 use App\Repository\HistoryRepository;
 use App\Repository\ProspectRepository;

@@ -3,13 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Entity\Acces;
 use App\Form\UserType;
 use App\Search\SearchUser;
 use App\Form\SearchUserType;
 use App\Repository\UserRepository;
 use App\Security\UserDisconnecter;
-use App\Repository\AccesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 
 

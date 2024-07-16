@@ -8,7 +8,6 @@ use App\Search\SearchFonction;
 use App\Form\SearchFonctionType;
 use App\Repository\FonctionRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

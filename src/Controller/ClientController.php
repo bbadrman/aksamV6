@@ -7,7 +7,6 @@ use App\Form\ClientType;
 use App\Search\SearchClient;
 use App\Form\SearchClientType;
 use App\Repository\ClientRepository;
-use App\Repository\ProspectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;

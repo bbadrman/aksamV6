@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Form\SearchStatType;
 use App\Search\SearchProspect;
 use App\Repository\TeamRepository;
-use App\Repository\UserRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProspectRepository;
 use Symfony\Component\HttpFoundation\Response;

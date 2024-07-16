@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Team;
-use App\Entity\Product;
 use App\Form\TeamType;
 use App\Search\SearchTeam;
 use App\Form\SearchTeamType;

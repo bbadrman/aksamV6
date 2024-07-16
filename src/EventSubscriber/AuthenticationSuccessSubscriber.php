@@ -7,6 +7,7 @@ use App\Entity\Acces;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class AuthenticationSuccessSubscriber implements EventSubscriberInterface
 {
@@ -29,6 +30,10 @@ class AuthenticationSuccessSubscriber implements EventSubscriberInterface
         $user = $event->getAuthenticationToken()->getUser();
 
         if ($user instanceof User) {
+            // if ($user->isIsConnect(true)) {
+            //     // Déconnectez l'utilisateur et jetez une exception
+            //     throw new AuthenticationException('This user is already logged in elsewhere.');
+            // }
             // $user->setLastLogin(new \DateTime());
             $user->setIsConnect(true);
 

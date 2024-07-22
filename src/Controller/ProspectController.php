@@ -331,6 +331,7 @@ class ProspectController extends AbstractController
             $teamHistory->setActionDate(new \DateTime());
 
 
+
             $this->entityManager->persist($teamHistory);
             $this->entityManager->flush();
 

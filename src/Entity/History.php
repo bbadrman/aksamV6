@@ -39,7 +39,7 @@ class History
     /**
      * Permet de mettre en place la date de création
      * 
-     * @PrePersist
+     * @ORM\PrePersist
      * 
      * @return void
      */
@@ -47,7 +47,8 @@ class History
     public function prePersist(): void
     {
         if (empty($this->actionDate)) {
-            $this->actionDate = new \Datetime();
+            $timezone = new \DateTimeZone('Europe/London');
+            $this->actionDate = new \Datetime('now', $timezone);
         }
     }
 
@@ -65,7 +66,10 @@ class History
 
     public function setActionDate(?\DateTimeInterface $actionDate): static
     {
-        $this->actionDate = new \DateTime();
+        //ajouter +1h quand on persiste
+        $this->actionDate = new \DateTime('now', new \DateTimeZone('Europe/London'));
+
+
 
         return $this;
     }

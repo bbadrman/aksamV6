@@ -240,6 +240,8 @@ class ProspectController extends AbstractController
         $clientEntity = new Client();
         $clientEntity->setFirstName($prospect->getName());
         $clientEntity->setLastName($prospect->getLastName());
+        $clientEntity->setPhone($prospect->getPhone());
+        $clientEntity->setEmail($prospect->getEmail());
         $clientEntity->setRaisonSociale($prospect->getRaisonSociale());
         $clientEntity->setTeam($prospect->getTeam());
         $clientEntity->setCmrl($prospect->getComrcl());

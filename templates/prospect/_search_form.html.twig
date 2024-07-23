@@ -71,39 +71,26 @@
 		</div>
 
 		<div class="col-xs-12" style="float: right !important;">
-			{% if is_granted('ROLE_ADMIN')  == true %}
-				<div class="col-md-1 mx-auto" style="padding-right: 2px;padding-left: 2px;">
-					{{ form_row(search_form.c) }}
-				</div>
-			{% else %}
-				{{ form_row(search_form.c, {'label': false, 'attr': { 'style': 'display: none' } }) }}
-			{% endif %}
-
-
-			{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')   == true %}
-				<div class="col-md-1 mx-auto" style="padding-right: 2px;padding-left: 2px;">
-					{{ form_row(search_form.r) }}
-				</div>
-			{% else %}
-				{{form_row(search_form.r, {'label': false, 'attr' : { 'style':'display:none'} }) }}
-			{% endif %}
-
-
-			{% if is_granted('ROLE_ADMIN')  == true %}
-				<div class="col-md-1 mx-auto" style="padding-right: 2px;padding-left: 2px;">
-					{{ form_row(search_form.team) }}
-				</div>
-			{% else %}
-				{{ form_row(search_form.team, {'label': false, 'attr': { 'style': 'display: none' } }) }}
-			{% endif %}
-
-
-			{% if is_granted('ROLE_ADMIN')  == true %}
-				<div class="col-md-1 mx-auto" style="padding-right: 2px;padding-left: 2px;">
-					{{ form_row(search_form.source) }}
-				</div>
-			{% else %}
-				{{ form_row(search_form.source, {'label': false, 'attr': { 'style': 'display: none' } }) }}
+			{% if app.request.get('_route') != 'newprospect_index' %}
+				{% if is_granted('ROLE_ADMIN')  == true %}
+					<div class="col-md-1 mx-auto" style="padding-right: 2px;padding-left: 2px;">
+						{{ form_row(search_form.c) }}
+					</div>
+					<div class="col-md-1 mx-auto" style="padding-right: 2px;padding-left: 2px;">
+						{{ form_row(search_form.r) }}
+					</div>
+					<div class="col-md-1 mx-auto" style="padding-right: 2px;padding-left: 2px;">
+						{{ form_row(search_form.team) }}
+					</div>
+					<div class="col-md-1 mx-auto" style="padding-right: 2px;padding-left: 2px;">
+						{{ form_row(search_form.source) }}
+					</div>
+				{% else %}
+					{{ form_row(search_form.c, {'label': false, 'attr': { 'style': 'display: none' } }) }}
+					{{form_row(search_form.r, {'label': false, 'attr' : { 'style':'display:none'} }) }}
+					{{ form_row(search_form.team, {'label': false, 'attr': { 'style': 'display: none' } }) }}
+					{{ form_row(search_form.source, {'label': false, 'attr': { 'style': 'display: none' } }) }}
+				{% endif %}
 			{% endif %}
 
 

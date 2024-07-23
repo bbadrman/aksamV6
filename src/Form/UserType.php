@@ -116,10 +116,7 @@ class UserType extends AbstractType
                 'label' => 'Rémunération',
                 'required' => false,
                 'attr' => [
-
                     'placeholder' => 'Tapez   en Dhs',
-
-
                     'divisor' => 100,
 
                 ],

@@ -193,7 +193,7 @@ class SearchProspectType extends AbstractType
                         'Unjoing' => '2',
                         'Déjà Souscrit' => '3',
                     ],
-                    'Attente Close' => '4',
+                    'Attente DOC' => '4',
                     'Tarification' => '5',
                     'Prise de Décision ' => '6',
                     'Cloture ' => [

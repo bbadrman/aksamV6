@@ -258,12 +258,13 @@ class ProspectRepository extends ServiceEntityRepository
             ->setParameter('tomorrow', $tomorrow)
 
             //pour que n'affiche pas les motif not 7, 8, 9, 10 dans ce table
-            ->andWhere('NOT EXISTS (
-                SELECT 1 FROM App\Entity\Relanced otherR
-                WHERE otherR.prospect = p AND otherR.motifRelanced IN (7, 8, 9, 10)
-            )')
+            // ->andWhere('NOT EXISTS (
+            //     SELECT 1 FROM App\Entity\Relanced otherR
+            //     WHERE otherR.prospect = p AND otherR.motifRelanced IN (7, 8, 9, 10)
+            // )') ou bien desu
 
-
+            ->andWhere('r.motifRelanced NOT IN (:motifs)')
+            ->setParameter('motifs', [3, 7, 8, 9, 10])
             // joiner les tables en relation ManyToOne avec team
             //->leftJoin('p.team', 't')
 
@@ -382,7 +383,9 @@ class ProspectRepository extends ServiceEntityRepository
                 WHERE rel.relacedAt > :endOfYesterday
             )')
 
-            ->setParameter('endOfYesterday', $yesterday);
+            ->setParameter('endOfYesterday', $yesterday)
+            ->andWhere('r.motifRelanced NOT IN (:motifs)')
+            ->setParameter('motifs', [3, 7, 8, 9, 10]);
 
 
 
@@ -499,7 +502,8 @@ class ProspectRepository extends ServiceEntityRepository
             ->setParameter('dayBeforeYesterday', $dayBeforeYesterday)
             ->setParameter('yesterday', $yesterday)
             //->andWhere('p.comrcl is NOT NULL') 
-
+            ->andWhere('r.motifRelanced NOT IN (:motifs)')
+            ->setParameter('motifs', [3, 7, 8, 9, 10])
             ->andWhere('p.id NOT IN (
                 SELECT pr.id FROM App\Entity\Prospect pr
                 JOIN pr.relanceds rel
@@ -607,7 +611,8 @@ class ProspectRepository extends ServiceEntityRepository
             ->setParameter('dayBeforeYesterday', $dayBeforeYesterday)
             ->setParameter('yesterday', $yesterday)
             //->andWhere('p.comrcl is NOT NULL')
-
+            ->andWhere('r.motifRelanced NOT IN (:motifs)')
+            ->setParameter('motifs', [3, 7, 8, 9, 10])
 
             ->andWhere('p.id NOT IN (
                 SELECT pr.id FROM App\Entity\Prospect pr
@@ -714,6 +719,9 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.relacedAt >= :tomorrow')
             ->setParameter('tomorrow', $tomorrow)
+            ->andWhere('r.motifRelanced NOT IN (:motifs)')
+            ->setParameter('motifs', [3, 7, 8, 9, 10])
+
 
 
             // ->andWhere('NOT EXISTS (
@@ -823,6 +831,9 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.relacedAt >= :tomorrow')
             ->setParameter('tomorrow', $tomorrow)
+            ->andWhere('r.motifRelanced NOT IN (:motifs)')
+            ->setParameter('motifs', [3, 7, 8, 9, 10])
+
 
 
             // ->andWhere('NOT EXISTS (
@@ -940,8 +951,9 @@ class ProspectRepository extends ServiceEntityRepository
             ->setParameter('startOfDay', $today)
             ->setParameter('endOfDay', $endOfDay)
             //->andWhere('r.motifRelanced = 1')
-            // ->andWhere('r.motifRelanced IN (:motifs)')
-            // ->setParameter('motifs', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+            // motif relance ne soit pas dans les choix suivant
+            ->andWhere('r.motifRelanced NOT IN (:motifs)')
+            ->setParameter('motifs', [3, 7, 8, 9, 10])
 
 
             // joiner les tables en relation manytomany avec fonction
@@ -1047,7 +1059,8 @@ class ProspectRepository extends ServiceEntityRepository
             ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
             ->setParameter('startOfDay', $today)
             ->setParameter('endOfDay', $endOfDay)
-            //->andWhere('r.motifRelanced = 1')
+            ->andWhere('r.motifRelanced NOT IN (:motifs)')
+            ->setParameter('motifs', [3, 7, 8, 9, 10])
 
 
             // joiner les tables en relation manytomany avec fonction
@@ -1149,6 +1162,9 @@ class ProspectRepository extends ServiceEntityRepository
             ->setParameter('startOfDay', $today)
             ->setParameter('endOfDay', $endOfDay)
             //->andWhere('r.motifRelanced = 1') 
+            ->andWhere('r.motifRelanced NOT IN (:motifs)')
+            ->setParameter('motifs', [3, 7, 8, 9, 10])
+
 
             // joiner les tables en relation manytomany avec fonction 
             ->orderBy('p.id', 'DESC');

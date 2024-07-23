@@ -135,11 +135,11 @@
 												<i class="fa fa-calendar-check-o fa-4x" aria-hidden="true"></i>
 
 												{% if is_granted('ROLE_ADMIN')  == true   %}
-													<h1>{{ " %02d"|format(stats.prospectsTeam ) }}</h1>
+													<h1>{{ " %02d"|format(stats.prospectsDay ) }}</h1>
 												{% elseif is_granted('ROLE_TEAM') == true %}
-													<h1>{{ " %02d"|format(stats.prospectsTeamChef ) }}</h1>
+													<h1>{{ " %02d"|format(stats.prospectsDayChef ) }}</h1>
 												{% elseif is_granted('ROLE_USER') == true %}
-													<h1>{{ " %02d"|format(stats.prospectsTeamCmrcl ) }}</h1>
+													<h1>{{ " %02d"|format(stats.prospectsDayCmrcl ) }}</h1>
 												{% endif %}
 											</a>
 										</div>

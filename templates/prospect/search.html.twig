@@ -58,4 +58,7 @@
 <br>
 {# {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')  == true %}
 		<a href="{{ path('app_prospect_new') }}" class="btn btn-primary">Ajouter Prospect</a>
-          	{% endif %} #}</section>{{ include('prospect/_search_form.html.twig')  }}{% endblock %}
+          	{% endif %} #}</section><div class="col-xs-10" style="float: right !important;">
+<div class="row" style="margin-right: 10px;">
+	{{ include('prospect/_search_form.html.twig')  }}
+</div></div>{% endblock %}

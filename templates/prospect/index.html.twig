@@ -31,8 +31,7 @@
 			<h2>Les Injoignables</h2>
 		{% elseif app.request.get('_route') == 'notrait_index' %}
 			<h2>Les Prospects Non Traités</h2>
-		{% elseif app.request.get('_route') == 'app_client' %}
-			<h2>Les Clients</h2>
+
 		{% endif %}
 
 		<ol class="breadcrumb">
@@ -59,8 +58,8 @@
 		</ol>
 		<br>
 		{# {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')  == true %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																												<a href="{{ path('app_prospect_new') }}" class="btn btn-primary">Ajouter Prospect</a>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										          	{% endif %} #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		<a href="{{ path('app_prospect_new') }}" class="btn btn-primary">Ajouter Prospect</a>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																          	{% endif %} #}
 	</section>
 	<div class="col-xs-12" style="float: right !important;">
 		<div class="row" style="margin-right: 10px;">
@@ -95,22 +94,20 @@
 							<th>Raison Sociale</th>
 							<th>Email</th>
 							<th>Téléphone</th>
-							<th>Motife</th>
+							{% if app.request.get('_route') == 'app_unjoinable' %}
+								<th>Motife</th>
+								<th>Date injoinable</th>
+							{% endif %}
+
 							{% if app.request.get('_route') == 'relancejour_index' or 
 							      app.request.get('_route') == 'relancenotraite_index' or
-								   app.request.get('_route') == 'prospect_search'   %}
-
+								  app.request.get('_route') == 'prospect_search' or
+								  app.request.get('_route') == 'avenir_index'  
+								    %}
+								<th>Motife</th>
 
 								<th>Date Relance</th>
-							{% elseif app.request.get('_route') == 'app_unjoinable' %}
-								<th>Date injoinable</th>
-							{% elseif app.request.get('_route') == 'app_client' %}
-								<th>Date soucrire</th>
-							{% elseif app.request.get('_route') == 'avenir_index' %}
-								<th>Date a venir</th>
-							{% elseif app.request.get('_route') == 'newprospect_index' or 
-							      app.request.get('_route') == 'notrait_index' %}
-								<th>Date création</th>
+
 							{% endif %}
 
 
@@ -320,42 +317,42 @@
 									<td>{{ prospect.phone }}
 										<br>
 										{{ prospect.gsm }}</td>
-									<td>
-
-										{% set lastRelance = prospect.relanceds|sort((a, b) => b.relacedAt <=> a.relacedAt)|first %}
-
-										{% if lastRelance is not empty %}
-											{% if lastRelance.motifRelanced == 1 %}
-												Rendez-vous
-											{% elseif lastRelance.motifRelanced == 2 %}
-												Unjoing
-											{% elseif lastRelance.motifRelanced == 3 %}
-												Déjà Souscrit
-											{% elseif lastRelance.motifRelanced == 4 %}
-												Attente DOC
-											{% elseif lastRelance.motifRelanced == 5 %}
-												Tarification
-											{% elseif lastRelance.motifRelanced == 6 %}
-												Prise de Décision
-											{% elseif lastRelance.motifRelanced == 7 %}
-												Faux Fiche
-											{% elseif lastRelance.motifRelanced == 8 %}
-												Doublon
-											{% elseif lastRelance.motifRelanced == 9 %}
-												Passage Concurrent
-											{% elseif lastRelance.motifRelanced == 10 %}
-												Passage Contrat
-											{% endif %}
-											<br>
-										{% endif %}
-									</td>
-
 
 									{% if app.request.get('_route') == 'relancejour_index' or 
 							app.request.get('_route') == 'app_unjoinable' or 
 							app.request.get('_route') == 'relancenotraite_index' or  
 							app.request.get('_route') == 'prospect_search' or  
 							app.request.get('_route') == 'avenir_index' %}
+										<td>
+
+											{% set lastRelance = prospect.relanceds|sort((a, b) => b.relacedAt <=> a.relacedAt)|first %}
+
+											{% if lastRelance is not empty %}
+												{% if lastRelance.motifRelanced == 1 %}
+													Rendez-vous
+												{% elseif lastRelance.motifRelanced == 2 %}
+													Unjoing
+												{% elseif lastRelance.motifRelanced == 3 %}
+													Déjà Souscrit
+												{% elseif lastRelance.motifRelanced == 4 %}
+													Attente DOC
+												{% elseif lastRelance.motifRelanced == 5 %}
+													Tarification
+												{% elseif lastRelance.motifRelanced == 6 %}
+													Prise de Décision
+												{% elseif lastRelance.motifRelanced == 7 %}
+													Faux Fiche
+												{% elseif lastRelance.motifRelanced == 8 %}
+													Doublon
+												{% elseif lastRelance.motifRelanced == 9 %}
+													Passage Concurrent
+												{% elseif lastRelance.motifRelanced == 10 %}
+													Passage Contrat
+												{% endif %}
+												<br>
+											{% endif %}
+										</td>
+
 
 										<td>
 
@@ -380,12 +377,6 @@
 
 										</td>
 
-									{% else %}
-
-										{% if app.request.get('_route') == 'newprospect_index'  or 
-    app.request.get('_route') == 'notrait_index' %}
-											<td>{{ prospect.creatAt|date('Y-m-d H:i:s') }}</td>
-										{% endif %}
 
 									{% endif %}
 
@@ -419,8 +410,8 @@
 
 
 					{% endfor %}{# {% if  app.user and app.user == prospect.comrcl %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													 	  Tableau
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																														  {% endif %} #}</tbody>
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															 	  Tableau
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																  {% endif %} #}</tbody>
 				<tfoot class="text-right">
 					<tr>
 						<td colspan="9">

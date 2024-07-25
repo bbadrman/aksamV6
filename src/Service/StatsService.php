@@ -128,6 +128,7 @@ class StatsService
         $qb->select('COUNT(DISTINCT p.id)')
             ->from('App\Entity\Prospect', 'p')
             ->where('p.team IN (:teams)')
+            ->andWhere('p.team IS NOT NULL')
             //->andWhere('p.comrcl IS NULL')
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL')

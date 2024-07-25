@@ -27,8 +27,7 @@ class FonctionController extends AbstractController
     }
 
     /**
-     * @Route("/", name="fonction_index", methods={"GET"})
-     * @IsGranted("ROLE_USER")
+     * @Route("/", name="fonction_index", methods={"GET"}) 
      */
     public function index(FonctionRepository $fonctionRepository, Request $request): Response
     {
@@ -86,8 +85,7 @@ class FonctionController extends AbstractController
     }
 
     /**
-     * @Route("/nouveau_fonction", name="fonction_new", methods={"GET","POST"})
-     * @IsGranted("ROLE_ADMIN")
+     * @Route("/nouveau_fonction", name="fonction_new", methods={"GET","POST"}) 
      */
     public function new(Request $request): Response
     {
@@ -126,8 +124,7 @@ class FonctionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/modifier-fonction", name="fonction_edit", methods={"GET","POST"})
-     * @IsGranted("ROLE_ADMIN")
+     * @Route("/{id}/modifier-fonction", name="fonction_edit", methods={"GET","POST"}) 
      */
     public function edit(Request $request, Fonction $fonction): Response
     {
@@ -155,8 +152,7 @@ class FonctionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="fonction_delete", methods={"POST"})
-     * @IsGranted("ROLE_ADMIN")
+     * @Route("/{id}", name="fonction_delete", methods={"POST"}) 
      */
     public function delete(Request $request, Fonction $fonction)
     {

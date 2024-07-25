@@ -134,7 +134,6 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_product_delete", methods={"POST"})
-     * @IsGranted("ROLE_ADMIN", message="Tu ne peut pas acces a cet ressource")
      */
     public function delete(Request $request, Product $product, ProductRepository $productRepository): Response
     {

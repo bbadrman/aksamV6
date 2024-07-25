@@ -368,7 +368,11 @@ class ProspectRepository extends ServiceEntityRepository
         $yesterday = (new \DateTime('yesterday'))->setTime(23, 59, 59);
 
         $dayBeforeYesterday = (clone $yesterday)->modify('-1 year');
-
+        $subQuery = $this->manager->createQueryBuilder()
+            ->select('MAX(r1.relacedAt)')
+            ->from('App\Entity\Relanced', 'r1')
+            ->where('r1.prospect = p.id')
+            ->getDQL();
         $query = $this->createQueryBuilder('p')
 
             ->select('p, t, f, r')
@@ -393,7 +397,9 @@ class ProspectRepository extends ServiceEntityRepository
 
             ->setParameter('endOfYesterday', $yesterday)
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
-            ->setParameter('motifs', [3, 7, 8, 9, 10]);
+            ->setParameter('motifs', [3, 7, 8, 9, 10])
+            ->addSelect('(' . $subQuery . ') AS HIDDEN lastRelanceDate')
+            ->orderBy('lastRelanceDate', 'ASC');
 
 
 
@@ -462,7 +468,7 @@ class ProspectRepository extends ServiceEntityRepository
                 ->andWhere('p.source = :source')
                 ->setParameter('source', $search->source);
         }
-        $query->orderBy('p.id', 'DESC');
+
         return $this->paginator->paginate(
             $query,
             $search->page,
@@ -494,7 +500,11 @@ class ProspectRepository extends ServiceEntityRepository
         $dayBeforeYesterday = (clone $yesterday)->modify('-1 year')->setTime(0, 0, 0); // Le début d'avant-hier
 
 
-
+        $subQuery = $this->manager->createQueryBuilder()
+            ->select('MAX(r1.relacedAt)')
+            ->from('App\Entity\Relanced', 'r1')
+            ->where('r1.prospect = p.id')
+            ->getDQL();
         $query = $this->createQueryBuilder('p')
 
             ->select('p, t, f, r')
@@ -516,7 +526,10 @@ class ProspectRepository extends ServiceEntityRepository
                 SELECT pr.id FROM App\Entity\Prospect pr
                 JOIN pr.relanceds rel
                 WHERE rel.relacedAt > :endOfYesterday
-            )')->setParameter('endOfYesterday', $yesterday);
+            )')->setParameter('endOfYesterday', $yesterday)
+
+            ->addSelect('(' . $subQuery . ') AS HIDDEN lastRelanceDate')
+            ->orderBy('lastRelanceDate', 'ASC');
 
 
         if ((!empty($search->q))) {
@@ -584,7 +597,7 @@ class ProspectRepository extends ServiceEntityRepository
                 ->andWhere('p.source = :source')
                 ->setParameter('source', $search->source);
         }
-        $query->orderBy('p.id', 'DESC');
+
         return $this->paginator->paginate(
             $query,
             $search->page,
@@ -605,6 +618,11 @@ class ProspectRepository extends ServiceEntityRepository
 
 
 
+        $subQuery = $this->manager->createQueryBuilder()
+            ->select('MAX(r1.relacedAt)')
+            ->from('App\Entity\Relanced', 'r1')
+            ->where('r1.prospect = p.id')
+            ->getDQL();
         $query = $this->createQueryBuilder('p')
 
             ->select('p, t, f, r')
@@ -626,7 +644,9 @@ class ProspectRepository extends ServiceEntityRepository
                 SELECT pr.id FROM App\Entity\Prospect pr
                 JOIN pr.relanceds rel
                 WHERE rel.relacedAt > :endOfYesterday
-            )')->setParameter('endOfYesterday', $yesterday);
+            )')->setParameter('endOfYesterday', $yesterday)
+            ->addSelect('(' . $subQuery . ') AS HIDDEN lastRelanceDate')
+            ->orderBy('lastRelanceDate', 'ASC');
 
         if ((!empty($search->q))) {
             $query = $query
@@ -693,7 +713,7 @@ class ProspectRepository extends ServiceEntityRepository
                 ->andWhere('p.source = :source')
                 ->setParameter('source', $search->source);
         }
-        $query->orderBy('p.id', 'DESC');
+
         return $this->paginator->paginate(
             $query,
             $search->page,

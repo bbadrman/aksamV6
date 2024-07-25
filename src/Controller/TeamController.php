@@ -19,7 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/team")
- * @IsGranted("ROLE_USER", message="Tu ne peut pas acces a cet ressource")
+ * @IsGranted("ROLE_ADMIN", message="Tu ne peut pas acces a cet ressource")
  */
 class TeamController extends AbstractController
 {

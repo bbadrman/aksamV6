@@ -18,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/fonctions")
+ * @IsGranted("ROLE_ADMIN", message="Tu ne peut pas acces a cet ressource")
  */
 class FonctionController extends AbstractController
 {

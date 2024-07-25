@@ -19,7 +19,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
 /**
- * @Route("/utilisateurs")
+ * @Route("/utilisateurs") 
+ * @IsGranted("ROLE_ADMIN", message="Tu ne peut pas acces a cet ressource")
  */
 class UserController extends AbstractController
 {
@@ -52,7 +53,6 @@ class UserController extends AbstractController
 
     /**
      * @Route("/nouveau-utilisateur", name="user_new", methods={"GET","POST"})
-     * @IsGranted("ROLE_ADMIN", message="Tu ne peut pas acces a cet ressource")
      */
     public function new(Request $request, UserPasswordHasherInterface $encoder): Response
     {

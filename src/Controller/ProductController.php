@@ -15,7 +15,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("/product") 
+ * @Route("/product")  
+ * @IsGranted("ROLE_ADMIN", message="Tu ne peut pas acces a cet ressource")
  */
 class ProductController extends AbstractController
 {

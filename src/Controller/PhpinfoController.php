@@ -10,8 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class PhpinfoController extends AbstractController
 {
 
-    #[Route('/phpinfo', name: 'app_phpinfo')]
-    #[IsGranted('ROLE_ADMIN', message: 'Tu ne peut pas acces a cet ressource')]
+    #[Route('/moatayatconfigaksam', name: 'app_motayatconfg')]
+    #[IsGranted('ROLE_SUPER_ADMIN', message: 'Tu ne peut pas acces a cet ressource')]
 
     public function phpinfo(): Response
     {

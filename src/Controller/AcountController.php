@@ -49,12 +49,12 @@ class AcountController extends AbstractController
     public function logout(): void
     {
         // Récupérez l'utilisateur actuel
-        // $user = $this->getUser();
+        $user = $this->getUser();
 
-        // if ($user instanceof User) {
-        //     $user->setIsConnect(false);
-        //     $this->getDoctrine()->getManager()->flush();
-        // }
+        if ($user instanceof User) {
+            $user->setIsConnect(false);
+            $this->getDoctrine()->getManager()->flush();
+        }
 
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }

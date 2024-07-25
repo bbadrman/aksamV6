@@ -14,11 +14,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 
 /**
- * @Route("/table")
- * @IsGranted("ROLE_USER", message="Tu ne peut pas acces a cet ressource")
+ * @Route("/table") 
  * 
  */
 class TableController extends AbstractController
@@ -28,12 +29,30 @@ class TableController extends AbstractController
 
         private RequestStack $requestStack,
         private ProspectRepository $prospectRepository,
-        private Security $security
+        private Security $security,
+        private AuthorizationCheckerInterface $authorizationChecker
     ) {
+    }
+    public function indexdenit(): Response
+    {
+        if (
+            !$this->authorizationChecker->isGranted('ROLE_ADMIN') &&
+            !$this->authorizationChecker->isGranted('ROLE_TEAM') &&
+            !$this->authorizationChecker->isGranted('ROLE_AFFECT') &&
+            !$this->authorizationChecker->isGranted('ROLE_ADD_PROS') &&
+            !$this->authorizationChecker->isGranted('ROLE_EDIT_PROS') &&
+            !$this->authorizationChecker->isGranted('ROLE_PROS') &&
+            !$this->authorizationChecker->isGranted('ROLE_COMERC')
+        ) {
+            throw new AccessDeniedException("Tu ne peux pas accéder à cette ressource");
+        }
+
+        // Votre logique pour cette route
+        return new Response("Accès autorisé !");
     }
 
     /**
-     * @Route("/", name="app_table_liste", methods={"GET"})
+     * @Route("/traitement", name="app_table_liste", methods={"GET"})
      */
     public function index(StatsService $statsService): Response
     {

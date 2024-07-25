@@ -5,8 +5,11 @@ namespace App\Repository;
 use App\Entity\User;
 use App\Entity\Prospect;
 use App\Search\SearchProspect;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Walker\LimitWalker;
 use Knp\Component\Pager\PaginatorInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
@@ -22,7 +25,7 @@ class ProspectRepository extends ServiceEntityRepository
 {
 
 
-    public function __construct(ManagerRegistry $registry, private  PaginatorInterface $paginator)
+    public function __construct(ManagerRegistry $registry, private  PaginatorInterface $paginator, private EntityManagerInterface $manager)
     {
         parent::__construct($registry, Prospect::class);
     }
@@ -247,7 +250,11 @@ class ProspectRepository extends ServiceEntityRepository
 
         $tomorrow = new \DateTime('tomorrow');
         $tomorrow->setTime(0, 0, 0);
-
+        $subQuery = $this->manager->createQueryBuilder()
+            ->select('MAX(r1.relacedAt)')
+            ->from('App\Entity\Relanced', 'r1')
+            ->where('r1.prospect = p.id')
+            ->getDQL();
 
         $query = $this->createQueryBuilder('p')
 
@@ -271,8 +278,9 @@ class ProspectRepository extends ServiceEntityRepository
 
             // joiner les tables en relation manytomany avec fonction
             //->leftJoin('p.comrcl', 'f')
-
-            ->orderBy('p.id', 'DESC');
+            ->addSelect('(' . $subQuery . ') AS HIDDEN lastRelanceDate')
+            ->orderBy('lastRelanceDate', 'ASC');
+        // ->orderBy('p.id', 'DESC');
 
 
 
@@ -709,7 +717,11 @@ class ProspectRepository extends ServiceEntityRepository
 
         $tomorrow = new \DateTime('tomorrow');
         $tomorrow->setTime(0, 0, 0);
-
+        $subQuery = $this->manager->createQueryBuilder()
+            ->select('MAX(r1.relacedAt)')
+            ->from('App\Entity\Relanced', 'r1')
+            ->where('r1.prospect = p.id')
+            ->getDQL();
 
         $query = $this->createQueryBuilder('p')
 
@@ -734,8 +746,9 @@ class ProspectRepository extends ServiceEntityRepository
 
             // joiner les tables en relation manytomany avec fonction
             ->leftJoin('p.comrcl', 'f')
-
-            ->orderBy('p.id', 'DESC');
+            ->addSelect('(' . $subQuery . ') AS HIDDEN lastRelanceDate')
+            ->orderBy('lastRelanceDate', 'ASC');
+        //->orderBy('p.id', 'DESC');
 
 
 
@@ -821,7 +834,11 @@ class ProspectRepository extends ServiceEntityRepository
 
         $tomorrow = new \DateTime('tomorrow');
         $tomorrow->setTime(0, 0, 0);
-
+        $subQuery = $this->manager->createQueryBuilder()
+            ->select('MAX(r1.relacedAt)')
+            ->from('App\Entity\Relanced', 'r1')
+            ->where('r1.prospect = p.id')
+            ->getDQL();
 
         $query = $this->createQueryBuilder('p')
 
@@ -851,8 +868,9 @@ class ProspectRepository extends ServiceEntityRepository
 
             // joiner les tables en relation manytomany avec fonction
             ->leftJoin('p.comrcl', 'f')
-
-            ->orderBy('p.id', 'DESC');
+            ->addSelect('(' . $subQuery . ') AS HIDDEN lastRelanceDate')
+            ->orderBy('lastRelanceDate', 'ASC');
+        //->orderBy('p.id', 'DESC');
 
 
 
@@ -942,25 +960,30 @@ class ProspectRepository extends ServiceEntityRepository
 
         $endOfDay = clone $today;
         $endOfDay->setTime(23, 59, 59);
-
+        $subQuery = $this->manager->createQueryBuilder()
+            ->select('MAX(r1.relacedAt)')
+            ->from('App\Entity\Relanced', 'r1')
+            ->where('r1.prospect = p.id')
+            ->getDQL();
         $query = $this->createQueryBuilder('p')
             ->select('p, r')
-
             ->leftJoin('p.relanceds', 'r')
-            ->Where('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
+            ->where('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
             ->setParameter('startOfDay', $today)
             ->setParameter('endOfDay', $endOfDay)
-            //->andWhere('r.motifRelanced = 1')
-            // motif relance ne soit pas dans les choix suivant
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
             ->setParameter('motifs', [3, 7, 8, 9, 10])
+            ->addSelect('(' . $subQuery . ') AS HIDDEN lastRelanceDate')
+            ->orderBy('lastRelanceDate', 'ASC');
 
+        // ->addSelect("(SELECT FROM relanced ) AS HIDDEN ORD ")
+        // ->orderBy('ORD', 'DESC');
+        // joiner les tables en relation manytomany avec fonction
+        // ->leftJoin('p.comrcl', 'f')
+        // ->groupBy('p.id')
+        // ->orderBy('r.relacedAt', 'DESC');
 
-            // joiner les tables en relation manytomany avec fonction
-            // ->leftJoin('p.comrcl', 'f')
-
-            ->orderBy('p.id', 'ASC');
-
+        //->orderBy('p.id', 'ASC');
 
 
         if ((!empty($search->q))) {
@@ -1024,6 +1047,8 @@ class ProspectRepository extends ServiceEntityRepository
                 ->andWhere('p.source = :source')
                 ->setParameter('source', $search->source);
         }
+
+
         return $this->paginator->paginate(
             $query,
             $search->page,
@@ -1050,7 +1075,11 @@ class ProspectRepository extends ServiceEntityRepository
 
         $endOfDay = clone $today;
         $endOfDay->setTime(23, 59, 59);
-
+        $subQuery = $this->manager->createQueryBuilder()
+            ->select('MAX(r1.relacedAt)')
+            ->from('App\Entity\Relanced', 'r1')
+            ->where('r1.prospect = p.id')
+            ->getDQL();
         $query = $this->createQueryBuilder('p')
             ->select('p, f, r')
             ->where('p.team IN (:teams)')
@@ -1065,8 +1094,10 @@ class ProspectRepository extends ServiceEntityRepository
 
             // joiner les tables en relation manytomany avec fonction
             ->leftJoin('p.comrcl', 'f')
+            ->addSelect('(' . $subQuery . ') AS HIDDEN lastRelanceDate')
+            ->orderBy('lastRelanceDate', 'ASC');
 
-            ->orderBy('p.id', 'DESC');
+        //->orderBy('p.id', 'DESC');
 
 
 
@@ -1152,7 +1183,11 @@ class ProspectRepository extends ServiceEntityRepository
 
         $endOfDay = clone $today;
         $endOfDay->setTime(23, 59, 59);
-
+        $subQuery = $this->manager->createQueryBuilder()
+            ->select('MAX(r1.relacedAt)')
+            ->from('App\Entity\Relanced', 'r1')
+            ->where('r1.prospect = p.id')
+            ->getDQL();
         $query = $this->createQueryBuilder('p')
             ->select('p, r')
             ->Where('p.comrcl = :val')
@@ -1164,10 +1199,11 @@ class ProspectRepository extends ServiceEntityRepository
             //->andWhere('r.motifRelanced = 1') 
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
             ->setParameter('motifs', [3, 7, 8, 9, 10])
+            ->addSelect('(' . $subQuery . ') AS HIDDEN lastRelanceDate')
+            ->orderBy('lastRelanceDate', 'ASC');
 
-
-            // joiner les tables en relation manytomany avec fonction 
-            ->orderBy('p.id', 'DESC');
+        // joiner les tables en relation manytomany avec fonction 
+        //->orderBy('p.id', 'DESC');
 
 
         if ((!empty($search->q))) {
@@ -2039,6 +2075,8 @@ class ProspectRepository extends ServiceEntityRepository
             ->where('p.team IN (:teams) ')
             ->setParameter('teams', $team)
             ->andWhere('p.team IS NOT NULL')
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.prospect IS NULL')
             ->andWhere('p.comrcl IS NULL OR p.comrcl = :val') // Filtrer les prospects no affectés et affect au chef aussi
             ->setParameter('val', $user)
             ->orderBy('p.id', 'DESC');

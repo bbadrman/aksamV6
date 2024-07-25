@@ -29,27 +29,43 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * @Route("/prospect")
- * @IsGranted("ROLE_USER", message="Tu ne peut pas acces a cet ressource") 
- * 
+ * @Route("/prospect") 
  */
 
 class ProspectController extends AbstractController
 {
 
 
-
     public function __construct(
         private  RequestStack $requestStack,
         private  EntityManagerInterface $entityManager,
         private  ProspectRepository $prospectRepository,
-        private  Security $security
+        private  Security $security,
+        private AuthorizationCheckerInterface $authorizationChecker
     ) {
     }
 
+    public function indexdenit(): Response
+    {
+        if (
+            !$this->authorizationChecker->isGranted('ROLE_ADMIN') &&
+            !$this->authorizationChecker->isGranted('ROLE_TEAM') &&
+            !$this->authorizationChecker->isGranted('ROLE_AFFECT') &&
+            !$this->authorizationChecker->isGranted('ROLE_ADD_PROS') &&
+            !$this->authorizationChecker->isGranted('ROLE_EDIT_PROS') &&
+            !$this->authorizationChecker->isGranted('ROLE_PROS') &&
+            !$this->authorizationChecker->isGranted('ROLE_COMERC')
+        ) {
+            throw new AccessDeniedException("Tu ne peux pas accéder à cette ressource");
+        }
 
+        // Votre logique pour cette route
+        return new Response("Accès autorisé !");
+    }
     // afficher les nouveaux prospects 
     #[Route('/newprospect', name: 'newprospect_index', methods: ['GET', 'POST'])]
     public function newprospect(Request $request): Response

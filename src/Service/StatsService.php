@@ -115,6 +115,7 @@ class StatsService
     // les nouveaux prospects cree ce jour affecter a mon equipe
     public function getProspectChefNv(User $user): int
     {
+
         $teams = $user->getTeams();
 
         if ($teams->isEmpty()) {
@@ -128,6 +129,8 @@ class StatsService
             ->from('App\Entity\Prospect', 'p')
             ->where('p.team IN (:teams)')
             //->andWhere('p.comrcl IS NULL')
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.prospect IS NULL')
             ->andWhere('p.comrcl IS NULL OR p.comrcl = :val')
             ->setParameter('teams', $teams)
             ->setParameter('val', $user);

@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Team;
+use App\Entity\Prospect;
 use App\Form\SearchStatType;
 use App\Search\SearchProspect;
 use App\Repository\TeamRepository;

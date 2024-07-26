@@ -13,29 +13,53 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 
 class SearchController extends AbstractController
 {
+    private const AUTHORIZED_ROLES = [
+        'ROLE_ADMIN',
+        'ROLE_TEAM',
+        'ROLE_AFFECT',
+        'ROLE_ADD_PROS',
+        'ROLE_EDIT_PROS',
+        'ROLE_PROS',
+        'ROLE_COMERC'
+    ];
 
 
 
     public function __construct(
         private EntityManagerInterface $entityManager,
         private ProspectRepository $prospectRepository,
+        private AuthorizationCheckerInterface $authorizationChecker,
         private Security $security
     ) {
     }
+    private function denyAccessUnlessGrantedAuthorizedRoles(): void
+    {
+        if (!$this->getUser()) {
+            throw new AccessDeniedException("Accès refusé pour les utilisateurs anonymes");
+        }
 
+        foreach (self::AUTHORIZED_ROLES as $role) {
+            if ($this->authorizationChecker->isGranted($role)) {
+                return;
+            }
+        }
+
+        throw new AccessDeniedException("Tu ne peux pas accéder à cette ressource");
+    }
 
     /**
      * Search for all prospects
-     * @Route("/search_prospect", name="prospect_search", methods={"GET"})
-     * @IsGranted("ROLE_USER", message="Tu ne peut pas acces a cet ressource")
+     * @Route("/search_prospect", name="prospect_search", methods={"GET"}) 
      */
     public function search(Request $request): Response
     {
-
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         $data = new SearchProspect();
         $data->page = $request->get('page', 1);

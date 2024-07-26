@@ -202,7 +202,7 @@ class TeamController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_team_delete", methods={"POST"}) 
-     * @IsGranted("ROLE_ADMIN", message="Tu ne peut pas acces a cet ressource")
+     * @IsGranted("ROLE_SUPER_ADMIN", message="Tu ne peut pas acces a cet ressource")
      */
     public function delete(Request $request, Team $team, TeamRepository $teamRepository): Response
     {

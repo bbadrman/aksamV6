@@ -37,13 +37,14 @@ security:
         - { path: ^/api, roles: ROLE_ADMIN, methods: [GET, PUT, DELETE], }
         - { path: ^/api/prospects, roles: ROLE_ADMIN, methods: [GET, PUT, DELETE], }
         - { path: ^/api/users, roles: ROLE_ADMIN  }
-        - { path: ^/api/products, roles: ROLE_ADMIN }
+        - { path: ^/api/products, roles: [ROLE_ADMIN, ROLE_TEAM] }
         - { path: ^/api/Relances, roles: ROLE_ADMIN }
         - { path: ^/api/teams, roles: ROLE_ADMIN }
         - { path: ^/api/clients, roles: ROLE_ADMIN }
         - { path: ^/api/fonctions, roles: ROLE_ADMIN }
-        - { path: ^/profile, roles: ROLE_USER }
-
+        - { path: ^/profile, roles: ROLE_USER }  
+        - { path: ^/client, roles: [ROLE_ADMIN, ROLE_TEAM,  ROLE_COMERC, ROLE_PROD, ROLE_CLIENT, ROLE_ADD_PROD, ROLE_EDIT_PROD ] }
+        
     role_hierarchy:
         ROLE_SUPER_ADMIN: ROLE_ADMIN 
         ROLE_ADMIN: ROLE_TEAM, ROLE_STAND, ROLE_RH, ROLE_PROD, ROLE_RESP,  ROLE_CLIENT,

@@ -39,6 +39,16 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class ProspectController extends AbstractController
 {
 
+    private const AUTHORIZED_ROLES = [
+        'ROLE_ADMIN',
+        'ROLE_TEAM',
+        'ROLE_AFFECT',
+        'ROLE_ADD_PROS',
+        'ROLE_EDIT_PROS',
+        'ROLE_PROS',
+        'ROLE_COMERC'
+    ];
+
     public function __construct(
         private  RequestStack $requestStack,
         private  EntityManagerInterface $entityManager,
@@ -47,52 +57,29 @@ class ProspectController extends AbstractController
         private AuthorizationCheckerInterface $authorizationChecker
     ) {
     }
-
-    public function indexdenit(): Response
+    private function denyAccessUnlessGrantedAuthorizedRoles(): void
     {
-        // Vérifier si l'utilisateur est anonyme
         if (!$this->getUser()) {
             throw new AccessDeniedException("Accès refusé pour les utilisateurs anonymes");
         }
 
-        // Vérifier les rôles spécifiques
-        if (
-            !$this->authorizationChecker->isGranted('ROLE_ADMIN') &&
-            !$this->authorizationChecker->isGranted('ROLE_TEAM') &&
-            !$this->authorizationChecker->isGranted('ROLE_AFFECT') &&
-            !$this->authorizationChecker->isGranted('ROLE_ADD_PROS') &&
-            !$this->authorizationChecker->isGranted('ROLE_EDIT_PROS') &&
-            !$this->authorizationChecker->isGranted('ROLE_PROS') &&
-            !$this->authorizationChecker->isGranted('ROLE_COMERC') &&
-            $this->authorizationChecker->isGranted('ROLE_USER')
-        ) {
-            throw new AccessDeniedException("Tu ne peux pas accéder à cette ressource");
+        foreach (self::AUTHORIZED_ROLES as $role) {
+            if ($this->authorizationChecker->isGranted($role)) {
+                return;
+            }
         }
 
-        // Votre logique pour cette route
-        return new Response("Accès autorisé !");
+        throw new AccessDeniedException("Tu ne peux pas accéder à cette ressource");
     }
+
+
     // afficher les nouveaux prospects 
     #[Route('/newprospect', name: 'newprospect_index', methods: ['GET', 'POST'])]
     public function newprospect(Request $request): Response
 
     {
-        if (!$this->getUser()) {
-            throw new AccessDeniedException("Accès refusé pour les utilisateurs anonymes");
-        }
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
 
-        // Vérifier les rôles spécifiques
-        if (
-            !$this->authorizationChecker->isGranted('ROLE_ADMIN') &&
-            !$this->authorizationChecker->isGranted('ROLE_TEAM') &&
-            !$this->authorizationChecker->isGranted('ROLE_AFFECT') &&
-            !$this->authorizationChecker->isGranted('ROLE_ADD_PROS') &&
-            !$this->authorizationChecker->isGranted('ROLE_EDIT_PROS') &&
-            !$this->authorizationChecker->isGranted('ROLE_PROS') &&
-            !$this->authorizationChecker->isGranted('ROLE_COMERC')
-        ) {
-            throw new AccessDeniedException("Tu ne peux pas accéder à cette ressource");
-        }
         $data = new SearchProspect();
         $data->page = $request->query->get('page', 1);
         $form = $this->createForm(SearchProspectType::class, $data);
@@ -132,22 +119,7 @@ class ProspectController extends AbstractController
         SerializerInterface $serializer
     ): JsonResponse {
 
-        if (!$this->getUser()) {
-            throw new AccessDeniedException("Accès refusé pour les utilisateurs anonymes");
-        }
-
-        // Vérifier les rôles spécifiques
-        if (
-            !$this->authorizationChecker->isGranted('ROLE_ADMIN') &&
-            !$this->authorizationChecker->isGranted('ROLE_TEAM') &&
-            !$this->authorizationChecker->isGranted('ROLE_AFFECT') &&
-            !$this->authorizationChecker->isGranted('ROLE_ADD_PROS') &&
-            !$this->authorizationChecker->isGranted('ROLE_EDIT_PROS') &&
-            !$this->authorizationChecker->isGranted('ROLE_PROS') &&
-            !$this->authorizationChecker->isGranted('ROLE_COMERC')
-        ) {
-            throw new AccessDeniedException("Tu ne peux pas accéder à cette ressource");
-        }
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         $prospect = [];
         $user = $security->getUser();
@@ -176,22 +148,8 @@ class ProspectController extends AbstractController
     public function avenir(Request $request,    Security $security): Response
 
     {
-        if (!$this->getUser()) {
-            throw new AccessDeniedException("Accès refusé pour les utilisateurs anonymes");
-        }
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
 
-        // Vérifier les rôles spécifiques
-        if (
-            !$this->authorizationChecker->isGranted('ROLE_ADMIN') &&
-            !$this->authorizationChecker->isGranted('ROLE_TEAM') &&
-            !$this->authorizationChecker->isGranted('ROLE_AFFECT') &&
-            !$this->authorizationChecker->isGranted('ROLE_ADD_PROS') &&
-            !$this->authorizationChecker->isGranted('ROLE_EDIT_PROS') &&
-            !$this->authorizationChecker->isGranted('ROLE_PROS') &&
-            !$this->authorizationChecker->isGranted('ROLE_COMERC')
-        ) {
-            throw new AccessDeniedException("Tu ne peux pas accéder à cette ressource");
-        }
 
         $data = new SearchProspect();
         $data->page = $request->query->get('page', 1);
@@ -237,22 +195,8 @@ class ProspectController extends AbstractController
 
     public function new(Request $request,): Response
     {
-        if (!$this->getUser()) {
-            throw new AccessDeniedException("Accès refusé pour les utilisateurs anonymes");
-        }
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
 
-        // Vérifier les rôles spécifiques
-        if (
-            !$this->authorizationChecker->isGranted('ROLE_ADMIN') &&
-            !$this->authorizationChecker->isGranted('ROLE_TEAM') &&
-            !$this->authorizationChecker->isGranted('ROLE_AFFECT') &&
-            !$this->authorizationChecker->isGranted('ROLE_ADD_PROS') &&
-            !$this->authorizationChecker->isGranted('ROLE_EDIT_PROS') &&
-            !$this->authorizationChecker->isGranted('ROLE_PROS') &&
-            !$this->authorizationChecker->isGranted('ROLE_COMERC')
-        ) {
-            throw new AccessDeniedException("Tu ne peux pas accéder à cette ressource");
-        }
         $prospect = new Prospect();
         $productChoices = $this->entityManager->getRepository(Product::class)->createQueryBuilder('p')->getQuery()->getResult();
 
@@ -291,22 +235,8 @@ class ProspectController extends AbstractController
     #[Route('/show/{id}', name: 'app_prospect_show', methods: ['GET', 'POST'])]
     public function show(Prospect $prospect,  Request $request,  HistoryRepository $historyRepository)
     {
-        if (!$this->getUser()) {
-            throw new AccessDeniedException("Accès refusé pour les utilisateurs anonymes");
-        }
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
 
-        // Vérifier les rôles spécifiques
-        if (
-            !$this->authorizationChecker->isGranted('ROLE_ADMIN') &&
-            !$this->authorizationChecker->isGranted('ROLE_TEAM') &&
-            !$this->authorizationChecker->isGranted('ROLE_AFFECT') &&
-            !$this->authorizationChecker->isGranted('ROLE_ADD_PROS') &&
-            !$this->authorizationChecker->isGranted('ROLE_EDIT_PROS') &&
-            !$this->authorizationChecker->isGranted('ROLE_PROS') &&
-            !$this->authorizationChecker->isGranted('ROLE_COMERC')
-        ) {
-            throw new AccessDeniedException("Tu ne peux pas accéder à cette ressource");
-        }
         $client = HttpClient::create();
         $response = $client->request('GET', 'https://public-api.ringover.com/v2/calls', [
             'headers' => [
@@ -408,18 +338,8 @@ class ProspectController extends AbstractController
     public function edit(Request $request, Prospect $prospect,   TeamRepository $teamRepository): Response
     {
 
-        if (!$this->getUser()) {
-            throw new AccessDeniedException("Accès refusé pour les utilisateurs anonymes");
-        }
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
 
-        // Vérifier les rôles spécifiques
-        if (
-            !$this->authorizationChecker->isGranted('ROLE_ADMIN') &&
-            !$this->authorizationChecker->isGranted('ROLE_TEAM') &&
-            !$this->authorizationChecker->isGranted('ROLE_AFFECT')
-        ) {
-            throw new AccessDeniedException("Tu ne peux pas accéder à cette ressource");
-        }
         $user = $this->security->getUser();
 
         $form = $this->createForm(ProspectAffectType::class, $prospect);

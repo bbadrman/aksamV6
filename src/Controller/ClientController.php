@@ -25,6 +25,15 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class ClientController extends AbstractController
 {
+    private const AUTHORIZED_ROLES = [
+        'ROLE_ADMIN',
+        'ROLE_TEAM',
+        'ROLE_AFFECT',
+        'ROLE_ADD_PROS',
+        'ROLE_EDIT_PROS',
+        'ROLE_PROS',
+        'ROLE_COMERC'
+    ];
 
 
     public function __construct(
@@ -34,22 +43,19 @@ class ClientController extends AbstractController
         private AuthorizationCheckerInterface $authorizationChecker
     ) {
     }
-    public function indexdenit(): Response
+    private function denyAccessUnlessGrantedAuthorizedRoles(): void
     {
-        if (
-            !$this->authorizationChecker->isGranted('ROLE_ADMIN') &&
-            !$this->authorizationChecker->isGranted('ROLE_TEAM') &&
-            !$this->authorizationChecker->isGranted('ROLE_AFFECT') &&
-            !$this->authorizationChecker->isGranted('ROLE_ADD_PROS') &&
-            !$this->authorizationChecker->isGranted('ROLE_EDIT_PROS') &&
-            !$this->authorizationChecker->isGranted('ROLE_PROS') &&
-            !$this->authorizationChecker->isGranted('ROLE_COMERC')
-        ) {
-            throw new AccessDeniedException("Tu ne peux pas accéder à cette ressource");
+        if (!$this->getUser()) {
+            throw new AccessDeniedException("Accès refusé pour les utilisateurs anonymes");
         }
 
-        // Votre logique pour cette route
-        return new Response("Accès autorisé !");
+        foreach (self::AUTHORIZED_ROLES as $role) {
+            if ($this->authorizationChecker->isGranted($role)) {
+                return;
+            }
+        }
+
+        throw new AccessDeniedException("Tu ne peux pas accéder à cette ressource");
     }
 
 
@@ -58,6 +64,8 @@ class ClientController extends AbstractController
      */
     public function index(Request $request,  Security $security): Response
     {
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
+
         $data = new SearchClient();
         $data->page = $request->query->get('page', 1);
         $form = $this->createForm(SearchClientType::class, $data);
@@ -98,7 +106,7 @@ class ClientController extends AbstractController
      */
     public function new(Request $request, $id = null): Response
     {
-
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         $client = new Client();
         $form = $this->createForm(ClientType::class, $client);
@@ -121,7 +129,7 @@ class ClientController extends AbstractController
      */
     public function add(Request $request, ValidatorInterface $validator): JsonResponse
     {
-
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
         $client = new Client();
 
         //$client->setName($request->get('name'));
@@ -161,6 +169,8 @@ class ClientController extends AbstractController
      */
     public function show(Client $client): Response
     {
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
+
         return $this->render('client/show.html.twig', [
             'client' => $client,
         ]);
@@ -171,6 +181,8 @@ class ClientController extends AbstractController
      */
     public function edit(Request $request, Client $client): Response
     {
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
+
         $form = $this->createForm(ClientType::class, $client);
         $form->handleRequest($request);
 
@@ -191,6 +203,8 @@ class ClientController extends AbstractController
      */
     public function delete(Request $request, Client $client): Response
     {
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
+
         if ($this->isCsrfTokenValid('delete' . $client->getId(), $request->request->get('_token'))) {
             $this->clientRepository->remove($client, true);
         }

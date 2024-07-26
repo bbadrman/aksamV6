@@ -44,6 +44,7 @@ class RelancedType extends AbstractType
                         'Passage Concurrent ' => '9',
                         'Passage Contrat ' => '10',
                         'Déjà Souscrit' => '3',
+                        'Test ' => '11',
                     ],
                 ],
                 'expanded' => false,

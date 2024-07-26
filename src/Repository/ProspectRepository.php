@@ -1306,6 +1306,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
             ->andWhere('p.team IS NOT NULL')  // Affecté à une équipe 
+
             // ->andWhere('p.comrcl IS NOT NULL')   
             ->andWhere('p.creatAt <= :yesterday')
             ->setParameter('yesterday', $yesterday)
@@ -1956,6 +1957,8 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('p.comrcl', 'f')
             ->where('p.comrcl IS NULL')
             ->andWhere('p.team IS NULL')
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.motifRelanced is null')
             ->orderBy('p.id', 'DESC');
         if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
@@ -1987,7 +1990,9 @@ class ProspectRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('p')
             ->select('COUNT(p.id)')
             ->andWhere("p.comrcl is NULL")
-            ->andWhere("p.team is NULL");
+            ->andWhere("p.team is NULL")
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.motifRelanced is null');
 
         return (int) $query->getQuery()->getSingleScalarResult();
     }

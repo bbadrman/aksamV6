@@ -376,7 +376,7 @@ if (resilField !== null) {
 			subresilContainer2.style.display = 'none';     // cacher le champ client
 			commentField.style.display = 'block';          // Afficher le champ comment
 			//click sur passage en contart il faut affichier les champ des contart et comment cache du date 
-		} else if (resilField.value === '7' || resilField.value === '8' || resilField.value === '9' || resilField.value === '3') {
+		} else if (resilField.value === '3' || resilField.value === '7' || resilField.value === '8' || resilField.value === '9' || resilField.value === '11') {
 			//pour rederct to rout 
 			//window.location.href = "/client/new-client";
 			// pour manipilie les champs

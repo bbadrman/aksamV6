@@ -102,7 +102,9 @@ class StatsService
         $qb->select('COUNT(p)')
             ->from('App\Entity\Prospect', 'p')
             ->Where("p.comrcl is NULL")
-            ->andWhere("p.team is NULL");
+            ->andWhere("p.team is NULL")
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.motifRelanced is null');
 
 
         $query = $qb->getQuery();

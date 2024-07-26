@@ -22,13 +22,6 @@ class GsmType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Merci de saisir le deuxième numéro de téléphone'
                 ]
-            ])
-            ->add('secdEmail', EmailType::class, [
-                'label' => 'Email 2',
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'Merci de saisir le deuxième Email'
-                ]
             ]);
         //pour reformater le numero nationnal
         $builder->addEventListener(

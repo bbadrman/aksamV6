@@ -12,6 +12,7 @@ use App\Entity\Relanced;
 use App\Form\ClientType;
 use App\Form\ProspectType;
 use App\Form\RelancedType;
+use App\Form\ScdEmailType;
 use App\Search\SearchProspect;
 use App\Form\ProspectAffectType;
 use App\Form\SearchProspectType;
@@ -247,6 +248,14 @@ class ProspectController extends AbstractController
 
         $data = $response->toArray();
 
+        // Form to modify the prospect's second email
+        $emailForm = $this->createForm(ScdEmailType::class, $prospect);
+        $emailForm->handleRequest($request);
+
+        if ($emailForm->isSubmitted() && $emailForm->isValid()) {
+            $this->entityManager->persist($prospect);
+            $this->entityManager->flush();
+        }
         // Form to modify the prospect's second number
         $gsmForm = $this->createForm(GsmType::class, $prospect);
         $gsmForm->handleRequest($request);
@@ -255,6 +264,9 @@ class ProspectController extends AbstractController
             $this->entityManager->persist($prospect);
             $this->entityManager->flush();
         }
+
+
+
 
 
         // Gerer les relance 
@@ -327,6 +339,7 @@ class ProspectController extends AbstractController
             'form' => $form->createView(),
             'clientForm' => $clientForm->createView(),
             'gsmForm' => $gsmForm->createView(),
+            'emailForm' => $emailForm->createView(),
             'ringoverData' => $data,
         ]);
     }

@@ -103,6 +103,9 @@ class Prospect
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $url = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $secdEmail = null;
+
 
 
 
@@ -487,6 +490,18 @@ class Prospect
     public function setUrl(?string $url): static
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    public function getSecdEmail(): ?string
+    {
+        return $this->secdEmail;
+    }
+
+    public function setSecdEmail(?string $secdEmail): static
+    {
+        $this->secdEmail = $secdEmail;
 
         return $this;
     }

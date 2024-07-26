@@ -202,6 +202,7 @@ class ProspectType extends AbstractType
             )
             ->add('product', EntityType::class, [
                 'class' => Product::class,
+                'label' => 'Produit ',
                 'placeholder' => '--Merci de selectie-- ',
                 'choices' => $options['product_choices'],
                 'multiple' => false, // Assuming `produit` is a collection

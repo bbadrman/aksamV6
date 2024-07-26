@@ -2,11 +2,14 @@
 
 namespace App\Form;
 
+use App\Entity\Prospect;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
 class GsmType extends AbstractType
 {
@@ -18,6 +21,13 @@ class GsmType extends AbstractType
                 'required' => false,
                 'attr' => [
                     'placeholder' => 'Merci de saisir le deuxième numéro de téléphone'
+                ]
+            ])
+            ->add('secdEmail', EmailType::class, [
+                'label' => 'Email 2',
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Merci de saisir le deuxième Email'
                 ]
             ]);
         //pour reformater le numero nationnal
@@ -55,5 +65,11 @@ class GsmType extends AbstractType
 
         // Return original number if it doesn't need conversion
         return $phoneNumber;
+    }
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => Prospect::class,
+        ]);
     }
 }

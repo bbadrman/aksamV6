@@ -2010,6 +2010,8 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('p.comrcl', 'f')
             ->where('p.team IN (:teams) ')
             ->setParameter('teams', $team)
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.prospect IS NULL')
             ->andWhere('p.team IS NOT NULL')
             ->andWhere('p.comrcl IS NULL OR p.comrcl = :user') // Filtrer les prospects no affectés et affect au chef aussi
             ->setParameter('user', $user);

@@ -14,6 +14,8 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -142,6 +144,37 @@ class DashboardController extends AbstractController
 
         return $this->render('partials/_modal_disp_team.html.twig', [
             'team' => $team,
+        ]);
+    }
+
+    /**
+     * Permet d'afficher tous les teams
+     * 
+     *  @Route("/aide", name="aide_show")
+     *
+     * @return Response  
+     */
+    public function readPdfFile(): BinaryFileResponse
+    {
+        // Chemin relatif à partir du répertoire `public`
+        $user = $this->security->getUser();
+        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+
+            $filePath = $this->getParameter('kernel.project_dir') . '/public/documents/ModOP.pdf';
+        } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+            $filePath = $this->getParameter('kernel.project_dir') . '/public/documents/ModOPcommercial.pdf';
+        } else if (in_array('ROLE_COMMERC', $user->getRoles(), true)) {
+            $filePath = $this->getParameter('kernel.project_dir') . '/public/documents/ModOPcommercial.pdf';
+        } else {
+            $filePath = $this->getParameter('kernel.project_dir') . '/public/documents/ModOPcommercial.pdf';
+        }
+        if (!file_exists($filePath)) {
+            throw $this->createNotFoundException('The file does not exist');
+        }
+
+        return new BinaryFileResponse($filePath, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="ModOP.pdf"'
         ]);
     }
 }

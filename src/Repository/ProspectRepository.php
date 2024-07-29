@@ -1303,15 +1303,16 @@ class ProspectRepository extends ServiceEntityRepository
         $excludedEmail = 'service.technique@aksam-assurances.fr';
         $query = $this->createQueryBuilder('p')
             ->select('p, t, f, r')
-            ->andWhere('p.team IS NOT NULL')  // Affecté à une équipe 
+            ->leftJoin('p.team', 't')
+            ->leftJoin('p.comrcl', 'f')
+            ->Where('p.team IS NOT NULL')  // Affecté à une équipe 
             ->leftJoin('p.relanceds', 'r')
-            ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced 
-            ->where('p.email != :excludedEmail')
+            ->andWhere('r.motifRelanced IS NULL') // Aucune relation avec relanced 
+            ->andwhere('p.email != :excludedEmail')
             ->setParameter('excludedEmail', $excludedEmail)
             ->andWhere('p.creatAt <= :yesterday')
             ->setParameter('yesterday', $yesterday)
-            ->leftJoin('p.team', 't')
-            ->leftJoin('p.comrcl', 'f')
+
             ->orderBy('p.id', 'DESC');
 
 

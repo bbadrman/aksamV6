@@ -495,10 +495,10 @@ class StatsService
             ->from(Prospect::class, 'p')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
-            ->andWhere('p.team IS NOT NULL')
+            ->Where('p.team IS NOT NULL')
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL')
-            ->where('p.email != :excludedEmail')
+            ->andwhere('p.email != :excludedEmail')
             ->setParameter('excludedEmail', $excludedEmail)
 
             ->andWhere('p.creatAt <= :yesterday')

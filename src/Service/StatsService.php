@@ -489,13 +489,18 @@ class StatsService
         $now = new \DateTime();
         $yesterday = clone $now;
         $yesterday->modify('-24 hours');
-
+        $excludedEmail = 'service.technique@aksam-assurances.fr';
         $qb = $this->manager->createQueryBuilder();
         $qb->select('COUNT(DISTINCT p.id)')
             ->from(Prospect::class, 'p')
+            ->leftJoin('p.team', 't')
+            ->leftJoin('p.comrcl', 'f')
             ->andWhere('p.team IS NOT NULL')
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL')
+            ->where('p.email != :excludedEmail')
+            ->setParameter('excludedEmail', $excludedEmail)
+
             ->andWhere('p.creatAt <= :yesterday')
             ->setParameter('yesterday', $yesterday);
 

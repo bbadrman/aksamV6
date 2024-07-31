@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 
+use DateTime;
+use App\Entity\Appel;
 use App\Form\GsmType;
 use App\Entity\Client;
 use App\Entity\History;
@@ -16,6 +18,7 @@ use App\Form\ScdEmailType;
 use App\Search\SearchProspect;
 use App\Form\ProspectAffectType;
 use App\Form\SearchProspectType;
+use App\Repository\AppelRepository;
 use App\Repository\TeamRepository;
 use App\Repository\HistoryRepository;
 use App\Repository\ProspectRepository;
@@ -234,19 +237,65 @@ class ProspectController extends AbstractController
 
 
     #[Route('/show/{id}', name: 'app_prospect_show', methods: ['GET', 'POST'])]
-    public function show(Prospect $prospect,  Request $request,  HistoryRepository $historyRepository)
+    public function show(Prospect $prospect,  Request $request,  HistoryRepository $historyRepository, AppelRepository $appelRepository)
     {
         $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         $client = HttpClient::create();
+
+
+        // Utiliser la classe \DateTime de PHP
+        $currentDate = new \DateTime();
+        $lastDate = (clone $currentDate)->modify('-15 days');
+
         $response = $client->request('GET', 'https://public-api.ringover.com/v2/calls', [
             'headers' => [
                 // Ajoutez ici vos en-têtes d'authentification ou d'autorisation nécessaires
-                'Authorization' => '6eae1744801c7cdbdf6fbdce2b3ce4354547d1aa',
+                'Authorization' => '926b7a524bba92932bb5f324222cb1c9f461908d',
             ],
+            'query' => [
+                'start_date' => $lastDate->format('Y-m-d\TH:i:s.u\Z'),
+                'end_date' => $currentDate->format('Y-m-d\TH:i:s.u\Z'),
+                'limit_count' => 1000, // Facultatif : ajuster selon les besoins
+
+
+            ],
+
         ]);
+        if ($response->getStatusCode() !== 200) {
+            // Gérer les erreurs HTTP
+            return new Response('Erreur lors de la récupération des données de l\'API Ringover', $response->getStatusCode());
+        }
+
 
         $data = $response->toArray();
+
+        if (isset($data['call_list'])) {
+            foreach ($data['call_list'] as $callData) {
+                $contactName = $callData['user']['concat_name'] ?? null;
+                $startTime = new \DateTime($callData['start_time']);
+                $existingCall = $appelRepository->findByUniqueProperties(
+                    $callData['from_number'],
+                    $callData['to_number'],
+                    $startTime
+                );
+
+                if (!$existingCall) {
+                    $appel = new Appel();
+                    $appel->setFromNumber($callData['from_number'])
+                        ->setToNumber($callData['to_number'])
+                        ->setContactName($contactName)  // Corrected this line
+                        ->setStartTime($startTime)
+                        ->setEndTime(isset($callData['end_time']) ? new \DateTime($callData['end_time']) : null)
+                        ->setDuration(isset($callData['total_duration']) ? (int)$callData['total_duration'] : null)
+                        ->setRecordUrl($callData['record'] ?? null);
+
+                    $this->entityManager->persist($appel);
+                }
+            }
+            $this->entityManager->flush();
+        }
+
 
         // Form to modify the prospect's second email
         $emailForm = $this->createForm(ScdEmailType::class, $prospect);
@@ -324,6 +373,12 @@ class ProspectController extends AbstractController
         if (!$clientForm->isSubmitted() || !$clientForm->isValid()) {
             $this->entityManager->flush();
         }
+        // Trier les appels par start_time de manière décroissante
+        usort($data['call_list'], function ($a, $b) {
+            return (new \DateTime($b['start_time'])) <=> (new \DateTime($a['start_time']));
+        });
+
+
 
 
 
@@ -331,10 +386,14 @@ class ProspectController extends AbstractController
 
         // $teamHistory = $this->getDoctrine()->getRepository(History::class)->findBy(['prospect' => $prospect]);
         $teamHistory = $historyRepository->findBy(['prospect' => $prospect]);
+        //$appel = $appelRepository->findAll();
+        $appel = $appelRepository->findAllOrderedByStartTime();
+
 
 
         return $this->render('prospect/show.html.twig', [
             'prospect' => $prospect,
+            'appel' => $appel,
             'teamHistory' => $teamHistory,
             'form' => $form->createView(),
             'clientForm' => $clientForm->createView(),

@@ -2,18 +2,16 @@
 
 namespace App\Form;
 
+use App\Entity\Cloture;
 use App\Entity\Relanced;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as Type;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class RelancedType extends AbstractType
+class ClotureType extends AbstractType
 {
 
 
@@ -25,33 +23,24 @@ class RelancedType extends AbstractType
 
         $builder
 
-            ->add('motifRelanced', Type\ChoiceType::class, [
-                'label' => 'Motif Relance ',
+            ->add('motifCloture', Type\ChoiceType::class, [
+                'label' => 'Motif Cloture ',
                 'required' => false,
                 'placeholder' => '       ',
                 'choices' => [
-                    'Prise de Contact' => [
-                        'Rendez-vous' => '1',
-                        'Injoignable' => '2',
-
-                    ],
-                    'Attente DOC' => '4',
-                    'Tarification' => '5',
-                    'Prise de Décision ' => '6',
-                    'Cloture ' => [
-                        'Faux Fiche' => '7',
-                        'Doublon' => '8',
-                        'Passage Concurrent ' => '9',
-                        'Passage Contrat ' => '10',
-                        'Déjà Souscrit' => '3',
-                    ],
+                    'Faux Fiche' => 'faux',
+                    'Doublon' => 'doublon',
+                    'Passage Concurrent ' => 'concurrent',
+                    'Passage Contrat ' => 'contrat',
+                    'Déjà Souscrit' => 'souscrit',
+                    'Test ' => 'test',
 
                 ],
                 'expanded' => false,
                 'multiple' => false,
                 'attr' => ['id' => 'motifRelanced']
             ])
-            ->add('relacedAt', DateTimeType::class, [
+            ->add('clotureAt', DateTimeType::class, [
                 'label' => 'Date de Relance *',
                 'required' => false,
                 'widget' => 'single_text',
@@ -84,7 +73,7 @@ class RelancedType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Relanced::class,
+            'data_class' => Cloture::class,
 
 
         ]);

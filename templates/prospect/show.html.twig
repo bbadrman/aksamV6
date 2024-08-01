@@ -50,49 +50,6 @@
 					</p>
 
 
-					<hr>
-
-					<thead>
-						<tr>
-							{# <div id="relance-div" class="btn-group pull-right" style="margin-right: 5px;">
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																							Relance
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						</div> #}
-							<div class="btn-group pull-right" style="margin-right: 5px;">
-								{% if is_granted('ROLE_ADMIN') == true %}
-									<button type="button" class="btn btn-danger">Action</button>
-
-									<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<span class="caret"></span>
-										<span class="sr-only">Toggle Dropdown</span>
-									</button>
-								{% endif %}
-								<ul class="dropdown-menu">
-									<li>
-
-										<a href="{{ path('app_prospect_edit', {'id': prospect.id}) }}">
-											<i class="fa fa-edit"></i>
-											Modifier
-										</a>
-									</li>
-									{# <li class="show-delete">
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																															{{ include('prospect/_delete_form.html.twig') }}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																														</li> #}
-									<li role="separator" class="divider"></li>
-									<li>
-										<a href="{{ path('app_table_liste') }}">
-											<i class="fa fa-undo"></i>
-											Retour a la liste des prospects
-										</a>
-									</li>
-									<li></li>
-									{# <a href="{{ path('app_relance', {'id': prospect.id}) }}" class="btn btn-primary">Relance</a>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																<i class="fa fa-undo"></i>																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						Planifier																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																						</a> #}
-								</li>
-							</ul>
-
-							{# {{ render(controller('App\\Controller\\ProspectController::relance',{'id':prospect.id}))}} #}
-						</tr>
-					</thead>
 					<tbody>
 						<tr>
 							<th>Prénom</th>
@@ -383,28 +340,41 @@
 		<div class="form-group col-sm-4">
 			<div class="content-panel">
 				<div class="alert alert-light">
-					<h1 class="text-center">Relance</h1>
-					{{ form_start(form) }}
+					<div>
+						<h2 class="text-center">Relance</h2>
+						{{ form_start(form) }}
+						{{ form_row(form.motifRelanced) }}
 
-					{{ form_row(form.motifRelanced) }}
+						<div id="subMotivRelc-container" style="display: none">
+							{{ form_row(form.relacedAt) }}
+						</div>
+						<div id="MotivRelcoment-container" style="display: none">
+							{{ form_row(form.comment) }}
+							<button type="submit" id="relance-submit" class="btn btn-primary">Ajouter Relance</button>
+						</div>
 
-					<div id="subMotivRelc-container" style="display: none">
-						{{ form_row(form.relacedAt) }}
+						{{ form_end(form) }}
 					</div>
-					<div id="MotivRelcoment-container" style="display: none">
-						{{ form_row(form.comment) }}
-						<button type="submit" id="relance-submit" class="btn btn-primary">Ajouter Relance</button>
-					</div>
-
-
-					{{ form_end(form) }}
+					{# select cloture #}
+					{# <div>
+											<h2 class="text-center">Cloture</h2>
+					
+											{{ form_start(formClot, { 'attr': { 'id': 'cloture-form' } }) }}
+					
+											{{ form_row(formClot.motifCloture) }}
+					
+											<div id="subMotivCltr-container" style="display: none">
+												{{ form_row(formClot.clotureAt) }}
+											</div>
+											<div id="MotivClotrcoment-container" style="display: none">
+												{{ form_row(formClot.comment) }}
+												<button type="submit" id="cloture-submit" class="btn btn-primary">Ajouter Cloture</button>
+											</div>
+											{{ form_end(formClot) }}
+										</div> #}
 
 					{# table Client #}
-					<div id="subMotivContrat-container" style="display: none">
-						<h1 class="text-center">Client</h1>
-						<button>
-							+</button>
-
+						<div id="subMotivContrat-container" style="display: none"> <h1 class="text-center">Client</h1>
 
 						{{ form_start(clientForm, { 'attr': {'id': 'client-form'} }) }}
 						<div style="display: none">
@@ -417,8 +387,8 @@
 						{{ form_row(clientForm.adress) }}
 						<button type="submit" id="client-submit" class="btn btn-primary">Ajouter Client</button>
 						{{ form_end(clientForm) }}
-
 					</div>
+
 				</div>
 
 
@@ -439,11 +409,9 @@
 							{% for relance in prospect.relanceds %}
 								<tr style="text-align:left;">
 
-
 									<td>
-
 										{% if relance.motifRelanced is null %}
-											Autre
+											Autre  Relance
 										{% endif %}
 										{% if relance.motifRelanced == 1 %}
 											Rendez-vous
@@ -481,8 +449,6 @@
 									</td>
 
 									<td>
-
-
 										{{  relance.relacedAt  |  date('d/m/Y, H:i:s')}}</td>
 									<br>
 
@@ -493,11 +459,58 @@
 									{# <td id="p1">{{  relance.comment |slice(0, 50) }}</td> #}
 								</tr>
 							{% endfor %}
+							{# les clotures #}
+							{% for cloture in prospect.clotures %}
+								<tr style="text-align:left;">
+
+
+									<td>
+
+										{% if cloture.motifCloture is null %}
+											Autre clture
+										{% endif %}
+										{% if cloture.motifCloture == 'faux' %}
+											Faux Fiche
+										{% endif %}
+										{% if cloture.motifCloture == 'doublon' %}
+											Doublon
+										{% endif %}
+										{% if cloture.motifCloture == 'concurrent' %}
+											Passage Concurrent
+										{% endif %}
+										{% if cloture.motifCloture == 'contrat' %}
+											Passage Contrat
+										{% endif %}
+										{% if cloture.motifCloture == 'souscrit' %}
+											Déjà Souscrit
+										{% endif %}
+										{% if cloture.motifCloture == 'test' %}
+											Test
+										{% endif %}
+
+									</td>
+
+									<td>
+										{{  cloture.clotureAt  |  date('d/m/Y, H:i:s')}}</td>
+									<br>
+
+									<td class="truncated" onclick="showFullText(this)">
+										<span class="shortened">{{  cloture.comment |slice(0, 50) }}</span>
+										<span class="fullText" style="display: none;">{{ cloture.comment }}</span>
+									</td>
+									{# <td id="p1">{{  relance.comment |slice(0, 50) }}</td> #}
+								</tr>
+							{% endfor %}
 						</tbody>
 					</table>
 				</div>
 			</div>
-		</div>{# fin table relance #}{# table historique #}<div class="form-group col-sm-4">
+		</div>
+		{# fin table relance #}
+
+
+		{# table historique #}
+		<div class="form-group col-sm-4">
 			<div class="content-panel">
 				<div class="alert alert-light">
 					<h1 class="text-center">Historique d'Affectation</h1>

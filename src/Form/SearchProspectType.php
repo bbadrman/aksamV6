@@ -191,7 +191,7 @@ class SearchProspectType extends AbstractType
                     'Prise de Contact' => [
                         'Rendez-vous' => '1',
                         'Unjoing' => '2',
-                        'Déjà Souscrit' => '3',
+
                     ],
                     'Attente DOC' => '4',
                     'Tarification' => '5',
@@ -201,6 +201,8 @@ class SearchProspectType extends AbstractType
                         'Doublon' => '8',
                         'Passage Concurrent ' => '9',
                         'Passage Contrat ' => '10',
+                        'Déjà Souscrit' => '3',
+                        'Test ' => '11',
                     ],
                 ],
                 'expanded' => false,

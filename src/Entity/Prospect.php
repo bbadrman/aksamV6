@@ -89,7 +89,7 @@ class Prospect
     private $creatAt;
 
     #[ORM\OneToMany(mappedBy: 'prospect', targetEntity: Relanced::class, cascade: ["persist"])]
-    private Collection $relanceds;
+    private ?Collection $relanceds = null;
 
     #[ORM\OneToMany(mappedBy: 'prospect', targetEntity: History::class)]
     private Collection $histories;
@@ -106,6 +106,9 @@ class Prospect
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $secdEmail = null;
 
+    #[ORM\OneToMany(mappedBy: 'prospect', targetEntity: Cloture::class)]
+    private Collection $clotures;
+
 
 
 
@@ -116,6 +119,7 @@ class Prospect
 
         $this->relanceds = new ArrayCollection();
         $this->histories = new ArrayCollection();
+        $this->clotures = new ArrayCollection();
     }
 
     /**
@@ -502,6 +506,36 @@ class Prospect
     public function setSecdEmail(?string $secdEmail): static
     {
         $this->secdEmail = $secdEmail;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Cloture>
+     */
+    public function getClotures(): Collection
+    {
+        return $this->clotures;
+    }
+
+    public function addCloture(Cloture $cloture): static
+    {
+        if (!$this->clotures->contains($cloture)) {
+            $this->clotures->add($cloture);
+            $cloture->setProspect($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCloture(Cloture $cloture): static
+    {
+        if ($this->clotures->removeElement($cloture)) {
+            // set the owning side to null (unless already changed)
+            if ($cloture->getProspect() === $this) {
+                $cloture->setProspect(null);
+            }
+        }
 
         return $this;
     }

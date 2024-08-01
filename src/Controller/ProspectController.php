@@ -7,11 +7,13 @@ use DateTime;
 use App\Entity\Appel;
 use App\Form\GsmType;
 use App\Entity\Client;
+use App\Entity\Cloture;
 use App\Entity\History;
 use App\Entity\Product;
 use App\Entity\Prospect;
 use App\Entity\Relanced;
 use App\Form\ClientType;
+use App\Form\ClotureType;
 use App\Form\ProspectType;
 use App\Form\RelancedType;
 use App\Form\ScdEmailType;
@@ -96,11 +98,11 @@ class ProspectController extends AbstractController
         $prospects = [];
 
         if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_AFFECT', $roles, true)) {
-            $prospects = $this->prospectRepository->findByUserPaAffecter($data);
+            $prospects = $this->prospectRepository->findByAdminNewProsp($data);
         } elseif (in_array('ROLE_TEAM', $roles, true)) {
-            $prospects = $this->prospectRepository->findByChefAffecter($data, $user);
+            $prospects = $this->prospectRepository->findByChefNewProsp($data, $user);
         } else {
-            $prospects = $this->prospectRepository->findByCmrclAffecter($data, $user);
+            $prospects = $this->prospectRepository->findByCmrclNewProsp($data, $user);
         }
 
 
@@ -323,6 +325,7 @@ class ProspectController extends AbstractController
         $relance->setProspect($prospect);
 
         $form = $this->createForm(RelancedType::class, $relance);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -332,6 +335,21 @@ class ProspectController extends AbstractController
 
             // return $this->redirectToRoute('app_prospect_show', ['id' => $prospect->getId()]);
         }
+
+        // Gerer les cloture 
+        // $cloture = new Cloture();
+        // $cloture->setProspect($prospect);
+
+        // $formClot = $this->createForm(ClotureType::class, $cloture);
+        // $formClot->handleRequest($request);
+
+        // if ($formClot->isSubmitted() && $formClot->isValid()) {
+
+        //     $this->entityManager->persist($cloture);
+        //     $this->addFlash('success', 'Cloture ajoutée avec succès.');
+
+        //     // return $this->redirectToRoute('app_prospect_show', ['id' => $prospect->getId()]);
+        // }
 
         // //ajouter client apartir de crée contrat
         $clientEntity = new Client();
@@ -369,7 +387,7 @@ class ProspectController extends AbstractController
                 }
             }
         }
-        // Flush here for Relance if not already flushed
+        // Videz ici pour Relance si ce n'est pas déjà fait
         if (!$clientForm->isSubmitted() || !$clientForm->isValid()) {
             $this->entityManager->flush();
         }
@@ -396,6 +414,7 @@ class ProspectController extends AbstractController
             'appel' => $appel,
             'teamHistory' => $teamHistory,
             'form' => $form->createView(),
+            // 'formClot' => $formClot->createView(),
             'clientForm' => $clientForm->createView(),
             'gsmForm' => $gsmForm->createView(),
             'emailForm' => $emailForm->createView(),

@@ -373,20 +373,25 @@ var subresilContainer2 = document.getElementById('subMotivContrat-container');
 
 if (resilField !== null) {
 	resilField.addEventListener('change', function () {
-		if (resilField.value === '1') {
-			subresilContainer1.style.display = 'block';
+		if (resilField.value === '1' || resilField.value === '2' || resilField.value === '4' || resilField.value === '5' || resilField.value === '6') {
+			subresilContainer1.style.display = 'block';     // Afficher le champ date
+			subresilContainer2.style.display = 'none';     // cacher le champ client
+			commentField.style.display = 'block';          // Afficher le champ comment
+			//click sur passage en contart il faut affichier les champ des contart et comment cache du date 
+		} else if (resilField.value === '3' || resilField.value === '7' || resilField.value === '8' || resilField.value === '9' || resilField.value === '11') {
+			//pour rederct to rout 
+			//window.location.href = "/client/new-client";
+			// pour manipilie les champs
+			subresilContainer1.style.display = 'none';   // cacher date
 			subresilContainer2.style.display = 'none';
-			commentField.style.display = 'block'; // Afficher le champ comment
-
-		} else if (resilField.value === '10') {
-			subresilContainer1.style.display = 'none';
-			subresilContainer2.style.display = 'block';
 			commentField.style.display = 'block'; // Cacher le champ comment
 
-		}
-		else if (resilField.value === '2' || resilField.value === '3' || resilField.value === '4' || resilField.value === '5' || resilField.value === '6' || resilField.value === '7' || resilField.value === '8' || resilField.value === '9') {
-			subresilContainer1.style.display = 'none';
-			subresilContainer2.style.display = 'none';
+		} else if (resilField.value === '10') {
+			//pour rederct to rout 
+			//window.location.href = "/client/new-client";
+			// pour manipilie les champs
+			subresilContainer1.style.display = 'none';   // cacher date
+			subresilContainer2.style.display = 'block';
 			commentField.style.display = 'block'; // Cacher le champ comment
 
 		}

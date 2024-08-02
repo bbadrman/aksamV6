@@ -527,11 +527,13 @@ class ProspectRepository extends ServiceEntityRepository
             //->andWhere('p.comrcl is NOT NULL') 
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
             ->setParameter('motifs', [3, 7, 8, 9, 10, 11])
+
             ->andWhere('p.id NOT IN (
                 SELECT pr.id FROM App\Entity\Prospect pr
                 JOIN pr.relanceds rel
                 WHERE rel.relacedAt > :endOfYesterday
             )')->setParameter('endOfYesterday', $yesterday)
+
 
             ->addSelect('(' . $subQuery . ') AS HIDDEN lastRelanceDate')
             ->orderBy('lastRelanceDate', 'ASC');
@@ -1113,9 +1115,10 @@ class ProspectRepository extends ServiceEntityRepository
             ->select('p, f, r, c')
             ->where('p.team IN (:teams)')
             ->setParameter('teams', $teams)
+            ->leftJoin('p.comrcl', 'f')
             ->leftJoin('p.relanceds', 'r')
             ->leftJoin('p.clotures', 'c')
-            ->Where('c.motifCloture is NULL')
+            ->andWhere('c.motifCloture is NULL')
             ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
             ->setParameter('startOfDay', $today)
             ->setParameter('endOfDay', $endOfDay)
@@ -1124,7 +1127,7 @@ class ProspectRepository extends ServiceEntityRepository
 
 
             // joiner les tables en relation manytomany avec fonction
-            ->leftJoin('p.comrcl', 'f')
+
             ->addSelect('(' . $subQuery . ') AS HIDDEN lastRelanceDate')
             ->orderBy('lastRelanceDate', 'ASC');
 

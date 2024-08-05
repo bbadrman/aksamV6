@@ -42,21 +42,21 @@ class LoginFormAuthAuthenticator extends AbstractLoginFormAuthenticator
 
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $username]);
 
-        if (!$user) {
-            // Échec de l'authentification avec une erreur personnalisée
-            throw new CustomUserMessageAuthenticationException('Ce nom d\'utilisateur est introuvable.');
-        }
-        if ($user->isIsConnect()) {
+        // if (!$user) {
+        //     // Échec de l'authentification avec une erreur personnalisée
+        //     throw new CustomUserMessageAuthenticationException('Ce nom d\'utilisateur est introuvable.');
+        // }
+        // if ($user->isIsConnect()) {
 
-            throw new CustomUserMessageAuthenticationException('Cet utilisateur est déjà connecté.');
-        }
+        //     throw new CustomUserMessageAuthenticationException('Cet utilisateur est déjà connecté.');
+        // }
 
-        $token = $this->tokenStorage->getToken();
+        // $token = $this->tokenStorage->getToken();
 
-        if ($token !== null && $token->getUser() instanceof User && $token->getUser()->getUsername() === $username) {
-            // The user is already connected, throw an exception
-            throw new CustomUserMessageAuthenticationException('Cet utilisateur est déjà connecté.');
-        }
+        // if ($token !== null && $token->getUser() instanceof User && $token->getUser()->getUsername() === $username) {
+        //     // The user is already connected, throw an exception
+        //     throw new CustomUserMessageAuthenticationException('Cet utilisateur est déjà connecté.');
+        // }
 
 
 

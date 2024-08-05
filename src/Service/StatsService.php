@@ -106,10 +106,7 @@ class StatsService
             ->andWhere("p.team is NULL")
 
             ->leftJoin('p.relanceds', 'r')
-            ->andWhere('r.motifRelanced is null')
-
-            ->leftJoin('p.clotures', 'c')
-            ->andWhere('c.motifCloture is NULL');
+            ->andWhere('r.motifRelanced is null');
 
 
         $query = $qb->getQuery();
@@ -141,8 +138,8 @@ class StatsService
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL')
 
-            ->leftJoin('p.clotures', 'c')
-            ->andWhere('c.motifCloture is NULL')
+            // ->leftJoin('p.clotures', 'c')
+            // ->andWhere('c.motifCloture is NULL')
             //->andWhere('p.comrcl IS NULL OR p.comrcl = :val')
             ->setParameter('teams', $teams);
         //->setParameter('val', $user);
@@ -177,8 +174,8 @@ class StatsService
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL')
             ->leftJoin('p.histories', 'h')
-            ->leftJoin('p.clotures', 'c')
-            ->andWhere('c.motifCloture is NULL')
+            // ->leftJoin('p.clotures', 'c')
+            // ->andWhere('c.motifCloture is NULL')
             ->andWhere('h.actionDate >= :endOfYesterday')
             ->setParameter('endOfYesterday', $yesterday);
 
@@ -219,8 +216,8 @@ class StatsService
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.relacedAt >= :tomorrow')
 
-            ->leftJoin('p.clotures', 'c')
-            ->andWhere('c.motifCloture is NULL')
+            // ->leftJoin('p.clotures', 'c')
+            // ->andWhere('c.motifCloture is NULL')
             ->setParameter('tomorrow', $today)
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
             ->setParameter('motifs', [3, 7, 8, 9, 10, 11]);
@@ -255,8 +252,8 @@ class StatsService
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.relacedAt >= :tomorrow')
 
-            ->leftJoin('p.clotures', 'c')
-            ->andWhere('c.motifCloture is NULL')
+            // ->leftJoin('p.clotures', 'c')
+            // ->andWhere('c.motifCloture is NULL')
             // ->andWhere('NOT EXISTS (
             //     SELECT 1 FROM App\Entity\Relanced otherR
             //     WHERE otherR.prospect = p AND otherR.motifRelanced = 2
@@ -291,8 +288,8 @@ class StatsService
             ->andWhere('r.relacedAt >= :tomorrow')
             ->setParameter('tomorrow', $today)
 
-            ->leftJoin('p.clotures', 'c')
-            ->andWhere('c.motifCloture is NULL')
+            // ->leftJoin('p.clotures', 'c')
+            // ->andWhere('c.motifCloture is NULL')
 
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
             ->setParameter('motifs', [3, 7, 8, 9, 10, 11]);
@@ -322,8 +319,8 @@ class StatsService
             ->from(Prospect::class, 'p')
 
             ->leftJoin('p.relanceds', 'r')
-            ->leftJoin('p.clotures', 'c')
-            ->Where('c.motifCloture is NULL')
+            // ->leftJoin('p.clotures', 'c')
+            // ->Where('c.motifCloture is NULL')
             ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
             ->setParameter('startOfDay', $today)
             ->setParameter('endOfDay', $endOfDay)
@@ -358,8 +355,8 @@ class StatsService
             ->from(Prospect::class, 'p')
             ->where('p.team IN (:teams)')
             ->leftJoin('p.relanceds', 'r')
-            ->leftJoin('p.clotures', 'c')
-            ->andWhere('c.motifCloture is NULL')
+            // ->leftJoin('p.clotures', 'c')
+            // ->andWhere('c.motifCloture is NULL')
             ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
             //->andWhere('r.motifRelanced = 1')
             ->setParameter('teams', $teams)
@@ -390,8 +387,8 @@ class StatsService
             ->setParameter('val', $id)
 
             ->leftJoin('p.relanceds', 'r')
-            ->leftJoin('p.clotures', 'c')
-            ->andWhere('c.motifCloture is NULL')
+            // ->leftJoin('p.clotures', 'c')
+            // ->andWhere('c.motifCloture is NULL')
             ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
             ->setParameter('startOfDay', $today)
             ->setParameter('endOfDay', $endOfDay)
@@ -425,8 +422,6 @@ class StatsService
             ->andWhere('r.relacedAt > :dayBeforeYesterday  ')
             ->setParameter('dayBeforeYesterday', $dayBeforeYesterday)
 
-            ->leftJoin('p.clotures', 'c')
-            ->andWhere('c.motifCloture is NULL')  // Aucune cloture avec relanced 
 
             ->andWhere('p.comrcl is NOT NULL')
             ->andWhere('p.team is NOT NULL')
@@ -465,8 +460,7 @@ class StatsService
             ->from(Prospect::class, 'p')
             ->leftJoin('p.relanceds', 'r')
             ->where('p.team IN (:teams)')
-            ->leftJoin('p.clotures', 'c')
-            ->andWhere('c.motifCloture is NULL')  // Aucune cloture avec relanced 
+
             //->andWhere('(r.motifRelanced IS NULL OR r.motifRelanced = 1)')
             ->andWhere('r.relacedAt BETWEEN :dayBeforeYesterday AND :yesterday')
             //->andWhere('p.comrcl IS NOT NULL')
@@ -537,8 +531,7 @@ class StatsService
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL')
 
-            ->leftJoin('p.clotures', 'c')
-            ->andWhere('c.motifCloture is NULL')  // Aucune cloture avec relanced 
+
 
             ->andwhere('p.email != :excludedEmail')
             ->setParameter('excludedEmail', $excludedEmail)
@@ -570,9 +563,6 @@ class StatsService
 
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL')
-
-            ->leftJoin('p.clotures', 'c')
-            ->andWhere('c.motifCloture is NULL')  // Aucune cloture avec relanced 
 
 
 
@@ -607,8 +597,7 @@ class StatsService
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
 
-            ->leftJoin('p.clotures', 'c')
-            ->andWhere('c.motifCloture is NULL')  // Aucune cloture avec relanced 
+
 
 
             ->andWhere('p.creatAt <= :yesterday')
@@ -634,8 +623,7 @@ class StatsService
         $qb->select('COUNT(DISTINCT p.id)')
             ->from(Prospect::class, 'p')
 
-            ->leftJoin('p.clotures', 'c')
-            ->andWhere('c.motifCloture is NULL')
+
 
             ->leftJoin('p.relanceds', 'r')
             ->andWhere("r.motifRelanced = '2'");
@@ -659,8 +647,8 @@ class StatsService
             ->where('p.team IN (:teams)')
             ->leftJoin('p.relanceds', 'r')
             ->andWhere("r.motifRelanced = '2'")
-            ->leftJoin('p.clotures', 'c')
-            ->andWhere('c.motifCloture is NULL')
+            // ->leftJoin('p.clotures', 'c')
+            // ->andWhere('c.motifCloture is NULL')
             ->setParameter('teams', $teams);
 
         $query = $qb->getQuery();
@@ -679,9 +667,7 @@ class StatsService
             ->andWhere('p.comrcl = :val')
             ->setParameter('val', $id)
             ->leftJoin('p.relanceds', 'r')
-            ->andWhere("r.motifRelanced = '2'")
-            ->leftJoin('p.clotures', 'c')
-            ->andWhere('c.motifCloture is NULL');
+            ->andWhere("r.motifRelanced = '2'");
 
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();

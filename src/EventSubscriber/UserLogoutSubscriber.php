@@ -8,16 +8,18 @@ use App\Security\UserDisconnecter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class UserLogoutSubscriber implements EventSubscriberInterface
 {
 
-    public function __construct(private Security $security)
+    public function __construct(private Security $security, private SessionInterface $session)
     {
     }
 
@@ -30,6 +32,9 @@ class UserLogoutSubscriber implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event)
     {
+        $temp =  $this->session->getMetadataBag()->getLifetime();
+
+        // dd($temp);
         $request = $event->getRequest();
         $user = $this->security->getUser();
 

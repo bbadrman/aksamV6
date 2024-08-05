@@ -761,3 +761,6 @@ App/Http/Controller/homeController.php
 - il faut ajouter the worker.js et fichie main.js 
 - il faut crée une fonction pour avoir les prospect au format json 
 - include le fichier worker au page que tu veux affichier notification
+
+ ## pour reste a mon page 
+  return $this->redirect($request->headers->get('referer'));

@@ -17,10 +17,21 @@ class AcountController extends AbstractController
     {
 
         //si l'utilisateur il redirect vers la page dashboard
+        // if ($this->getUser()) {
+        //     return $this->redirectToRoute('dashboard');
+        // }
         if ($this->getUser()) {
-            return $this->redirectToRoute('dashboard');
-        }
+            $user = $this->getUser();
+            $roles = $user->getRoles();
 
+            if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_TEAM', $roles, true)) {
+                return $this->redirectToRoute('dashboard');
+            }
+
+            if (in_array('ROLE_COMERC', $roles, true)) {
+                return $this->redirectToRoute('app_table_liste');
+            }
+        }
 
 
 

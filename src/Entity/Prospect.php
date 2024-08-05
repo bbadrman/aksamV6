@@ -106,8 +106,10 @@ class Prospect
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $secdEmail = null;
 
-    #[ORM\OneToMany(mappedBy: 'prospect', targetEntity: Cloture::class)]
-    private Collection $clotures;
+
+
+    #[ORM\OneToMany(mappedBy: 'prospect', targetEntity: RelanceHistory::class)]
+    private Collection $relanceHistories;
 
 
 
@@ -119,7 +121,7 @@ class Prospect
 
         $this->relanceds = new ArrayCollection();
         $this->histories = new ArrayCollection();
-        $this->clotures = new ArrayCollection();
+        $this->relanceHistories = new ArrayCollection();
     }
 
     /**
@@ -510,30 +512,32 @@ class Prospect
         return $this;
     }
 
+
+
     /**
-     * @return Collection<int, Cloture>
+     * @return Collection<int, RelanceHistory>
      */
-    public function getClotures(): Collection
+    public function getRelanceHistories(): Collection
     {
-        return $this->clotures;
+        return $this->relanceHistories;
     }
 
-    public function addCloture(Cloture $cloture): static
+    public function addRelanceHistory(RelanceHistory $relanceHistory): static
     {
-        if (!$this->clotures->contains($cloture)) {
-            $this->clotures->add($cloture);
-            $cloture->setProspect($this);
+        if (!$this->relanceHistories->contains($relanceHistory)) {
+            $this->relanceHistories->add($relanceHistory);
+            $relanceHistory->setProspect($this);
         }
 
         return $this;
     }
 
-    public function removeCloture(Cloture $cloture): static
+    public function removeRelanceHistory(RelanceHistory $relanceHistory): static
     {
-        if ($this->clotures->removeElement($cloture)) {
+        if ($this->relanceHistories->removeElement($relanceHistory)) {
             // set the owning side to null (unless already changed)
-            if ($cloture->getProspect() === $this) {
-                $cloture->setProspect(null);
+            if ($relanceHistory->getProspect() === $this) {
+                $relanceHistory->setProspect(null);
             }
         }
 

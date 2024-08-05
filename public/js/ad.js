@@ -402,6 +402,7 @@ if (resilField !== null) {
 
 		}
 	});
+
 }
 
 //select motiveRelanced pour afficher la ajouter client quand on click sur pasage contart

@@ -357,21 +357,21 @@
 					</div>
 					{# select cloture #}
 					{# <div>
-																<h2 class="text-center">Cloture</h2>
-										
-																{{ form_start(formClot, { 'attr': { 'id': 'cloture-form' } }) }}
-										
-																{{ form_row(formClot.motifCloture) }}
-										
-																<div id="subMotivCltr-container" style="display: none">
-																	{{ form_row(formClot.clotureAt) }}
-																</div>
-																<div id="MotivClotrcoment-container" style="display: none">
-																	{{ form_row(formClot.comment) }}
-																	<button type="submit" id="cloture-submit" class="btn btn-primary">Ajouter Cloture</button>
-																</div>
-																{{ form_end(formClot) }}
-															</div> #}
+																					<h2 class="text-center">Cloture</h2>
+															
+																					{{ form_start(formClot, { 'attr': { 'id': 'cloture-form' } }) }}
+															
+																					{{ form_row(formClot.motifCloture) }}
+															
+																					<div id="subMotivCltr-container" style="display: none">
+																						{{ form_row(formClot.clotureAt) }}
+																					</div>
+																					<div id="MotivClotrcoment-container" style="display: none">
+																						{{ form_row(formClot.comment) }}
+																						<button type="submit" id="cloture-submit" class="btn btn-primary">Ajouter Cloture</button>
+																					</div>
+																					{{ form_end(formClot) }}
+																				</div> #}
 
 					{# table Client #}
 						<div id="subMotivContrat-container" style="display: none"> <h1 class="text-center">Client</h1>
@@ -460,43 +460,55 @@
 								</tr>
 							{% endfor %}
 							{# les clotures #}
-							{% for cloture in prospect.clotures %}
-								<tr style="text-align:left;">
+							{% for relachoix in prospect.relanceHistories %}
+								<tr style="text-align:left; color:red">
 
 
 									<td>
-
-										{% if cloture.motifCloture is null %}
-											Autre clture
+										{% if relachoix.motifRelanced is null %}
+											Autre
 										{% endif %}
-										{% if cloture.motifCloture == 'faux' %}
-											Faux Fiche
+										{% if relachoix.motifRelanced == 1 %}
+											Rendez-vous
 										{% endif %}
-										{% if cloture.motifCloture == 'doublon' %}
-											Doublon
+										{% if relachoix.motifRelanced == 2 %}
+											Unjoing
 										{% endif %}
-										{% if cloture.motifCloture == 'concurrent' %}
-											Passage Concurrent
-										{% endif %}
-										{% if cloture.motifCloture == 'contrat' %}
-											Passage Contrat
-										{% endif %}
-										{% if cloture.motifCloture == 'souscrit' %}
+										{% if relachoix.motifRelanced == 3 %}
 											Déjà Souscrit
 										{% endif %}
-										{% if cloture.motifCloture == 'test' %}
-											Test
+										{% if relachoix.motifRelanced == 4 %}
+											Attente Close
 										{% endif %}
-
+										{% if relachoix.motifRelanced == 5 %}
+											Tarification
+										{% endif %}
+										{% if relachoix.motifRelanced == 6 %}
+											Prise de Décision
+										{% endif %}
+										{% if relachoix.motifRelanced == 7 %}
+											Faux Fiche
+										{% endif %}
+										{% if relachoix.motifRelanced == 8 %}
+											Doublon
+										{% endif %}
+										{% if relachoix.motifRelanced == 9 %}
+											Passage Concurrent
+										{% endif %}
+										{% if relachoix.motifRelanced == 10 %}
+											Passage Contrat
+										{% endif %}
 									</td>
 
 									<td>
-										{{  cloture.clotureAt  |  date('d/m/Y, H:i:s')}}</td>
+
+
+										{{  relachoix.relacedAt  |  date('d/m/Y, H:i:s')}}</td>
 									<br>
 
 									<td class="truncated" onclick="showFullText(this)">
-										<span class="shortened">{{  cloture.comment |slice(0, 50) }}</span>
-										<span class="fullText" style="display: none;">{{ cloture.comment }}</span>
+										<span class="shortened">{{  relachoix.comment |slice(0, 50) }}</span>
+										<span class="fullText" style="display: none;">{{ relachoix.comment }}</span>
 									</td>
 									{# <td id="p1">{{  relance.comment |slice(0, 50) }}</td> #}
 								</tr>

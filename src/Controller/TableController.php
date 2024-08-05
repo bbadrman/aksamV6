@@ -132,13 +132,13 @@ class TableController extends AbstractController
 
         if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
             // admi peut voire toutes les no traite
-            $prospect =  $this->prospectRepository->findNonTraiter($data, null);
+            $prospect =  $this->prospectRepository->findProspectNonTraiter($data, null);
         } else if (in_array('ROLE_TEAM', $roles, true)) {
             // chef peut voire toutes les no traite atacher a leur equipe
-            $prospect =  $this->prospectRepository->findNonTraiterChef($data, $user, null);
+            $prospect =  $this->prospectRepository->findProspectNonTraiterChef($data, $user, null);
         } else {
             // cmrcl peut voire seulement les no traite  atacher a lui
-            $prospect =  $this->prospectRepository->findNonTraiterCmrcl($data, $user, null);
+            $prospect =  $this->prospectRepository->findProspectNonTraiterCmrcl($data, $user, null);
         }
 
 
@@ -171,13 +171,13 @@ class TableController extends AbstractController
 
         if (in_array('ROLE_SUPER_ADMIN',  $roles, true) || in_array('ROLE_ADMIN',  $roles, true)) {
             // admi peut voire toutes les relance du jour
-            $prospect =  $this->prospectRepository->findRelanced($data, null);
+            $prospect =  $this->prospectRepository->findRelancedJour($data, null);
         } else if (in_array('ROLE_TEAM',  $roles, true)) {
             // chef peut voire toutes les relance du jour atacher a leur equipe
-            $prospect =  $this->prospectRepository->findRelancedChef($data, $user, null);
+            $prospect =  $this->prospectRepository->findRelancedJourChef($data, $user, null);
         } else {
             // cmrcl peut voire seulement les relance du jour  atacher a lui
-            $prospect =  $this->prospectRepository->findRelancedCmrcl($data, $user, null);
+            $prospect =  $this->prospectRepository->findRelancedJourCmrcl($data, $user, null);
         }
 
 

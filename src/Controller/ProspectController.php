@@ -17,11 +17,12 @@ use App\Form\ClotureType;
 use App\Form\ProspectType;
 use App\Form\RelancedType;
 use App\Form\ScdEmailType;
+use App\Entity\RelanceHistory;
 use App\Search\SearchProspect;
 use App\Form\ProspectAffectType;
 use App\Form\SearchProspectType;
-use App\Repository\AppelRepository;
 use App\Repository\TeamRepository;
+use App\Repository\AppelRepository;
 use App\Repository\HistoryRepository;
 use App\Repository\ProspectRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -330,26 +331,39 @@ class ProspectController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $this->entityManager->persist($relance);
-            $this->addFlash('success', 'Relance ajoutée avec succès.');
+            // Iterate over all existing relances for the prospect
+            foreach ($prospect->getRelanceds() as $oldRelance) {
+                // Create a new RelanceHistory instance for each old relance
+                $history = new RelanceHistory();
+                $history->setProspect($prospect);
+                $history->setMotifRelanced($oldRelance->getMotifRelanced());
 
-            // return $this->redirectToRoute('app_prospect_show', ['id' => $prospect->getId()]);
+                // Convert DateTime to DateTimeImmutable if needed
+                $relacedAt = $oldRelance->getRelacedAt();
+                $history->setRelacedAt($relacedAt instanceof \DateTimeImmutable ? $relacedAt : \DateTimeImmutable::createFromMutable($relacedAt));
+
+                $history->setComment($oldRelance->getComment());
+
+                // Persist the history
+                $this->entityManager->persist($history);
+
+                // Remove the old relance from the prospect and delete it
+                $prospect->removeRelanced($oldRelance);
+                $this->entityManager->remove($oldRelance);
+                $this->entityManager->flush();
+            }
+
+            // Add the new relance to the prospect
+            $prospect->addRelanced($relance);
+            $this->entityManager->persist($relance);
+
+            $this->entityManager->flush();
+
+            $this->addFlash('success', 'Relance ajoutée avec succès.');
+            //pour vider la form et rest au meme page 
+            return $this->redirect($request->getRequestUri());
         }
 
-        // Gerer les cloture 
-        // $cloture = new Cloture();
-        // $cloture->setProspect($prospect);
-
-        // $formClot = $this->createForm(ClotureType::class, $cloture);
-        // $formClot->handleRequest($request);
-
-        // if ($formClot->isSubmitted() && $formClot->isValid()) {
-
-        //     $this->entityManager->persist($cloture);
-        //     $this->addFlash('success', 'Cloture ajoutée avec succès.');
-
-        //     // return $this->redirectToRoute('app_prospect_show', ['id' => $prospect->getId()]);
-        // }
 
         // //ajouter client apartir de crée contrat
         $clientEntity = new Client();

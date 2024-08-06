@@ -764,3 +764,6 @@ App/Http/Controller/homeController.php
 
  ## pour reste a mon page 
   return $this->redirect($request->headers->get('referer'));
+
+  ### pour fixed the error il faut vider le cache en prod pour avoire les errors a l’aide  du commande 
+  “ php bin/console cache:clear --env=prod  “   

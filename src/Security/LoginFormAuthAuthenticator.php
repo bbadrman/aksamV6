@@ -76,7 +76,10 @@ class LoginFormAuthAuthenticator extends AbstractLoginFormAuthenticator
         $user = $token->getUser();
 
         // Log roles
-        $this->logger->info('User roles: ' . implode(', ', $user->getRoles()));
+        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
+            return new RedirectResponse($targetPath);
+        }
+
         if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true) || in_array('ROLE_TEAM', $user->getRoles(), true)) {
             return new RedirectResponse($this->urlGenerator->generate('dashboard'));
         }

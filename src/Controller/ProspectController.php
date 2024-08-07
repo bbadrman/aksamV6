@@ -26,6 +26,7 @@ use App\Repository\AppelRepository;
 use App\Repository\HistoryRepository;
 use App\Repository\ProspectRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
@@ -61,7 +62,8 @@ class ProspectController extends AbstractController
         private  EntityManagerInterface $entityManager,
         private  ProspectRepository $prospectRepository,
         private  Security $security,
-        private AuthorizationCheckerInterface $authorizationChecker
+        private AuthorizationCheckerInterface $authorizationChecker,
+        private CacheInterface $cache
     ) {
     }
     private function denyAccessUnlessGrantedAuthorizedRoles(): void
@@ -242,63 +244,32 @@ class ProspectController extends AbstractController
     #[Route('/show/{id}', name: 'app_prospect_show', methods: ['GET', 'POST'])]
     public function show(Prospect $prospect,  Request $request,  HistoryRepository $historyRepository, AppelRepository $appelRepository)
     {
+        // $user = $this->getUser();
+
+
+        // // Vérifier si l'utilisateur connecté est le commercial associé au prospect
+        // if ($prospect->getComrcl() !== $user) {
+        //     // Si l'utilisateur n'est pas autorisé, lancer une exception AccessDeniedException
+        //     throw $this->createAccessDeniedException('Vous n\'êtes pas autorisé à accéder à ce prospect.');
+        // }
+
+
         $this->denyAccessUnlessGrantedAuthorizedRoles();
 
-        $client = HttpClient::create();
+        // $client = HttpClient::create();
 
 
         // Utiliser la classe \DateTime de PHP
         $currentDate = new \DateTime();
-        $lastDate = (clone $currentDate)->modify('-15 days');
+        $lastDate = (clone $currentDate)->modify('-2 days');
 
-        $response = $client->request('GET', 'https://public-api.ringover.com/v2/calls', [
-            'headers' => [
-                // Ajoutez ici vos en-têtes d'authentification ou d'autorisation nécessaires
-                'Authorization' => '926b7a524bba92932bb5f324222cb1c9f461908d',
-            ],
-            'query' => [
-                'start_date' => $lastDate->format('Y-m-d\TH:i:s.u\Z'),
-                'end_date' => $currentDate->format('Y-m-d\TH:i:s.u\Z'),
-                'limit_count' => 1000, // Facultatif : ajuster selon les besoins
+        $data = $this->cache->get('ringover_calls_' . $prospect->getId(), function () use ($lastDate, $currentDate) {
+            return $this->getRingoverCalls($lastDate, $currentDate);
+        });
+        //$data = $this->getRingoverCalls($lastDate, $currentDate);
 
-
-            ],
-
-        ]);
-        if ($response->getStatusCode() !== 200) {
-            // Gérer les erreurs HTTP
-            return new Response('Erreur lors de la récupération des données de l\'API Ringover', $response->getStatusCode());
-        }
-
-
-        $data = $response->toArray();
-
-        if (isset($data['call_list'])) {
-            foreach ($data['call_list'] as $callData) {
-                $contactName = $callData['user']['concat_name'] ?? null;
-                $startTime = new \DateTime($callData['start_time']);
-                $existingCall = $appelRepository->findByUniqueProperties(
-                    $callData['from_number'],
-                    $callData['to_number'],
-                    $startTime
-                );
-
-                if (!$existingCall) {
-                    $appel = new Appel();
-                    $appel->setFromNumber($callData['from_number'])
-                        ->setToNumber($callData['to_number'])
-                        ->setContactName($contactName)  // Corrected this line
-                        ->setStartTime($startTime)
-                        ->setEndTime(isset($callData['end_time']) ? new \DateTime($callData['end_time']) : null)
-                        ->setDuration(isset($callData['total_duration']) ? (int)$callData['total_duration'] : null)
-                        ->setRecordUrl($callData['record'] ?? null);
-
-                    $this->entityManager->persist($appel);
-                }
-            }
-            $this->entityManager->flush();
-        }
-
+        // Traiter les données reçues de Ringover 
+        $this->processRingoverData($data, $appelRepository);
 
         // Form to modify the prospect's second email
         $emailForm = $this->createForm(ScdEmailType::class, $prospect);
@@ -406,9 +377,9 @@ class ProspectController extends AbstractController
             $this->entityManager->flush();
         }
         // Trier les appels par start_time de manière décroissante
-        usort($data['call_list'], function ($a, $b) {
-            return (new \DateTime($b['start_time'])) <=> (new \DateTime($a['start_time']));
-        });
+        // usort($data['call_list'], function ($a, $b) {
+        //     return (new \DateTime($b['start_time'])) <=> (new \DateTime($a['start_time']));
+        // });
 
 
 
@@ -432,7 +403,7 @@ class ProspectController extends AbstractController
             'clientForm' => $clientForm->createView(),
             'gsmForm' => $gsmForm->createView(),
             'emailForm' => $emailForm->createView(),
-            'ringoverData' => $data,
+            // 'ringoverData' => $data,
         ]);
     }
 
@@ -548,5 +519,58 @@ class ProspectController extends AbstractController
 
         $this->addFlash('info', ' Prospect a été supprime avec succès!');
         return $this->redirect($request->headers->get('referer'));
+    }
+
+    private function getRingoverCalls(\DateTime $startDate, \DateTime $endDate): array
+    {
+        $client = HttpClient::create();
+
+        $response = $client->request('GET', 'https://public-api.ringover.com/v2/calls', [
+            'headers' => [
+                'Authorization' => '926b7a524bba92932bb5f324222cb1c9f461908d',
+            ],
+            'query' => [
+                'start_date' => $startDate->format('Y-m-d\TH:i:s.u\Z'),
+                'end_date' => $endDate->format('Y-m-d\TH:i:s.u\Z'),
+                'limit_count' => 400,
+            ],
+        ]);
+
+        if ($response->getStatusCode() !== 200) {
+            throw new \RuntimeException('Erreur lors de la récupération des données de l\'API Ringover');
+        }
+
+        return $response->toArray();
+    }
+
+    // Méthode pour traiter les données reçues de Ringover
+    private function processRingoverData(array $data, AppelRepository $appelRepository): void
+    {
+        if (isset($data['call_list'])) {
+            foreach ($data['call_list'] as $callData) {
+                $contactName = $callData['user']['concat_name'] ?? null;
+                $startTime = new \DateTime($callData['start_time']);
+
+                $existingCall = $appelRepository->findByUniqueProperties(
+                    $callData['from_number'],
+                    $callData['to_number'],
+                    $startTime
+                );
+
+                if (!$existingCall) {
+                    $appel = new Appel();
+                    $appel->setFromNumber($callData['from_number'])
+                        ->setToNumber($callData['to_number'])
+                        ->setContactName($contactName)
+                        ->setStartTime($startTime)
+                        ->setEndTime(isset($callData['end_time']) ? new \DateTime($callData['end_time']) : null)
+                        ->setDuration(isset($callData['total_duration']) ? (int)$callData['total_duration'] : null)
+                        ->setRecordUrl($callData['record'] ?? null);
+
+                    $this->entityManager->persist($appel);
+                }
+            }
+            $this->entityManager->flush();
+        }
     }
 }

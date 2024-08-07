@@ -357,21 +357,21 @@
 					</div>
 					{# select cloture #}
 					{# <div>
-																					<h2 class="text-center">Cloture</h2>
-															
-																					{{ form_start(formClot, { 'attr': { 'id': 'cloture-form' } }) }}
-															
-																					{{ form_row(formClot.motifCloture) }}
-															
-																					<div id="subMotivCltr-container" style="display: none">
-																						{{ form_row(formClot.clotureAt) }}
-																					</div>
-																					<div id="MotivClotrcoment-container" style="display: none">
-																						{{ form_row(formClot.comment) }}
-																						<button type="submit" id="cloture-submit" class="btn btn-primary">Ajouter Cloture</button>
-																					</div>
-																					{{ form_end(formClot) }}
-																				</div> #}
+																																																																																																																									<h2 class="text-center">Cloture</h2>
+																																																																																																																			
+																																																																																																																									{{ form_start(formClot, { 'attr': { 'id': 'cloture-form' } }) }}
+																																																																																																																			
+																																																																																																																									{{ form_row(formClot.motifCloture) }}
+																																																																																																																			
+																																																																																																																									<div id="subMotivCltr-container" style="display: none">
+																																																																																																																										{{ form_row(formClot.clotureAt) }}
+																																																																																																																									</div>
+																																																																																																																									<div id="MotivClotrcoment-container" style="display: none">
+																																																																																																																										{{ form_row(formClot.comment) }}
+																																																																																																																										<button type="submit" id="cloture-submit" class="btn btn-primary">Ajouter Cloture</button>
+																																																																																																																									</div>
+																																																																																																																									{{ form_end(formClot) }}
+																																																																																																																								</div> #}
 
 					{# table Client #}
 						<div id="subMotivContrat-container" style="display: none"> <h1 class="text-center">Client</h1>
@@ -567,37 +567,14 @@
 							<tr style="text-align: left; font-size:20px;">
 
 								<th>User</th>
-								<th>Nr</th>
-								<th>Nr appelé</th>
+								<th>Appelant</th>
+								<th>Appelé</th>
 								<th>Début d'appel</th>
-								<th>Record</th>
-
 
 							</tr>
 
 						</thead>
 						<tbody>
-							<h4>with API</h4>
-							{% for call in ringoverData.call_list %}
-								{% if call.to_number == prospect.phone or call.to_number == prospect.gsm %}
-									<tr>
-										{% if call.user is not null %}
-											<td>{{ call.user.concat_name }}</td>
-										{% else %}
-											<td>No user data</td>
-										{% endif %}
-										<td>+{{ call.from_number }}</td>
-										<td>+{{ call.to_number }}</td>
-										<td>{{ call.start_time|date('Y-m-d H:i') }}</td>
-										{# <td>{{ call.end_time |date('Y-m-d H:i') }}</td> #}
-										{# <td>{{ (call.total_duration / 60) | round(2, 'floor') | number_format(2, '.', ',') }}</td> #}
-										<td>
-											<audio audio controls style='width: 150px;' src="{{ call.record }}"></audio>
-										</td>
-
-									</tr>
-								{% endif %}
-							{% endfor %}
 
 							{% for apl in appel %}
 								{% if apl.toNumber == prospect.phone or apl.toNumber == prospect.gsm %}
@@ -606,10 +583,18 @@
 										<td>{{ apl.fromNumber|replace({'33': '0'}) }}</td>
 
 										<td>{{ apl.toNumber |replace({'33': '0'}) }}</td>
-										<td>{{ apl.startTime|date('Y-m-d H:i') }}</td>
-										<td>
-											<audio audio controls style='width: 150px; height: 20px;  ' src="{{ apl.recordUrl }}"></audio>
-										</td>
+										<td>{{ apl.startTime|date_modify('+1 hour')|date('Y-m-d H:i') }}</td>
+										{# <td>{{ apl.startTime|date('Y-m-d H:i') }}</td> #}
+
+										<td>{{ (apl.duration / 60) | round(2, 'floor') | number_format(2, '.', ',') }}</td>
+
+
+										{% if is_granted('ROLE_ADMIN') %}
+
+											<td>
+												<audio audio controls style='width: 150px; height: 20px;  ' src="{{ apl.recordUrl }}"></audio>
+											</td>
+										{% endif %}
 									</tr>
 								{% endif %}
 							{% endfor %}

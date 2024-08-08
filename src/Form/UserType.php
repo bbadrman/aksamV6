@@ -53,9 +53,11 @@ class UserType extends AbstractType
                     'Chef Equipe'   => 'ROLE_TEAM',
                     'Commercial'   => 'ROLE_COMERC',
                     '*-----Prospects-----*' => [
+
                         'Affecter Prospects' => 'ROLE_AFFECT',
                         'Ajouter Prospect'  => 'ROLE_ADD_PROS',
                         'Traiter Prospect'    => 'ROLE_EDIT_PROS',
+                        'Consulter AllNewProspect' => 'ROLE_TEAMALL',
                     ],
                     '*-----Standard-----*' => [
                         'Gestion Standard' => 'ROLE_STAND',

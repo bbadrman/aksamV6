@@ -30,6 +30,7 @@ class StatsService
 
         $prospectspasaffect = $this->getProspectPasCount();
         $prospectsChefNv = $this->getProspectChefNv($user);
+        $prospectsChefNvAll = $this->getProspectChefNvAll($user);
         $prospectsCmrclNv = $this->getProspectCmrclNv($user);
         $prospectsDay = $this->getProspectCountRelance();
         $prospectsDayChef = $this->getProspectCountRelanceChef($user);
@@ -64,7 +65,7 @@ class StatsService
 
 
 
-        return compact('relancesNoTrCmrcl', 'relancesNoTrChef', 'relanceNoTraite', 'prosAvenirCmrcl', 'prosAvenirChef', 'prospectsAvenir', 'unjoiniableCmrl', 'unjoiniableChef', 'prospectsNoTrCmrcl', 'prospectsNoTrChef', 'prospectsDayCmrcl', 'prospectsDayChef', 'prospectsCmrclNv', 'prospectsChefNv', 'prospectsNoTraite', 'unjoiniable', 'prospects', 'prospectspasaffect', 'prospectsDay', 'users', 'teams', 'products', 'clients');
+        return compact('relancesNoTrCmrcl', 'relancesNoTrChef', 'relanceNoTraite', 'prosAvenirCmrcl', 'prosAvenirChef', 'prospectsAvenir', 'unjoiniableCmrl', 'unjoiniableChef', 'prospectsNoTrCmrcl', 'prospectsNoTrChef', 'prospectsDayCmrcl', 'prospectsDayChef', 'prospectsCmrclNv', 'prospectsChefNv', 'prospectsChefNvAll', 'prospectsNoTraite', 'unjoiniable', 'prospects', 'prospectspasaffect', 'prospectsDay', 'users', 'teams', 'products', 'clients');
     }
 
 
@@ -160,6 +161,33 @@ class StatsService
         return (int) $result;
     }
 
+    // les nouveaux prospects cree ce jour affecter a mon equipe
+    public function getProspectChefNvAll(User $user): int
+    {
+
+        $teams = $user->getTeams();
+
+        if ($teams->isEmpty()) {
+            return 0;
+        }
+        // $today = new \DateTime();
+        // $today->setTime(0, 0, 0);
+
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(DISTINCT p.id)')
+            ->from('App\Entity\Prospect', 'p')
+            ->Where('p.team IS NULL')
+            ->orwhere('p.team IN (:teams)')
+            ->andWhere('p.comrcl IS NULL')
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.prospect IS NULL')
+            ->setParameter('teams', $teams);
+
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return (int) $result;
+    }
     // afficher les neveaux prospects au cmerciel
     public function getProspectCmrclNv($id)
     {

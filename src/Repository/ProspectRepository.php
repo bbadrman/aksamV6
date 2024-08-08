@@ -2464,6 +2464,67 @@ class ProspectRepository extends ServiceEntityRepository
         );
     }
 
+    /**
+     * return prospect affect aux equipes du chef ou bien au chef meme teet peut voire aussi panier du admin
+     * @return Prospect[] Returns an array of Prospect objects
+     * 
+     * @param SearchProspect $search
+     * @return PaginationInterface 
+     */
+    public function findByChefAllNewProsp(SearchProspect $search, User $user): PaginationInterface
+    {
+        //$team = $user->getTeams();
+        // $today = new \DateTime();
+        // $today->setTime(0, 0, 0);
+
+        $team = $user->getTeams();
+        if ($team->isEmpty()) {
+            return [];
+        }
+        // get selement les prospects qui n'as pas encors affectter a un user
+        $query = $this->createQueryBuilder('p')
+            ->select('p, t, f')
+            ->leftJoin('p.team', 't')
+            ->leftJoin('p.comrcl', 'f')
+            ->Where('p.team IS  NULL')
+            ->orwhere('p.team IN (:teams) ')
+            ->setParameter('teams', $team)
+
+            ->andWhere('p.comrcl IS  NULL')
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.prospect IS NULL')
+
+            //->andWhere('p.comrcl IS NULL OR p.comrcl = :val') // Filtrer les prospects no affectés et affect au chef aussi
+            //->setParameter('val', $user)
+            ->orderBy('p.id', 'DESC');
+
+
+
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
+            $query = $query
+                ->andWhere('p.creatAt >= :d')
+                ->setParameter('d', $search->d);
+        }
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
+            $query = $query
+                ->andWhere('p.creatAt <= :dd')
+                ->setParameter('dd', $search->dd);
+        }
+
+
+
+
+
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+
+        );
+    }
+
 
 
     /**
@@ -2559,6 +2620,29 @@ class ProspectRepository extends ServiceEntityRepository
             ->andWhere('p.comrcl IS NULL')
             ->andWhere('r.prospect IS NULL')
             ->andWhere('p.team IS NOT NULL');
+        //->andWhere('p.comrcl IS NULL OR p.comrcl = :user') // Filtrer les prospects no affectés et affect au chef aussi
+        //->setParameter('user', $user);
+
+        return (int) $query->getQuery()->getSingleScalarResult();
+    }
+
+    //return with int pour chef
+    public function findAllNewPanierProspectsChefApi(User $user): int
+    {
+        $team = $user->getTeams();
+        if ($team->isEmpty()) {
+            return [];
+        }
+        $query = $this->createQueryBuilder('p')
+            ->select('COUNT(p.id)')
+            ->leftJoin('p.team', 't')
+            ->leftJoin('p.comrcl', 'f')
+            ->Where('p.team IS NULL')
+            ->orwhere('p.team IN (:teams) ')
+            ->setParameter('teams', $team)
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('p.comrcl IS NULL')
+            ->andWhere('r.prospect IS NULL');
         //->andWhere('p.comrcl IS NULL OR p.comrcl = :user') // Filtrer les prospects no affectés et affect au chef aussi
         //->setParameter('user', $user);
 

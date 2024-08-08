@@ -42,6 +42,8 @@
 									<i class="fa fa-newspaper-o fa-4x" aria-hidden="true"></i>
 									{% if is_granted('ROLE_ADMIN')  == true or is_granted('ROLE_AFFECT')  == true %}
 										<h1 id="notif">{{ " %02d"|format(stats.prospectspasaffect ) }}</h1>
+									{% elseif is_granted('ROLE_TEAMALL') and is_granted('ROLE_TEAM') == true %}
+										<h1 id="notif">{{ " %02d"|format(stats.prospectsChefNvAll ) }}</h1>
 									{% elseif is_granted('ROLE_TEAM') == true %}
 										<h1 id="notif">{{ " %02d"|format(stats.prospectsChefNv ) }}</h1>
 									{% elseif is_granted('ROLE_USER') == true %}

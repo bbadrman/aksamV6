@@ -102,6 +102,8 @@ class ProspectController extends AbstractController
 
         if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_AFFECT', $roles, true)) {
             $prospects = $this->prospectRepository->findByAdminNewProsp($data);
+        } elseif (in_array('ROLE_TEAMALL', $roles, true)) {
+            $prospects = $this->prospectRepository->findByChefAllNewProsp($data, $user);
         } elseif (in_array('ROLE_TEAM', $roles, true)) {
             $prospects = $this->prospectRepository->findByChefNewProsp($data, $user);
         } else {
@@ -132,9 +134,12 @@ class ProspectController extends AbstractController
 
         $prospect = [];
         $user = $security->getUser();
-        if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true) || in_array('ROLE_AFFECT', $user->getRoles(), true)) {
+        $roles = $user->getRoles();
+        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $user->getRoles(), true) || in_array('ROLE_AFFECT', $user->getRoles(), true)) {
             $prospect =  $prospectRepository->findAllNewProspectsApi(null);
-        } elseif (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+        } elseif (in_array('ROLE_TEAMALL', $roles, true)) {
+            $prospect =  $prospectRepository->findAllNewPanierProspectsChefApi($user, null);
+        } elseif (in_array('ROLE_TEAM', $roles, true)) {
             // chef peut voire toutes les nouveaux prospects atacher a leur equipe
             $prospect =  $prospectRepository->findAllNewProspectsChefApi($user, null);
         } else {

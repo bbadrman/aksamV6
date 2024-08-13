@@ -71,7 +71,7 @@
 
 <div class="col-xs-12" style="float: right !important;">
 	{% if app.request.get('_route') != 'newprospect_index' %}
-		{% if is_granted('ROLE_ADMIN')  == true %}
+		{% if is_granted('ROLE_ADMIN') or  is_granted('ROLE_TEAM') == true %}
 			<div class="col-md-1 mx-auto" style="padding-right: 2px;padding-left: 2px;">
 				{{ form_row(search_form.c) }}
 			</div>

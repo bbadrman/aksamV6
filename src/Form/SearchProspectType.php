@@ -22,9 +22,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class SearchProspectType extends AbstractType
 {
 
-    public function __construct(private EntityManagerInterface $entityManager, private  UserRepository $userRepository, private Security $security)
-    {
-    }
+    public function __construct(private EntityManagerInterface $entityManager, private  UserRepository $userRepository, private Security $security) {}
     /**  
      * @return void
      */
@@ -47,7 +45,7 @@ class SearchProspectType extends AbstractType
             if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
                 $comrclsForTeam = $this->userRepository->findAll();
             } else if (in_array('ROLE_TEAM', $user->getRoles(), true) && $team) {
-                $comrclsForTeam = $team === null ? [] :  $this->userRepository->findComrclByteamOrderedByAscName($team);
+                $comrclsForTeam = $team === null ? [] :  $this->userRepository->findComrclByteamOrderedByAscName($user);
             } else {
                 // cmrcl peut voir seulement les non traités attachés à lui
                 $comrclsForTeam =  [];

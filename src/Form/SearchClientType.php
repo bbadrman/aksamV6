@@ -17,9 +17,7 @@ class SearchClientType extends AbstractType
 {
 
 
-    public function __construct(private EntityManagerInterface $entityManager, private UserRepository $userRepository, private Security $security)
-    {
-    }
+    public function __construct(private EntityManagerInterface $entityManager, private UserRepository $userRepository, private Security $security) {}
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $teamRepository = $this->entityManager->getRepository(Team::class);
@@ -34,7 +32,7 @@ class SearchClientType extends AbstractType
         if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
             $comrclsForTeam = $this->userRepository->findAll();
         } else if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
-            $comrclsForTeam = $this->userRepository->findComrclByteamOrderedByAscName($team);
+            $comrclsForTeam = $this->userRepository->findComrclByteamOrderedByAscName($user);
         } else {
 
             $comrclsForTeam =  [];

@@ -134,18 +134,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         );
     }
 
-    public function findComrclByteamOrderedByAscName(Team $team): array
+    public function findComrclByteamOrderedByAscName(User $user): array
     {
-        // $teams = $team->getTeam();
+        $teams = $user->getTeams();
+        if ($teams->isEmpty()) {
+            return [];
+        }
 
-        // if ($teams->isEmpty()) {
-        //     return [];
-        // }
         return $this->createQueryBuilder('u')
-            // ->where('u.teams = :teams')
-            ->leftJoin('u.teams', 't')
-            ->andWhere('t = :teams')
-            ->setParameter('teams', $team)
+            ->innerJoin('u.teams', 't') // Jointure entre les utilisateurs et les équipes
+            ->andWhere('t IN (:teams)') // Condition pour filtrer les utilisateurs par les équipes
+            ->setParameter('teams', $teams->toArray()) // Convertir la collection en tableau pour le paramètre
             ->orderBy('u.username', 'ASC')
             ->getQuery()
             ->getResult();

@@ -446,10 +446,12 @@ class ProspectRepository extends ServiceEntityRepository
 
         $query = $this
             ->createQueryBuilder('p')
-            ->select('p,  h')
+            ->select('p,  h, f')
 
             // joiner les tables en relation ManyToOne avec team
             ->where('p.team IN (:teams)')
+            ->leftJoin('p.comrcl', 'f')
+            ->leftJoin('p.team', 't')
             // ->andWhere("p.comrcl is NULL")
             ->leftJoin('p.relanceds', 'h')
             ->setParameter('teams', $teams)
@@ -510,6 +512,16 @@ class ProspectRepository extends ServiceEntityRepository
             $query = $query
                 ->andWhere('p.phone LIKE :l')
                 ->setParameter('l', "%{$search->l}%");
+        }
+        if (!empty($search->team)) {
+            $query = $query
+                ->andWhere('t.name LIKE :team')
+                ->setParameter('team', "%{$search->team}%");
+        }
+        if (!empty($search->r)) {
+            $query = $query
+                ->andWhere('f.username LIKE :r')
+                ->setParameter('r', "%{$search->r}%");
         }
         if (isset($search->s)) {
             $query = $query

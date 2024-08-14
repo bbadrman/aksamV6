@@ -141,9 +141,10 @@ class ClientRepository extends ServiceEntityRepository
         }
 
         $query = $this->createQueryBuilder('c')
-            ->select('c, r')
+            ->select('c, f ')
 
-            ->leftJoin('c.cmrl', 'r')
+            ->leftJoin('c.cmrl', 'f')
+            ->leftJoin('c.team', 't')
 
             ->where('c.team IN (:teams)')
 
@@ -160,6 +161,17 @@ class ClientRepository extends ServiceEntityRepository
             $query = $query
                 ->andWhere('c.lastname LIKE :l')
                 ->setParameter('l', "%{$search->l}%");
+        }
+
+        if (!empty($search->team)) {
+            $query = $query
+                ->andWhere('t.name LIKE :team')
+                ->setParameter('team', "%{$search->team}%");
+        }
+        if (!empty($search->k)) {
+            $query = $query
+                ->andWhere('f.username LIKE :k')
+                ->setParameter('k', "%{$search->k}%");
         }
 
         if (!empty($search->g)) {

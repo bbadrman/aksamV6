@@ -150,6 +150,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getResult();
     }
 
+
+
     public function findClientByteamChef(User $user): array
     {
         $teams = $user->getTeams();

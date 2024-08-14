@@ -34,7 +34,7 @@
 			{{ form_row(search_form.k) }}
 		</div>
 	{% endif %}
-	{% if is_granted('ROLE_ADMIN')   == true %}
+	{% if is_granted('ROLE_ADMIN')  or is_granted('ROLE_TEAM')   == true %}
 		<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
 			{{ form_row(search_form.team, {attr: {class: 'form-control', 'placeholder': ' Equipe...'}}) }}
 		</div>

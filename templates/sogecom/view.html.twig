@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sogecom Data
+{% endblock %}
+
+{% block body %}
+	<h1>Données de Sogecommerce</h1>
+
+	{% if data is empty %}
+		<p>Aucune donnée à afficher.</p>
+	{% else %}
+		<pre>{{ data | json_encode(constant('JSON_PRETTY_PRINT')) }}</pre>
+	{% endif %}
+{% endblock %}

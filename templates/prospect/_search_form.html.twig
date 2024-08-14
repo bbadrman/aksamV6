@@ -93,7 +93,7 @@
 	{% endif %}
 
 
-	{% if app.request.get('_route') == 'prospect_search' or app.request.get('_route') == 'avenir_index'%}
+	{% if app.request.get('_route') == 'prospect_search' or app.request.get('_route') == 'avenir_index' or app.request.get('_route') == 'relancenotraite_index'%}
 		<div class="col-md-1 mx-auto" style="padding-right: 1px;padding-left: 2px;">
 			{{ form_row(search_form.dr) }}
 		</div>

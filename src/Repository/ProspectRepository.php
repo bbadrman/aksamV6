@@ -787,6 +787,27 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('dd', $search->dd);
         }
 
+        //sherche par relance
+
+        if (!empty($search->dr) && $search->dr instanceof \DateTime) {
+            $query = $query
+                ->andWhere('r.relacedAt >= :dr')
+                ->setParameter('dr', $search->dr->format('Y-m-d'));
+        }
+
+        if (!empty($search->ddr) && $search->ddr instanceof \DateTime) {
+            $search->ddr->setTime(23, 59, 59); // Fix time to end of the day
+            $query = $query
+                ->andWhere('r.relacedAt <= :ddr')
+                ->setParameter('ddr', $search->ddr->format('Y-m-d H:i:s'));
+        }
+
+        if (!empty($search->motifRelanced)) {
+            $query = $query
+
+                ->andWhere('r.motifRelanced = :motifRelanced')
+                ->setParameter('motifRelanced', $search->motifRelanced);
+        }
 
 
         if (!empty($search->s)) {
@@ -911,7 +932,27 @@ class ProspectRepository extends ServiceEntityRepository
                 ->andWhere('p.creatAt <= :dd')
                 ->setParameter('dd', $search->dd);
         }
+        //sherche par relance
 
+        if (!empty($search->dr) && $search->dr instanceof \DateTime) {
+            $query = $query
+                ->andWhere('r.relacedAt >= :dr')
+                ->setParameter('dr', $search->dr->format('Y-m-d'));
+        }
+
+        if (!empty($search->ddr) && $search->ddr instanceof \DateTime) {
+            $search->ddr->setTime(23, 59, 59); // Fix time to end of the day
+            $query = $query
+                ->andWhere('r.relacedAt <= :ddr')
+                ->setParameter('ddr', $search->ddr->format('Y-m-d H:i:s'));
+        }
+
+        if (!empty($search->motifRelanced)) {
+            $query = $query
+
+                ->andWhere('r.motifRelanced = :motifRelanced')
+                ->setParameter('motifRelanced', $search->motifRelanced);
+        }
 
 
         if (!empty($search->s)) {
@@ -1037,7 +1078,27 @@ class ProspectRepository extends ServiceEntityRepository
                 ->andWhere('p.creatAt <= :dd')
                 ->setParameter('dd', $search->dd);
         }
+        //sherche par relance
 
+        if (!empty($search->dr) && $search->dr instanceof \DateTime) {
+            $query = $query
+                ->andWhere('r.relacedAt >= :dr')
+                ->setParameter('dr', $search->dr->format('Y-m-d'));
+        }
+
+        if (!empty($search->ddr) && $search->ddr instanceof \DateTime) {
+            $search->ddr->setTime(23, 59, 59); // Fix time to end of the day
+            $query = $query
+                ->andWhere('r.relacedAt <= :ddr')
+                ->setParameter('ddr', $search->ddr->format('Y-m-d H:i:s'));
+        }
+
+        if (!empty($search->motifRelanced)) {
+            $query = $query
+
+                ->andWhere('r.motifRelanced = :motifRelanced')
+                ->setParameter('motifRelanced', $search->motifRelanced);
+        }
 
 
         if (!empty($search->s)) {
@@ -1105,7 +1166,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
             ->setParameter('motifs', [3, 7, 8, 9, 10, 11])
             ->addSelect('(' . $subQuery . ') AS HIDDEN lastRelanceDate')
-            ->orderBy('lastRelanceDate', 'ASC');
+            ->orderBy('lastRelanceDate', 'desc');
 
 
 
@@ -1173,6 +1234,24 @@ class ProspectRepository extends ServiceEntityRepository
             $query = $query
                 ->andWhere('p.source = :source')
                 ->setParameter('source', $search->source);
+        }
+        if (!empty($search->dr) && $search->dr instanceof \DateTime) {
+            $query = $query
+                ->andWhere('r.relacedAt >= :dr')
+                ->setParameter('dr', $search->dr->format('Y-m-d'));
+        }
+
+        if (!empty($search->ddr) && $search->ddr instanceof \DateTime) {
+            $search->ddr->setTime(23, 59, 59); // Fix time to end of the day
+            $query = $query
+                ->andWhere('r.relacedAt <= :ddr')
+                ->setParameter('ddr', $search->ddr->format('Y-m-d H:i:s'));
+        }
+        if (!empty($search->motifRelanced)) {
+            $query = $query
+
+                ->andWhere('r.motifRelanced = :motifRelanced')
+                ->setParameter('motifRelanced', $search->motifRelanced);
         }
 
         return $this->paginator->paginate(
@@ -1238,7 +1317,7 @@ class ProspectRepository extends ServiceEntityRepository
 
 
             ->addSelect('(' . $subQuery . ') AS HIDDEN lastRelanceDate')
-            ->orderBy('lastRelanceDate', 'ASC');
+            ->orderBy('lastRelanceDate', 'desc');
 
 
         if ((!empty($search->q))) {
@@ -1294,6 +1373,24 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('dd', $search->dd);
         }
 
+        if (!empty($search->dr) && $search->dr instanceof \DateTime) {
+            $query = $query
+                ->andWhere('r.relacedAt >= :dr')
+                ->setParameter('dr', $search->dr->format('Y-m-d'));
+        }
+
+        if (!empty($search->ddr) && $search->ddr instanceof \DateTime) {
+            $search->ddr->setTime(23, 59, 59); // Fix time to end of the day
+            $query = $query
+                ->andWhere('r.relacedAt <= :ddr')
+                ->setParameter('ddr', $search->ddr->format('Y-m-d H:i:s'));
+        }
+        if (!empty($search->motifRelanced)) {
+            $query = $query
+
+                ->andWhere('r.motifRelanced = :motifRelanced')
+                ->setParameter('motifRelanced', $search->motifRelanced);
+        }
 
 
         if (!empty($search->s)) {
@@ -1359,7 +1456,7 @@ class ProspectRepository extends ServiceEntityRepository
                 WHERE rel.relacedAt > :endOfYesterday
             )')->setParameter('endOfYesterday', $yesterday)
             ->addSelect('(' . $subQuery . ') AS HIDDEN lastRelanceDate')
-            ->orderBy('lastRelanceDate', 'ASC');
+            ->orderBy('lastRelanceDate', 'desc');
 
         if ((!empty($search->q))) {
             $query = $query
@@ -1414,6 +1511,25 @@ class ProspectRepository extends ServiceEntityRepository
                 ->setParameter('dd', $search->dd);
         }
 
+        if (!empty($search->dr) && $search->dr instanceof \DateTime) {
+            $query = $query
+                ->andWhere('r.relacedAt >= :dr')
+                ->setParameter('dr', $search->dr->format('Y-m-d'));
+        }
+
+        if (!empty($search->ddr) && $search->ddr instanceof \DateTime) {
+            $search->ddr->setTime(23, 59, 59); // Fix time to end of the day
+            $query = $query
+                ->andWhere('r.relacedAt <= :ddr')
+                ->setParameter('ddr', $search->ddr->format('Y-m-d H:i:s'));
+        }
+
+        if (!empty($search->motifRelanced)) {
+            $query = $query
+
+                ->andWhere('r.motifRelanced = :motifRelanced')
+                ->setParameter('motifRelanced', $search->motifRelanced);
+        }
 
 
         if (!empty($search->s)) {

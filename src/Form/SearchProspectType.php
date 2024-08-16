@@ -153,9 +153,9 @@ class SearchProspectType extends AbstractType
                 'required' => false,
                 'placeholder' => '--Selectie-- ',
                 'choices' => [
-                    'Propre site' => 'Propre site',
-                    'Saisie manuelle' => 'Saisie manuelle',
-                    'Revendeur' => 'Revendeur',
+                    'Propre site' => '3',
+                    'Saisie manuelle' => '1',
+                    'Revendeur' => '2',
                 ],
                 'expanded' => false,
                 'multiple' => false

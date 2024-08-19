@@ -17,8 +17,8 @@ class SogecomController extends AbstractController
 
     public function __construct(
         private  EntityManagerInterface $entityManager,
+
     ) {}
-    private const SECRET_KEY = 'prodpassword_kCpUKNdCppoc02eqHvCAXWbXL7wKXQM010zauxa9BXwQe'; // Remplacez par votre clé secrète
 
     /**
      * @Route("/sogecom", name="sogecom-api")
@@ -26,20 +26,35 @@ class SogecomController extends AbstractController
      */
     public function fetchSogecomData(SessionInterface $session): Response
     {
+        $password =  $_ENV['SOGCOM_SECRET_KEY'] ?? null;
+        $username = $_ENV['SOGCOM_USERNAM'] ?? null;
+        $url = $_ENV['SOGCOM_URL'] ?? null;
+
+
         $client = HttpClient::create();
 
-        // Utiliser la classe \DateTime de PHP
 
 
-        $response = $client->request('GET', 'https://api-sogecommerce.societegenerale.eu', [
+        $response = $client->request('POST', $url, [
             'headers' => [
-                'Authorization' => self::SECRET_KEY,
-                'Accept' => 'application/json',
+                'HMAC-SHA-256' => "TNcxnc7rPzK1ax7rVOtUrQcTKtT43RlMDCVz0MHeCa52i",
+                'Authorization' => "Basic " . base64_encode($username . ':' . $password),
+                'Accept' => "application/json",
+
 
             ],
+            'json' => [
+                // "orderId" => "myOrderId-522842"
+                'UUID'  => 'cccdfa39c25e4f19b37f4a69d61d5e2f'
+                // 'start_date' => $lastDate->format('Y-m-d\TH:i:s.u\Z'),
+                // 'end_date' => $currentDate->format('Y-m-d\TH:i:s.u\Z'),
+
+
+
+            ]
 
         ]);
-
+        // dd($response);
         // Vérifiez si la requête a échoué et affichez le message d'erreur
         if ($response->getStatusCode() !== 200) {
             $statusCode = $response->getStatusCode();
@@ -57,17 +72,16 @@ class SogecomController extends AbstractController
         }
 
         $data = $response->toArray(); // Convertit la réponse JSON en tableau associatif
+        dd($data);
 
-        // Vérifier la signature
-        if (!$this->isValidSignature($data)) {
-            return new Response('Invalid signature.', Response::HTTP_FORBIDDEN);
-        }
 
         // Stocker les données dans la session
-        $session->set('sogecom_data', $data);
+        //$session->set('sogecom_data', $data);
 
         // Rediriger vers la vue
-        return $this->redirectToRoute('sogecom_view');
+        return $this->render('sogecom/view.html.twig', [
+            'data' => $sogecomData,
+        ]);
     }
     /**
      * @Route("/sogecom/view", name="sogecom_view")
@@ -81,21 +95,5 @@ class SogecomController extends AbstractController
         return $this->render('sogecom/view.html.twig', [
             'data' => $sogecomData,
         ]);
-    }
-    /**
-     * Vérifie la signature des données
-     */
-    private function isValidSignature(array $data): bool
-    {
-        $supportedSignAlgos = ['sha256_hmac'];
-
-        if (!in_array($data['kr-hash-algorithm'], $supportedSignAlgos)) {
-            return false;
-        }
-
-        $krAnswer = json_encode($data['kr-answer']);
-        $hash = hash_hmac('sha256', $krAnswer, self::SECRET_KEY);
-
-        return $hash === $data['kr-hash'];
     }
 }

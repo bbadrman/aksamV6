@@ -366,6 +366,7 @@ setupDisplayControl('prospect_lastAssure', 'subResil-container', 'Oui');
 //select motiveRelanced pour afficher la calandrie et comment quand on click sur rndv
 var resilField = document.getElementById('relanced_motifRelanced');
 var commentField = document.getElementById('MotivRelcoment-container'); // Changer l'ID ici
+var buttonField = document.getElementById('SubmitRelance-container');
 
 
 var subresilContainer1 = document.getElementById('subMotivRelc-container');
@@ -376,7 +377,8 @@ if (resilField !== null) {
 		if (resilField.value === '1' || resilField.value === '2' || resilField.value === '4' || resilField.value === '5' || resilField.value === '6') {
 			subresilContainer1.style.display = 'block';     // Afficher le champ date
 			subresilContainer2.style.display = 'none';     // cacher le champ client
-			commentField.style.display = 'block';          // Afficher le champ comment
+			commentField.style.display = 'block';
+			buttonField.style.display = 'block';         // Afficher le champ comment
 			//click sur passage en contart il faut affichier les champ des contart et comment cache du date 
 		} else if (resilField.value === '3' || resilField.value === '7' || resilField.value === '8' || resilField.value === '9' || resilField.value === '11') {
 			//pour rederct to rout 
@@ -385,7 +387,7 @@ if (resilField !== null) {
 			subresilContainer1.style.display = 'none';   // cacher date
 			subresilContainer2.style.display = 'none';
 			commentField.style.display = 'block'; // Cacher le champ comment
-
+			buttonField.style.display = 'block';
 		} else if (resilField.value === '10') {
 			//pour rederct to rout 
 			//window.location.href = "/client/new-client";
@@ -393,12 +395,13 @@ if (resilField !== null) {
 			subresilContainer1.style.display = 'none';   // cacher date
 			subresilContainer2.style.display = 'block';
 			commentField.style.display = 'block'; // Cacher le champ comment
-
+			buttonField.style.display = 'none';
 		}
 		else {
 			subresilContainer1.style.display = 'none';
 			subresilContainer2.style.display = 'none';
 			commentField.style.display = 'none'; // Cacher le champ comment
+			buttonField.style.display = 'block';
 
 		}
 	});

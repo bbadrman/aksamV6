@@ -37,15 +37,18 @@ class SogecomController extends AbstractController
 
         $response = $client->request('POST', $url, [
             'headers' => [
-                'HMAC-SHA-256' => "TNcxnc7rPzK1ax7rVOtUrQcTKtT43RlMDCVz0MHeCa52i",
+                'HMAC-SHA-256' => "U4tG4k8OKWktVKrL5N22zaNU2zmzuUhFQTP8sjdxKQEjy",
                 'Authorization' => "Basic " . base64_encode($username . ':' . $password),
                 'Accept' => "application/json",
 
 
             ],
             'json' => [
+
+
                 // "orderId" => "myOrderId-522842"
-                'UUID'  => 'cccdfa39c25e4f19b37f4a69d61d5e2f'
+                // "paymentOrderId" => "d63e7f507a6f4dfa86cb40a833ecfd85"
+                'UUID'  => '923ec65c20794e2491021a39081f42e5'
                 // 'start_date' => $lastDate->format('Y-m-d\TH:i:s.u\Z'),
                 // 'end_date' => $currentDate->format('Y-m-d\TH:i:s.u\Z'),
 

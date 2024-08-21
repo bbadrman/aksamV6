@@ -53,3 +53,6 @@ stup:
 klup:
 	@make kill-all
 	@make up
+
+cache-prod:
+	php bin/console cache:clear --env=prod

@@ -64,8 +64,7 @@ class ProspectController extends AbstractController
         private  Security $security,
         private AuthorizationCheckerInterface $authorizationChecker,
         private CacheInterface $cache
-    ) {
-    }
+    ) {}
     private function denyAccessUnlessGrantedAuthorizedRoles(): void
     {
         if (!$this->getUser()) {
@@ -351,7 +350,8 @@ class ProspectController extends AbstractController
         $clientEntity->setTeam($prospect->getTeam());
         $clientEntity->setCmrl($prospect->getComrcl());
         $clientEntity->setCreatAt(new \DateTime());
-
+        // Associer le prospect au client
+        $clientEntity->setProspect($prospect);
 
         // Handle the Client form submission
         $clientForm = $this->createForm(ClientType::class, $clientEntity);

@@ -108,10 +108,22 @@ class ProspectController extends AbstractController
         } else {
             $prospects = $this->prospectRepository->findByCmrclNewProsp($data, $user);
         }
+        foreach ($prospects as $prospect) {
+            $email = $prospect->getEmail();
+
+            // Check if the email exists in the database **excluding the current prospect**
+            $existingProspect = $this->prospectRepository->findOneBy(['email' => $email]);
+            $isDuplicate = $existingProspect !== null && $existingProspect->getId() !== $prospect->getId();
+
+            $duplicates[$email] = $isDuplicate;
+
+            $emails[] = $email;
+        }
 
 
         return $this->render('prospect/index.html.twig', [
             'prospects' => $prospects,
+            'duplicates' => $duplicates,
             'search_form' => $form->createView()
         ]);
     }

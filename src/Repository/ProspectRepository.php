@@ -2655,16 +2655,16 @@ class ProspectRepository extends ServiceEntityRepository
         );
     }
     // detecter les doubleaux
-    public function findAllEmails(): array
-    {
-        $query = $this->createQueryBuilder('p')
-            ->select('p.email')
-            ->where('p.email IS NOT NULL')
-            ->getQuery();
+    // public function findAllEmails(): array
+    // {
+    //     $query = $this->createQueryBuilder('p')
+    //         ->select('p.email')
+    //         ->where('p.email IS NOT NULL')
+    //         ->getQuery();
 
-        // Convertir le résultat en un tableau plat d'emails
-        return array_column($query->getResult(Query::HYDRATE_ARRAY), 'email');
-    }
+    //     // Convertir le résultat en un tableau plat d'emails
+    //     return array_column($query->getResult(Query::HYDRATE_ARRAY), 'email');
+    // }
 
     /**
      * afficher les prospects qui sont affect au cmrcl

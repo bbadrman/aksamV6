@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use Doctrine\ORM\Query;
 use App\Entity\Prospect;
 use App\Search\SearchProspect;
 use Doctrine\ORM\EntityManagerInterface;
@@ -708,9 +709,10 @@ class ProspectRepository extends ServiceEntityRepository
 
         $query = $this->createQueryBuilder('p')
 
-            ->select('p,  r')
+            ->select('p,  r, f')
 
             ->leftJoin('p.relanceds', 'r')
+            ->leftJoin('p.comrcl', 'f')
             ->Where('r.relacedAt > :tomorrow')
             ->setParameter('tomorrow', $tomorrow)
 
@@ -1576,10 +1578,11 @@ class ProspectRepository extends ServiceEntityRepository
             ->where('r1.prospect = p.id')
             ->getDQL();
         $query = $this->createQueryBuilder('p')
-            ->select('p, r')
+            ->select('p, r, f')
             ->leftJoin('p.relanceds', 'r')
             // ->leftJoin('p.clotures', 'c')
             // ->Where('c.motifCloture is NULL')
+            ->leftJoin('p.comrcl', 'f')
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
             ->andwhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
             ->setParameter('startOfDay', $today)
@@ -2509,7 +2512,6 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.motifRelanced is null')
 
-
             ->orderBy('p.id', 'DESC');
         if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
@@ -2652,8 +2654,17 @@ class ProspectRepository extends ServiceEntityRepository
 
         );
     }
+    // detecter les doubleaux
+    public function findAllEmails(): array
+    {
+        $query = $this->createQueryBuilder('p')
+            ->select('p.email')
+            ->where('p.email IS NOT NULL')
+            ->getQuery();
 
-
+        // Convertir le résultat en un tableau plat d'emails
+        return array_column($query->getResult(Query::HYDRATE_ARRAY), 'email');
+    }
 
     /**
      * afficher les prospects qui sont affect au cmrcl

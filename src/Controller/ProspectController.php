@@ -110,7 +110,6 @@ class ProspectController extends AbstractController
         }
 
 
-
         return $this->render('prospect/index.html.twig', [
             'prospects' => $prospects,
             'search_form' => $form->createView()

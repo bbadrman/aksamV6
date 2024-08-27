@@ -6,7 +6,8 @@
 {% block body %}
 	<h1>Upload External Table</h1>
 	<form action="{{ path('upload_table') }}" method="post" enctype="multipart/form-data">
-		<input type="file" name="csv_file" required>
+		<input type="file" name="csv_file" accept=".csv, .xls, .xlsx"/>
 		<button type="submit">Upload</button>
 	</form>
+
 {% endblock %}

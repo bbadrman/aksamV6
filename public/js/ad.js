@@ -408,74 +408,33 @@ if (resilField !== null) {
 
 }
 
-//select motiveRelanced pour afficher la ajouter client quand on click sur pasage contart
-//select motiveRelanced pour afficher la calandrie et comment quand on click sur rndv
-// var resilField = document.getElementById('relanced_motifRelanced');
-// var commentField = document.getElementById('MotivRelcoment-container'); // Changer l'ID ici  champ comment
 
-// var subresilContainer1 = document.getElementById('subMotivRelc-container'); //champ date 
+// Select du Transaction
 
-// if (resilField !== null) {
-// 	resilField.addEventListener('change', function () {
-// 		if (resilField.value === '1' || resilField.value === '2' || resilField.value === '4' || resilField.value === '5' || resilField.value === '6') {
-// 			subresilContainer1.style.display = 'block';     // Afficher le champ date 
-// 			commentField.style.display = 'block';          // Afficher le champ comment
-// 			//click sur passage en contart il faut affichier les champ des contart et comment cache du date 
-// 		}
-// 		else {
-// 			subresilContainer1.style.display = 'none'; // Cacher le champ date 
-// 			commentField.style.display = 'none'; // Cacher le champ comment 
-// 		}
-// 	});
-// }
-
-//select cloture
-
-// var resilField2 = document.getElementById('cloture_motifCloture');  // form cloture 
-// var commentField2 = document.getElementById('MotivClotrcoment-container'); // Changer l'ID ici   comment
-
-// var subresilContainer11 = document.getElementById('subMotivCltr-container');  //champ date cloture
-// var subresilContainer22 = document.getElementById('subMotivContrat-container'); //champ contrat cloture
-
-// resilField2.addEventListener('change', function () {
-// 	if (resilField2.value === 'faux' || resilField2.value === 'doublon' || resilField2.value === 'concurrent' || resilField2.value === 'test' || resilField2.value === 'souscrit') {
-// 		subresilContainer11.style.display = 'none';     // cacher le champ date 
-// 		commentField2.style.display = 'block';            // affichier le champ comment
-// 		subresilContainer22.style.display = 'none';       // cacher le champ contrat
-// 		//click sur passage en contart il faut affichier les champ des contart et comment cache du date 
-// 	}
-// 	else if (resilField2.value === 'contrat') {
-
-// 		subresilContainer11.style.display = 'none';   // cacher date
-// 		subresilContainer22.style.display = 'block';  // affichier form contart
-// 		commentField2.style.display = 'block'; // affichier le champ comment
-
-// 	}
-// 	else {
-// 		subresilContainer11.style.display = 'none';
-// 		subresilContainer22.style.display = 'none';
-// 		commentField2.style.display = 'none'; // Cacher le champ comment
-
-// 	}
-// });
+var motifField = document.getElementById('transaction_motif');
+var debitField = document.getElementById('transaction_debit');
+var creditField = document.getElementById('transaction_credit');
 
 
-// var resilField = document.getElementById('relanced_motifRelanced');
-// var subresilContainer1 = document.getElementById('subMotivRelc-container');
-// // var subresilContainer2 = document.getElementById('subMotivContrat-container');
 
-// if (resilField !== null) {
-// 	resilField.addEventListener('change', function () {
-// 		if (resilField.value === '1') {
-// 			subresilContainer1.style.display = 'block';
-// 		} else if (resilField.value === '10') {
-// 			subresilContainer1.style.display = 'none';
-// 		} else {
-// 			subresilContainer1.style.display = 'none';
-// 		}
-// 	});
-// }
+if (motifField !== null) {
+	motifField.addEventListener('change', function () {
+		if (motifField.value === '1er reglement') {
+			creditField.style.display = 'none';
+			debitField.style.display = 'block';
 
+		} else if (motifField.value === '2eme reglement') {
+			creditField.style.display = 'block';
+			debitField.style.display = 'none';
+
+		} else {
+			creditField.style.display = 'none';
+			debitField.style.display = 'none';
+
+		}
+	});
+
+}
 
 
 $(document).ready(function () {
@@ -487,7 +446,7 @@ $(document).ready(function () {
 });
 
 
-//pour afficher comment 	
+//pour afficher comment onclick sur comment sur motifrelanced	
 function showFullText(element) {
 	// Récupère l'élément contenant le texte complet
 	var fullText = element.querySelector('.fullText');

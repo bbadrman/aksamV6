@@ -72,7 +72,6 @@ class SearchTransactionType extends AbstractType
                     'choices' => [
                         '1er reglement' =>  '1er reglement',
                         '2eme reglement' =>  '2eme reglement',
-                        'Contrapartie' =>  'Contrapartie',
                         'MANUEL COMPLEMENT' =>  'MANUEL COMPLEMENT',
                         'Remboursement' =>  'Remboursement',
                         'CONTRE PARTIE COMPAGNIE' =>  'CONTRE PARTIE COMPAGNIE',

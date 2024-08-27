@@ -10,18 +10,51 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ExternalTableController extends AbstractController
 {
 
+    private const AUTHORIZED_ROLES = [
+        'ROLE_ADMIN',
+        'ROLE_TEAM',
+        'ROLE_AFFECT',
+        'ROLE_ADD_PROS',
+        'ROLE_EDIT_PROS',
+        'ROLE_PROS',
+        'ROLE_COMERC'
+    ];
 
+
+    public function __construct(
+        private RequestStack $requestStack,
+        private EntityManagerInterface $entityManager,
+        private AuthorizationCheckerInterface $authorizationChecker
+    ) {}
+    private function denyAccessUnlessGrantedAuthorizedRoles(): void
+    {
+        if (!$this->getUser()) {
+            throw new AccessDeniedException("Accès refusé pour les utilisateurs anonymes");
+        }
+
+        foreach (self::AUTHORIZED_ROLES as $role) {
+            if ($this->authorizationChecker->isGranted($role)) {
+                return;
+            }
+        }
+
+        throw new AccessDeniedException("Tu ne peux pas accéder à cette ressource");
+    }
 
     #[Route('/upload-table', name: 'upload_table', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN', message: 'Tu ne peut pas acces a cet ressource')]
     public function uploadTable(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
         if ($request->isMethod('POST')) {
             $file = $request->files->get('csv_file');
             if ($file && $file->isValid()) {

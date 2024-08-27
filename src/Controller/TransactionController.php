@@ -11,17 +11,49 @@ use App\Repository\TransactionRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 #[Route('/transaction')]
-#[IsGranted('ROLE_ADMIN', message: 'Tu ne peut pas acces a cet ressource')]
 class TransactionController extends AbstractController
 {
+    private const AUTHORIZED_ROLES = [
+        'ROLE_ADMIN',
+        'ROLE_TEAM',
+        'ROLE_AFFECT',
+        'ROLE_ADD_PROS',
+        'ROLE_EDIT_PROS',
+        'ROLE_PROS',
+        'ROLE_COMERC'
+    ];
+
+
+    public function __construct(
+        private RequestStack $requestStack,
+        private EntityManagerInterface $entityManager,
+        private AuthorizationCheckerInterface $authorizationChecker
+    ) {}
+    private function denyAccessUnlessGrantedAuthorizedRoles(): void
+    {
+        if (!$this->getUser()) {
+            throw new AccessDeniedException("Accès refusé pour les utilisateurs anonymes");
+        }
+
+        foreach (self::AUTHORIZED_ROLES as $role) {
+            if ($this->authorizationChecker->isGranted($role)) {
+                return;
+            }
+        }
+
+        throw new AccessDeniedException("Tu ne peux pas accéder à cette ressource");
+    }
     #[Route('/', name: 'app_transaction_index', methods: ['GET'])]
     public function index(TransactionRepository $transactionRepository, Request $request): Response
     {
-
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
         $data = new SearchTransaction();
         $data->page = $request->get('page', 1);
 
@@ -41,6 +73,7 @@ class TransactionController extends AbstractController
     #[Route('/new', name: 'app_transaction_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
         $transaction = new Transaction();
         $form = $this->createForm(TransactionType::class, $transaction);
         $form->handleRequest($request);
@@ -61,6 +94,7 @@ class TransactionController extends AbstractController
     #[Route('/{id}', name: 'app_transaction_show', methods: ['GET'])]
     public function show(Transaction $transaction): Response
     {
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
         return $this->render('transaction/show.html.twig', [
             'transaction' => $transaction,
         ]);
@@ -69,6 +103,7 @@ class TransactionController extends AbstractController
     #[Route('/{id}/edit', name: 'app_transaction_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
         $form = $this->createForm(TransactionType::class, $transaction);
         $form->handleRequest($request);
 
@@ -87,6 +122,7 @@ class TransactionController extends AbstractController
     #[Route('/{id}', name: 'app_transaction_delete', methods: ['POST'])]
     public function delete(Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
         if ($this->isCsrfTokenValid('delete' . $transaction->getId(), $request->request->get('_token'))) {
             $entityManager->remove($transaction);
             $entityManager->flush();

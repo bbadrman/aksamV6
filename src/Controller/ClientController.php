@@ -41,8 +41,7 @@ class ClientController extends AbstractController
         private EntityManagerInterface $entityManager,
         private ClientRepository $clientRepository,
         private AuthorizationCheckerInterface $authorizationChecker
-    ) {
-    }
+    ) {}
     private function denyAccessUnlessGrantedAuthorizedRoles(): void
     {
         if (!$this->getUser()) {
@@ -88,6 +87,39 @@ class ClientController extends AbstractController
 
 
             return $this->render('client/index.html.twig', [
+                'clients' => $client,
+
+                'search_form' => $form->createView()
+            ]);
+        }
+        return $this->render('client/search.html.twig', [
+            'clients' => $client,
+
+            'search_form' => $form->createView()
+        ]);
+    }
+    /**
+     * @Route("/test", name="client_indexTest", methods={"GET"})
+     */
+    public function indexTest(Request $request,  Security $security): Response
+    {
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
+
+        $data = new SearchClient();
+        $data->page = $request->query->get('page', 1);
+        $form = $this->createForm(SearchClientType::class, $data);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+        $client = [];
+
+        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
+
+
+            // admi peut voire toutes les nouveaux client
+            $client =  $this->clientRepository->findClientAll($data,  null);
+
+
+
+            return $this->render('client/testindex.html.twig', [
                 'clients' => $client,
 
                 'search_form' => $form->createView()

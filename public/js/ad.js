@@ -419,13 +419,13 @@ var creditField = document.getElementById('transaction_credit');
 
 if (motifField !== null) {
 	motifField.addEventListener('change', function () {
-		if (motifField.value === '1er reglement') {
-			creditField.style.display = 'none';
-			debitField.style.display = 'block';
-
-		} else if (motifField.value === '2eme reglement') {
+		if (motifField.value === '1er reglement' || motifField.value === '2eme reglement' || motifField.value === 'MANUEL COMPLEMENT') {
 			creditField.style.display = 'block';
 			debitField.style.display = 'none';
+
+		} else if (motifField.value === 'Remboursement') {
+			creditField.style.display = 'none';
+			debitField.style.display = 'block';
 
 		} else {
 			creditField.style.display = 'none';

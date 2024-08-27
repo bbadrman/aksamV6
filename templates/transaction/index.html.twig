@@ -39,14 +39,15 @@
 				</li>
 			</ol>
 			<br>
-			<a href="{{ path('upload_table') }}" class="btn btn-primary">
-				Importer des transactions
-				<i class="fa fa-upload" aria-hidden="true"></i>
-			</a>
-			<a href="{{ path('app_transaction_new') }}" class="btn btn-primary">Ajouter une transaction
-				<i class="fa fa-plus-square" aria-hidden="true"></i>
-			</a>
-
+			{% if is_granted('ROLE_ADMIN')   %}
+				<a href="{{ path('upload_table') }}" class="btn btn-primary">
+					Importer des transactions
+					<i class="fa fa-upload" aria-hidden="true"></i>
+				</a>
+				<a href="{{ path('app_transaction_new') }}" class="btn btn-primary">Ajouter une transaction
+					<i class="fa fa-plus-square" aria-hidden="true"></i>
+				</a>
+			{% endif %}
 		</section>
 		<div class="row mt">
 			<div class="col-xs-12" style="float: right !important;">

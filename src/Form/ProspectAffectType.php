@@ -23,7 +23,7 @@ class ProspectAffectType extends AbstractType
 
         $user = $this->security->getUser();
         $roles = $user->getRoles();
-        if (in_array('ROLE_SUPER_ADMIN', $roles, true)  || in_array('ROLE_AFFECT', $roles, true) || in_array('ROLE_TEAMALL', $roles, true)) {
+        if (in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_SUPER_ADMIN', $roles, true)  || in_array('ROLE_AFFECT', $roles, true) || in_array('ROLE_TEAMALL', $roles, true)) {
 
             $builder
                 ->add('team')

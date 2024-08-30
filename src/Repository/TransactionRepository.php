@@ -40,7 +40,7 @@ class TransactionRepository extends ServiceEntityRepository
 
         if (!empty($search->q)) {
             $query = $query
-                ->Where('t.commande LIKE :q')
+                ->andWhere('t.commande LIKE :q')
 
                 ->setParameter('q', "%{$search->q}%");
         }

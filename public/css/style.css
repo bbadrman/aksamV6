@@ -4235,3 +4235,14 @@ ul.chat-available-user li a:hover {
     font-size: 17px;
 
 }
+
+.relance-depassee {
+    background-color: #ffcccc;
+    /* Couleur de fond différente pour les relances dépassées */
+}
+
+.warning-text {
+    color: red;
+    /* Texte rouge pour les messages d'avertissement */
+    font-weight: bold;
+}

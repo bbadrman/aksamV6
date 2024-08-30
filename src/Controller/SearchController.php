@@ -36,8 +36,7 @@ class SearchController extends AbstractController
         private ProspectRepository $prospectRepository,
         private AuthorizationCheckerInterface $authorizationChecker,
         private Security $security
-    ) {
-    }
+    ) {}
     private function denyAccessUnlessGrantedAuthorizedRoles(): void
     {
         if (!$this->getUser()) {

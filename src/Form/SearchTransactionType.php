@@ -72,9 +72,9 @@ class SearchTransactionType extends AbstractType
                     'choices' => [
                         '1er reglement' =>  '1er reglement',
                         '2eme reglement' =>  '2eme reglement',
-                        'MANUEL COMPLEMENT' =>  'MANUEL COMPLEMENT',
+                        '3eme reglement' =>  '3eme reglement',
                         'Remboursement' =>  'Remboursement',
-                        'CONTRE PARTIE COMPAGNIE' =>  'CONTRE PARTIE COMPAGNIE',
+                        'Contrepartie' =>  'Contrepartie',
 
                     ],
                     'expanded' => false,
@@ -91,10 +91,5 @@ class SearchTransactionType extends AbstractType
             'method' => 'GET',
             'csrf_protection' => false
         ]);
-    }
-
-    public function getBlockPrefix(): string
-    {
-        return '';
     }
 }

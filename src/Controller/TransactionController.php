@@ -34,7 +34,8 @@ class TransactionController extends AbstractController
     public function __construct(
         private RequestStack $requestStack,
         private EntityManagerInterface $entityManager,
-        private AuthorizationCheckerInterface $authorizationChecker
+        private AuthorizationCheckerInterface $authorizationChecker,
+        private TransactionRepository $transactionRepository,
     ) {}
     private function denyAccessUnlessGrantedAuthorizedRoles(): void
     {
@@ -51,19 +52,28 @@ class TransactionController extends AbstractController
         throw new AccessDeniedException("Tu ne peux pas accéder à cette ressource");
     }
     #[Route('/', name: 'app_transaction_index', methods: ['GET'])]
-    public function index(TransactionRepository $transactionRepository, Request $request): Response
+    public function index(Request $request): Response
     {
         $this->denyAccessUnlessGrantedAuthorizedRoles();
+
         $data = new SearchTransaction();
         $data->page = $request->get('page', 1);
-
         $form = $this->createForm(SearchTransactionType::class, $data);
-        $form->handleRequest($request);
-        $transaction = $transactionRepository->findSearchTransaction($data);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+
+        $transaction = [];
+
+        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
+            $transaction = $this->transactionRepository->findSearchTransaction($data, null);
 
 
+            return $this->render('transaction/index.html.twig', [
+                'transactions' => $transaction,
+                'search_form' => $form->createView()
 
-        return $this->render('transaction/index.html.twig', [
+            ]);
+        }
+        return $this->render('transaction/search.html.twig', [
             'transactions' => $transaction,
             'search_form' => $form->createView()
 

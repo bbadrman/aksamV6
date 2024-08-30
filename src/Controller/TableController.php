@@ -40,8 +40,7 @@ class TableController extends AbstractController
         private ProspectRepository $prospectRepository,
         private Security $security,
         private AuthorizationCheckerInterface $authorizationChecker
-    ) {
-    }
+    ) {}
     private function denyAccessUnlessGrantedAuthorizedRoles(): void
     {
         if (!$this->getUser()) {

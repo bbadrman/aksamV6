@@ -37,9 +37,9 @@ class TransactionType extends AbstractType
                     'choices' => [
                         '1er reglement' =>  '1er reglement',
                         '2eme reglement' =>  '2eme reglement',
-                        'MANUEL COMPLEMENT' =>  'MANUEL COMPLEMENT',
+                        '3eme reglement' =>  '3eme reglement',
                         'Remboursement' =>  'Remboursement',
-                        'CONTRE PARTIE COMPAGNIE' =>  'CONTRE PARTIE COMPAGNIE',
+                        'ContrepartiE' =>  'Contrepartie',
 
                     ],
                     'expanded' => false,
@@ -69,6 +69,7 @@ class TransactionType extends AbstractType
                 ],
 
             ])
+            ->add('comrcl')
             ->add(
                 'moyen',
                 Type\ChoiceType::class,

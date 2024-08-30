@@ -451,6 +451,9 @@ class ProspectRepository extends ServiceEntityRepository
 
             // joiner les tables en relation ManyToOne avec team
             ->where('p.team IN (:teams)')
+
+            // ->orWhere('p.comrcl = :val')
+            // ->setParameter('val', $user)
             ->leftJoin('p.comrcl', 'f')
             ->leftJoin('p.team', 't')
             // ->andWhere("p.comrcl is NULL")
@@ -1574,9 +1577,11 @@ class ProspectRepository extends ServiceEntityRepository
         // Créez une sous-requête pour obtenir la dernière date de relance
         $subQuery = $this->manager->createQueryBuilder()
             ->select('MAX(r1.relacedAt)')
-            ->from('App\Entity\Relanced', 'r1')
+            ->from('App\Entity\Relanced', 'r1') // Utilisez 'r1' comme alias ici
             ->where('r1.prospect = p.id')
             ->getDQL();
+
+
         $query = $this->createQueryBuilder('p')
             ->select('p, r, f')
             ->leftJoin('p.relanceds', 'r')
@@ -1655,6 +1660,8 @@ class ProspectRepository extends ServiceEntityRepository
                 ->andWhere('p.source = :source')
                 ->setParameter('source', $search->source);
         }
+
+
 
 
         return $this->paginator->paginate(
@@ -2011,6 +2018,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->select('p, f, r')
             ->where('p.team IN (:teams)')
             ->setParameter('teams', $teams)
+
 
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
@@ -2558,6 +2566,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('p.comrcl', 'f')
             ->where('p.team IN (:teams) ')
             ->setParameter('teams', $team)
+
             ->andWhere('p.team IS NOT NULL')
             ->andWhere('p.comrcl IS  NULL')
             ->leftJoin('p.relanceds', 'r')

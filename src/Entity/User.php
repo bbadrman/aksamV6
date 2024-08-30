@@ -134,6 +134,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'users', cascade: ["persist"])]
     private Collection $teams;
 
+    #[ORM\OneToMany(mappedBy: 'comrcl', targetEntity: Transaction::class)]
+    private Collection $transactions;
+
 
 
     public function __construct()
@@ -145,6 +148,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->clients = new ArrayCollection();
         $this->acces = new ArrayCollection();
         $this->teams = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
     }
 
     /**
@@ -590,6 +594,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeTeam(Team $team): static
     {
         $this->teams->removeElement($team);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Transaction>
+     */
+    public function getTransactions(): Collection
+    {
+        return $this->transactions;
+    }
+
+    public function addTransaction(Transaction $transaction): static
+    {
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions->add($transaction);
+            $transaction->setComrcl($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransaction(Transaction $transaction): static
+    {
+        if ($this->transactions->removeElement($transaction)) {
+            // set the owning side to null (unless already changed)
+            if ($transaction->getComrcl() === $this) {
+                $transaction->setComrcl(null);
+            }
+        }
 
         return $this;
     }

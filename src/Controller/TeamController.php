@@ -17,17 +17,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-/**
- * @Route("/team")
- * @IsGranted("ROLE_ADMIN", message="Tu ne peut pas acces a cet ressource")
- */
+
+#[Route('/team')]
+
+// #[IsGranted(["ROLE_ADMIN", "ROLE_AFFECT", "ROLE_TEAM"], message: 'Tu ne peux pas accéder à cette ressource')]
+
+
 class TeamController extends AbstractController
 {
 
 
-    public function __construct(private EntityManagerInterface $entityManager)
-    {
-    }
+    public function __construct(private EntityManagerInterface $entityManager) {}
     /**
      * @Route("/", name="app_team_index", methods={"GET"})
      */

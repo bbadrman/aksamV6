@@ -257,8 +257,7 @@ $('document').ready(function () {
 });
 
 
-//Select Dynamique with API
-
+//Select Dynamique with API  
 
 $(document).ready(function () {
 	handleTeamChange('#prospect_team', '#prospect_comrcl');
@@ -419,11 +418,11 @@ var creditField = document.getElementById('transaction_credit');
 
 if (motifField !== null) {
 	motifField.addEventListener('change', function () {
-		if (motifField.value === '1er reglement' || motifField.value === '2eme reglement' || motifField.value === 'MANUEL COMPLEMENT') {
+		if (motifField.value === '1er reglement' || motifField.value === '2eme reglement' || motifField.value === '3eme reglement') {
 			creditField.style.display = 'block';
 			debitField.style.display = 'none';
 
-		} else if (motifField.value === 'Remboursement') {
+		} else if (motifField.value === 'Remboursement' || motifField.value === 'ContrepartiE') {
 			creditField.style.display = 'none';
 			debitField.style.display = 'block';
 

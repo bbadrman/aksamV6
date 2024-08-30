@@ -38,6 +38,9 @@ class Transaction
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $moyen = null;
 
+    #[ORM\ManyToOne(inversedBy: 'transactions')]
+    private ?User $comrcl = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -136,6 +139,18 @@ class Transaction
     public function setMoyen(?string $moyen): static
     {
         $this->moyen = $moyen;
+
+        return $this;
+    }
+
+    public function getComrcl(): ?User
+    {
+        return $this->comrcl;
+    }
+
+    public function setComrcl(?User $comrcl): static
+    {
+        $this->comrcl = $comrcl;
 
         return $this;
     }

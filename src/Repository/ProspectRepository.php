@@ -1577,11 +1577,9 @@ class ProspectRepository extends ServiceEntityRepository
         // Créez une sous-requête pour obtenir la dernière date de relance
         $subQuery = $this->manager->createQueryBuilder()
             ->select('MAX(r1.relacedAt)')
-            ->from('App\Entity\Relanced', 'r1') // Utilisez 'r1' comme alias ici
+            ->from('App\Entity\Relanced', 'r1')
             ->where('r1.prospect = p.id')
             ->getDQL();
-
-
         $query = $this->createQueryBuilder('p')
             ->select('p, r, f')
             ->leftJoin('p.relanceds', 'r')
@@ -1687,9 +1685,9 @@ class ProspectRepository extends ServiceEntityRepository
 
         $today = new \DateTime();
         $today->setTime(0, 0, 0);
-
-        $endOfDay = clone $today;
-        $endOfDay->setTime(23, 59, 59);
+        $now = new \DateTime();
+        // $endOfDay = clone $today;
+        // $endOfDay->setTime(23, 59, 59);
         $subQuery = $this->manager->createQueryBuilder()
             ->select('MAX(r1.relacedAt)')
             ->from('App\Entity\Relanced', 'r1')
@@ -1702,9 +1700,11 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('p.comrcl', 'f')
             ->leftJoin('p.relanceds', 'r')
 
-            ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
-            ->setParameter('startOfDay', $today)
-            ->setParameter('endOfDay', $endOfDay)
+            ->andWhere('r.relacedAt <= :now') // Seuls les prospects relancés jusqu'à maintenant
+            ->setParameter('now', $now)
+            // ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
+            // ->setParameter('startOfDay', $today)
+            // ->setParameter('endOfDay', $endOfDay)
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
             ->setParameter('motifs', [3, 7, 8, 9, 10, 11])
 

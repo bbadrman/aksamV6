@@ -1685,9 +1685,9 @@ class ProspectRepository extends ServiceEntityRepository
 
         $today = new \DateTime();
         $today->setTime(0, 0, 0);
-        $now = new \DateTime();
-        // $endOfDay = clone $today;
-        // $endOfDay->setTime(23, 59, 59);
+        // $now = new \DateTime();
+        $endOfDay = clone $today;
+        $endOfDay->setTime(23, 59, 59);
         $subQuery = $this->manager->createQueryBuilder()
             ->select('MAX(r1.relacedAt)')
             ->from('App\Entity\Relanced', 'r1')
@@ -1699,12 +1699,11 @@ class ProspectRepository extends ServiceEntityRepository
             ->setParameter('teams', $teams)
             ->leftJoin('p.comrcl', 'f')
             ->leftJoin('p.relanceds', 'r')
-
-            ->andWhere('r.relacedAt <= :now') // Seuls les prospects relancés jusqu'à maintenant
-            ->setParameter('now', $now)
-            // ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
-            // ->setParameter('startOfDay', $today)
-            // ->setParameter('endOfDay', $endOfDay)
+            // ->andWhere('r.relacedAt <= :now') // Seuls les prospects relancés jusqu'à maintenant
+            // ->setParameter('now', $now)
+            ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
+            ->setParameter('startOfDay', $today)
+            ->setParameter('endOfDay', $endOfDay)
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
             ->setParameter('motifs', [3, 7, 8, 9, 10, 11])
 

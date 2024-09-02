@@ -1,0 +1,133 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contrat  -Aksam-
+
+
+{% endblock %}
+
+{% block body %}
+	<div class="col-lg-12">
+		<section class="content-header">
+			<h1>
+				Contrat
+
+			</h1>
+			<ol class="breadcrumb">
+				<li>
+					<a href="{{ path('app_table_liste') }}">
+						<i class="fa fa-users"></i>
+						Toutes les Tables</a>
+				</li>
+				<li class="active">
+					{{ contrat.nom }}
+					{{ contrat.prenom }}</li>
+			</ol>
+		</section>
+		<h3>
+			<i class="fa fa-angle-right"></i>
+			Contrat crée par :
+			<b>{{ contrat.comrcl }}
+
+			</b>
+		</h3>
+
+		<p class="centered">
+
+			<img src=" {{ asset('images/aksamLogo.jpeg') }} " class="img-circle" width="80" alt="">
+		</p>
+		<div class="form-group col-sm-6">
+			<div class="alert alert-light">
+				<table class="table table-hover">
+
+					<tbody>
+
+						<tr>
+							<th>Nom</th>
+							<td>{{ contrat.nom }}</td>
+						</tr>
+						<tr>
+							<th>Prenom</th>
+							<td>{{ contrat.prenom }}</td>
+						</tr>
+						<tr>
+							<th>Etat Contrat</th>
+							<td>{{ contrat.etat }}</td>
+						</tr>
+						<tr>
+							<th>RaisonSociale</th>
+							<td>{{ contrat.raisonSociale }}</td>
+						</tr>
+						<tr>
+							<th>DateSouscrpt</th>
+							<td>{{ contrat.dateSouscrpt ? contrat.dateSouscrpt|date('Y-m-d H:i:s') : '' }}</td>
+						</tr>
+						<tr>
+							<th>DateEffet</th>
+							<td>{{ contrat.dateEffet ? contrat.dateEffet|date('Y-m-d H:i:s') : '' }}</td>
+						</tr>
+
+						<tr>
+							<th>Type</th>
+							<td>{{ contrat.type }}</td>
+						</tr>
+						<tr>
+							<th>Activite</th>
+							<td>{{ contrat.activite }}</td>
+						</tr>
+						<tr>
+							<th>Imatriclt</th>
+							<td>{{ contrat.imatriclt }}</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<div class="alert alert-light">
+				<table class="table table-hover">
+
+					<tbody>
+
+
+						<tr>
+							<th>Partenaire</th>
+							<td>{{ contrat.partenaire }}</td>
+						</tr>
+						<tr>
+							<th>Compagnie</th>
+							<td>{{ contrat.compagnie }}</td>
+						</tr>
+						<tr>
+							<th>Formule</th>
+							<td>{{ contrat.formule }}</td>
+						</tr>
+						<tr>
+							<th>DatePrelvm</th>
+							<td>{{ contrat.datePrelvm ? contrat.datePrelvm|date('Y-m-d H:i:s') : '' }}</td>
+						</tr>
+						<tr>
+							<th>Fraction</th>
+							<td>{{ contrat.fraction }}</td>
+						</tr>
+						<tr>
+							<th>Cotisation</th>
+							<td>{{ contrat.cotisation }}</td>
+						</tr>
+						<tr>
+							<th>Acompte</th>
+							<td>{{ contrat.acompte }}</td>
+						</tr>
+						<tr>
+							<th>Frais</th>
+							<td>{{ contrat.frais }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+
+	</div>
+{% endblock %}

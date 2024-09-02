@@ -137,6 +137,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'comrcl', targetEntity: Transaction::class)]
     private Collection $transactions;
 
+    #[ORM\OneToMany(mappedBy: 'comrcl', targetEntity: Contrat::class)]
+    private Collection $contrats;
+
 
 
     public function __construct()
@@ -149,6 +152,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->acces = new ArrayCollection();
         $this->teams = new ArrayCollection();
         $this->transactions = new ArrayCollection();
+        $this->contrats = new ArrayCollection();
     }
 
     /**
@@ -622,6 +626,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($transaction->getComrcl() === $this) {
                 $transaction->setComrcl(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Contrat>
+     */
+    public function getContrats(): Collection
+    {
+        return $this->contrats;
+    }
+
+    public function addContrat(Contrat $contrat): static
+    {
+        if (!$this->contrats->contains($contrat)) {
+            $this->contrats->add($contrat);
+            $contrat->setComrcl($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContrat(Contrat $contrat): static
+    {
+        if ($this->contrats->removeElement($contrat)) {
+            // set the owning side to null (unless already changed)
+            if ($contrat->getComrcl() === $this) {
+                $contrat->setComrcl(null);
             }
         }
 

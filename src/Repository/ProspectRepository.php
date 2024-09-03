@@ -2601,7 +2601,64 @@ class ProspectRepository extends ServiceEntityRepository
 
         );
     }
+    /**
+     * return prospect affect aux equipes du chef ou bien au chef meme
+     * @return Prospect[] Returns an array of Prospect objects
+     * 
+     * @param SearchProspect $search
+     * @return PaginationInterface 
+     */
+    public function findByChefNewProspChef(SearchProspect $search, User $user): PaginationInterface
+    {
 
+        // get selement les prospects qui n'as pas encors affectter a un user
+        $query = $this->createQueryBuilder('p')
+            ->select('p, t, f')
+
+            ->where('p.comrcl = :val')
+            ->setParameter('val', $user)
+
+            ->leftJoin('p.team', 't')
+            ->leftJoin('p.comrcl', 'f')
+
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.prospect IS NULL')
+
+
+            ->andWhere('p.team IS NOT NULL')
+            ->andWhere('p.comrcl IS NOT NULL')
+
+
+            //->andWhere('p.comrcl IS NULL OR p.comrcl = :val') // Filtrer les prospects no affectés et affect au chef aussi
+            //->setParameter('val', $user)
+            ->orderBy('p.id', 'DESC');
+
+
+
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
+            $query = $query
+                ->andWhere('p.creatAt >= :d')
+                ->setParameter('d', $search->d);
+        }
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
+            $query = $query
+                ->andWhere('p.creatAt <= :dd')
+                ->setParameter('dd', $search->dd);
+        }
+
+
+
+
+
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+
+        );
+    }
     /**
      * return prospect affect aux equipes du chef ou bien au chef meme teet peut voire aussi panier du admin
      * @return Prospect[] Returns an array of Prospect objects

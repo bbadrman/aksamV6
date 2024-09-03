@@ -18,7 +18,8 @@
 		{{ form_widget(search_form.dd, { 'attr': { 'style': 'display:none' } }) }}
 	{% endif %}
 
-	{% if app.request.get('_route') != 'newprospect_index' %}
+	{% if app.request.get('_route') != 'newprospect_index' and app.request.get('_route') != 'newprospectchef_index' %}
+
 		<div class="col-md-1 mx-auto" style="padding-right: 2px;padding-left: 2px;">
 
 			{{ form_row(search_form.q) }}
@@ -70,7 +71,8 @@
 </div>
 
 <div class="col-xs-12" style="float: right !important;">
-	{% if app.request.get('_route') != 'newprospect_index' %}
+	{% if app.request.get('_route') != 'newprospect_index' and app.request.get('_route') != 'newprospectchef_index' %}
+
 		{% if is_granted('ROLE_ADMIN') or  is_granted('ROLE_TEAM') == true %}
 			<div class="col-md-1 mx-auto" style="padding-right: 2px;padding-left: 2px;">
 				{{ form_row(search_form.c) }}

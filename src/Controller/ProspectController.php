@@ -129,6 +129,38 @@ class ProspectController extends AbstractController
         ]);
     }
 
+    // afficher les nouveaux prospects 
+    #[Route('/newprospectchef', name: 'newprospectchef_index', methods: ['GET', 'POST'])]
+    public function newprospectchef(Request $request): Response
+
+    {
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
+
+        $data = new SearchProspect();
+        $data->page = $request->query->get('page', 1);
+        $form = $this->createForm(SearchProspectType::class, $data);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+
+
+
+        $user = $this->security->getUser();
+
+        $prospects = [];
+
+
+        $prospects = $this->prospectRepository->findByCmrclNewProsp($data, $user);
+
+
+
+        return $this->render('prospect/index.html.twig', [
+            'prospects' => $prospects,
+            // 'duplicates' => $duplicates,
+            'search_form' => $form->createView()
+        ]);
+    }
+
+
+
 
     /**
      * Afficher les nouveaux prospects via API return Int

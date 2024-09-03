@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Traitement des Prospects!
+
+{% endblock %}
+
+{% block body %}
+	<style>
+		.container {
+			width: 100%;
+			display: flex;
+			flex-wrap: wrap;
+			gap: 10px; /* Optional: Adds space between divs */
+		}
+
+		.green-panel {
+			flex: 1 1 calc(25% - 10px); /* Adjust 25% based on how many items you want per row */
+			box-sizing: border-box;
+		}
+
+		@media(max-width: 768px) {
+			.green-panel {
+				flex: 1 1 calc(50% - 10px); /* Two items per row on smaller screens */
+			}
+		}
+
+		@media(max-width: 480px) {
+			.green-panel {
+				flex: 1 1 100%; /* One item per row on very small screens */
+			}
+		}
+	</style>
+
+	<div class="container">
+
+
+		<div class="green-panel">
+			<i class="fa fa-credit-card-alt fa-4x " aria-hidden="true"></i>
+		</div>
+		<div class="green-panel">
+			<i class="fa fa-credit-card-alt fa-4x " aria-hidden="true"></i>
+		</div>
+		<div class="green-panel">
+			<i class="fa fa-credit-card-alt fa-4x " aria-hidden="true"></i>
+		</div>
+		<div class="green-panel">
+			<i class="fa fa-credit-card-alt fa-4x " aria-hidden="true"></i>
+		</div>
+		<div class="green-panel">
+			<i class="fa fa-credit-card-alt fa-4x " aria-hidden="true"></i>
+		</div>
+		<div class="green-panel">
+			<i class="fa fa-credit-card-alt fa-4x " aria-hidden="true"></i>
+		</div>
+		<div class="green-panel">
+			<i class="fa fa-credit-card-alt fa-4x " aria-hidden="true"></i>
+		</div>
+		<div class="green-panel">
+			<i class="fa fa-credit-card-alt fa-4x " aria-hidden="true"></i>
+		</div>
+		<div class="green-panel">
+			<i class="fa fa-credit-card-alt fa-4x " aria-hidden="true"></i>
+		</div>
+		<div class="green-panel">
+			<i class="fa fa-credit-card-alt fa-4x " aria-hidden="true"></i>
+		</div>
+
+
+	</div>
+
+{% endblock %}

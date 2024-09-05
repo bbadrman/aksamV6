@@ -62,10 +62,8 @@ class ContratType extends AbstractType
                     'required' => false,
                     'placeholder' => '--Merci de selectie-- ',
                     'choices' => [
-                        'TYPE 1' =>   'TYPE 1',
-                        'TYPE 2' =>   'TYPE 2',
-                        'TYPE 3' =>   'TYPE 3',
-                        'TYPE 4' =>   'TYPE 4'
+                        'Particulier' =>  'Particulier',
+                        'Professionnel' => 'Professionnel',
 
                     ],
                     'expanded' => false,
@@ -178,7 +176,17 @@ class ContratType extends AbstractType
             )
             ->add('cotisation')
             ->add('acompte')
-            ->add('frais')
+            ->add('frais', Type\MoneyType::class, [
+                'label' => 'Frais  ',
+                'required' => false,
+                'currency' => false,
+                'attr' => [
+                    'placeholder' => 'Tapez en €',
+                    'divisor' => 100,
+
+                ],
+
+            ])
 
             ->add('produit')
         ;

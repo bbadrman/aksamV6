@@ -59,7 +59,8 @@ class ClientController extends AbstractController
 
 
     /**
-     * @Route("/", name="client_index", methods={"GET"})
+     * get client with parametre 
+     * @Route("/test", name="client_indexTest", methods={"GET"})
      */
     public function index(Request $request,  Security $security): Response
     {
@@ -86,7 +87,7 @@ class ClientController extends AbstractController
             }
 
 
-            return $this->render('client/index.html.twig', [
+            return $this->render('client/testindex.html.twig', [
                 'clients' => $client,
 
                 'search_form' => $form->createView()
@@ -99,7 +100,8 @@ class ClientController extends AbstractController
         ]);
     }
     /**
-     * @Route("/test", name="client_indexTest", methods={"GET"})
+     * get All client
+     * @Route("/", name="client_index", methods={"GET"})
      */
     public function indexTest(Request $request,  Security $security): Response
     {
@@ -119,7 +121,7 @@ class ClientController extends AbstractController
 
 
 
-            return $this->render('client/testindex.html.twig', [
+            return $this->render('client/index.html.twig', [
                 'clients' => $client,
 
                 'search_form' => $form->createView()

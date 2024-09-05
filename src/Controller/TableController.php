@@ -182,6 +182,9 @@ class TableController extends AbstractController
 
         return $this->render('prospect/index.html.twig', [
             'prospects' => $prospect,
+
+            'now' => new \DateTime('+1 hour'),
+
             'search_form' => $form->createView()
         ]);
     }

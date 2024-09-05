@@ -21,18 +21,22 @@
 				<i class="fa fa-diamond "></i>
 			</h1>
 			<hr class="my-4">
-			<div class="row">
 
-				<!-- /col-md-4-->
+			<div
+				class="row">
 				<!-- NOUVEAUX -->
-					<div class="col-md-3 col-sm-3 mb"> <div class="green-panel pn" id="notif-container">
+				<div class="col-md-3 col-sm-3 mb">
+					<div class="green-panel pn" id="notif-container">
 						<div class="green-header">
 							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')  or is_granted('ROLE_AFFECT')   == true %}
-								<h2>AFFECTATIONS</h2>
+								<h2>AFFECTATIONS  &emsp;
+									<i class="fa fa-question-circle-o" style="color: blue;" aria-hidden="true" title="Ce tableau contient les prospects pour les affectations"></i>
+								</h2>
 							{% else  %}
-								<h2>NOUVEAUX</h2>
+								<h2>NOUVEAUX  &emsp;
+									<i class="fa fa-question-circle-o" style="color: blue;" aria-hidden="true" title="Ce tableau contient les prospects affectés a moi."></i>
+								</h2>
 							{% endif %}
-
 						</div>
 						<a href="{{ path('newprospect_index')}}">
 							<i class="fa fa-newspaper-o fa-4x" aria-hidden="true"></i>
@@ -48,13 +52,18 @@
 						</a>
 					</div>
 				</div>
+				<!-- END NOUVEAUX -->
+
 				<!-- PANIE CHEF -->
 				{% if  is_granted('ROLE_TEAM') or is_granted('ROLE_TEAMALL') or is_granted('ROLE_AFFECT')   %}
 					{% if not (is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN')) %}
 						<div class="col-md-3 col-sm-3 mb">
 							<div class="green-panel pn">
 								<div class="green-header">
-									<h2>NOUVEAUX</h2>
+									<h2>NOUVEAUX  &emsp;
+										<i class="fa fa-question-circle-o" style="color: blue;" aria-hidden="true" title="Ce tableau contient les prospects affectés a moi."></i>
+
+									</h2>
 								</div>
 
 								<a href="{{path('newprospectchef_index')}}">
@@ -67,9 +76,8 @@
 					{% endif %}
 				{% endif %}
 				<!--END PANIE -->
+
 				<!-- PROS NON TRAITES -->
-
-
 				{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') or is_granted('ROLE_COMERC') == true  and not is_granted('ROLE_AFFECT') == true %}
 					<div class="col-md-3 col-sm-3 mb">
 						<div class="green-panel pn">
@@ -92,8 +100,9 @@
 						</div>
 					</div>
 				{% endif %}
-				<!-- RECHERCHE -->
+				<!--END PROS NON TRAITES -->
 
+				<!-- RECHERCHE -->
 				<div class="col-md-3 col-sm-3 mb">
 					<div class="green-panel pn">
 						<div class="green-header">
@@ -108,18 +117,12 @@
 						</a>
 					</div>
 				</div>
-
 				<!-- END RECHERCHE -->
 
-
-				<!-- AJOUTER PROSPECT -->
-
-
 				<!-- RELANCES DU JOUR -->
-					{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true   or is_granted('ROLE_COMERC') == true and not is_granted('ROLE_AFFECT') == true   %}
-
-
-						<div class="col-md-3 col-sm-3 mb"> <div class="green-panel pn">
+				{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true   or is_granted('ROLE_COMERC') == true and not is_granted('ROLE_AFFECT') == true   %}
+					<div class="col-md-3 col-sm-3 mb">
+						<div class="green-panel pn">
 							<div class="green-header">
 								<h2>RELANCES DU JOUR &emsp;
 									<i class="fa fa-question-circle-o" style="color: blue;" aria-hidden="true" title="Les prospects programmés pour aujourd'hui."></i>
@@ -139,9 +142,7 @@
 						</div>
 					</div>
 					<!-- RELANCES A VENIR -->
-					<div
-						class="col-md-3 col-sm-3 mb">
-						<!-- REVENUE PANEL -->
+					<div class="col-md-3 col-sm-3 mb">
 						<div class="green-panel pn">
 							<div class="green-header">
 								<h2 alt="info">RELANCES A VENIR &emsp;
@@ -163,10 +164,11 @@
 
 						</div>
 					</div>
+					<!--END  RELANCES A VENIR -->
+
 					<!-- RELANCES NON TRAITÉES -->
 					<div
 						class="col-md-3 col-sm-3 mb">
-
 						<!-- REVENUE PANEL -->
 						<div class="green-panel pn">
 							<div class="green-header">
@@ -186,6 +188,9 @@
 							</a>
 						</div>
 					</div>
+					<!-- END RELANCES NON TRAITÉES -->
+
+					<!-- AJOUTER PROSPECT -->
 					{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') or is_granted('ROLE_ADD_PROS') == true   %}
 						<div class="col-md-3 col-sm-3 mb">
 							<div class="green-panel pn">
@@ -194,13 +199,11 @@
 								</div>
 								<a href="{{path('app_prospect_new')}}">
 									<i class="fa fa-keyboard-o fa-5x" aria-hidden="true"></i>
-
-									{# <i class="fa fa-newspaper-o fa-4x" aria-hidden="true"></i> #}
-
 								</a>
 							</div>
 						</div>
 					{% endif %}
+					<!--END  AJOUTER PROSPECT -->
 
 					<!-- INJOIGNABLES -->
 					<div class="col-md-3 col-sm-3 mb">
@@ -221,24 +224,22 @@
 							</a>
 						</div>
 					</div>
+					<!--END INJOIGNABLES -->
+
 					<!-- PAYMENTS -->
 					<div class="col-md-3 col-sm-3 mb">
 						<div class="green-panel pn">
 							<div class="green-header">
 								<h2>PAYMENTS</h2>
 							</div>
-
 							<a href="{{path('app_transaction_index')}}">
 								<i class="fa fa-credit-card-alt fa-4x " aria-hidden="true"></i>
-
-
 								<h1></h1>
 
 							</a>
 						</div>
 					</div>
 					<!--END PAYMENTS -->
-
 				</div>
 			{% endif %}
 		</div>

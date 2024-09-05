@@ -1685,10 +1685,11 @@ class ProspectRepository extends ServiceEntityRepository
 
         $today = new \DateTime();
         $today->setTime(0, 0, 0);
-        // $now = new \DateTime();
+        $now = new \DateTime();
         $endOfDay = clone $today;
         $endOfDay->setTime(23, 59, 59);
         $subQuery = $this->manager->createQueryBuilder()
+            //pour ordonner les prospects par leur dernière relance.
             ->select('MAX(r1.relacedAt)')
             ->from('App\Entity\Relanced', 'r1')
             ->where('r1.prospect = p.id')
@@ -1701,19 +1702,27 @@ class ProspectRepository extends ServiceEntityRepository
             ->leftJoin('p.relanceds', 'r')
             // ->andWhere('r.relacedAt <= :now') // Seuls les prospects relancés jusqu'à maintenant
             // ->setParameter('now', $now)
+
+            // filtre les relances effectuées entre le début et la fin de la journée en cours. 
             ->andWhere('r.relacedAt BETWEEN :startOfDay AND :endOfDay')
             ->setParameter('startOfDay', $today)
             ->setParameter('endOfDay', $endOfDay)
+
+
+
+            // ->andWhere('r.relacedAt BETWEEN :today AND :now')
+            // ->setParameter('today', $today)
+            // ->setParameter('now', $now)
+
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
             ->setParameter('motifs', [3, 7, 8, 9, 10, 11])
 
 
-            // joiner les tables en relation manytomany avec fonction
-
+            //  pour obtenir la dernière date de relance, 
             ->addSelect('(' . $subQuery . ') AS HIDDEN lastRelanceDate')
             ->orderBy('lastRelanceDate', 'ASC');
 
-        //->orderBy('p.id', 'DESC');
+
 
 
 
@@ -2748,13 +2757,14 @@ class ProspectRepository extends ServiceEntityRepository
             ->select('p')
             ->where('p.comrcl = :val')
             ->setParameter('val', $id)
+            //qui ne sont pas relancer
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL')
+
             ->leftJoin('p.histories', 'h')
-
-
             ->andWhere('h.actionDate >= :endOfYesterday')
             ->setParameter('endOfYesterday', $yesterday)
+
             ->orderBy('p.id', 'DESC');
 
         $query->andWhere('p.id NOT IN ( 

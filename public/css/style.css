@@ -4236,13 +4236,25 @@ ul.chat-available-user li a:hover {
 
 }
 
-.relance-depassee {
-    background-color: #ffcccc;
-    /* Couleur de fond différente pour les relances dépassées */
+
+
+.date-passee {
+    color: red;
+    font-weight: bold;
+    animation: blink 1s infinite;
 }
 
-.warning-text {
-    color: red;
-    /* Texte rouge pour les messages d'avertissement */
-    font-weight: bold;
+@keyframes blink {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+
 }

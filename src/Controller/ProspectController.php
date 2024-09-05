@@ -269,7 +269,6 @@ class ProspectController extends AbstractController
                 $prospect->setActivites('2');
             }
 
-
             foreach ($prospect->getProduct() as $product) {
                 $product->addProspect($prospect);
             }
@@ -277,8 +276,30 @@ class ProspectController extends AbstractController
             $prospect->setAutor($this->getUser());
             $this->prospectRepository->add($prospect, true);
 
+            // history of prospect affect
+            $teamHistory = new History();
+            $teamHistory->setProspect($prospect); // $prospect est votre instance de Prospect 
+
+            if ($prospect->getTeam() !== null && $prospect->getComrcl() !== null) {
+                $actionType =  $prospect->getTeam()->getName() . ' et commercial ' . $prospect->getComrcl()->getUserIdentifier(); // Les deux sont associés
+            } elseif ($prospect->getTeam() !== null) {
+                $actionType =  $prospect->getTeam()->getName(); // Seulement associé à l'équipe
+            } elseif ($prospect->getComrcl() !== null) {
+                $actionType =  $prospect->getComrcl()->getUserIdentifier(); // Seulement associé au commercial
+            } else {
+                $actionType = 'None'; // Aucune association
+            }
+
+            $teamHistory->setActionType($actionType);
+
+            $teamHistory->setActionDate(new \DateTime());
+
+            $this->entityManager->persist($teamHistory);
+            $this->entityManager->flush();
+
             $this->addFlash('success', 'Votre Prospect a été ajouté avec succès!');
-            return $this->redirectToRoute('newprospect_index', [], Response::HTTP_SEE_OTHER);
+
+            return $this->redirectToRoute('app_table_liste', [], Response::HTTP_SEE_OTHER);
         }
 
 

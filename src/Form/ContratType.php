@@ -54,6 +54,24 @@ class ContratType extends AbstractType
                     'multiple' => false,
                 ]
             )
+
+            ->add('conducteur')
+            ->add(
+                'typeConducteur',
+                Type\ChoiceType::class,
+                [
+                    'label' => 'Type conducteur ',
+                    'required' => false,
+                    'placeholder' => '--Merci de selectie-- ',
+                    'choices' => [
+                        'Désigné' =>  'Désigné',
+                        'Multiconducteur' => 'Multiconducteur',
+
+                    ],
+                    'expanded' => false,
+                    'multiple' => false,
+                ]
+            )
             ->add(
                 'type',
                 Type\ChoiceType::class,
@@ -150,6 +168,24 @@ class ContratType extends AbstractType
             )
             ->add('datePrelvm', Type\DateType::class, [
                 'label' => "DATE DE PRELEVEMENT :",
+
+                'widget' => 'single_text',
+                'attr' => [
+                    'placeholder' => "date format: yyyy-mm-dd."
+                ],
+                'required' => false
+            ])
+            ->add('datePreleveAcompte', Type\DateType::class, [
+                'label' => "DATE PRELEVEMENT ACOMPTE :",
+
+                'widget' => 'single_text',
+                'attr' => [
+                    'placeholder' => "date format: yyyy-mm-dd."
+                ],
+                'required' => false
+            ])
+            ->add('datePermis', Type\DateType::class, [
+                'label' => "DATE PERMIS :",
 
                 'widget' => 'single_text',
                 'attr' => [

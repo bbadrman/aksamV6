@@ -25,15 +25,18 @@
 			<div class="form-group col-sm-6">
 
 				<div class="alert alert-light">
+					{{ form_row(form.type) }}
+					{{ form_row(form.produit) }}
+					{{ form_row(form.activite) }}
+					{{ form_row(form.etat) }}
 					{{ form_row(form.nom) }}
 					{{ form_row(form.prenom) }}
-					{{ form_row(form.etat) }}
 					{{ form_row(form.raisonSociale) }}
 					{{ form_row(form.dateSouscrpt) }}
 					{{ form_row(form.dateEffet) }}
-					{{ form_row(form.produit) }}
-					{{ form_row(form.activite) }}
-					{{ form_row(form.formule) }}
+					{{ form_row(form.imatriclt) }}
+					{{ form_row(form.typeConducteur) }}
+					{{ form_row(form.conducteur) }}
 
 
 				</div>
@@ -44,16 +47,18 @@
 			<div class="form-group col-sm-6">
 
 				<div class="alert alert-light">
-					{{ form_row(form.type) }}
-					{{ form_row(form.acompte) }}
-					{{ form_row(form.imatriclt) }}
+					{{ form_row(form.datePermis) }}
 					{{ form_row(form.partenaire) }}
 					{{ form_row(form.compagnie) }}
-
-					{{ form_row(form.datePrelvm) }}
-					{{ form_row(form.fraction) }}
+					{{ form_row(form.formule) }}
 					{{ form_row(form.cotisation) }}
+					{{ form_row(form.acompte) }}
+					{{ form_row(form.datePreleveAcompte) }}
+					{{ form_row(form.fraction) }}
+					{{ form_row(form.datePrelvm) }}
 					{{ form_row(form.frais) }}
+
+
 					<button class="btn">{{ button_label|default('Save') }}</button>
 				</div>
 

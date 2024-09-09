@@ -436,6 +436,39 @@ if (motifField !== null) {
 }
 
 
+// Select du Contrat
+
+var produitField = document.getElementById('contrat_produit');
+var typeCondField = document.getElementById('contrat_typeConducteur');
+var CondField = document.getElementById('contrat_conducteur');
+var datePermField = document.getElementById('contrat_datePermis');
+
+
+
+if (produitField !== null) {
+	produitField.addEventListener('change', function () {
+		if (produitField.value === 'Auto' || produitField.value === 'Camion' || produitField.value === 'Construction') {
+			CondField.style.display = 'block';
+			typeCondField.style.display = 'none';
+			datePermField.style.display = 'none';
+
+		} else if (produitField.value === 'Remboursement' || produitField.value === 'ContrepartiE') {
+			creditField.style.display = 'none';
+			typeCondField.style.display = 'block';
+			datePermField.style.display = 'none';
+
+		} else {
+			creditField.style.display = 'none';
+			typeCondField.style.display = 'none';
+			datePermField.style.display = 'none';
+
+		}
+	});
+
+}
+
+
+
 $(document).ready(function () {
 	$("#relance-div").click(function () {
 		$("#relanceChoix").animate({

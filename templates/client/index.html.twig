@@ -52,11 +52,11 @@
 				<table class="table table-striped table-advance table-hover">
 					<thead>
 						<tr>
-							{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true %}
-								<th>Equipe</th>
 
-								<th>Comercial</th>
-							{% endif %}
+							<th>Equipe</th>
+
+							<th>Comercial</th>
+
 							<th>Prénom</th>
 							<th>Nom</th>
 							<th>Téléphone</th>
@@ -69,16 +69,20 @@
 					<tbody>
 						{% for client in clients %}
 							<tr>
-								{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true %}
-									<td>{{ client.team }}</td>
 
-									<td>{{ client.cmrl }}</td>
-								{% endif %}
+								<td>{{ client.team }}</td>
+
+								<td>{{ client.cmrl }}</td>
+
 								<td>{{ client.firstname }}</td>
 								<td>{{ client.lastname }}</td>
-								<td>{{ client.phone }}</td>
-
-								<td>{{ client.email }}</td>
+								{% if  is_granted('ROLE_ADMIN') or  is_granted('ROLE_CLIENT') or  app.user == client.cmrl %}
+									<td>{{ client.phone }}</td>
+									<td>{{ client.email }}</td>
+								{% else %}
+									<td>—</td>
+									<td>—</td>
+								{% endif %}
 								<td>{{ client.raisonSociale }}</td>
 
 								<td>

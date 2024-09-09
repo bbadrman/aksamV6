@@ -73,6 +73,18 @@ class Contrat
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $etat = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $typeConducteur = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $conducteur = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $datePermis = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $datePreleveAcompte = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -302,6 +314,54 @@ class Contrat
     public function setEtat(?string $etat): static
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getTypeConducteur(): ?string
+    {
+        return $this->typeConducteur;
+    }
+
+    public function setTypeConducteur(?string $typeConducteur): static
+    {
+        $this->typeConducteur = $typeConducteur;
+
+        return $this;
+    }
+
+    public function getConducteur(): ?string
+    {
+        return $this->conducteur;
+    }
+
+    public function setConducteur(?string $conducteur): static
+    {
+        $this->conducteur = $conducteur;
+
+        return $this;
+    }
+
+    public function getDatePermis(): ?\DateTimeInterface
+    {
+        return $this->datePermis;
+    }
+
+    public function setDatePermis(?\DateTimeInterface $datePermis): static
+    {
+        $this->datePermis = $datePermis;
+
+        return $this;
+    }
+
+    public function getDatePreleveAcompte(): ?\DateTimeInterface
+    {
+        return $this->datePreleveAcompte;
+    }
+
+    public function setDatePreleveAcompte(?\DateTimeInterface $datePreleveAcompte): static
+    {
+        $this->datePreleveAcompte = $datePreleveAcompte;
 
         return $this;
     }

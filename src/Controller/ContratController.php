@@ -62,7 +62,7 @@ class ContratController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'add_contrat_new', methods: ['GET', 'POST'])]
+    #[Route('/newcontrat', name: 'add_contrat_new', methods: ['GET', 'POST'])]
     public function add(Request $request, EntityManagerInterface $entityManager, ClientRepository $clientRepository): Response
     {
 

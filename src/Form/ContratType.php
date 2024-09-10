@@ -14,11 +14,29 @@ class ContratType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom')
-            ->add('prenom')
-            ->add('raisonSociale')
+            ->add('nom', Type\TextType::class, [
+                'label' => 'Nom ',
+                'attr' => [
+
+                    'placeholder' => 'Tapez le Nom du Client'
+                ],
+            ])
+            ->add('prenom', Type\TextType::class, [
+                'label' => 'Prénom ',
+                'attr' => [
+
+                    'placeholder' => 'Tapez le Prénom du Client'
+                ],
+            ])
+            ->add('raisonSociale', Type\TextType::class, [
+                'label' => 'Raison sociale ',
+                'attr' => [
+
+                    'placeholder' => 'Tapez le Raison sociale'
+                ],
+            ])
             ->add('dateSouscrpt', Type\DateType::class, [
-                'label' => "DATE SOUSCRIPTION :",
+                'label' => "Date souscription  :",
 
                 'widget' => 'single_text',
                 'attr' => [
@@ -27,7 +45,7 @@ class ContratType extends AbstractType
                 'required' => false
             ])
             ->add('dateEffet', Type\DateType::class, [
-                'label' => "DATE D'EFFET :",
+                'label' => "Date effet :",
 
                 'widget' => 'single_text',
                 'attr' => [
@@ -60,7 +78,7 @@ class ContratType extends AbstractType
                 'typeConducteur',
                 Type\ChoiceType::class,
                 [
-                    'label' => 'Type conducteur ',
+                    'label' => 'Type Conducteur ',
                     'required' => false,
                     'placeholder' => '--Merci de selectie-- ',
                     'choices' => [
@@ -110,7 +128,13 @@ class ContratType extends AbstractType
                     'multiple' => false,
                 ]
             )
-            ->add('imatriclt')
+            ->add('imatriclt', Type\TextType::class, [
+                'label' => 'Immatriculation ',
+                'attr' => [
+
+                    'placeholder' => 'Tapez Immatriculation'
+                ],
+            ])
             ->add(
                 'partenaire',
                 Type\ChoiceType::class,
@@ -167,7 +191,7 @@ class ContratType extends AbstractType
                 ]
             )
             ->add('datePrelvm', Type\DateType::class, [
-                'label' => "DATE DE PRELEVEMENT :",
+                'label' => "Date prélèvement :",
 
                 'widget' => 'single_text',
                 'attr' => [
@@ -176,7 +200,7 @@ class ContratType extends AbstractType
                 'required' => false
             ])
             ->add('datePreleveAcompte', Type\DateType::class, [
-                'label' => "DATE PRELEVEMENT ACOMPTE :",
+                'label' => "Date prélèvement acompte :",
 
                 'widget' => 'single_text',
                 'attr' => [
@@ -185,7 +209,7 @@ class ContratType extends AbstractType
                 'required' => false
             ])
             ->add('datePermis', Type\DateType::class, [
-                'label' => "DATE PERMIS :",
+                'label' => "Date permis :",
 
                 'widget' => 'single_text',
                 'attr' => [

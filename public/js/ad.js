@@ -442,30 +442,52 @@ var produitField = document.getElementById('contrat_produit');
 var typeCondField = document.getElementById('contrat_typeConducteur');
 var CondField = document.getElementById('contrat_conducteur');
 var datePermField = document.getElementById('contrat_datePermis');
-
-
+var activtField = document.getElementById('contrat_activite');
+var raisonField = document.getElementById('contrat_raisonSociale');
+var imatricltField = document.getElementById('contrat_imatriclt');
 
 if (produitField !== null) {
 	produitField.addEventListener('change', function () {
-		if (produitField.value === 'Auto' || produitField.value === 'Camion' || produitField.value === 'Construction') {
+		if (produitField.value === '4' || produitField.value === '5' || produitField.value === '9') {
 			CondField.style.display = 'block';
-			typeCondField.style.display = 'none';
-			datePermField.style.display = 'none';
-
-		} else if (produitField.value === 'Remboursement' || produitField.value === 'ContrepartiE') {
-			creditField.style.display = 'none';
+			datePermField.style.display = 'block';
+			activtField.style.display = 'block';
+			raisonField.style.display = 'block';
+			imatricltField.style.display = 'block';
 			typeCondField.style.display = 'block';
-			datePermField.style.display = 'none';
 
-		} else {
-			creditField.style.display = 'none';
+		} else if (produitField.value === '7' || produitField.value === '8' || produitField.value === '6') {
+			CondField.style.display = 'none';
+			datePermField.style.display = 'none';
+			activtField.style.display = 'none';
+			raisonField.style.display = 'none';
+			imatricltField.style.display = 'none';
 			typeCondField.style.display = 'none';
+
+		}
+	});
+}
+
+
+if (typeCondField !== null) {
+	typeCondField.addEventListener('change', function () {
+		if (typeCondField.value === 'Désigné') {
+			CondField.style.display = 'block';
+			datePermField.style.display = 'block';
+
+		} else if (typeCondField.value === 'Multiconducteur') {
+			CondField.style.display = 'none';
 			datePermField.style.display = 'none';
 
 		}
 	});
 
 }
+
+
+
+
+
 
 
 

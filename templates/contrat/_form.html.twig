@@ -1,7 +1,7 @@
 <div class="form-panel">
 	<h4 class="mb">
 		<i class="fa fa-plus-square-o"></i>
-		{{ form_title|default('  Ajouter une prospect') }}
+		{{ form_title|default('  Ajouter un contrat') }}
 	</h4>
 
 	<div class="col-sm-2 col-sm-2 control-label"></div>
@@ -27,7 +27,9 @@
 				<div class="alert alert-light">
 					{{ form_row(form.type) }}
 					{{ form_row(form.produit) }}
+
 					{{ form_row(form.activite) }}
+
 					{{ form_row(form.etat) }}
 					{{ form_row(form.nom) }}
 					{{ form_row(form.prenom) }}
@@ -59,7 +61,11 @@
 					{{ form_row(form.frais) }}
 
 
-					<button class="btn">{{ button_label|default('Save') }}</button>
+					<div class="text-center">
+						<button class="btn btn-theme" value="back" onclick="history.go(-1)">Annuler</button>
+
+						<button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+					</div>
 				</div>
 
 			</div>

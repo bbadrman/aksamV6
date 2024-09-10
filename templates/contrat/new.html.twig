@@ -1,11 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Contrat{% endblock %}
+{% block title %}Neuveau Contrat
+{% endblock %}
 
 {% block body %}
-    <h1>Create new Contrat</h1>
 
-    {{ include('contrat/_form.html.twig') }}
+	<section class="content-header">
+		<h1>créer un nouveau contrat
+		</h1>
+		<ol class="breadcrumb">
+			<li>
+				<a href="{{ path('app_contrat_index') }}">
+					<i class="fa fa-object-fonction"></i>
+					Tous les Contrats</a>
+			</li>
+			<li class="active">Ajouter Contrat</li>
+		</ol>
+	</section>
+	{{ include('contrat/_form.html.twig') }}
 
-    <a href="{{ path('app_contrat_index') }}">back to list</a>
+
+{% endblock %}
+{% block javascripts %}
+
+	{{ parent() }}
+
+
+	<script src='/js/ad.js'></script>
+
+
 {% endblock %}

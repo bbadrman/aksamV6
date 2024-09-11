@@ -31,8 +31,7 @@ class DashboardController extends AbstractController
         private  TeamRepository $teamRepository,
         private StatsService $statsService,
         private Security $security
-    ) {
-    }
+    ) {}
 
     /**
      * @Route("/", name="dashboard")
@@ -148,7 +147,7 @@ class DashboardController extends AbstractController
     }
 
     /**
-     * Permet d'afficher tous les teams
+     * Permet d'afficher tous les teams ((aide pour application)
      * 
      *  @Route("/aide", name="aide_show")
      *
@@ -171,10 +170,12 @@ class DashboardController extends AbstractController
         if (!file_exists($filePath)) {
             throw $this->createNotFoundException('The file does not exist');
         }
+        return $this->render('pdf_view.html.twig', ['filePath' => $filePath]);
+        // return new BinaryFileResponse($filePath, 200, [
 
-        return new BinaryFileResponse($filePath, 200, [
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="ModOP.pdf"'
-        ]);
+        //     'Content-Type' => 'application/pdf',
+
+        //     'Content-Disposition' => 'inline; filename="ModOP.pdf"'
+        // ]);
     }
 }

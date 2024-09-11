@@ -768,3 +768,4 @@ App/Http/Controller/homeController.php
   ### pour fixed the error il faut vider le cache en prod pour avoire les errors a l’aide  du commande 
   “ php bin/console cache:clear --env=prod  “  
   ### mis a jour workflow pour eviter la depricated 
+  ### includ .env

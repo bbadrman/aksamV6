@@ -1169,7 +1169,7 @@ class ProspectRepository extends ServiceEntityRepository
 
             ->setParameter('endOfYesterday', $yesterday)
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
-            ->setParameter('motifs', [3, 7, 8, 9, 10, 11])
+            ->setParameter('motifs', [2, 3, 7, 8, 9, 10, 11])
             ->addSelect('(' . $subQuery . ') AS HIDDEN lastRelanceDate')
             ->orderBy('lastRelanceDate', 'desc');
 
@@ -1312,7 +1312,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->setParameter('yesterday', $yesterday)
             //->andWhere('p.comrcl is NOT NULL') 
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
-            ->setParameter('motifs', [3, 7, 8, 9, 10, 11])
+            ->setParameter('motifs', [2, 3, 7, 8, 9, 10, 11])
 
             ->andWhere('p.id NOT IN (
                 SELECT pr.id FROM App\Entity\Prospect pr
@@ -1453,7 +1453,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->setParameter('yesterday', $yesterday)
             //->andWhere('p.comrcl is NOT NULL')
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
-            ->setParameter('motifs', [3, 7, 8, 9, 10, 11])
+            ->setParameter('motifs', [2, 3, 7, 8, 9, 10, 11])
 
             ->andWhere('p.id NOT IN (
                 SELECT pr.id FROM App\Entity\Prospect pr
@@ -1591,7 +1591,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->setParameter('startOfDay', $today)
             ->setParameter('endOfDay', $endOfDay)
             //en instant d enleve quand en enleve ces motif  on db
-            ->setParameter('motifs', [3, 7, 8, 9, 10, 11])
+            ->setParameter('motifs', [2, 3, 7, 8, 9, 10, 11])
 
             ->addSelect('(' . $subQuery . ') AS HIDDEN lastRelanceDate')
             ->orderBy('lastRelanceDate', 'ASC');
@@ -1715,7 +1715,7 @@ class ProspectRepository extends ServiceEntityRepository
             // ->setParameter('now', $now)
 
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
-            ->setParameter('motifs', [3, 7, 8, 9, 10, 11])
+            ->setParameter('motifs', [2, 3, 7, 8, 9, 10, 11])
 
 
             //  pour obtenir la dernière date de relance, 
@@ -1825,7 +1825,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->setParameter('endOfDay', $endOfDay)
             //->andWhere('r.motifRelanced = 1') 
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
-            ->setParameter('motifs', [3, 7, 8, 9, 10, 11])
+            ->setParameter('motifs', [2, 3, 7, 8, 9, 10, 11])
             ->addSelect('(' . $subQuery . ') AS HIDDEN lastRelanceDate')
             ->orderBy('lastRelanceDate', 'ASC');
 
@@ -2224,8 +2224,8 @@ class ProspectRepository extends ServiceEntityRepository
 
         $query = $this->createQueryBuilder('p')
             ->select('p, t, f')
-            ->leftJoin('p.relanceds', 'r')
-            ->Where('r.motifRelanced = 2')
+            ->innerJoin('p.relanceds', 'r', 'WITH', 'r.motifRelanced = 2')
+
 
 
             // joiner les tables en relation ManyToOne avec team

@@ -1,14 +1,9 @@
 <?php
 
-use Symfony\Component\Dotenv\Dotenv;
-use Symfony\Component\HttpKernel\Kernel;
+use App\Kernel;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
-
-if (class_exists(Dotenv::class)) {
-    (new Dotenv())->loadEnv(dirname(__DIR__) . '/.env');
-}
+require_once dirname(__DIR__) . '/vendor/autoload_runtime.php';
 
 return function (array $context) {
-    return new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
+    return new Kernel($context['APP_ENV'] ?? 'prod', (bool) ($context['APP_DEBUG'] ?? false));
 };

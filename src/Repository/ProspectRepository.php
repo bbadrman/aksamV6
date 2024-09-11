@@ -726,7 +726,7 @@ class ProspectRepository extends ServiceEntityRepository
             // )') ou bien desu
 
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
-            ->setParameter('motifs', [3, 7, 8, 9, 10, 11])
+            ->setParameter('motifs', [2, 3, 7, 8, 9, 10, 11])
             // joiner les tables en relation ManyToOne avec team
             //->leftJoin('p.team', 't')
 
@@ -866,7 +866,7 @@ class ProspectRepository extends ServiceEntityRepository
 
 
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
-            ->setParameter('motifs', [3, 7, 8, 9, 10, 11])
+            ->setParameter('motifs', [2, 3, 7, 8, 9, 10, 11])
 
 
 
@@ -1007,7 +1007,7 @@ class ProspectRepository extends ServiceEntityRepository
 
 
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
-            ->setParameter('motifs', [3, 7, 8, 9, 10, 11])
+            ->setParameter('motifs', [2, 3, 7, 8, 9, 10, 11])
 
 
 

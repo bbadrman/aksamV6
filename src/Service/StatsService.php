@@ -13,9 +13,7 @@ class StatsService
 {
 
 
-    public function __construct(private EntityManagerInterface $manager, private  Security $security)
-    {
-    }
+    public function __construct(private EntityManagerInterface $manager, private  Security $security) {}
     public function getStats()
     {
 
@@ -248,7 +246,7 @@ class StatsService
             // ->andWhere('c.motifCloture is NULL')
             ->setParameter('tomorrow', $today)
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
-            ->setParameter('motifs', [3, 7, 8, 9, 10, 11]);
+            ->setParameter('motifs', [2, 3, 7, 8, 9, 10, 11]);
         //pour count seuelement qui ont motifrlc 1 pas avec les coumun
         // ->andWhere('NOT EXISTS (
         //     SELECT 1 FROM App\Entity\Relanced otherR
@@ -289,7 +287,7 @@ class StatsService
             ->setParameter('teams', $teams)
             ->setParameter('tomorrow', $today)
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
-            ->setParameter('motifs', [3, 7, 8, 9, 10, 11]);
+            ->setParameter('motifs', [2, 3, 7, 8, 9, 10, 11]);
 
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
@@ -320,7 +318,7 @@ class StatsService
             // ->andWhere('c.motifCloture is NULL')
 
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
-            ->setParameter('motifs', [3, 7, 8, 9, 10, 11]);
+            ->setParameter('motifs', [2, 3, 7, 8, 9, 10, 11]);
         // ->andWhere('NOT EXISTS (
         //     SELECT 1 FROM App\Entity\Relanced otherR
         //     WHERE otherR.prospect = p AND otherR.motifRelanced = 2
@@ -353,7 +351,7 @@ class StatsService
             ->setParameter('startOfDay', $today)
             ->setParameter('endOfDay', $endOfDay)
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
-            ->setParameter('motifs', [3, 7, 8, 9, 10, 11]);
+            ->setParameter('motifs', [2, 3, 7, 8, 9, 10, 11]);
         // ->andWhere('r.motifRelanced = 1');
 
 
@@ -391,7 +389,7 @@ class StatsService
             ->setParameter('startOfDay', $today)
             ->setParameter('endOfDay', $endOfDay)
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
-            ->setParameter('motifs', [3, 7, 8, 9, 10, 11]);
+            ->setParameter('motifs', [2, 3, 7, 8, 9, 10, 11]);
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
 
@@ -421,7 +419,7 @@ class StatsService
             ->setParameter('startOfDay', $today)
             ->setParameter('endOfDay', $endOfDay)
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
-            ->setParameter('motifs', [3, 7, 8, 9, 10, 11]);
+            ->setParameter('motifs', [2, 3, 7, 8, 9, 10, 11]);
         //->andWhere('r.motifRelanced = 1');
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();
@@ -454,7 +452,7 @@ class StatsService
             ->andWhere('p.comrcl is NOT NULL')
             ->andWhere('p.team is NOT NULL')
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
-            ->setParameter('motifs', [3, 7, 8, 9, 10, 11]);
+            ->setParameter('motifs', [2, 3, 7, 8, 9, 10, 11]);
 
         $qb->andWhere('p.id NOT IN (
             SELECT pr.id FROM App\Entity\Prospect pr
@@ -502,7 +500,7 @@ class StatsService
             ->setParameter('yesterday', $yesterday)
             ->setParameter('endOfYesterday', $yesterday)
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
-            ->setParameter('motifs', [3, 7, 8, 9, 10, 11]);
+            ->setParameter('motifs', [2, 3, 7, 8, 9, 10, 11]);
 
 
         $query = $qb->getQuery();
@@ -527,7 +525,7 @@ class StatsService
             ->leftJoin('p.relanceds', 'r')
             //->andWhere('(r.motifRelanced IS NULL OR r.motifRelanced = 1)')
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
-            ->setParameter('motifs', [3, 7, 8, 9, 10, 11])
+            ->setParameter('motifs', [2, 3, 7, 8, 9, 10, 11])
             ->andWhere('r.relacedAt >= :dayBeforeYesterday AND r.relacedAt <= :yesterday')
             ->setParameter('dayBeforeYesterday', $dayBeforeYesterday)
             ->setParameter('yesterday', $yesterday);

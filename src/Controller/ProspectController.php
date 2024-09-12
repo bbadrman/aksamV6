@@ -264,10 +264,12 @@ class ProspectController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-            if ($data->getTypeProspect() === '1') { // Si le type de prospect est professionnel
-                $prospect->setActivites('2');
-            }
+            // Dans 
+            // $data = $form->getData();
+
+            // if ($data->getTypeProspect() === '1') { // Si le type de prospect est professionnel
+            //     $prospect->setActivites('2');
+            // }
 
             foreach ($prospect->getProduct() as $product) {
                 $product->addProspect($prospect);

@@ -94,13 +94,13 @@ class ExternalTableController extends AbstractController
 
                         $entityManager->persist($transaction);
                     } else {
-                        return $this->redirectToRoute('transaction_index');
+                        return $this->redirectToRoute('app_transaction_index');
                     }
                 }
 
                 $entityManager->flush();
 
-                return $this->redirectToRoute('transaction_index'); // Redirigez vers une page où les transactions sont listées
+                return $this->redirectToRoute('app_transaction_index'); // Redirigez vers une page où les transactions sont listées
             }
         }
 

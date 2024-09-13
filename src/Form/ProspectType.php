@@ -48,9 +48,11 @@ class ProspectType extends AbstractType
                 'label' => 'Téléphone 1    (obligatoir)',
                 'required' => true,
                 'constraints' => new Length([
-                    'min' => 10,  'minMessage' => '  
+                    'min' => 10,
+                    'minMessage' => '  
                     le numéro de téléphone doit composer des 10 chiffres y a compris le 0 ',
-                    'max' => 10, 'maxMessage' => '  
+                    'max' => 10,
+                    'maxMessage' => '  
                     le numéro de téléphone doit composer des 10 chiffres y a compris le 0 '
                 ]),
 
@@ -150,9 +152,11 @@ class ProspectType extends AbstractType
                 'label' => 'Téléphone 2',
                 'required' => false,
                 'constraints' => new Length([
-                    'min' => 10,  'minMessage' => '  
+                    'min' => 10,
+                    'minMessage' => '  
                     le numéro de téléphone doit composer des 10 chiffres y a compris le 0 ',
-                    'max' => 10, 'maxMessage' => '  
+                    'max' => 10,
+                    'maxMessage' => '  
                     le numéro de téléphone doit composer des 10 chiffres y a compris le 0 '
                 ]),
                 'attr' => [

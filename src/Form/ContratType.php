@@ -2,12 +2,17 @@
 
 namespace App\Form;
 
+
 use App\Entity\Contrat;
+use App\Entity\Product;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Symfony\Component\Form\Extension\Core\Type as Type;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ContratType extends AbstractType
 {
@@ -34,6 +39,7 @@ class ContratType extends AbstractType
 
                     'placeholder' => 'Tapez le Raison sociale'
                 ],
+                'required' => false
             ])
             ->add('dateSouscrpt', Type\DateType::class, [
                 'label' => "Date souscription  :",
@@ -134,6 +140,7 @@ class ContratType extends AbstractType
 
                     'placeholder' => 'Tapez Immatriculation'
                 ],
+                'required' => false
             ])
             ->add(
                 'partenaire',
@@ -204,7 +211,7 @@ class ContratType extends AbstractType
 
                 'widget' => 'single_text',
                 'attr' => [
-                    'placeholder' => "date format: yyyy-mm-dd."
+                    'placeholder' => "date format: yyyy-mm-dd ."
                 ],
                 'required' => false
             ])
@@ -248,8 +255,41 @@ class ContratType extends AbstractType
 
             ])
 
-            ->add('produit')
-        ;
+            ->add(
+                'products'
+            );
+
+        // $builder->addEventListener(
+        //     FormEvents::PRE_SUBMIT,
+        //     function (FormEvent $event) {
+        //         $data = $event->getData();
+        //         $form = $event->getForm();
+
+        //         // Vérifier le type de contrat sélectionné
+        //         $type = $data['type'] ?? null;
+
+        //         // Modifier les options du champ produit en fonction du type de contrat
+        //         if ($type === 'Particulier') {
+        //             $form->add('produit', ChoiceType::class, [
+        //                 'label' => 'Produit',
+        //                 'choices' => [
+        //                     'Auto' => '1',
+        //                     'Santé' => '2',
+        //                 ],
+        //                 'placeholder' => '-- Merci de sélectionner --',
+        //             ]);
+        //         } elseif ($type === 'Professionnel') {
+        //             $form->add('produit', ChoiceType::class, [
+        //                 'label' => 'Produit',
+        //                 'choices' => [
+        //                     'Camion' => '3',
+        //                     'Construction' => '4',
+        //                 ],
+        //                 'placeholder' => '-- Merci de sélectionner --',
+        //             ]);
+        //         }
+        //     }
+        // );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -435,7 +435,7 @@ if (motifField !== null) {
 
 
 // Select du Contrat
-
+var contratypeField = document.getElementById('contrat_type');
 var produitField = document.getElementById('contrat_produit');
 var typeCondField = document.getElementById('contrat_typeConducteur');
 var CondField = document.getElementById('contrat_conducteur');
@@ -462,6 +462,14 @@ if (produitField !== null) {
 			imatricltField.style.display = 'none';
 			typeCondField.style.display = 'none';
 
+		} else if (produitField.value !== '7' && produitField.value !== '8' && produitField.value !== '6' && produitField.value !== '4' && produitField.value !== '5' && produitField.value !== '9') {
+			CondField.style.display = 'block';
+			datePermField.style.display = 'block';
+			activtField.style.display = 'block';
+			raisonField.style.display = 'block';
+			imatricltField.style.display = 'block';
+			typeCondField.style.display = 'block';
+
 		}
 	});
 }
@@ -477,6 +485,29 @@ if (typeCondField !== null) {
 			CondField.style.display = 'none';
 			datePermField.style.display = 'none';
 
+		} else if (typeCondField.value !== 'Désigné' && typeCondField.value !== 'Multiconducteur') {
+			CondField.style.display = 'block';
+			datePermField.style.display = 'block';
+		}
+	});
+
+}
+
+if (contratypeField !== null) {
+	contratypeField.addEventListener('change', function () {
+		if (contratypeField.value === 'Professionnel') {
+			activtField.style.display = 'block';
+			raisonField.style.display = 'block';
+
+
+		} else if (contratypeField.value === 'Particulier') {
+			activtField.style.display = 'none';
+			raisonField.style.display = 'none';
+
+
+		} else if (contratypeField.value !== 'Professionnel' && contratypeField.value !== 'Particulier') {
+			activtField.style.display = 'block';
+			raisonField.style.display = 'block';
 		}
 	});
 
@@ -484,6 +515,53 @@ if (typeCondField !== null) {
 
 
 
+// Sélection des éléments
+// var typeContratField = document.getElementById('contrat_type');
+// var produitField = document.getElementById('contrat_produit');
+
+// // Options pour chaque type de contrat
+// var optionsParticulier = {
+// 	auto: 'Auto',
+// 	sante: 'sante',
+// 	camion: 'camion',
+// 	construction: 'construction',
+// 	rcpro: 'RC',
+// 	caravane: 'Caravane',
+// };
+
+// var optionsProfessionnel = {
+// 	auto: 'Auto',
+// 	sante: 'sante',
+// 	camion: 'camion',
+// 	construction: 'construction',
+// 	caravane: 'Caravane',
+// };
+
+// // Fonction pour mettre à jour les options du champ produit
+// function updateProduitOptions(options) {
+// 	produitField.innerHTML = ''; // Vider les anciennes options
+
+// 	// Ajouter les nouvelles options
+// 	for (const [value, label] of Object.entries(options)) {
+// 		var option = document.createElement('option');
+// 		option.value = value;
+// 		option.text = label;
+// 		produitField.appendChild(option);
+// 	}
+// }
+
+// // Écouter les changements sur le champ type de contrat
+// if (typeContratField !== null) {
+// 	typeContratField.addEventListener('change', function () {
+// 		if (typeContratField.value === 'Particulier') {
+// 			updateProduitOptions(optionsParticulier);
+// 		} else if (typeContratField.value === 'Professionnel') {
+// 			updateProduitOptions(optionsProfessionnel);
+// 		} else {
+// 			produitField.innerHTML = ''; // Vider si aucune sélection
+// 		}
+// 	});
+// }
 
 
 

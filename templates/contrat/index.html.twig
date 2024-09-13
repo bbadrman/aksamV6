@@ -104,16 +104,16 @@
 								<td>{{ contrat.datePrelvm ? contrat.datePrelvm|date('Y-m-d H:i:s') : '' }}</td>
 								<td>{{ contrat.fraction }}</td>
 								<td>{{ contrat.cotisation }}</td>
-								<td>{{ contrat.produit }}</td>
+								<td>{{ contrat.products }}</td>
 								<td>{{ contrat.acompte }}</td>
 								<td>{{ contrat.frais }}</td>
 								<td>
 									<a href="{{ path('app_contrat_show', {'id': contrat.id}) }}" class="btn btn-success btn-xs">
 										<i class="fa fa-eye"></i>
 									</a>
-									<a href="{{ path('app_contrat_edit', {'id': contrat.id}) }}" class="btn btn-primary btn-xs">
-										<i class="fa fa-pencil"></i>
-									</a>
+									{# <a href="{{ path('app_contrat_edit', {'id': contrat.id}) }}" class="btn btn-primary btn-xs">
+																			<i class="fa fa-pencil"></i>
+																		</a> #}
 								</td>
 							</tr>
 						{% else %}

@@ -35,9 +35,8 @@ class Product
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: Prospect::class)]
     private Collection $prospects;
 
-    #[ORM\OneToOne(mappedBy: 'produit', cascade: ['persist', 'remove'])]
-    private ?Contrat $contrat = null;
-
+    #[ORM\OneToMany(mappedBy: 'products', targetEntity: Contrat::class)]
+    private Collection $contrats;
 
 
 
@@ -45,6 +44,7 @@ class Product
     {
         $this->users = new ArrayCollection();
         $this->prospects = new ArrayCollection();
+        $this->contrats = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -140,24 +140,32 @@ class Product
         return $this;
     }
 
-    public function getContrat(): ?Contrat
+    /**
+     * @return Collection<int, Contrat>
+     */
+    public function getContrats(): Collection
     {
-        return $this->contrat;
+        return $this->contrats;
     }
 
-    public function setContrat(?Contrat $contrat): static
+    public function addContrat(Contrat $contrat): static
     {
-        // unset the owning side of the relation if necessary
-        if ($contrat === null && $this->contrat !== null) {
-            $this->contrat->setProduit(null);
+        if (!$this->contrats->contains($contrat)) {
+            $this->contrats->add($contrat);
+            $contrat->setProducts($this);
         }
 
-        // set the owning side of the relation if necessary
-        if ($contrat !== null && $contrat->getProduit() !== $this) {
-            $contrat->setProduit($this);
-        }
+        return $this;
+    }
 
-        $this->contrat = $contrat;
+    public function removeContrat(Contrat $contrat): static
+    {
+        if ($this->contrats->removeElement($contrat)) {
+            // set the owning side to null (unless already changed)
+            if ($contrat->getProducts() === $this) {
+                $contrat->setProducts(null);
+            }
+        }
 
         return $this;
     }

@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use App\Repository\ContratRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use App\Repository\ContratRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: ContratRepository::class)]
 #[ApiResource]
@@ -33,9 +34,6 @@ class Contrat
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateEffet = null;
-
-    #[ORM\OneToOne(inversedBy: 'contrat', cascade: ['persist', 'remove'])]
-    private ?Product $produit = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $type = null;
@@ -84,6 +82,10 @@ class Contrat
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $datePreleveAcompte = null;
+
+    #[ORM\ManyToOne(inversedBy: 'contrats')]
+    private ?Product $products = null;
+
 
     public function getId(): ?int
     {
@@ -162,17 +164,7 @@ class Contrat
         return $this;
     }
 
-    public function getProduit(): ?Product
-    {
-        return $this->produit;
-    }
 
-    public function setProduit(?Product $produit): static
-    {
-        $this->produit = $produit;
-
-        return $this;
-    }
 
     public function getType(): ?string
     {
@@ -362,6 +354,18 @@ class Contrat
     public function setDatePreleveAcompte(?\DateTimeInterface $datePreleveAcompte): static
     {
         $this->datePreleveAcompte = $datePreleveAcompte;
+
+        return $this;
+    }
+
+    public function getProducts(): ?Product
+    {
+        return $this->products;
+    }
+
+    public function setProducts(?Product $products): static
+    {
+        $this->products = $products;
 
         return $this;
     }

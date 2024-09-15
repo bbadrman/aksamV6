@@ -436,7 +436,7 @@ if (motifField !== null) {
 
 // Select du Contrat
 var contratypeField = document.getElementById('contrat_type');
-var produitField = document.getElementById('contrat_produit');
+var produitField = document.getElementById('contrat_products');
 var typeCondField = document.getElementById('contrat_typeConducteur');
 var CondField = document.getElementById('contrat_conducteur');
 var datePermField = document.getElementById('contrat_datePermis');

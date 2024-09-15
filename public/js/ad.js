@@ -620,13 +620,13 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // filter table
-$(document).ready(function () {
-	var table = $('#example').DataTable({
-		searchPanes: true
-	});
-	table.searchPanes.container().prependTo(table.table().container());
-	table.searchPanes.resizePanes();
-});
+// $(document).ready(function () {
+// 	var table = $('#example').DataTable({
+// 		searchPanes: true
+// 	});
+// 	table.searchPanes.container().prependTo(table.table().container());
+// 	table.searchPanes.resizePanes();
+// });
 
 
 //persist le champs activite
@@ -737,11 +737,11 @@ $(document).ready(function () {
 // 	audio.play();
 // }
 
-$.ajax({
-	url: 'http://localhost:92/api/prospects',
-	success: function (data) {
-		// Process prospect data
-		playNotificationSound();
-	}
-});
+// $.ajax({
+// 	url: 'http://localhost:92/api/prospects',
+// 	success: function (data) {
+// 		// Process prospect data
+// 		playNotificationSound();
+// 	}
+// });
 

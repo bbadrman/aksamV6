@@ -259,51 +259,51 @@ $('document').ready(function () {
 
 //Select Dynamique with API  
 
-$(document).ready(function () {
-	handleTeamChange('#prospect_team', '#prospect_comrcl');
-	handleTeamChange('#prospect_affect_team', '#prospect_affect_comrcl');
-	function handleTeamChange(teamId, comercialId) {
-		const prospectTeam = $(teamId);
-		const prospectCommercial = $(comercialId);
-		if (prospectTeam.length && prospectCommercial.length) {
-			if (!prospectTeam.val().length) {
-				prospectCommercial.parent().hide();
+// $(document).ready(function () {
+// 	handleTeamChange('#prospect_team', '#prospect_comrcl');
+// 	handleTeamChange('#prospect_affect_team', '#prospect_affect_comrcl');
+// 	function handleTeamChange(teamId, comercialId) {
+// 		const prospectTeam = $(teamId);
+// 		const prospectCommercial = $(comercialId);
+// 		if (prospectTeam.length && prospectCommercial.length) {
+// 			if (!prospectTeam.val().length) {
+// 				prospectCommercial.parent().hide();
 
-			} else {
-				loadCommercials();
-			}
-			function loadCommercials() {
-				const currentValue = prospectTeam.val();
-				const commercialvalue = prospectCommercial.val();
+// 			} else {
+// 				loadCommercials();
+// 			}
+// 			function loadCommercials() {
+// 				const currentValue = prospectTeam.val();
+// 				const commercialvalue = prospectCommercial.val();
 
-				if (!currentValue.length) {
-					return;
-				}
-				$.ajax({
-					url: "/team/teams-api", success: function (result) {
-						prospectCommercial.empty()
-						const options = result.find(function (item) {
-							return item.id == currentValue;
-						});
-						prospectCommercial.append(new Option());
+// 				if (!currentValue.length) {
+// 					return;
+// 				}
+// 				$.ajax({
+// 					url: "/team/teams-api", success: function (result) {
+// 						prospectCommercial.empty()
+// 						const options = result.find(function (item) {
+// 							return item.id == currentValue;
+// 						});
+// 						prospectCommercial.append(new Option());
 
-						options?.commercials?.map(function (item) {
-							prospectCommercial.append(new Option(item.username, item.id));
-						})
-						prospectCommercial.val(commercialvalue).change();
-						prospectCommercial.parent().show();
-						console.log('RESULT', options);
-					}
-				});
-			}
-			prospectTeam.change(function () {
-				loadCommercials();
-			})
-			console.log('HEre im 2')
+// 						options?.commercials?.map(function (item) {
+// 							prospectCommercial.append(new Option(item.username, item.id));
+// 						})
+// 						prospectCommercial.val(commercialvalue).change();
+// 						prospectCommercial.parent().show();
+// 						console.log('RESULT', options);
+// 					}
+// 				});
+// 			}
+// 			prospectTeam.change(function () {
+// 				loadCommercials();
+// 			})
+// 			console.log('HEre im 2')
 
-		}
-	}
-})
+// 		}
+// 	}
+// })
 
 //select dynamique
 
@@ -435,6 +435,7 @@ if (motifField !== null) {
 
 
 // Select du Contrat
+// Select du Contrat
 var contratypeField = document.getElementById('contrat_type');
 var produitField = document.getElementById('contrat_products');
 var typeCondField = document.getElementById('contrat_typeConducteur');
@@ -444,35 +445,81 @@ var activtField = document.getElementById('contrat_activite');
 var raisonField = document.getElementById('contrat_raisonSociale');
 var imatricltField = document.getElementById('contrat_imatriclt');
 
-if (produitField !== null) {
-	produitField.addEventListener('change', function () {
-		if (produitField.value === '4' || produitField.value === '5' || produitField.value === '9') {
-			CondField.style.display = 'block';
-			datePermField.style.display = 'block';
-			activtField.style.display = 'block';
-			raisonField.style.display = 'block';
-			imatricltField.style.display = 'block';
-			typeCondField.style.display = 'block';
+function updateFields() {
+	var contratType = contratypeField ? contratypeField.value : null;
+	var produitType = produitField ? produitField.value : null;
 
-		} else if (produitField.value === '7' || produitField.value === '8' || produitField.value === '6') {
-			CondField.style.display = 'none';
-			datePermField.style.display = 'none';
-			activtField.style.display = 'none';
-			raisonField.style.display = 'none';
-			imatricltField.style.display = 'none';
-			typeCondField.style.display = 'none';
+	if (contratType === 'Particulier' && (produitType === '1' || produitType === '10' || produitType === '12')) {
+		CondField.style.display = 'block';
+		datePermField.style.display = 'block';
+		activtField.style.display = 'none';
+		raisonField.style.display = 'none';
+		imatricltField.style.display = 'block';
+		typeCondField.style.display = 'block';
+	} else if (contratType === 'Particulier' && (produitType === '2' || produitType === '7' || produitType === '11')) {
+		CondField.style.display = 'none';
+		datePermField.style.display = 'none';
+		activtField.style.display = 'none';
+		raisonField.style.display = 'none';
+		imatricltField.style.display = 'none';
+		typeCondField.style.display = 'none';
+	} else if (contratType === 'Particulier') {
+		CondField.style.display = 'block';
+		datePermField.style.display = 'block';
+		activtField.style.display = 'none';
+		raisonField.style.display = 'block';
+		imatricltField.style.display = 'block';
+		typeCondField.style.display = 'block';
+	}
+	else if (contratType === 'Professionnel' && (produitType === '1' || produitType === '10' || produitType === '12')) {
 
-		} else if (produitField.value !== '7' && produitField.value !== '8' && produitField.value !== '6' && produitField.value !== '4' && produitField.value !== '5' && produitField.value !== '9') {
-			CondField.style.display = 'block';
-			datePermField.style.display = 'block';
-			activtField.style.display = 'block';
-			raisonField.style.display = 'block';
-			imatricltField.style.display = 'block';
-			typeCondField.style.display = 'block';
+		activtField.style.display = 'block';
+		raisonField.style.display = 'block';
+		CondField.style.display = (produitType === '1' || produitType === '10' || produitType === '12') ? 'block' : 'block';
+		datePermField.style.display = (produitType === '1' || produitType === '10' || produitType === '12') ? 'block' : 'block';
+		imatricltField.style.display = (produitType === '1' || produitType === '10' || produitType === '12') ? 'block' : 'block';
+		typeCondField.style.display = (produitType === '1' || produitType === '10' || produitType === '12') ? 'block' : 'block';
 
-		}
-	});
+	}
+	else if (contratType === 'Professionnel' && (produitType === '2' || produitType === '7' || produitType === '11')) {
+
+		activtField.style.display = 'block';
+		raisonField.style.display = 'block';
+		CondField.style.display = (produitType === '1' || produitType === '10' || produitType === '12') ? 'block' : 'none';
+		datePermField.style.display = (produitType === '1' || produitType === '10' || produitType === '12') ? 'block' : 'none';
+		imatricltField.style.display = (produitType === '1' || produitType === '10' || produitType === '12') ? 'block' : 'none';
+		typeCondField.style.display = (produitType === '1' || produitType === '10' || produitType === '12') ? 'block' : 'none';
+
+	}
+
+	else if (contratType === 'Professionnel') {
+
+		CondField.style.display = 'block';
+		datePermField.style.display = 'block';
+		activtField.style.display = 'block';
+		raisonField.style.display = 'block';
+		imatricltField.style.display = 'block';
+		typeCondField.style.display = 'block';
+
+	} else {
+		// Default case if neither specific conditions are met
+		CondField.style.display = 'block';
+		datePermField.style.display = 'block';
+		activtField.style.display = 'block';
+		raisonField.style.display = 'block';
+		imatricltField.style.display = 'block';
+		typeCondField.style.display = 'block';
+	}
 }
+
+if (contratypeField !== null) {
+	contratypeField.addEventListener('change', updateFields);
+}
+
+if (produitField !== null) {
+	produitField.addEventListener('change', updateFields);
+}
+
 
 
 if (typeCondField !== null) {
@@ -493,25 +540,6 @@ if (typeCondField !== null) {
 
 }
 
-if (contratypeField !== null) {
-	contratypeField.addEventListener('change', function () {
-		if (contratypeField.value === 'Professionnel') {
-			activtField.style.display = 'block';
-			raisonField.style.display = 'block';
-
-
-		} else if (contratypeField.value === 'Particulier') {
-			activtField.style.display = 'none';
-			raisonField.style.display = 'none';
-
-
-		} else if (contratypeField.value !== 'Professionnel' && contratypeField.value !== 'Particulier') {
-			activtField.style.display = 'block';
-			raisonField.style.display = 'block';
-		}
-	});
-
-}
 
 
 
@@ -591,17 +619,50 @@ function showFullText(element) {
 }
 
 // submut deux button en meme temps
+// document.addEventListener('DOMContentLoaded', function () {
+// 	const relanceSubmitButton = document.querySelector('#relance-submit');
+// 	const clientSubmitButton = document.querySelector('#client-submit');
+// 	const clientForm = document.querySelector('#client-form');
+
+// 	clientSubmitButton.addEventListener('click', async (event) => {
+// 		event.preventDefault(); // Empêche la soumission par défaut du formulaire client
+// 		await submitForm(clientForm); // Soumet le formulaire client manuellement
+// 		await delay(100); // Attente de 100 ms pour laisser le temps à la soumission de se terminer
+// 		relanceSubmitButton.click(); // Déclenche la soumission du formulaire de relance
+// 	});
+
+// 	async function submitForm(form) {
+// 		try {
+// 			await fetch(form.action, {
+// 				method: form.method,
+// 				body: new FormData(form)
+// 			});
+// 		} catch (error) {
+// 			console.error('Une erreur s\'est produite :', error);
+// 		}
+// 	}
+
+// 	function delay(ms) {
+// 		return new Promise(resolve => setTimeout(resolve, ms));
+// 	}
+// });
+
 document.addEventListener('DOMContentLoaded', function () {
 	const relanceSubmitButton = document.querySelector('#relance-submit');
 	const clientSubmitButton = document.querySelector('#client-submit');
 	const clientForm = document.querySelector('#client-form');
 
-	clientSubmitButton.addEventListener('click', async (event) => {
-		event.preventDefault(); // Empêche la soumission par défaut du formulaire client
-		await submitForm(clientForm); // Soumet le formulaire client manuellement
-		await delay(100); // Attente de 100 ms pour laisser le temps à la soumission de se terminer
-		relanceSubmitButton.click(); // Déclenche la soumission du formulaire de relance
-	});
+	// Vérifiez si les éléments existent avant de les utiliser
+	if (relanceSubmitButton && clientSubmitButton && clientForm) {
+		clientSubmitButton.addEventListener('click', async (event) => {
+			event.preventDefault(); // Empêche la soumission par défaut du formulaire client
+			await submitForm(clientForm); // Soumet le formulaire client manuellement
+			await delay(100); // Attente de 100 ms pour laisser le temps à la soumission de se terminer
+			relanceSubmitButton.click(); // Déclenche la soumission du formulaire de relance
+		});
+	} else {
+		console.error('Un ou plusieurs éléments nécessaires sont manquants dans le DOM.');
+	}
 
 	async function submitForm(form) {
 		try {

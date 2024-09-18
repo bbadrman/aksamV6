@@ -1166,7 +1166,6 @@ class ProspectRepository extends ServiceEntityRepository
                 JOIN pr.relanceds rel
                 WHERE rel.relacedAt > :endOfYesterday
             )')
-
             ->setParameter('endOfYesterday', $yesterday)
             ->andWhere('r.motifRelanced NOT IN (:motifs)')
             ->setParameter('motifs', [2, 3, 7, 8, 9, 10, 11])
@@ -1459,7 +1458,8 @@ class ProspectRepository extends ServiceEntityRepository
                 SELECT pr.id FROM App\Entity\Prospect pr
                 JOIN pr.relanceds rel
                 WHERE rel.relacedAt > :endOfYesterday
-            )')->setParameter('endOfYesterday', $yesterday)
+            )')
+            ->setParameter('endOfYesterday', $yesterday)
             ->addSelect('(' . $subQuery . ') AS HIDDEN lastRelanceDate')
             ->orderBy('lastRelanceDate', 'desc');
 

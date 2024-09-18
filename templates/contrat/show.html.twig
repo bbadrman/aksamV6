@@ -123,8 +123,47 @@
 							<th>Frais</th>
 							<td>{{ contrat.frais }}</td>
 						</tr>
+						<tr>
+							<th>Status</th>
+							<td>
+								{% if contrat.status == 1 %}
+									<a href="#" style="color:blue">
+										Valider
+										<i class="fa fa-thumbs-up fa-2x" aria-hidden="true"></i>
+									</a>
+								{% elseif contrat.status == 2 %}
+									<a href="#" style="color:red">
+										Rejeter
+
+										<i class="fa fa-thumbs-o-down fa-2x" aria-hidden="true"></i>
+									</a>
+								{% elseif contrat.status is null %}
+									En verification
+								{% endif %}
+							</td>
+						</tr>
+						<tr>
+							<th>Remarque</th>
+							<td>{{ contrat.comment }}</td>
+						</tr>
 					</tbody>
 				</table>
+				{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_VALIDE') == true %}
+					<form method="post">
+
+						{{  form_widget(form.status) }}
+						{{  form_widget(form.comment) }}
+
+						{{ form_row( form._token) }}
+						<br>
+						<button class="btn btn-theme" value="back" onclick="history.go(-1)" target="_blank" title="Retour ">
+							Retour
+						</button>
+
+						<button class="btn btn-primary">{{ button_label|default('Envoyer') }}</button>
+
+					</form>
+				{% endif %}
 			</div>
 		</div>
 

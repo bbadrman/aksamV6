@@ -9,6 +9,7 @@ use App\Repository\ContratRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: ContratRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 #[ApiResource]
 class Contrat
 {
@@ -59,12 +60,6 @@ class Contrat
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $fraction = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $cotisation = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $acompte = null;
-
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $frais = null;
 
@@ -86,6 +81,33 @@ class Contrat
     #[ORM\ManyToOne(inversedBy: 'contrats')]
     private ?Product $products = null;
 
+    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    private ?int $status = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $comment = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $cotisation = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $acompte = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $firstReglement = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $secondReglement = null;
+
+    // Méthode appelée automatiquement avant chaque update
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void
+    {
+        $this->updatedAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -262,30 +284,6 @@ class Contrat
         return $this;
     }
 
-    public function getCotisation(): ?string
-    {
-        return $this->cotisation;
-    }
-
-    public function setCotisation(?string $cotisation): static
-    {
-        $this->cotisation = $cotisation;
-
-        return $this;
-    }
-
-    public function getAcompte(): ?string
-    {
-        return $this->acompte;
-    }
-
-    public function setAcompte(?string $acompte): static
-    {
-        $this->acompte = $acompte;
-
-        return $this;
-    }
-
     public function getFrais(): ?string
     {
         return $this->frais;
@@ -366,6 +364,90 @@ class Contrat
     public function setProducts(?Product $products): static
     {
         $this->products = $products;
+
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?int $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): static
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getCotisation(): ?string
+    {
+        return $this->cotisation;
+    }
+
+    public function setCotisation(?string $cotisation): static
+    {
+        $this->cotisation = $cotisation;
+
+        return $this;
+    }
+
+    public function getAcompte(): ?string
+    {
+        return $this->acompte;
+    }
+
+    public function setAcompte(?string $acompte): static
+    {
+        $this->acompte = $acompte;
+
+        return $this;
+    }
+
+    public function getFirstReglement(): ?string
+    {
+        return $this->firstReglement;
+    }
+
+    public function setFirstReglement(?string $firstReglement): static
+    {
+        $this->firstReglement = $firstReglement;
+
+        return $this;
+    }
+
+    public function getSecondReglement(): ?string
+    {
+        return $this->secondReglement;
+    }
+
+    public function setSecondReglement(?string $secondReglement): static
+    {
+        $this->secondReglement = $secondReglement;
 
         return $this;
     }

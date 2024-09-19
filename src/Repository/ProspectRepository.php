@@ -1135,9 +1135,9 @@ class ProspectRepository extends ServiceEntityRepository
     {
 
         $yesterday = (new \DateTime('yesterday'))->setTime(23, 59, 59);
-        // dd($yesterday); 2024-08-01 23:59:59.0
+        // dd($yesterday); //2024-08-01 23:59:59.0
         $dayBeforeYesterday = (clone $yesterday)->modify('-1 year');
-        // dd($dayBeforeYesterday); 2023-08-01 23:59:59.0
+        // dd($dayBeforeYesterday); //2023-08-01 23:59:59.0
         $subQuery = $this->manager->createQueryBuilder()
             ->select('MAX(r1.relacedAt)')
             ->from('App\Entity\Relanced', 'r1')
@@ -1155,8 +1155,9 @@ class ProspectRepository extends ServiceEntityRepository
 
             // ->Where('(r.motifRelanced = 1)') // r.motifRelanced selement = 1
             // les dates de relance plus que 1 un apartir d hier
-            ->andWhere('r.relacedAt > :dayBeforeYesterday  ')
+            ->andWhere('r.relacedAt >= :dayBeforeYesterday AND r.relacedAt <= :yesterday')
             ->setParameter('dayBeforeYesterday', $dayBeforeYesterday)
+            ->setParameter('yesterday', $yesterday)
 
             ->andWhere('p.comrcl is NOT NULL')
             ->andWhere('p.team is NOT NULL')
@@ -1428,7 +1429,7 @@ class ProspectRepository extends ServiceEntityRepository
         $yesterday = new \DateTime('yesterday');
         $yesterday->setTime(23, 59, 59); // La fin de la journée d'hier
 
-        $dayBeforeYesterday = (clone $yesterday)->modify('-1 month')->setTime(0, 0, 0); // Le début d'avant-hier
+        $dayBeforeYesterday = (clone $yesterday)->modify('-1 year')->setTime(0, 0, 0); // Le début d'avant-hier
 
 
 
@@ -1446,7 +1447,8 @@ class ProspectRepository extends ServiceEntityRepository
             ->andWhere('p.comrcl = :val')
             ->setParameter('val', $id)
             //->andWhere('(r.motifRelanced IS NULL OR r.motifRelanced = 1)')
-
+            //permet de filtrer les relances pour inclure uniquement celles qui ont été effectuées entre le début d'avant-hier (un mois avant hier à 00:00) et la fin de la journée d'hier (23:59:59)
+            //    alors si hier eté 18/09  alors jusqu a 18/08
             ->andWhere('r.relacedAt >= :dayBeforeYesterday AND r.relacedAt <= :yesterday')
             ->setParameter('dayBeforeYesterday', $dayBeforeYesterday)
             ->setParameter('yesterday', $yesterday)

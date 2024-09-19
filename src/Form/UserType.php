@@ -81,6 +81,10 @@ class UserType extends AbstractType
                         'Ajouter Client' => 'ROLE_ADD_CLIENT',
                         'Edite Client' => 'ROLE_EDIT_CLIENT',
                     ],
+                    '*-----Contrat-----*' => [
+                        'Valider contrat' => 'ROLE_VALIDE',
+
+                    ],
                 ],
 
 

@@ -445,8 +445,9 @@ class StatsService
             ->leftJoin('p.relanceds', 'r')
 
             //->Where('(r.motifRelanced = 1)') // r.motifRelanced selement = 1
-            ->andWhere('r.relacedAt > :dayBeforeYesterday  ')
+            ->andWhere('r.relacedAt BETWEEN :dayBeforeYesterday AND :yesterday')
             ->setParameter('dayBeforeYesterday', $dayBeforeYesterday)
+            ->setParameter('yesterday', $yesterday)
 
 
             ->andWhere('p.comrcl is NOT NULL')
@@ -515,7 +516,7 @@ class StatsService
 
         $yesterday = new \DateTime('yesterday');
         $yesterday->setTime(23, 59, 59);
-        $dayBeforeYesterday = (clone $yesterday)->modify('-1 month')->setTime(0, 0, 0); // Le début d'avant-hier
+        $dayBeforeYesterday = (clone $yesterday)->modify('-1 year')->setTime(0, 0, 0); // Le début d'avant-hier
 
         $qb = $this->manager->createQueryBuilder();
         $qb->select('COUNT(DISTINCT p.id)')

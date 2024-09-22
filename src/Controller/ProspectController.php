@@ -427,7 +427,14 @@ class ProspectController extends AbstractController
         //dd($clientForm);
         if ($clientForm->isSubmitted()) {
             if ($clientForm->isValid()) {
-                // Debugging output
+                // Vérifier si le firstName existe déjà dans la base de données
+                // $existingClient = $this->entityManager->getRepository(Client::class)->findOneBy([
+                //     'firstName' => $prospect->getName()
+                // ]);
+                // if ($existingClient) {
+                //     $this->addFlash('success', 'prenon dejat.');
+                // } else {
+
                 $this->addFlash('debug', 'Client form is valid and submitted.');
 
                 $this->entityManager->persist($clientEntity);

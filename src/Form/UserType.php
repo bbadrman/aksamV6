@@ -83,6 +83,7 @@ class UserType extends AbstractType
                     ],
                     '*-----Contrat-----*' => [
                         'Valider contrat' => 'ROLE_VALIDE',
+                        'Valider client' => 'ROLE_CLIENT',
 
                     ],
                 ],

@@ -9,9 +9,11 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProspectRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 #[ORM\Entity(repositoryClass: ProspectRepository::class)]
+
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: "prospect")]
 #[ApiResource]

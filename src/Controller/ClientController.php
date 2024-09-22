@@ -114,12 +114,39 @@ class ClientController extends AbstractController
         $client = [];
 
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
-
-
             // admi peut voire toutes les nouveaux client
             $client =  $this->clientRepository->findClientAll($data,  null);
 
+            return $this->render('client/index.html.twig', [
+                'clients' => $client,
 
+                'search_form' => $form->createView()
+            ]);
+        }
+        return $this->render('client/search.html.twig', [
+            'clients' => $client,
+
+            'search_form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * get All client valide
+     * @Route("/valide", name="client_valide_index", methods={"GET"})
+     */
+    public function valide(Request $request,  Security $security): Response
+    {
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
+
+        $data = new SearchClient();
+        $data->page = $request->query->get('page', 1);
+        $form = $this->createForm(SearchClientType::class, $data);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+        $client = [];
+
+        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
+            // admi peut voire toutes les nouveaux client
+            $client =  $this->clientRepository->findClientValide($data,  null);
 
             return $this->render('client/index.html.twig', [
                 'clients' => $client,

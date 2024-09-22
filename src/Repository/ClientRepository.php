@@ -285,7 +285,79 @@ class ClientRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('c')
             ->select('c, h, b')
+            // ->where('c.status = 2 OR c.status IS NULL')
+            ->leftJoin('c.team', 'b')
+            ->leftJoin('c.cmrl', 'h')
+            ->orderBy('c.id', 'DESC');
 
+
+        if (!empty($search->f)) {
+            $queryBuilder
+                ->andWhere('c.firstname LIKE :f')
+                ->setParameter('f', "%{$search->f}%");
+        }
+        if (!empty($search->l)) {
+            $queryBuilder
+                ->andWhere('c.lastname LIKE :l')
+                ->setParameter('l', "%{$search->l}%");
+        }
+
+
+        if (!empty($search->team)) {
+            $queryBuilder
+                ->andWhere('b.name LIKE :team')
+                ->setParameter('team', "%{$search->team}%");
+        }
+
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
+            $queryBuilder
+                ->andWhere('c.creatAt >= :d')
+                ->setParameter('d', $search->d);
+        }
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
+            $queryBuilder
+                ->andWhere('c.creatAt <= :dd')
+                ->setParameter('dd', $search->dd);
+        }
+        if (!empty($search->k)) {
+            $queryBuilder
+                ->andWhere('h.username LIKE :k')
+                ->setParameter('k', "%{$search->k}%");
+        }
+        if (!empty($search->g)) {
+            $queryBuilder
+                ->andWhere('c.email LIKE :g')
+                ->setParameter('g', "%{$search->g}%");
+        }
+
+        if (!empty($search->t)) {
+            $queryBuilder
+                ->orWhere('c.phone LIKE :t')
+                ->setParameter('t', "%{$search->t}%");
+        }
+
+        $query = $queryBuilder->getQuery();
+
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+        );
+    }
+
+    /**
+     * Find a list of clients using a search form
+     * @param SearchClient $search
+     * @return PaginationInterface
+     */
+    public function findClientValide(SearchClient $search): PaginationInterface
+    {
+        $queryBuilder = $this->createQueryBuilder('c')
+            ->select('c, h, b')
+            ->where('c.status = 1 ')
+            // ->where('c.status = 2 OR c.status IS NULL')
             ->leftJoin('c.team', 'b')
 
             ->leftJoin('c.cmrl', 'h')

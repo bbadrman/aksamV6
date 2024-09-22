@@ -7,10 +7,12 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ClientRepository;
 use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
+#[UniqueEntity('firstname', message: "Ce prenom client est déjà au application!")]
 #[ORM\Table(name: "client")]
 #[ApiResource]
 
@@ -50,6 +52,15 @@ class Client
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Prospect $prospect = null;
+
+    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    private ?int $status = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $comment = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updateAt = null;
 
 
     /**
@@ -193,6 +204,42 @@ class Client
     public function setProspect(?Prospect $prospect): static
     {
         $this->prospect = $prospect;
+
+        return $this;
+    }
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?int $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    public function setComment(?string $comment): static
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getUpdateAt(): ?\DateTimeImmutable
+    {
+        return $this->updateAt;
+    }
+
+    public function setUpdateAt(?\DateTimeImmutable $updateAt): static
+    {
+        $this->updateAt = $updateAt;
 
         return $this;
     }

@@ -24,7 +24,7 @@ class ContratType extends AbstractType
     {
         $user = $this->security->getUser();
         $roles = $user->getRoles();
-        if (in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_SUPER_ADMIN', $roles, true)  || in_array('ROLE_AFFECT', $roles, true) || in_array('ROLE_TEAMALL', $roles, true)) {
+        if (in_array('ROLE_VALIDE', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
             $builder
                 ->add('nom', Type\TextType::class, [
                     'label' => 'Nom ',
@@ -52,7 +52,7 @@ class ContratType extends AbstractType
                     'required' => false
                 ])
                 ->add('dateSouscrpt', Type\DateType::class, [
-                    'label' => "Date souscription  :",
+                    'label' => "Date souscription :",
                     'disabled' => true,
 
                     'widget' => 'single_text',

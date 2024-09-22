@@ -63,6 +63,7 @@
 							<th>Email</th>
 							<th>Raison Sociale</th>
 							<th>Date Client</th>
+
 							<th>Actions</th>
 						</tr>
 					</thead>
@@ -92,19 +93,25 @@
 								</td>
 
 								<td class="btn-toolbar">
+									{% if client.status == 1   %}
 
-									<a href="{{ path('client_show', {'id': client.id}) }}" class="btn btn-info btn-xs">
-										<i class="fa fa-eye"></i>
-									</a>
-									{# {{ render(controller('App\\Controller\\ContartController::new',{'id':contrat.id}))}} #}
+										<a href="{{ path('app_contrat_new', {'id': client.id}) }}" class="btn btn-success btn-xs">
+											CONTART
+										</a>
+										<a href="#" class="btn btn-primary btn-xs">
+											SAV
+										</a>
+									{% elseif client.status == 2 %}
 
-									<a href="{{ path('app_contrat_new', {'id': client.id}) }}" class="btn btn-success btn-xs">
-										CONTART
-									</a>
+										<a href="{{ path('client_edit', {'id': client.id}) }}" class="btn btn-danger btn-xs">
+											REJETER
+										</a>
+									{% elseif   client.status is null %}
+										<a href="{{ path('client_edit', {'id': client.id}) }}" class="btn btn-primary btn-xs">
+											NOUVEAU
+										</a>
+									{% endif %}
 
-									<a href="#" class="btn btn-primary btn-xs">
-										SAV
-									</a>
 								</td>
 							</tr>
 						{% else %}

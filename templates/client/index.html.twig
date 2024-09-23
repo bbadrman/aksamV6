@@ -98,37 +98,50 @@
 										<a href="{{ path('app_contrat_new', {'id': client.id}) }}" class="btn btn-success btn-xs">
 											CONTART
 										</a>
-										<a href="#" class="btn btn-primary btn-xs">
-											SAV
-										</a>
 									{% elseif client.status == 2 %}
+										{% if app.user  == client.cmrl %}
+											<a href="{{ path('client_valide_edit', {'id': client.id}) }}" class="btn btn-danger btn-xs">
+												REJETER
+											</a>
+										{% else %}
+											<a href="{{ path('client_edit', {'id': client.id}) }}" class="btn btn-danger btn-xs">
+												REJETER
+											</a>
+										{% endif %}
 
-										<a href="{{ path('client_edit', {'id': client.id}) }}" class="btn btn-danger btn-xs">
-											REJETER
-										</a>
-									{% elseif   client.status is null %}
-										<a href="{{ path('client_edit', {'id': client.id}) }}" class="btn btn-primary btn-xs">
-											NOUVEAU
-										</a>
+
+									{% elseif  client.status is null %}
+										{% if  is_granted('ROLE_VALIDE') and app.user  == client.cmrl  %}
+											<a href="{{ path('client_valide_edit', {'id': client.id}) }}" class="btn btn-success btn-xs">
+												MYCLIENT
+											</a>
+										{% else %}
+											{%  if  is_granted('ROLE_VALIDE')  %}
+												<a href="{{ path('client_edit', {'id': client.id}) }}" class="btn btn-primary btn-xs">
+													NOUVEAU
+												</a>
+											{% else %}
+												En verification
+											{% endif %}
+										{% endif %}
 									{% endif %}
-
 								</td>
 							</tr>
-						{% else %}
-							<tr>
-								<td colspan="3">Aucun client trouvé</td>
-							</tr>
-						{% endfor %}
-					</tbody>
-				</tbody>
-				<tfoot class="text-center">
-					<tr>
-						<td colspan="10">
-							{{ knp_pagination_render(clients, 'pagination.html.twig') }}
 						</td>
-					</tr>
-				</tfoot>
-			</table>
-		</div>
-	</div>
-</div></div>{% endblock %}
+					</tbody>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="3">Aucun client trouvé</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</tbody>
+	<tfoot class="text-center">
+		<tr>
+			<td colspan="10">
+				{{ knp_pagination_render(clients, 'pagination.html.twig') }}
+			</td>
+		</tr>
+	</tfoot>
+</table></div></div></div></div>{% endblock %}

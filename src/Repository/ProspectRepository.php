@@ -1136,7 +1136,7 @@ class ProspectRepository extends ServiceEntityRepository
 
         $yesterday = (new \DateTime('yesterday'))->setTime(23, 59, 59);
         // dd($yesterday); //2024-08-01 23:59:59.0
-        $dayBeforeYesterday = (clone $yesterday)->modify('-1 year');
+        $dayBeforeYesterday = (clone $yesterday)->modify('-9 year');
         // dd($dayBeforeYesterday); //2023-08-01 23:59:59.0
         $subQuery = $this->manager->createQueryBuilder()
             ->select('MAX(r1.relacedAt)')
@@ -1286,7 +1286,7 @@ class ProspectRepository extends ServiceEntityRepository
 
         $yesterday->setTime(23, 59, 59); // La fin de la journée d'hier
 
-        $dayBeforeYesterday = (clone $yesterday)->modify('-1 year')->setTime(0, 0, 0); // Le début d'avant-hier
+        $dayBeforeYesterday = (clone $yesterday)->modify('-9 year')->setTime(0, 0, 0); // Le début d'avant-hier
 
 
         $subQuery = $this->manager->createQueryBuilder()
@@ -1429,7 +1429,7 @@ class ProspectRepository extends ServiceEntityRepository
         $yesterday = new \DateTime('yesterday');
         $yesterday->setTime(23, 59, 59); // La fin de la journée d'hier
 
-        $dayBeforeYesterday = (clone $yesterday)->modify('-1 year')->setTime(0, 0, 0); // Le début d'avant-hier
+        $dayBeforeYesterday = (clone $yesterday)->modify('-9 year')->setTime(0, 0, 0); // Le début d'avant-hier
 
 
 

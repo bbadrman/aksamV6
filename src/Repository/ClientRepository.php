@@ -141,12 +141,14 @@ class ClientRepository extends ServiceEntityRepository
         }
 
         $query = $this->createQueryBuilder('c')
-            ->select('c, f ')
+            ->select('c, f, t ')
+
+            ->where('c.status = 2 OR c.status IS NULL')
 
             ->leftJoin('c.cmrl', 'f')
             ->leftJoin('c.team', 't')
 
-            ->where('c.team IN (:teams)')
+            ->andwhere('c.team IN (:teams)')
 
             ->setParameter('teams', $teams)
 
@@ -225,12 +227,14 @@ class ClientRepository extends ServiceEntityRepository
     public function findClientCmrcl(SearchClient $search, $id): PaginationInterface
     {
 
-
         $query = $this->createQueryBuilder('c')
-
-
+            ->select('c, h, b')
+            ->where('c.status = 2 OR c.status IS NULL')
+            ->leftJoin('c.team', 'b')
+            ->leftJoin('c.cmrl', 'h')
             ->andWhere('c.cmrl = :val')
             ->setParameter('val', $id)
+
             ->orderBy('c.id', 'DESC');
 
         if ((!empty($search->f))) {
@@ -285,7 +289,7 @@ class ClientRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('c')
             ->select('c, h, b')
-            // ->where('c.status = 2 OR c.status IS NULL')
+            ->where('c.status = 1 ')
             ->leftJoin('c.team', 'b')
             ->leftJoin('c.cmrl', 'h')
             ->orderBy('c.id', 'DESC');
@@ -356,8 +360,8 @@ class ClientRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('c')
             ->select('c, h, b')
-            ->where('c.status = 1 ')
-            // ->where('c.status = 2 OR c.status IS NULL')
+            // ->where('c.status = 1 ')
+            ->where('c.status = 2 OR c.status IS NULL')
             ->leftJoin('c.team', 'b')
 
             ->leftJoin('c.cmrl', 'h')

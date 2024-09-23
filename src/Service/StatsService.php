@@ -436,7 +436,7 @@ class StatsService
         $yesterday = new \DateTime('yesterday');
         $yesterday->setTime(23, 59, 59);
         // $dayBeforeYesterday = (clone $yesterday)->modify('-1 year')->setTime(0, 0, 0); // Le début d'avant-hier
-        $dayBeforeYesterday = (clone $yesterday)->modify('-1 year');
+        $dayBeforeYesterday = (clone $yesterday)->modify('-9 year');
 
         $qb = $this->manager->createQueryBuilder();
         $qb->select('COUNT(DISTINCT p.id)')  //  En utilisant COUNT(DISTINCT p.id), vous comptez les prospects uniques, en ignorant les doublons dans les relances pour chaque prospect
@@ -474,7 +474,7 @@ class StatsService
     {
         $yesterday = new \DateTime('yesterday');
         $yesterday->setTime(23, 59, 59);
-        $dayBeforeYesterday = (clone $yesterday)->modify('-1 year')->setTime(0, 0, 0); // Le début d'avant-hier
+        $dayBeforeYesterday = (clone $yesterday)->modify('-9 year')->setTime(0, 0, 0); // Le début d'avant-hier
 
 
         $teams = $user->getTeams();
@@ -516,7 +516,7 @@ class StatsService
 
         $yesterday = new \DateTime('yesterday');
         $yesterday->setTime(23, 59, 59);
-        $dayBeforeYesterday = (clone $yesterday)->modify('-1 year')->setTime(0, 0, 0); // Le début d'avant-hier
+        $dayBeforeYesterday = (clone $yesterday)->modify('-9 year')->setTime(0, 0, 0); // Le début d'avant-hier
 
         $qb = $this->manager->createQueryBuilder();
         $qb->select('COUNT(DISTINCT p.id)')

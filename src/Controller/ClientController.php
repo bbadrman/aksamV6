@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Client;
 use App\Form\ClientType;
 use App\Search\SearchClient;
+use App\Form\ClientValideType;
 use App\Form\SearchClientType;
+use App\Form\ClientProspectType;
 use App\Repository\ClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,6 +41,7 @@ class ClientController extends AbstractController
     public function __construct(
         private RequestStack $requestStack,
         private EntityManagerInterface $entityManager,
+        private Security $security,
         private ClientRepository $clientRepository,
         private AuthorizationCheckerInterface $authorizationChecker
     ) {}
@@ -134,7 +137,7 @@ class ClientController extends AbstractController
      * get All client valide
      * @Route("/valide", name="client_valide_index", methods={"GET"})
      */
-    public function valide(Request $request,  Security $security): Response
+    public function valide(Request $request): Response
     {
         $this->denyAccessUnlessGrantedAuthorizedRoles();
 
@@ -142,19 +145,22 @@ class ClientController extends AbstractController
         $data->page = $request->query->get('page', 1);
         $form = $this->createForm(SearchClientType::class, $data);
         $form->handleRequest($this->requestStack->getCurrentRequest());
+        $user = $this->security->getUser();
+        $roles = $user->getRoles();
         $client = [];
 
-        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
+        if (in_array('ROLE_VALIDE', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
             // admi peut voire toutes les nouveaux client
             $client =  $this->clientRepository->findClientValide($data,  null);
-
-            return $this->render('client/index.html.twig', [
-                'clients' => $client,
-
-                'search_form' => $form->createView()
-            ]);
+        } else if (in_array('ROLE_TEAM', $roles, true)) {
+            // chef peut voire toutes les relance du jour atacher a leur equipe
+            $client =  $this->clientRepository->findClientChef($data,  $user,  null);
+        } else {
+            // cmrcl peut voire seulement les relance du jour  atacher a lui
+            $client =  $this->clientRepository->findClientCmrcl($data, $user, null);
         }
-        return $this->render('client/search.html.twig', [
+
+        return $this->render('client/index.html.twig', [
             'clients' => $client,
 
             'search_form' => $form->createView()
@@ -243,8 +249,35 @@ class ClientController extends AbstractController
     public function edit(Request $request, Client $client): Response
     {
         $this->denyAccessUnlessGrantedAuthorizedRoles();
+        $user = $this->security->getUser();
+        $roles = $user->getRoles();
+
 
         $form = $this->createForm(ClientType::class, $client);
+
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->clientRepository->add($client, true);
+            $this->addFlash('info', 'le Client a été modifié avec succès!');
+            return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('client/edit.html.twig', [
+            'client' => $client,
+            'form' => $form,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/editvalide", name="client_valide_edit", methods={"GET", "POST"}) 
+     */
+    public function editvalide(Request $request, Client $client): Response
+    {
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
+
+        $form = $this->createForm(ClientValideType::class, $client);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

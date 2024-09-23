@@ -80,7 +80,9 @@ class ClientType extends AbstractType
                     'required' => true,
                     'choices' => [
                         'Valider' => 1,
-                        'Rejeter' => 2
+                        'Rejeter' => 2,
+                        'Annulé' => 3
+
                     ],
 
                     'expanded' => true,
@@ -141,7 +143,8 @@ class ClientType extends AbstractType
                     'disabled' => true,
                     'choices' => [
                         'Valider' => 1,
-                        'Rejeter' => 2
+                        'Rejeter' => 2,
+                        'Annulé' => 3
                     ],
 
                     'expanded' => true,

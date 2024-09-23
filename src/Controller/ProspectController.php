@@ -19,6 +19,7 @@ use App\Form\RelancedType;
 use App\Form\ScdEmailType;
 use App\Entity\RelanceHistory;
 use App\Search\SearchProspect;
+use App\Form\ClientProspectType;
 use App\Form\ProspectAffectType;
 use App\Form\SearchProspectType;
 use App\Repository\TeamRepository;
@@ -421,7 +422,7 @@ class ProspectController extends AbstractController
         $clientEntity->setProspect($prospect);
 
         // Handle the Client form submission
-        $clientForm = $this->createForm(ClientType::class, $clientEntity);
+        $clientForm = $this->createForm(ClientProspectType::class, $clientEntity);
         $clientForm->handleRequest($request);
 
         //dd($clientForm);

@@ -67,25 +67,21 @@ class ClientValideType extends AbstractType
                     'placeholder' => 'Raison sociale',
                 ]
             ])
-            ->add('status', ChoiceType::class, [
-                'label' => 'status',
-                'required' => true,
-                'disabled' => true,
-                'choices' => [
-                    'Valider' => 1,
-                    'Rejeter' => 2,
-                    'Annulé' => 3
-                ],
+            // ->add('isModif', ChoiceType::class, [
+            //     'required' => true,
+            //     'data' => '1', // Valeur affichée  afin de persiste par default au form 
+            //     'mapped' => false, // Ne pas mapper ce champ avec l'entité
+            //     'attr' => ['readonly' => true], // Rend le champ en lecture seule
 
-                'expanded' => true,
-                'multiple' => false
-            ])
+            // ])
+
+
+
 
             ->add('comment', TextareaType::class, [
                 'attr' => ['class' => 'tinymce'],
                 'label' => "Remarque",
                 'required' => false,
-                'disabled' => true,
             ]);
     }
     /**  

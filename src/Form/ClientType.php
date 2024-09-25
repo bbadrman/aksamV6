@@ -24,140 +24,74 @@ class ClientType extends AbstractType
     {
         $user = $this->security->getUser();
         $roles = $user->getRoles();
-        if (in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_VALIDE', $roles, true)) {
 
-            $builder
-                ->add('firstname', Type\TextType::class, [
-                    'label' => 'Prénom',
-                    'required' => false,
-                    'disabled' => true,
-                    'attr' => [
-                        'placeholder' => 'Merci de saisir le prénom du client'
-                    ]
-                ])
-                ->add('lastname', Type\TextType::class, [
-                    'label' => 'Nom',
-                    'required' => false,
-                    'disabled' => true,
-                    'attr' => [
-                        'placeholder' => 'Merci de saisir le nom du client'
-                    ]
-                ])
-                ->add('phone', Type\TextType::class, [
-                    'label' => 'Téléphone 2',
-                    'required' => false,
-                    'disabled' => true,
-                    'attr' => [
-                        'placeholder' => 'Merci de saisir le numéro de téléphone'
-                    ]
-                ])
-                ->add('email', Type\EmailType::class, [
-                    'label' => 'Email',
-                    'required' => false,
-                    'disabled' => true,
-                    'attr' => [
-                        'placeholder' => "Merci de saisir l'adresse email"
-                    ]
-                ])
-                ->add('adress', Type\TextareaType::class, [
-                    'label' => 'Addresse complét *',
-                    'required' => false,
-                    'disabled' => true,
-                    'attr' => [
-                        'placeholder' => 'Address compltét du client',
-                    ]
-                ])
-                ->add('raisonSociale', Type\TextType::class, [
-                    'label' => 'Raison sociale ',
-                    'required' => false,
-                    'disabled' => true,
-                    'attr' => [
-                        'placeholder' => 'Raison sociale',
-                    ]
-                ])
-                ->add('status', ChoiceType::class, [
-                    'label' => 'status',
-                    'required' => true,
-                    'choices' => [
-                        'Valider' => 1,
-                        'Rejeter' => 2,
-                        'Annulé' => 3
-
-                    ],
-
-                    'expanded' => true,
-                    'multiple' => false
-                ])
-
-                ->add('comment', TextareaType::class, [
-                    'attr' => ['class' => 'tinymce'],
-                    'label' => "Remarque",
-                    'required' => false,
-                ]);
-        } else {
-            $builder->add('firstname', Type\TextType::class, [
+        $builder
+            ->add('firstname', Type\TextType::class, [
                 'label' => 'Prénom',
                 'required' => false,
+                'disabled' => true,
                 'attr' => [
                     'placeholder' => 'Merci de saisir le prénom du client'
                 ]
             ])
-                ->add('lastname', Type\TextType::class, [
-                    'label' => 'Nom',
-                    'required' => false,
-                    'attr' => [
-                        'placeholder' => 'Merci de saisir le nom du client'
-                    ]
-                ])
-                ->add('phone', Type\TextType::class, [
-                    'label' => 'Téléphone 2',
-                    'required' => false,
-                    'attr' => [
-                        'placeholder' => 'Merci de saisir le numéro de téléphone'
-                    ]
-                ])
-                ->add('email', Type\EmailType::class, [
-                    'label' => 'Email',
-                    'required' => false,
-                    'attr' => [
-                        'placeholder' => "Merci de saisir l'adresse email"
-                    ]
-                ])
-                ->add('adress', Type\TextareaType::class, [
-                    'label' => 'Addresse complét *',
-                    'required' => false,
-                    'attr' => [
-                        'placeholder' => 'Address compltét du client',
-                    ]
-                ])
-                ->add('raisonSociale', Type\TextType::class, [
-                    'label' => 'Raison sociale ',
-                    'required' => false,
-                    'attr' => [
-                        'placeholder' => 'Raison sociale',
-                    ]
-                ])
-                ->add('status', ChoiceType::class, [
-                    'label' => 'status',
-                    'required' => true,
-                    'disabled' => true,
-                    'choices' => [
-                        'Valider' => 1,
-                        'Rejeter' => 2,
-                        'Annulé' => 3
-                    ],
+            ->add('lastname', Type\TextType::class, [
+                'label' => 'Nom',
+                'required' => false,
+                'disabled' => true,
+                'attr' => [
+                    'placeholder' => 'Merci de saisir le nom du client'
+                ]
+            ])
+            ->add('phone', Type\TextType::class, [
+                'label' => 'Téléphone 2',
+                'required' => false,
+                'disabled' => true,
+                'attr' => [
+                    'placeholder' => 'Merci de saisir le numéro de téléphone'
+                ]
+            ])
+            ->add('email', Type\EmailType::class, [
+                'label' => 'Email',
+                'required' => false,
+                'disabled' => true,
+                'attr' => [
+                    'placeholder' => "Merci de saisir l'adresse email"
+                ]
+            ])
+            ->add('adress', Type\TextareaType::class, [
+                'label' => 'Addresse complét *',
+                'required' => false,
+                'disabled' => true,
+                'attr' => [
+                    'placeholder' => 'Address compltét du client',
+                ]
+            ])
+            ->add('raisonSociale', Type\TextType::class, [
+                'label' => 'Raison sociale ',
+                'required' => false,
+                'disabled' => true,
+                'attr' => [
+                    'placeholder' => 'Raison sociale',
+                ]
+            ])
+            ->add('status', ChoiceType::class, [
+                'label' => 'status',
+                'required' => true,
+                'choices' => [
+                    'Valider' => 1,
+                    'Rejeter' => 2,
+                    'Annulé' => 3
 
-                    'expanded' => true,
-                    'multiple' => false
-                ])
+                ],
 
-                ->add('comment', TextareaType::class, [
-                    'attr' => ['class' => 'tinymce'],
-                    'label' => "Remarque",
-                    'disabled' => true,
-                    'required' => false,
-                ]);
-        }
+                'expanded' => true,
+                'multiple' => false
+            ])
+            ->add('comment', TextareaType::class, [
+                'attr' => ['class' => 'tinymce'],
+                'label' => "Remarque",
+                'required' => false,
+            ]);
     }
     /**  
      * @return void

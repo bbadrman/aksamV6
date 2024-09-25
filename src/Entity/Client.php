@@ -12,7 +12,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
-#[UniqueEntity('firstname', message: "Ce prenom client est déjà au application!")]
 #[ORM\Table(name: "client")]
 #[ApiResource]
 
@@ -61,6 +60,9 @@ class Client
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updateAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $isModif = null;
 
 
     /**
@@ -240,6 +242,18 @@ class Client
     public function setUpdateAt(?\DateTimeImmutable $updateAt): static
     {
         $this->updateAt = $updateAt;
+
+        return $this;
+    }
+
+    public function isIsModif(): ?bool
+    {
+        return $this->isModif;
+    }
+
+    public function setIsModif(?bool $isModif): static
+    {
+        $this->isModif = $isModif;
 
         return $this;
     }

@@ -118,9 +118,9 @@
 					</div>
 				</div>
 				<!-- END RECHERCHE -->
-
-				<!-- RELANCES DU JOUR -->
 				{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true   or is_granted('ROLE_COMERC') == true and not is_granted('ROLE_AFFECT') == true   %}
+
+					<!-- RELANCES DU JOUR -->
 					<div class="col-md-3 col-sm-3 mb">
 						<div class="green-panel pn">
 							<div class="green-header">
@@ -141,6 +141,7 @@
 							</a>
 						</div>
 					</div>
+					<!-- END RELANCES DU JOUR -->
 					<!-- RELANCES A VENIR -->
 					<div class="col-md-3 col-sm-3 mb">
 						<div class="green-panel pn">
@@ -189,21 +190,22 @@
 						</div>
 					</div>
 					<!-- END RELANCES NON TRAITÉES -->
-
-					<!-- AJOUTER PROSPECT -->
-					{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') or is_granted('ROLE_ADD_PROS') == true   %}
-						<div class="col-md-3 col-sm-3 mb">
-							<div class="green-panel pn">
-								<div class="green-header">
-									<h2>AJOUTER PROSPECT</h2>
-								</div>
-								<a href="{{path('app_prospect_new')}}">
-									<i class="fa fa-keyboard-o fa-5x" aria-hidden="true"></i>
-								</a>
+				{% endif %}
+				<!-- AJOUTER PROSPECT -->
+				{% if   is_granted('ROLE_ADD_PROS') == true   %}
+					<div class="col-md-3 col-sm-3 mb">
+						<div class="green-panel pn">
+							<div class="green-header">
+								<h2>AJOUTER PROSPECT</h2>
 							</div>
+							<a href="{{path('app_prospect_new')}}">
+								<i class="fa fa-keyboard-o fa-5x" aria-hidden="true"></i>
+							</a>
 						</div>
-					{% endif %}
-					<!--END  AJOUTER PROSPECT -->
+					</div>
+				{% endif %}
+				<!--END  AJOUTER PROSPECT -->
+				{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM') == true   or is_granted('ROLE_COMERC') == true and not is_granted('ROLE_AFFECT') == true   %}
 
 					<!-- INJOIGNABLES -->
 					<div class="col-md-3 col-sm-3 mb">
@@ -240,22 +242,10 @@
 						</div>
 					</div>
 					<!--END PAYMENTS -->
-					<!-- CONTRAT -->
-					{# <div class="col-md-3 col-sm-3 mb">
-																																														<div class="green-panel pn">
-																																															<div class="green-header">
-																																																<h2>CONTRAT</h2>
-																																															</div>
-																																															<a href="{{path('app_contrat_index')}}">
-																																																<i class="fa fa-file-text  fa-4x" aria-hidden="true"></i>
-																																																<h1></h1>
-																																								
-																																															</a>
-																																														</div>
-																																													</div> #}
-					<!--END CONTRAT -->
-					<!-- CONTRAT -->
-						<div class="col-md-3 col-sm-3 mb"> <div class="green-panel pn">
+
+					<!--PRE- CONTRAT -->
+					<div class="col-md-3 col-sm-3 mb">
+						<div class="green-panel pn">
 							<div class="green-header">
 								<h2>PRE-CONTRAT</h2>
 							</div>

@@ -1912,6 +1912,7 @@ class ProspectRepository extends ServiceEntityRepository
         $now = new \DateTime();
         $yesterday = clone $now;
         $yesterday->modify('-24 hours');
+        $yesterday->setTime(23, 59, 59);
         $excludedEmail = 'service.technique@aksam-assurances.fr';
         $query = $this->createQueryBuilder('p')
             ->select('p, t, f, r')
@@ -1923,10 +1924,9 @@ class ProspectRepository extends ServiceEntityRepository
 
 
 
-
-
             ->andwhere('p.email != :excludedEmail')
             ->setParameter('excludedEmail', $excludedEmail)
+
             ->andWhere('p.creatAt <= :yesterday')
             ->setParameter('yesterday', $yesterday)
 
@@ -2018,6 +2018,7 @@ class ProspectRepository extends ServiceEntityRepository
         $now = new \DateTime();
         $yesterday = clone $now;
         $yesterday->modify('-24 hours');
+        $yesterday->setTime(23, 59, 59);
 
         $teams = $user->getTeams();
         if ($teams->isEmpty()) {
@@ -2029,17 +2030,19 @@ class ProspectRepository extends ServiceEntityRepository
             ->where('p.team IN (:teams)')
             ->setParameter('teams', $teams)
 
-
             ->leftJoin('p.relanceds', 'r')
-            ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced
-
+            ->andWhere('r.prospect IS NULL') // Aucune relation avec relanced (n'es
 
             ->andWhere('p.team IS NOT NULL')  // chef d'equipe affecté 
-            ->andWhere('p.comrcl IS NOT NULL')
+            // ->andWhere('p.comrcl IS NOT NULL')
             //->andWhere('p.comrcl IS NULL OR p.comrcl = :val') // Filtrer les prospects no affectés et affect au chef aussi
             //->setParameter('val', $user)
-            ->andWhere('p.creatAt <= :yesterday')
-            ->setParameter('yesterday', $yesterday)
+            // ->andWhere('p.creatAt <= :yesterday')
+            // ->setParameter('yesterday', $yesterday)
+            ->leftJoin('p.histories', 'h')
+            ->andWhere('h.actionDate <= :endOfYesterday') // Filtre par date d'action de l'historique si actiondate=23/06  <= 24/06 = yesterday alors aujourduit 25/06
+            ->setParameter('endOfYesterday', $yesterday)
+
             ->leftJoin('p.comrcl', 'f')
             ->orderBy('p.id', 'DESC');
 
@@ -2123,23 +2126,25 @@ class ProspectRepository extends ServiceEntityRepository
         $now = new \DateTime();
         $yesterday = clone $now;
         $yesterday->modify('-24 hours');
+        $yesterday->setTime(23, 59, 59); // pour fixer hier a  minuit
+        // dd($yesterday); = date: 2024-09-24 23:59:59.0 UTC (+00:00)
 
         $query = $this->createQueryBuilder('p')
             ->select('p,   r')
+
             ->andWhere('p.comrcl = :val')
             ->setParameter('val', $id)
 
+            //pas de relance
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL')
 
+            // ->andWhere('p.creatAt <= :yesterday')
+            // ->setParameter('yesterday', $yesterday)
 
-
-            ->andWhere('p.creatAt <= :yesterday')
-            ->setParameter('yesterday', $yesterday)
-
-            // pas encour passe un jeur de la date de history actionDate
+            // pas encour passe un jour de la date de history actionDate
             ->leftJoin('p.histories', 'h') // Jointure avec l'entité History
-            ->andWhere('h.actionDate <= :endOfYesterday') // Filtre par date d'action de l'historique
+            ->andWhere('h.actionDate <= :endOfYesterday') // Filtre par date d'action de l'historique si actiondate=23/06  <= 24/06 = yesterday alors aujourduit 25/06
             ->setParameter('endOfYesterday', $yesterday)
 
 
@@ -2561,10 +2566,10 @@ class ProspectRepository extends ServiceEntityRepository
      */
     public function findByChefNewProsp(SearchProspect $search, User $user): PaginationInterface
     {
-        //$team = $user->getTeams();
+
         // $today = new \DateTime();
         // $today->setTime(0, 0, 0);
-
+        // dd($today);
         $team = $user->getTeams();
         if ($team->isEmpty()) {
             return [];
@@ -2577,10 +2582,15 @@ class ProspectRepository extends ServiceEntityRepository
             ->where('p.team IN (:teams) ')
             ->setParameter('teams', $team)
 
-            ->andWhere('p.team IS NOT NULL')
+            // ->andWhere('p.team IS NOT NULL')
             ->andWhere('p.comrcl IS  NULL')
+
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL')
+
+            // ->leftJoin('p.histories', 'h')
+            // ->andWhere('h.actionDate  >= :endOfYesterday')
+            // ->setParameter('endOfYesterday', $today)
 
             //->andWhere('p.comrcl IS NULL OR p.comrcl = :val') // Filtrer les prospects no affectés et affect au chef aussi
             //->setParameter('val', $user)
@@ -2692,8 +2702,9 @@ class ProspectRepository extends ServiceEntityRepository
             ->select('p, t, f')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
+
             ->Where('p.team IS  NULL')
-            ->orwhere('p.team IN (:teams) ')
+            ->orwhere('p.team IN (:teams) ')  //  team peut etre null or attacher a mon equipe
             ->setParameter('teams', $team)
 
             ->andWhere('p.comrcl IS  NULL')
@@ -2755,6 +2766,7 @@ class ProspectRepository extends ServiceEntityRepository
         $startOfToday = new \DateTime('today');
         $yesterday = new \DateTime('yesterday');
         $yesterday->setTime(23, 59, 59); // La fin de la journée d'hier 
+        // dd($startOfToday);
         $query = $this->createQueryBuilder('p')
             ->select('p')
             ->where('p.comrcl = :val')
@@ -2768,7 +2780,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->setParameter('endOfYesterday', $yesterday)
 
             ->orderBy('p.id', 'DESC');
-
+        // date de relance ne sera pas > hier
         $query->andWhere('p.id NOT IN ( 
                 SELECT pr.id FROM App\Entity\Prospect pr
                 JOIN pr.relanceds rel
@@ -2810,7 +2822,7 @@ class ProspectRepository extends ServiceEntityRepository
     public function findAllNewProspectsApi(): int
     {
         $query = $this->createQueryBuilder('p')
-            ->select('COUNT(p.id)')
+            ->select('COUNT(DISTINCT p.id)')
             ->andWhere("p.comrcl is NULL")
             ->andWhere("p.team is NULL")
             ->leftJoin('p.relanceds', 'r')
@@ -2827,7 +2839,7 @@ class ProspectRepository extends ServiceEntityRepository
             return [];
         }
         $query = $this->createQueryBuilder('p')
-            ->select('COUNT(p.id)')
+            ->select('COUNT(DISTINCT p.id)')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
             ->where('p.team IN (:teams) ')
@@ -2843,14 +2855,14 @@ class ProspectRepository extends ServiceEntityRepository
     }
 
     //return with int pour chef
-    public function findAllNewPanierProspectsChefApi(User $user): int
+    public function findAllNewProspectsChefAllApi(User $user): int
     {
         $team = $user->getTeams();
         if ($team->isEmpty()) {
             return [];
         }
         $query = $this->createQueryBuilder('p')
-            ->select('COUNT(p.id)')
+            ->select('COUNT(DISTINCT p.id)')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
             ->Where('p.team IS NULL')
@@ -2872,12 +2884,13 @@ class ProspectRepository extends ServiceEntityRepository
         $yesterday = new \DateTime('yesterday');
         $yesterday->setTime(23, 59, 59);
         $query = $this->createQueryBuilder('p')
-            ->select('COUNT(p.id)')
+            ->select('COUNT(DISTINCT p.id)')
             ->where('p.comrcl = :val')
             ->setParameter('val', $id)
-            ->leftJoin('p.relanceds', 'r')
 
+            ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.prospect IS NULL')
+
             ->leftJoin('p.histories', 'h')
             ->andWhere('h.actionDate >= :endOfYesterday')
             ->setParameter('endOfYesterday', $yesterday)

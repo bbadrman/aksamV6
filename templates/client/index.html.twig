@@ -17,10 +17,16 @@
 		</div>
 	{% endfor %}
 	<section class="content-header">
-		<h1>
-			Clients
-			<small>Gestion</small>
-		</h1>
+		{% if app.request.get('_route') == 'client_valide_index'  %}
+
+			<h2>Pré-Clients
+			</h2>
+		{% elseif app.request.get('_route') == 'client_index'  %}
+			<h2>Clients valider</h2>
+
+
+		{% endif %}
+
 		<ol class="breadcrumb">
 			<li>
 				<a href="{{ path('dashboard') }}">
@@ -93,8 +99,8 @@
 								</td>
 
 								<td class="btn-toolbar">
-									{% if client.status == 1   %}
 
+									{% if client.status == 1   %}
 										<a href="{{ path('app_contrat_new', {'id': client.id}) }}" class="btn btn-success btn-xs">
 											CONTART
 										</a>
@@ -103,6 +109,11 @@
 											<a href="{{ path('client_valide_edit', {'id': client.id}) }}" class="btn btn-danger btn-xs">
 												REJETER
 											</a>
+										{% elseif  client.isModif == 1 %}
+											<a href="{{ path('client_edit', {'id': client.id}) }}" class="btn btn btn-xs" style="background-color:#98FB98;">
+												MODIFIE
+											</a>
+
 										{% else %}
 											<a href="{{ path('client_edit', {'id': client.id}) }}" class="btn btn-danger btn-xs">
 												REJETER

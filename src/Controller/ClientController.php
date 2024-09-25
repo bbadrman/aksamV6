@@ -281,12 +281,13 @@ class ClientController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $client->setIsModif(1);
             $this->clientRepository->add($client, true);
             $this->addFlash('info', 'le Client a été modifié avec succès!');
             return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('client/edit.html.twig', [
+        return $this->renderForm('client/editvalid.html.twig', [
             'client' => $client,
             'form' => $form,
         ]);

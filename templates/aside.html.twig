@@ -8,11 +8,11 @@
 		<a href="{% if app.user is not null %} {{ path('user_show', {'id':app.user.id }) }}{% else %} {{ asset('images/no-image.png') }}{% endif %}">
 
 			<img src="
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										{% if app.user is not null %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											{{ asset('images/aksamLogo.jpeg') }}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																									 	{% else %}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											{{ asset('images/no-image.png') }}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										{% endif %}" class="img-circle" width="80" alt="">
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										{% if app.user is not null %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											{{ asset('images/aksamLogo.jpeg') }}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																									 	{% else %}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																											{{ asset('images/no-image.png') }}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																										{% endif %}" class="img-circle" width="80" alt="">
 		</a>
 
 	</p>
@@ -223,32 +223,39 @@
 					<span>Appels
 					</span>
 				</a>
-
 			</li>
 			<!-- END Ringover -->
-			<!-- bibliothèque -->
-			<li class="sub-menu">
-				<a class="nav-link " href="#">
-					<i class="fa fa-book" aria-hidden="true"></i>
 
-					<span>bibliothèque
-					</span>
-				</a>
-
-			</li>
-			<!-- END bibliothèque -->
 		</ul>
 	</li>
 {% endif %}
 <!-- END Prammetre -->
-<!-- Aide -->
 
-{% if is_granted('ROLE_AFFECT') or is_granted('ROLE_PROS') or is_granted('ROLE_ADD_PROS') or is_granted('ROLE_TEAM') or is_granted('ROLE_ADMIN') or is_granted('ROLE_EDIT_PROS') == true %}
-	<li class="sub-menu">
-		<a href="{{ path('aide_show') }}">
-			<i class="fa fa-question-circle" aria-hidden="true" style="font-size: 20px;"></i>
-			<span>Aide</span>
-		</a>
-	</li>
-{% endif %}
-<!-- END Aide -->
+
+<!-- bibliothèque -->
+<li class="sub-menu">
+	<a class="nav-link {% if page in ['red_bebltq', 'aide_show'  ] %}active{% endif %}" href="javascript:;">
+		<i class="fa fa-tags"></i>
+		<span>bibliothèque</span>
+	</a>
+
+	<ul class="sub">
+
+		<li>
+			<a class="nav-link " href="{{ path('red_bebltq') }}">
+				<i class="fa fa-book" aria-hidden="true"></i>
+				<span>Règles souscription
+				</span>
+			</a>
+
+		</li>
+
+		<li class="sub-menu">
+			<a href="{{ path('aide_show') }}">
+				<i class="fa fa-question-circle" aria-hidden="true" style="font-size: 20px;"></i>
+				<span>Aide</span>
+			</a>
+		</li>
+	</ul>
+</li>
+<!-- END bibliothèque -->

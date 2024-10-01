@@ -30,7 +30,7 @@ class DashboardController extends AbstractController
         private UserRepository $userRepository,
         private  TeamRepository $teamRepository,
         private StatsService $statsService,
-        private Security $security
+        private Security $security,
     ) {}
 
     /**
@@ -170,12 +170,38 @@ class DashboardController extends AbstractController
         if (!file_exists($filePath)) {
             throw $this->createNotFoundException('The file does not exist');
         }
-        return $this->render('pdf_view.html.twig', ['filePath' => $filePath]);
-        // return new BinaryFileResponse($filePath, 200, [
+        // return $this->render('pdf_view.html.twig', ['filePath' => $filePath]);
+        // Return the BinaryFileResponse for displaying the PDF inline
+        return new BinaryFileResponse($filePath, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline',
+            'X-Frame-Options' => 'SAMEORIGIN',
+            'X-Content-Type-Options' => 'nosniff'
+        ]);
+    }
 
-        //     'Content-Type' => 'application/pdf',
+    /**
+     * Permet d'afficher tous les teams (regles_soucription)
+     * 
+     *  @Route("/bibliotique", name="red_bebltq")
+     *
+     * @return Response  
+     */
+    public function readbebliotique(): BinaryFileResponse
+    {
+        // Chemin relatif à partir du répertoire `public`
 
-        //     'Content-Disposition' => 'inline; filename="ModOP.pdf"'
-        // ]);
+
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/documents/regles_soucriptionTPM.pdf';
+        chmod($filePath, 0444); // Lecture seule, pas d'écriture
+        if (!file_exists($filePath)) {
+            throw $this->createNotFoundException('The file does not exist');
+        }
+        return new BinaryFileResponse($filePath, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline',
+            'X-Frame-Options' => 'SAMEORIGIN',
+            'X-Content-Type-Options' => 'nosniff'
+        ]);
     }
 }

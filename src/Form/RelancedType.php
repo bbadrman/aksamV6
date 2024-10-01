@@ -42,7 +42,7 @@ class RelancedType extends AbstractType
                         'Faux Fiche' => '7',
                         'Doublon' => '8',
                         'Passage Concurrent ' => '9',
-                        'Passage Contrat ' => '10',
+                        'Passage Client ' => '10',
                         'Déjà Souscrit' => '3',
                         'Test' => '11',
                         'Toujour Injoignable' => '2',

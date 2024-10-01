@@ -29,7 +29,7 @@ class AppelRepository extends ServiceEntityRepository
         ]);
     }
 
-    // Dans AppelRepository.php
+    //GET APP ON SHOW PROSPECT
     public function findAllOrderedByStartTime()
     {
         return $this->createQueryBuilder('a')

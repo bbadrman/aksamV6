@@ -359,21 +359,21 @@
 					</div>
 					{# select cloture #}
 					{# <div>
-																																																																																																																																																																																															<h2 class="text-center">Cloture</h2>
-																																																																																																																																																																																									
-																																																																																																																																																																																															{{ form_start(formClot, { 'attr': { 'id': 'cloture-form' } }) }}
-																																																																																																																																																																																									
-																																																																																																																																																																																															{{ form_row(formClot.motifCloture) }}
-																																																																																																																																																																																									
-																																																																																																																																																																																															<div id="subMotivCltr-container" style="display: none">
-																																																																																																																																																																																																{{ form_row(formClot.clotureAt) }}
-																																																																																																																																																																																															</div>
-																																																																																																																																																																																															<div id="MotivClotrcoment-container" style="display: none">
-																																																																																																																																																																																																{{ form_row(formClot.comment) }}
-																																																																																																																																																																																																<button type="submit" id="cloture-submit" class="btn btn-primary">Ajouter Cloture</button>
-																																																																																																																																																																																															</div>
-																																																																																																																																																																																															{{ form_end(formClot) }}
-																																																																																																																																																																																														</div> #}
+																																																																																																																																																																																																																																																																																																			<h2 class="text-center">Cloture</h2>
+																																																																																																																																																																																																																																																																																													
+																																																																																																																																																																																																																																																																																																			{{ form_start(formClot, { 'attr': { 'id': 'cloture-form' } }) }}
+																																																																																																																																																																																																																																																																																													
+																																																																																																																																																																																																																																																																																																			{{ form_row(formClot.motifCloture) }}
+																																																																																																																																																																																																																																																																																													
+																																																																																																																																																																																																																																																																																																			<div id="subMotivCltr-container" style="display: none">
+																																																																																																																																																																																																																																																																																																				{{ form_row(formClot.clotureAt) }}
+																																																																																																																																																																																																																																																																																																			</div>
+																																																																																																																																																																																																																																																																																																			<div id="MotivClotrcoment-container" style="display: none">
+																																																																																																																																																																																																																																																																																																				{{ form_row(formClot.comment) }}
+																																																																																																																																																																																																																																																																																																				<button type="submit" id="cloture-submit" class="btn btn-primary">Ajouter Cloture</button>
+																																																																																																																																																																																																																																																																																																			</div>
+																																																																																																																																																																																																																																																																																																			{{ form_end(formClot) }}
+																																																																																																																																																																																																																																																																																																		</div> #}
 
 					{# table Client #}
 						<div id="subMotivContrat-container" style="display: none"> <h1 class="text-center">Client</h1>
@@ -570,8 +570,15 @@
 		</div>{# fin table histor #}{# fin table histor appel #}<div class="form-group col-sm-4">
 			<div class="content-panel">
 				<div class="alert alert-light">
-					<h1 class="text-center">Historique d'Appel
+					<h1 class="text-center">Historique des Appels
 					</h1>
+					{# {% for prospects in prospect %}
+											<td>
+					
+												{{ render(controller('App\\Controller\\RingoverController::getCallsShow',{'id':prospects.id}))}}
+					
+											</td>
+										{% endfor %} #}
 					<table class="table table-striped table-advance table-hover">
 						<thead>
 

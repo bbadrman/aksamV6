@@ -18,8 +18,7 @@ class RingoverController extends AbstractController
 
     public function __construct(
         private  EntityManagerInterface $entityManager,
-    ) {
-    }
+    ) {}
 
     /**
      * @Route("/ringover", name="ringover-api")
@@ -77,6 +76,20 @@ class RingoverController extends AbstractController
 
         // Traiter les données reçues de Ringover 
         $this->processRingoverData($data, $appelRepository);
+    }
+
+    /**
+     * @Route("/{id}/getApplShow", name="get_appl_show") 
+     */
+    function getCallsShow(AppelRepository $appelRepository,  Request $request): Response
+    {
+
+        $appel = $appelRepository->findAllOrderedByStartTime();
+
+
+        return $this->render('partials/_show_apl.html.twig', [
+            'appel' => $appel,
+        ]);
     }
 
     /**

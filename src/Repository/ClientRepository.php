@@ -360,12 +360,10 @@ class ClientRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('c')
             ->select('c, h, b')
-            // ->where('c.status = 1 ')
+
             ->where('c.status = 2 OR c.status IS NULL')
             ->leftJoin('c.team', 'b')
-
             ->leftJoin('c.cmrl', 'h')
-
             ->orderBy('c.id', 'DESC');
 
 

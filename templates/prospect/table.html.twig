@@ -263,10 +263,17 @@
 							<div class="green-header">
 								<h2>PRE-CLIENT</h2>
 							</div>
+
+
 							<a href="{{path('client_valide_index')}}">
 								<i class="fa fa-check-square fa-4x" aria-hidden="true"></i>
-								<h1></h1>
-
+								{% if is_granted('ROLE_ADMIN')  == true   %}
+									<h1>{{ " %02d"|format(stats.preclientAdmin ) }}</h1>
+								{% elseif is_granted('ROLE_TEAM') == true %}
+									<h1>{{ " %02d"|format(stats.preclientChef ) }}</h1>
+								{% elseif is_granted('ROLE_USER') == true %}
+									<h1>{{ " %02d"|format(stats.preclientCmrcl ) }}</h1>
+								{% endif %}
 							</a>
 						</div>
 					</div>

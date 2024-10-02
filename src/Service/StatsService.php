@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\User;
+use App\Entity\Client;
 use App\Entity\Prospect;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Security;
@@ -60,10 +61,14 @@ class StatsService
         $unjoiniableChef = $this->getProspectCountUnjoiniableChef($user);
         $unjoiniableCmrl = $this->getProspectCountUnjoiniableCmrcl($user);
 
+        // $prospectsnow = $this->getProspectCountNow();
+
+        $preclientAdmin = $this->getpreclientAdmin();
+        $preclientChef = $this->getpreclientChef($user);
+        $preclientCmrcl = $this->getpreclientCmrcl($user);
 
 
-
-        return compact('relancesNoTrCmrcl', 'relancesNoTrChef', 'relanceNoTraite', 'prosAvenirCmrcl', 'prosAvenirChef', 'prospectsAvenir', 'unjoiniableCmrl', 'unjoiniableChef', 'prospectsNoTrCmrcl', 'prospectsNoTrChef', 'prospectsDayCmrcl', 'prospectsDayChef', 'prospectsCmrclNv', 'prospectsChefNv', 'prospectsChefNvAll', 'prospectsNoTraite', 'unjoiniable', 'prospects', 'prospectspasaffect', 'prospectsDay', 'users', 'teams', 'products', 'clients');
+        return compact('preclientAdmin', 'preclientChef', 'preclientCmrcl', 'relancesNoTrCmrcl', 'relancesNoTrChef', 'relanceNoTraite', 'prosAvenirCmrcl', 'prosAvenirChef', 'prospectsAvenir', 'unjoiniableCmrl', 'unjoiniableChef', 'prospectsNoTrCmrcl', 'prospectsNoTrChef', 'prospectsDayCmrcl', 'prospectsDayChef', 'prospectsCmrclNv', 'prospectsChefNv', 'prospectsChefNvAll', 'prospectsNoTraite', 'unjoiniable', 'prospects', 'prospectspasaffect', 'prospectsDay', 'users', 'teams', 'products', 'clients');
     }
 
 
@@ -695,6 +700,69 @@ class StatsService
             ->setParameter('val', $id)
             ->leftJoin('p.relanceds', 'r')
             ->andWhere("r.motifRelanced = '2'");
+
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
+
+    //compter le nombre pre client du admin 
+    public function getpreclientAdmin()
+    {
+
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(DISTINCT c.id)')
+            ->from(Client::class, 'c')
+
+            ->where('c.status = 2 OR c.status IS NULL')
+        ;
+
+
+
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
+    //compter le nombre pre client du admin 
+    public function getpreclientChef(User $user): int
+    {
+        $teams = $user->getTeams();
+
+        if ($teams->isEmpty()) {
+            return 0;
+        }
+
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(DISTINCT c.id)')
+            ->from(Client::class, 'c')
+
+            ->where('c.status = 2 OR c.status IS NULL')
+            ->andwhere('c.team IN (:teams)')
+
+            ->setParameter('teams', $teams);
+
+
+
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
+    // //compter le nombre pre client du admin 
+    public function getpreclientCmrcl($id)
+    {
+
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(DISTINCT c.id)')
+            ->from(Client::class, 'c')
+
+            ->where('c.status = 2 OR c.status IS NULL')
+            ->andWhere('c.cmrl = :val')
+            ->setParameter('val', $id);
+
+
 
         $query = $qb->getQuery();
         $result = $query->getSingleScalarResult();

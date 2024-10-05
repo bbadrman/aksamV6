@@ -149,7 +149,7 @@ class ClientController extends AbstractController
         $roles = $user->getRoles();
         $client = [];
 
-        if (in_array('ROLE_VALIDE', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
+        if (in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_SUPER_ADMIN', $roles, true)) {
             // admi peut voire toutes les nouveaux client
             $client =  $this->clientRepository->findClientValide($data,  null);
         } else if (in_array('ROLE_TEAM', $roles, true)) {
@@ -190,42 +190,64 @@ class ClientController extends AbstractController
             'form' => $form,
         ]);
     }
-
     /**
-     * @Route("/new-client", name="client_add", methods={"GET", "POST"}) 
+     * @Route("/newclient", name="client_newclient", methods={"GET", "POST"}) 
      */
-    public function add(Request $request, ValidatorInterface $validator): JsonResponse
+    public function newclient(Request $request, $id = null): Response
     {
         $this->denyAccessUnlessGrantedAuthorizedRoles();
+
         $client = new Client();
+        $form = $this->createForm(ClientType::class, $client);
+        $form->handleRequest($request);
 
-        //$client->setName($request->get('name'));
-
-        //$client->setDescription($request->get('description'));
-        // dump($fonction);
-        // die();
-        $errors = $validator->validate($client);
-
-        $errorMessages = array();
-
-        if (count($errors) > 0) {
-            foreach ($errors as $error) {
-                $errorMessages[] = $error->getMessage();
-            }
-            return $this->json([
-                'status' => 400,
-                'errors' => $errorMessages,
-            ]);
-        } else {
-            $this->entityManager->persist($client);
-            $this->entityManager->flush();
-
-            return $this->json([
-                'status' => 200,
-                'message' => 'Fonction a bien été ajouté',
-            ]);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->clientRepository->add($client, true);
+            $this->addFlash('success', 'Le client a été ajouté avec succès!');
+            return $this->redirectToRoute('client_new', [], Response::HTTP_SEE_OTHER);
         }
+
+        return $this->renderForm('client/new.html.twig', [
+            'client' => $client,
+            'form' => $form,
+        ]);
     }
+
+    // /**
+    //  * @Route("/new-client", name="client_add", methods={"GET", "POST"}) 
+    //  */
+    // public function add(Request $request, ValidatorInterface $validator): JsonResponse
+    // {
+    //     $this->denyAccessUnlessGrantedAuthorizedRoles();
+    //     $client = new Client();
+
+    //     //$client->setName($request->get('name'));
+
+    //     //$client->setDescription($request->get('description'));
+    //     // dump($fonction);
+    //     // die();
+    //     $errors = $validator->validate($client);
+
+    //     $errorMessages = array();
+
+    //     if (count($errors) > 0) {
+    //         foreach ($errors as $error) {
+    //             $errorMessages[] = $error->getMessage();
+    //         }
+    //         return $this->json([
+    //             'status' => 400,
+    //             'errors' => $errorMessages,
+    //         ]);
+    //     } else {
+    //         $this->entityManager->persist($client);
+    //         $this->entityManager->flush();
+
+    //         return $this->json([
+    //             'status' => 200,
+    //             'message' => 'Fonction a bien été ajouté',
+    //         ]);
+    //     }
+    // }
 
 
 

@@ -140,6 +140,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'comrcl', targetEntity: Contrat::class)]
     private Collection $contrats;
 
+    #[ORM\ManyToMany(targetEntity: Sav::class, mappedBy: 'afect')]
+    private Collection $savs;
+
 
 
     public function __construct()
@@ -153,6 +156,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->teams = new ArrayCollection();
         $this->transactions = new ArrayCollection();
         $this->contrats = new ArrayCollection();
+        $this->savs = new ArrayCollection();
     }
 
     /**
@@ -657,6 +661,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($contrat->getComrcl() === $this) {
                 $contrat->setComrcl(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sav>
+     */
+    public function getSavs(): Collection
+    {
+        return $this->savs;
+    }
+
+    public function addSav(Sav $sav): static
+    {
+        if (!$this->savs->contains($sav)) {
+            $this->savs->add($sav);
+            $sav->addAfect($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSav(Sav $sav): static
+    {
+        if ($this->savs->removeElement($sav)) {
+            $sav->removeAfect($this);
         }
 
         return $this;

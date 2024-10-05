@@ -84,11 +84,14 @@ class TeamController extends AbstractController
         foreach ($teams as $team) {
             $commercials = [];
             foreach ($team->getUsers() as $commercial) {
-                $commercials[] = [
-                    'id' => $commercial->getId(),
-                    'username' => $commercial->getUsername(),
-                    // Ajoutez d'autres propriétés de l'utilisateur que vous souhaitez inclure
-                ];
+                if ($commercial->getStatus() === 1) {
+                    $commercials[] = [
+                        'id' => $commercial->getId(),
+                        'username' => $commercial->getUsername(),
+                        'status' => $commercial->getStatus(),
+                        // Ajoutez d'autres propriétés de l'utilisateur que vous souhaitez inclure
+                    ];
+                }
             }
             $jsonData[] = [
                 'id' => $team->getId(),

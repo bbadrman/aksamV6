@@ -136,23 +136,24 @@
 											{% endif %}
 										{% endif %}
 									{% endif %}
+									{%  if  is_granted('ROLE_VALIDE')  %}
+										<a href="{{ path('client_valide_edit', {'id': client.id}) }}" class="btn btn-primary btn-xs">
+											<i class="fa fa-pencil"></i>
+										</a>
+									{% endif %}
 								</td>
 							</tr>
 						</td>
 					</tbody>
 				</tr>
-			{% else %}
-				<tr>
-					<td colspan="3">Aucun client trouvé</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</tbody>
-	<tfoot class="text-center">
-		<tr>
-			<td colspan="10">
-				{{ knp_pagination_render(clients, 'pagination.html.twig') }}
 			</td>
-		</tr>
-	</tfoot>
-</table></div></div></div></div>{% endblock %}
+		</tbody>
+	</tr>
+{% else %}
+	<tr>
+		<td colspan="3">Aucun client trouvé</td>
+	</tr>
+{% endfor %}</tbody></tbody><tfoot class="text-center"><tr>
+<td colspan="10">
+	{{ knp_pagination_render(clients, 'pagination.html.twig') }}
+</td></tr></tfoot></table></div></div></div></div>{% endblock %}

@@ -330,6 +330,7 @@ class ProspectRepository extends ServiceEntityRepository
 
             ->leftJoin('u.comrcl', 'f')
 
+
             ->leftJoin('u.relanceds', 'h')
 
             ->orderBy('u.id', 'DESC');
@@ -350,6 +351,7 @@ class ProspectRepository extends ServiceEntityRepository
         if (!empty($search->r)) {
             $query = $query
                 ->andWhere('f.username LIKE :r')
+                ->andWhere('f.status = 1')
                 ->setParameter('r', "%{$search->r}%");
         }
         if (!empty($search->g)) {
@@ -1913,19 +1915,20 @@ class ProspectRepository extends ServiceEntityRepository
         $yesterday = clone $now;
         $yesterday->modify('-24 hours');
         $yesterday->setTime(23, 59, 59);
-        $excludedEmail = 'service.technique@aksam-assurances.fr';
+        // $excludedEmail = 'service.technique@aksam-assurances.fr';
         $query = $this->createQueryBuilder('p')
             ->select('p, t, f, r')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
+
             ->Where('p.team IS NOT NULL')  // Affecté à une équipe 
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('r.motifRelanced IS NULL') // Aucune relation avec relanced 
 
 
 
-            ->andwhere('p.email != :excludedEmail')
-            ->setParameter('excludedEmail', $excludedEmail)
+            // ->andwhere('p.email != :excludedEmail')
+            // ->setParameter('excludedEmail', $excludedEmail)
 
             ->andWhere('p.creatAt <= :yesterday')
             ->setParameter('yesterday', $yesterday)

@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Entity\Client;
+use App\Entity\Contrat;
 use App\Entity\Prospect;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Security;
@@ -63,12 +64,16 @@ class StatsService
 
         // $prospectsnow = $this->getProspectCountNow();
 
+        // compter client
         $preclientAdmin = $this->getpreclientAdmin();
         $preclientChef = $this->getpreclientChef($user);
         $preclientCmrcl = $this->getpreclientCmrcl($user);
+        // compter contrat
+        $preContratAdmin = $this->getpreContratAdmin();
 
 
-        return compact('preclientAdmin', 'preclientChef', 'preclientCmrcl', 'relancesNoTrCmrcl', 'relancesNoTrChef', 'relanceNoTraite', 'prosAvenirCmrcl', 'prosAvenirChef', 'prospectsAvenir', 'unjoiniableCmrl', 'unjoiniableChef', 'prospectsNoTrCmrcl', 'prospectsNoTrChef', 'prospectsDayCmrcl', 'prospectsDayChef', 'prospectsCmrclNv', 'prospectsChefNv', 'prospectsChefNvAll', 'prospectsNoTraite', 'unjoiniable', 'prospects', 'prospectspasaffect', 'prospectsDay', 'users', 'teams', 'products', 'clients');
+
+        return compact('preContratAdmin', 'preclientAdmin', 'preclientChef', 'preclientCmrcl', 'relancesNoTrCmrcl', 'relancesNoTrChef', 'relanceNoTraite', 'prosAvenirCmrcl', 'prosAvenirChef', 'prospectsAvenir', 'unjoiniableCmrl', 'unjoiniableChef', 'prospectsNoTrCmrcl', 'prospectsNoTrChef', 'prospectsDayCmrcl', 'prospectsDayChef', 'prospectsCmrclNv', 'prospectsChefNv', 'prospectsChefNvAll', 'prospectsNoTraite', 'unjoiniable', 'prospects', 'prospectspasaffect', 'prospectsDay', 'users', 'teams', 'products', 'clients');
     }
 
 
@@ -761,6 +766,25 @@ class StatsService
             ->where('c.status = 2 OR c.status IS NULL')
             ->andWhere('c.cmrl = :val')
             ->setParameter('val', $id);
+
+
+
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
+
+    //compter le nombre pre contrat du admin 
+    public function getpreContratAdmin()
+    {
+
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(DISTINCT c.id)')
+            ->from(Contrat::class, 'c')
+
+            ->where('c.status = 2 OR c.status IS NULL')
+        ;
 
 
 

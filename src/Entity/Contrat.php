@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
@@ -101,6 +102,14 @@ class Contrat
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
     private ?string $secondReglement = null;
+
+    #[ORM\OneToMany(mappedBy: 'contrat', targetEntity: Sav::class)]
+    private Collection $savs;
+
+    public function __construct()
+    {
+        $this->savs = new ArrayCollection();
+    }
 
     // Méthode appelée automatiquement avant chaque update
     #[ORM\PreUpdate]
@@ -450,5 +459,39 @@ class Contrat
         $this->secondReglement = $secondReglement;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Sav>
+     */
+    public function getSavs(): Collection
+    {
+        return $this->savs;
+    }
+
+    public function addSav(Sav $sav): static
+    {
+        if (!$this->savs->contains($sav)) {
+            $this->savs->add($sav);
+            $sav->setContrat($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSav(Sav $sav): static
+    {
+        if ($this->savs->removeElement($sav)) {
+            // set the owning side to null (unless already changed)
+            if ($sav->getContrat() === $this) {
+                $sav->setContrat(null);
+            }
+        }
+
+        return $this;
+    }
+    public function __toString(): string
+    {
+        return $this->nom; // ou une autre propriété qui fait sens
     }
 }

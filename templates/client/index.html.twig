@@ -42,6 +42,11 @@
 		<br>
 		{# <a href="{{ path('client_new') }}" class="btn btn-primary">Ajouter un client</a> #}
 	</section>
+	<style>
+		.expanded-content {
+			display: none;
+		}
+	</style>
 	<div class="col-xs-10" style="float: right !important;">
 		<div class="row" style="margin-right: 10px;">
 
@@ -60,11 +65,9 @@
 						<tr>
 
 							<th>Equipe</th>
-
 							<th>Comercial</th>
-
-							<th>Prénom</th>
 							<th>Nom</th>
+							<th>Prénom</th>
 							<th>Téléphone</th>
 							<th>Email</th>
 							<th>Raison Sociale</th>
@@ -75,7 +78,7 @@
 					</thead>
 					<tbody>
 						{% for client in clients %}
-							<tr>
+							<tr class="expandable-row">
 
 								<td>{{ client.team }}</td>
 
@@ -143,17 +146,111 @@
 									{% endif %}
 								</td>
 							</tr>
-						</td>
+							{% for contrat in client.contrats %}
+								<tr class="expanded-content" style="background-color:#87CEFA;">
+
+									<td>CONTRAT</td>
+									<td>{{ contrat.comrcl }}</td>
+									<td></td>
+									<td></td>
+									<td>{{ contrat.etat }}</td>
+									<td>{{ contrat.type }}</td>
+									<td>{{ contrat.activite }}</td>
+									<td>{{ contrat.products }}</td>
+									<td>
+										<a href="{{ path('contrat_sav_new', {'id': contrat.id}) }}" class="btn btn-primary btn-xs">
+											CREER SAV
+										</a>
+									</td>
+								</tr>
+								{% for sav in contrat.savs %}
+									<tr class="expanded-content" style="background-color:#98FB98;">
+										{% if sav.status == 1 or sav.status is null %}
+
+											<td>SAV</td>
+											<td>
+												{% if sav.afect is not empty %}
+
+													{% for user in sav.afect %}
+														{{ user.username }}
+													{% endfor %}
+
+												{% else %}
+													...
+												{% endif %}
+											</td>
+											<td>{{ sav.creatAt ? sav.creatAt|date('Y-m-d H:i:s') : '' }}</td>
+
+
+											<td>
+												{% if  sav.motif is not empty %}
+													{% if sav.motif == 1 %}
+														Avenant
+													{% elseif sav.motif == 2 %}
+														Remboursement
+													{% elseif sav.motif == 3 %}
+														Sinistre
+													{% elseif sav.motif == 4 %}
+														Demande documents
+													{% endif %}
+													<br>
+												{% endif %}
+
+											</td>
+											<td>
+												{% if  sav.natureDemande is not empty %}
+													{% if sav.natureDemande == 1 %}
+														Changement adresse
+													{% elseif sav.natureDemande == 2 %}
+														Changement RIB
+													{% elseif sav.natureDemande == 3 %}
+														Changement véhicule
+													{% elseif sav.natureDemande == 4 %}
+														Frais dossier
+													{% elseif sav.natureDemande == 5 %}
+														Acompte
+													{% elseif sav.natureDemande == 6 %}
+														Prorata suite résiliation
+													{% elseif sav.natureDemande == 7 %}
+														Ouverture sinistre
+													{% elseif sav.natureDemande == 8 %}
+														Mandaté expert
+													{% elseif sav.natureDemande == 9 %}
+														Remboursement sinistre
+													{% elseif sav.natureDemande == 10 %}
+														Relevé information
+													{% elseif sav.natureDemande == 11 %}
+														Attestation
+
+													{% endif %}
+													<br>
+												{% endif %}
+											</td>
+											<td>
+
+												<a href="{{ path('app_sav_show', {'id': sav.id}) }}">Traiter</a>
+											</td>
+										{% endif %}
+									</tr>
+								</tr</tr>
+							{% endfor %}
+						{% endfor %}
 					</tbody>
+				{% else %}
+					<td colspan="3">Aucun client trouvé</td>
+				{% endfor %}
+			</tbody>
+			<tfoot class="text-center">
+				<tr>
+					<td colspan="10">{{ knp_pagination_render(clients, 'pagination.html.twig') }}</td>
 				</tr>
-			</td>
-		</tbody>
-	</tr>
-{% else %}
-	<tr>
-		<td colspan="3">Aucun client trouvé</td>
-	</tr>
-{% endfor %}</tbody></tbody><tfoot class="text-center"><tr>
-<td colspan="10">
-	{{ knp_pagination_render(clients, 'pagination.html.twig') }}
-</td></tr></tfoot></table></div></div></div></div>{% endblock %}
+			</tfoot>
+		</table>
+	</div>
+</div></div><script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script><script>
+$(document).ready(function () {
+$('.expandable-row').click(function () {
+$('.expanded-content').not($(this).nextAll('.expanded-content')).hide();
+$(this).nextUntil('.expandable-row').toggle();
+});
+});</script>{% endblock %}

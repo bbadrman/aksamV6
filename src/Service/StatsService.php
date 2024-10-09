@@ -66,14 +66,14 @@ class StatsService
 
         // compter client
         $preclientAdmin = $this->getpreclientAdmin();
-        $preclientChef = $this->getpreclientChef($user);
-        $preclientCmrcl = $this->getpreclientCmrcl($user);
+        // $preclientChef = $this->getpreclientChef($user);
+        // $preclientCmrcl = $this->getpreclientCmrcl($user);
         // compter contrat
         $preContratAdmin = $this->getpreContratAdmin();
 
 
 
-        return compact('preContratAdmin', 'preclientAdmin', 'preclientChef', 'preclientCmrcl', 'relancesNoTrCmrcl', 'relancesNoTrChef', 'relanceNoTraite', 'prosAvenirCmrcl', 'prosAvenirChef', 'prospectsAvenir', 'unjoiniableCmrl', 'unjoiniableChef', 'prospectsNoTrCmrcl', 'prospectsNoTrChef', 'prospectsDayCmrcl', 'prospectsDayChef', 'prospectsCmrclNv', 'prospectsChefNv', 'prospectsChefNvAll', 'prospectsNoTraite', 'unjoiniable', 'prospects', 'prospectspasaffect', 'prospectsDay', 'users', 'teams', 'products', 'clients');
+        return compact('preContratAdmin', 'preclientAdmin',  'relancesNoTrCmrcl', 'relancesNoTrChef', 'relanceNoTraite', 'prosAvenirCmrcl', 'prosAvenirChef', 'prospectsAvenir', 'unjoiniableCmrl', 'unjoiniableChef', 'prospectsNoTrCmrcl', 'prospectsNoTrChef', 'prospectsDayCmrcl', 'prospectsDayChef', 'prospectsCmrclNv', 'prospectsChefNv', 'prospectsChefNvAll', 'prospectsNoTraite', 'unjoiniable', 'prospects', 'prospectspasaffect', 'prospectsDay', 'users', 'teams', 'products', 'clients');
     }
 
 
@@ -731,49 +731,49 @@ class StatsService
         return $result;
     }
     //compter le nombre pre client du admin 
-    public function getpreclientChef(User $user): int
-    {
-        $teams = $user->getTeams();
+    // public function getpreclientChef(User $user): int
+    // {
+    //     $teams = $user->getTeams();
 
-        if ($teams->isEmpty()) {
-            return 0;
-        }
+    //     if ($teams->isEmpty()) {
+    //         return 0;
+    //     }
 
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(DISTINCT c.id)')
-            ->from(Client::class, 'c')
+    //     $qb = $this->manager->createQueryBuilder();
+    //     $qb->select('COUNT(DISTINCT c.id)')
+    //         ->from(Client::class, 'c')
 
-            ->where('c.status = 2 OR c.status IS NULL')
-            ->andwhere('c.team IN (:teams)')
+    //         ->where('c.status = 2 OR c.status IS NULL')
+    //         ->andwhere('c.team IN (:teams)')
 
-            ->setParameter('teams', $teams);
+    //         ->setParameter('teams', $teams);
 
 
 
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
+    //     $query = $qb->getQuery();
+    //     $result = $query->getSingleScalarResult();
 
-        return $result;
-    }
+    //     return $result;
+    // }
     // //compter le nombre pre client du admin 
-    public function getpreclientCmrcl($id)
-    {
+    // public function getpreclientCmrcl($id)
+    // {
 
-        $qb = $this->manager->createQueryBuilder();
-        $qb->select('COUNT(DISTINCT c.id)')
-            ->from(Client::class, 'c')
+    //     $qb = $this->manager->createQueryBuilder();
+    //     $qb->select('COUNT(DISTINCT c.id)')
+    //         ->from(Client::class, 'c')
 
-            ->where('c.status = 2 OR c.status IS NULL')
-            ->andWhere('c.cmrl = :val')
-            ->setParameter('val', $id);
+    //         ->where('c.status = 2 OR c.status IS NULL')
+    //         ->andWhere('c.cmrl = :val')
+    //         ->setParameter('val', $id);
 
 
 
-        $query = $qb->getQuery();
-        $result = $query->getSingleScalarResult();
+    //     $query = $qb->getQuery();
+    //     $result = $query->getSingleScalarResult();
 
-        return $result;
-    }
+    //     return $result;
+    // }
 
     //compter le nombre pre contrat du admin 
     public function getpreContratAdmin()

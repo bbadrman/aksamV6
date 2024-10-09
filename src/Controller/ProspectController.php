@@ -361,7 +361,6 @@ class ProspectController extends AbstractController
 
 
 
-
         // Gerer les relance 
         $relance = new Relanced();
         $relance->setProspect($prospect);

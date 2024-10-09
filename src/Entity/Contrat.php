@@ -106,6 +106,9 @@ class Contrat
     #[ORM\OneToMany(mappedBy: 'contrat', targetEntity: Sav::class)]
     private Collection $savs;
 
+    #[ORM\ManyToOne(inversedBy: 'contrats')]
+    private ?Client $client = null;
+
     public function __construct()
     {
         $this->savs = new ArrayCollection();
@@ -493,5 +496,17 @@ class Contrat
     public function __toString(): string
     {
         return $this->nom; // ou une autre propriété qui fait sens
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): static
+    {
+        $this->client = $client;
+
+        return $this;
     }
 }

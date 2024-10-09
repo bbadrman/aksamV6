@@ -267,17 +267,30 @@
 
 							<a href="{{path('client_valide_index')}}">
 								<i class="fa fa-check-square fa-4x" aria-hidden="true"></i>
-								{% if is_granted('ROLE_ADMIN')  == true   %}
-									<h1>{{ " %02d"|format(stats.preclientAdmin ) }}</h1>
-								{% elseif is_granted('ROLE_TEAM') == true %}
-									<h1>{{ " %02d"|format(stats.preclientChef ) }}</h1>
-								{% elseif is_granted('ROLE_USER') == true %}
-									<h1>{{ " %02d"|format(stats.preclientCmrcl ) }}</h1>
-								{% endif %}
+
+								<h1>{{ " %02d"|format(stats.preclientAdmin ) }}</h1>
+
 							</a>
 						</div>
 					</div>
 					<!--END CONTRAT -->
+
+					<!-- SAV -->
+					<div class="col-md-3 col-sm-3 mb">
+						<div class="green-panel pn">
+							<div class="green-header">
+								<h2>SAV</h2>
+							</div>
+
+
+							<a href="{{path('app_sav_index')}}">
+								<i class="fa fa-spinner fa-4x" aria-hidden="true"></i>
+
+
+							</a>
+						</div>
+					</div>
+					<!--END SAV -->
 
 				</div>
 			{% endif %}

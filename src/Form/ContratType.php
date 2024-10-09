@@ -95,6 +95,7 @@ class ContratType extends AbstractType
                 ->add('conducteur', Type\TextType::class, [
                     'label' => 'Conducteur ',
                     'disabled' => true,
+                    'required' => false,
                     'attr' => [
 
                         'placeholder' => 'Tapez le Nom du conducteur'
@@ -424,6 +425,7 @@ class ContratType extends AbstractType
 
                 ->add('conducteur', Type\TextType::class, [
                     'label' => 'Conducteur ',
+                    'required' => false,
                     'attr' => [
 
                         'placeholder' => 'Tapez le Nom du conducteur'

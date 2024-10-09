@@ -434,7 +434,7 @@ if (motifField !== null) {
 }
 
 
-// Select du Contrat
+
 // Select du Contrat
 var contratypeField = document.getElementById('contrat_type');
 var produitField = document.getElementById('contrat_products');
@@ -541,6 +541,53 @@ if (typeCondField !== null) {
 }
 
 
+// Select du Sav
+// Select du Sav
+var natureField = document.getElementById('sav_natureDemande');
+var motifField = document.getElementById('sav_motif');
+
+// Function to update the motif field based on the nature field
+function updateFields() {
+	// Get the selected value of the nature field
+	var selectedNature = natureField.value;
+
+	// Reset the motif field
+	for (var i = 0; i < motifField.options.length; i++) {
+		motifField.options[i].style.display = 'none'; // Hide all options
+	}
+
+	// Show specific options based on the selected nature
+	if (selectedNature === '1') {
+		// Show options 1, 2, and 3
+		motifField.options[0].style.display = 'block'; // Option 1
+		motifField.options[1].style.display = 'block'; // Option 2
+		motifField.options[2].style.display = 'block'; // Option 3
+		motifField.options[3].style.display = 'block'; // Option 4
+	} else if (selectedNature === '2') {
+		// Show options 4, 5, and 6
+
+		motifField.options[4].style.display = 'block'; // Option 5
+		motifField.options[5].style.display = 'block'; // Option 6
+		motifField.options[6].style.display = 'block'; // Option 7
+	} else if (selectedNature === '3') {
+		// Show options 7, 8, and 9
+
+		motifField.options[7].style.display = 'block'; // Option 8
+		motifField.options[8].style.display = 'block'; // Option 9
+		motifField.options[9].style.display = 'block'; // Option 10
+	}
+	else if (selectedNature === '4') {
+		// Show options 7, 8, and 9
+		motifField.options[10].style.display = 'block'; // Option 11
+		motifField.options[11].style.display = 'block'; // Option 12
+	}
+}
+
+// Attach event listener to the nature field
+natureField.addEventListener('change', updateFields);
+
+// Initial call to set the correct state on page load
+updateFields();
 
 
 // Sélection des éléments

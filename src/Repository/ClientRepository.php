@@ -126,74 +126,74 @@ class ClientRepository extends ServiceEntityRepository
         );
     }
 
-    /**
-     * Find list a client by a all search form
-     * @param SearchClient $search
-     * @return PaginationInterface
-     */
-    public function findClientChef(SearchClient $search, User $user): PaginationInterface
-    {
+    // /**
+    //  * Find list a client by a all search form
+    //  * @param SearchClient $search
+    //  * @return PaginationInterface
+    //  */
+    // public function findClientChef(SearchClient $search, User $user): PaginationInterface
+    // {
 
-        $teams = $user->getTeams();
+    //     $teams = $user->getTeams();
 
-        if ($teams->isEmpty()) {
-            return [];
-        }
+    //     if ($teams->isEmpty()) {
+    //         return [];
+    //     }
 
-        $query = $this->createQueryBuilder('c')
-            ->select('c, f, t ')
+    //     $query = $this->createQueryBuilder('c')
+    //         ->select('c, f, t ')
 
-            ->where('c.status = 2 OR c.status IS NULL')
+    //         ->where('c.status = 2 OR c.status IS NULL')
 
-            ->leftJoin('c.cmrl', 'f')
-            ->leftJoin('c.team', 't')
+    //         ->leftJoin('c.cmrl', 'f')
+    //         ->leftJoin('c.team', 't')
 
-            ->andwhere('c.team IN (:teams)')
+    //         ->andwhere('c.team IN (:teams)')
 
-            ->setParameter('teams', $teams)
+    //         ->setParameter('teams', $teams)
 
-            ->orderBy('c.id', 'DESC');
+    //         ->orderBy('c.id', 'DESC');
 
-        if (!empty($search->f)) {
-            $query = $query
-                ->andWhere('c.firstname LIKE :f')
-                ->setParameter('f', "%{$search->f}%");
-        }
-        if (!empty($search->l)) {
-            $query = $query
-                ->andWhere('c.lastname LIKE :l')
-                ->setParameter('l', "%{$search->l}%");
-        }
+    //     if (!empty($search->f)) {
+    //         $query = $query
+    //             ->andWhere('c.firstname LIKE :f')
+    //             ->setParameter('f', "%{$search->f}%");
+    //     }
+    //     if (!empty($search->l)) {
+    //         $query = $query
+    //             ->andWhere('c.lastname LIKE :l')
+    //             ->setParameter('l', "%{$search->l}%");
+    //     }
 
-        if (!empty($search->team)) {
-            $query = $query
-                ->andWhere('t.name LIKE :team')
-                ->setParameter('team', "%{$search->team}%");
-        }
-        if (!empty($search->k)) {
-            $query = $query
-                ->andWhere('f.username LIKE :k')
-                ->setParameter('k', "%{$search->k}%");
-        }
+    //     if (!empty($search->team)) {
+    //         $query = $query
+    //             ->andWhere('t.name LIKE :team')
+    //             ->setParameter('team', "%{$search->team}%");
+    //     }
+    //     if (!empty($search->k)) {
+    //         $query = $query
+    //             ->andWhere('f.username LIKE :k')
+    //             ->setParameter('k', "%{$search->k}%");
+    //     }
 
-        if (!empty($search->g)) {
-            $query = $query
-                ->andWhere('c.email LIKE :g')
-                ->setParameter('g', "%{$search->g}%");
-        }
+    //     if (!empty($search->g)) {
+    //         $query = $query
+    //             ->andWhere('c.email LIKE :g')
+    //             ->setParameter('g', "%{$search->g}%");
+    //     }
 
 
-        if (!empty($search->t)) {
-            $query = $query
-                ->orWhere('c.phone LIKE :t')
-                ->setParameter('t', "%{$search->t}%");
-        }
-        return $this->paginator->paginate(
-            $query,
-            $search->page,
-            10
-        );
-    }
+    //     if (!empty($search->t)) {
+    //         $query = $query
+    //             ->orWhere('c.phone LIKE :t')
+    //             ->setParameter('t', "%{$search->t}%");
+    //     }
+    //     return $this->paginator->paginate(
+    //         $query,
+    //         $search->page,
+    //         10
+    //     );
+    // }
 
 
     public function findClientByteamForChef(User $user): array
@@ -219,67 +219,67 @@ class ClientRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    /**
-     * Find list a client by a all search form
-     * @param SearchClient $search
-     * @return PaginationInterface
-     */
-    public function findClientCmrcl(SearchClient $search, $id): PaginationInterface
-    {
+    // /**
+    //  * Find list a client by a all search form
+    //  * @param SearchClient $search
+    //  * @return PaginationInterface
+    //  */
+    // public function findClientCmrcl(SearchClient $search, $id): PaginationInterface
+    // {
 
-        $query = $this->createQueryBuilder('c')
-            ->select('c, h, b')
-            ->where('c.status = 2 OR c.status IS NULL')
-            ->leftJoin('c.team', 'b')
-            ->leftJoin('c.cmrl', 'h')
-            ->andWhere('c.cmrl = :val')
-            ->setParameter('val', $id)
+    //     $query = $this->createQueryBuilder('c')
+    //         ->select('c, h, b')
+    //         ->where('c.status = 2 OR c.status IS NULL')
+    //         ->leftJoin('c.team', 'b')
+    //         ->leftJoin('c.cmrl', 'h')
+    //         ->andWhere('c.cmrl = :val')
+    //         ->setParameter('val', $id)
 
-            ->orderBy('c.id', 'DESC');
+    //         ->orderBy('c.id', 'DESC');
 
-        if ((!empty($search->f))) {
-            $query = $query
-                ->andWhere('c.firstname LIKE :f')
+    //     if ((!empty($search->f))) {
+    //         $query = $query
+    //             ->andWhere('c.firstname LIKE :f')
 
 
-                ->setParameter('f', "%{$search->f}%");
-        }
+    //             ->setParameter('f', "%{$search->f}%");
+    //     }
 
-        if (!empty($search->l)) {
-            $query = $query
-                ->andWhere('c.lastname LIKE :l')
-                ->setParameter('l', "%{$search->l}%");
-        }
+    //     if (!empty($search->l)) {
+    //         $query = $query
+    //             ->andWhere('c.lastname LIKE :l')
+    //             ->setParameter('l', "%{$search->l}%");
+    //     }
 
-        if (!empty($search->g)) {
-            $query = $query
-                ->andWhere('c.email LIKE :g')
-                ->setParameter('g', "%{$search->g}%");
-        }
+    //     if (!empty($search->g)) {
+    //         $query = $query
+    //             ->andWhere('c.email LIKE :g')
+    //             ->setParameter('g', "%{$search->g}%");
+    //     }
 
-        if (!empty($search->d) && $search->d instanceof \DateTime) {
-            $query = $query
-                ->andWhere('c.creatAt >= :d')
-                ->setParameter('d', $search->d);
-        }
+    //     if (!empty($search->d) && $search->d instanceof \DateTime) {
+    //         $query = $query
+    //             ->andWhere('c.creatAt >= :d')
+    //             ->setParameter('d', $search->d);
+    //     }
 
-        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
-            $search->dd->setTime(23, 59, 59);
-            $query = $query
-                ->andWhere('c.creatAt <= :dd')
-                ->setParameter('dd', $search->dd);
-        }
-        if (!empty($search->t)) {
-            $query = $query
-                ->orWhere('c.phone LIKE :t')
-                ->setParameter('t', "%{$search->t}%");
-        }
-        return $this->paginator->paginate(
-            $query,
-            $search->page,
-            10
-        );
-    }
+    //     if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+    //         $search->dd->setTime(23, 59, 59);
+    //         $query = $query
+    //             ->andWhere('c.creatAt <= :dd')
+    //             ->setParameter('dd', $search->dd);
+    //     }
+    //     if (!empty($search->t)) {
+    //         $query = $query
+    //             ->orWhere('c.phone LIKE :t')
+    //             ->setParameter('t', "%{$search->t}%");
+    //     }
+    //     return $this->paginator->paginate(
+    //         $query,
+    //         $search->page,
+    //         10
+    //     );
+    // }
     /**
      * Find a list of clients using a search form
      * @param SearchClient $search

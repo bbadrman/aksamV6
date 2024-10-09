@@ -51,7 +51,7 @@ class ContratController extends AbstractController
         $contrat->setNom($client->getLastName());
         $contrat->setPrenom($client->getFirstName());
         $contrat->setRaisonSociale($client->getRaisonSociale());
-
+        $contrat->setClient($client);
 
         $form = $this->createForm(ContratType::class, $contrat);
         $form->handleRequest($request);

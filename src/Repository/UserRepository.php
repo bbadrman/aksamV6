@@ -5,8 +5,10 @@ namespace App\Repository;
 use App\Entity\Team;
 use App\Entity\User;
 use App\Search\SearchUser;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Security\Core\Security;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -27,10 +29,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      * @var PaginatorInterface
      */
 
-    public function __construct(ManagerRegistry $registry, private PaginatorInterface $paginator)
+    public function __construct(ManagerRegistry $registry, private PaginatorInterface $paginator, private Security $security)
     {
         parent::__construct($registry, User::class);
     }
+
 
     public function add(User $entity, bool $flush = false): void
     {
@@ -195,4 +198,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getResult();
     }
+
+    // public function createQueryForGestionUsers($id): QueryBuilder
+    // {
+    //     return $this->createQueryBuilder('u')
+    //         ->where('u.roles LIKE :role')
+    //         // ->andWhere('u.afect = :val OR u.id = :currentUserId')
+    //         // ->setParameter('val', $id)
+    //         ->setParameter('role', '%ROLE_STAND%')
+    //         // ->setParameter('currentUserId', $this->security->getUser())
+    //         ->orderBy('u.username', 'ASC');
+    // }
 }

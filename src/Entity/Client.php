@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ClientRepository;
@@ -63,6 +65,14 @@ class Client
 
     #[ORM\Column(nullable: true)]
     private ?bool $isModif = null;
+
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Contrat::class)]
+    private Collection $contrats;
+
+    public function __construct()
+    {
+        $this->contrats = new ArrayCollection();
+    }
 
 
     /**
@@ -254,6 +264,36 @@ class Client
     public function setIsModif(?bool $isModif): static
     {
         $this->isModif = $isModif;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Contrat>
+     */
+    public function getContrats(): Collection
+    {
+        return $this->contrats;
+    }
+
+    public function addContrat(Contrat $contrat): static
+    {
+        if (!$this->contrats->contains($contrat)) {
+            $this->contrats->add($contrat);
+            $contrat->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContrat(Contrat $contrat): static
+    {
+        if ($this->contrats->removeElement($contrat)) {
+            // set the owning side to null (unless already changed)
+            if ($contrat->getClient() === $this) {
+                $contrat->setClient(null);
+            }
+        }
 
         return $this;
     }

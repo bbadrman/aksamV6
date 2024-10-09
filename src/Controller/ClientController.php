@@ -149,16 +149,9 @@ class ClientController extends AbstractController
         $roles = $user->getRoles();
         $client = [];
 
-        if (in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_SUPER_ADMIN', $roles, true)) {
-            // admi peut voire toutes les nouveaux client
-            $client =  $this->clientRepository->findClientValide($data,  null);
-        } else if (in_array('ROLE_TEAM', $roles, true)) {
-            // chef peut voire toutes les relance du jour atacher a leur equipe
-            $client =  $this->clientRepository->findClientChef($data,  $user,  null);
-        } else {
-            // cmrcl peut voire seulement les relance du jour  atacher a lui
-            $client =  $this->clientRepository->findClientCmrcl($data, $user, null);
-        }
+
+        $client =  $this->clientRepository->findClientValide($data,  null);
+
 
         return $this->render('client/index.html.twig', [
             'clients' => $client,

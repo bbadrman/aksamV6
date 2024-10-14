@@ -18,7 +18,7 @@ class RelanceSavType extends AbstractType
                 'motifRelance',
                 Type\ChoiceType::class,
                 [
-
+                    'label' => 'Relancer',
                     'required' => false,
                     'placeholder' => '--Merci de selectie-- ',
                     'choices' => [
@@ -28,6 +28,9 @@ class RelanceSavType extends AbstractType
                         'Relance' => [
                             'Attente doc' =>  2,
                             'Attente réponse CIE' => 3,
+                        ],
+                        'Clôture SAV' => [
+                            'Clôture SAV' =>  4,
                         ]
                     ],
                     'expanded' => false,
@@ -39,8 +42,8 @@ class RelanceSavType extends AbstractType
                 'creatAt',
                 DateTimeType::class,
                 [
-                    'label' => 'Date de Relance *',
-                    'required' => false,
+                    'label' => 'Date de Relance ',
+                    'required' => true,
                     'widget' => 'single_text',
                     'attr' => [
                         'min' => (new \DateTime())->format('Y-m-d H:i')

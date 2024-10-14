@@ -23,6 +23,8 @@ security:
             switch_user: true
             logout:
                 path: app_logout
+            # form_login:
+            #     default_target_path: dashboard
             
 
             # activate different ways to authenticate

@@ -147,16 +147,21 @@
 								</td>
 							</tr>
 							{% for contrat in client.contrats %}
-								<tr class="expanded-content" style="background-color:#87CEFA;">
 
-									<td>CONTRAT</td>
+
+								<tr class="expanded-content">
+									<td></td>
+									<td style="color:blue;">
+										<i class="fa fa-handshake-o" aria-hidden="true"></i>
+										CONTRAT</td>
 									<td>{{ contrat.comrcl }}</td>
-									<td></td>
-									<td></td>
+									<td>{{ contrat.products }}</td>
+									<td>{{ contrat.compagnie }}</td>
+									<td>{{ contrat.partenaire }}</td>
 									<td>{{ contrat.etat }}</td>
 									<td>{{ contrat.type }}</td>
-									<td>{{ contrat.activite }}</td>
-									<td>{{ contrat.products }}</td>
+									<td>{{ contrat.frais }}</td>
+
 									<td>
 										<a href="{{ path('contrat_sav_new', {'id': contrat.id}) }}" class="btn btn-primary btn-xs">
 											CREER SAV
@@ -164,10 +169,13 @@
 									</td>
 								</tr>
 								{% for sav in contrat.savs %}
-									<tr class="expanded-content" style="background-color:#98FB98;">
+									<tr class="expanded-content">
 										{% if sav.status == 1 or sav.status is null %}
-
-											<td>SAV</td>
+											<td></td>
+											<td></td>
+											<td style="color:red;">
+												<i class="fa fa-tty" aria-hidden="true"></i>
+												SAV</td>
 											<td>
 												{% if sav.afect is not empty %}
 
@@ -228,7 +236,18 @@
 											</td>
 											<td>
 
-												<a href="{{ path('app_sav_show', {'id': sav.id}) }}">Traiter</a>
+												{% set lastRelanceSav = sav.relanceSavs|last %}
+
+												{% if lastRelanceSav is not empty %}
+													{% if lastRelanceSav.motifRelance == 4 %}
+														<button class="btn btn " style="background-color:#98FB98; font-size: 12px;">Cloturé</button>
+													{% else %}
+														<button class="btn btn " style="background-color:#98FB98; font-size: 12px;">En traitement</button>
+													{% endif %}
+												{% endif %}
+												<button>
+													<a href="{{ path('app_afficher_show', {'id': sav.id}) }}">Traiter</a>
+												</button>
 											</td>
 										{% endif %}
 									</tr>

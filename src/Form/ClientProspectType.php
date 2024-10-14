@@ -26,20 +26,20 @@ class ClientProspectType extends AbstractType
         $roles = $user->getRoles();
 
         $builder
-            ->add('firstname', Type\TextType::class, [
-                'label' => 'Prénom',
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'Merci de saisir le prénom du client'
-                ]
-            ])
-            ->add('lastname', Type\TextType::class, [
-                'label' => 'Nom',
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'Merci de saisir le nom du client'
-                ]
-            ])
+            // ->add('firstname', Type\TextType::class, [
+            //     'label' => 'Prénom',
+            //     'required' => false,
+            //     'attr' => [
+            //         'placeholder' => 'Merci de saisir le prénom du client'
+            //     ]
+            // ])
+            // ->add('lastname', Type\TextType::class, [
+            //     'label' => 'Nom',
+            //     'required' => false,
+            //     'attr' => [
+            //         'placeholder' => 'Merci de saisir le nom du client'
+            //     ]
+            // ])
             ->add('phone', Type\TextType::class, [
                 'label' => 'Téléphone 2',
                 'required' => false,
@@ -67,6 +67,9 @@ class ClientProspectType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Raison sociale',
                 ]
+            ])
+            ->add('comment', TextareaType::class, [
+                'required' => false,
             ])
         ;
     }

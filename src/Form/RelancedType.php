@@ -51,6 +51,7 @@ class RelancedType extends AbstractType
                 ],
                 'expanded' => false,
                 'multiple' => false,
+                // 'autocomplete' => true,
                 'attr' => ['id' => 'motifRelanced']
             ])
             ->add('relacedAt', DateTimeType::class, [

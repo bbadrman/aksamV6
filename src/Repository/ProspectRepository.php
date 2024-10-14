@@ -1915,7 +1915,7 @@ class ProspectRepository extends ServiceEntityRepository
         $yesterday = clone $now;
         $yesterday->modify('-24 hours');
         $yesterday->setTime(23, 59, 59);
-        // $excludedEmail = 'service.technique@aksam-assurances.fr';
+        $excludedEmail = 'service.technique@aksam-assurances.fr';
         $query = $this->createQueryBuilder('p')
             ->select('p, t, f, r')
             ->leftJoin('p.team', 't')
@@ -1923,12 +1923,13 @@ class ProspectRepository extends ServiceEntityRepository
 
             ->Where('p.team IS NOT NULL')  // Affecté à une équipe 
             ->leftJoin('p.relanceds', 'r')
-            ->andWhere('r.motifRelanced IS NULL') // Aucune relation avec relanced 
+            ->andWhere('r.prospect IS NULL')
+            // ->andWhere('r.motifRelanced IS NULL') // Aucune relation avec relanced 
 
 
 
-            // ->andwhere('p.email != :excludedEmail')
-            // ->setParameter('excludedEmail', $excludedEmail)
+            ->andwhere('p.email != :excludedEmail')
+            ->setParameter('excludedEmail', $excludedEmail)
 
             ->andWhere('p.creatAt <= :yesterday')
             ->setParameter('yesterday', $yesterday)

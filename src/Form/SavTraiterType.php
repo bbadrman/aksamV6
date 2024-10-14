@@ -29,7 +29,7 @@ class SavTraiterType extends AbstractType
         if (!$user instanceof User) {
             throw new \LogicException('L\'utilisateur actuel n\'est pas de type User.');
         }
-
+        // il faut supremer 
         $builder
 
             ->add(
@@ -46,7 +46,8 @@ class SavTraiterType extends AbstractType
                         'Relance' => [
                             'Attente doc' =>  2,
                             'Attente réponse CIE' => 3,
-                        ]
+                        ],
+
                     ],
                     'expanded' => false,
                     'multiple' => false,

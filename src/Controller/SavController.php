@@ -9,7 +9,6 @@ use App\Form\RelanceSavType;
 use App\Form\SavTraiterType;
 use App\Repository\SavRepository;
 use App\Repository\ContratRepository;
-use App\Repository\RelanceSavRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -75,6 +74,7 @@ class SavController extends AbstractController
         return $this->renderForm('sav/new.html.twig', [
             'sav' => $sav,
             'form' => $form,
+
         ]);
     }
 
@@ -100,7 +100,7 @@ class SavController extends AbstractController
     }
 
     #[Route('/show/{id}', name: 'app_afficher_show', methods: ['GET', 'POST'])]
-    public function afficher(Request $request, Sav $sav, RelanceSavRepository $relanceSavRepository): Response
+    public function afficher(Request $request, Sav $sav): Response
     {
 
 
@@ -124,11 +124,11 @@ class SavController extends AbstractController
             //pour vider la form et rest au meme page 
             return $this->redirect($request->getRequestUri());
         }
-        $relanceSav =  $relanceSavRepository->findAll();
+
 
         return $this->render('sav/show.html.twig', [
             'sav' => $sav,
-            'relancesav' => $relanceSav,
+            'contrat' => $sav->getContrat(),
             'form' => $form->createView(),
         ]);
     }
@@ -152,23 +152,23 @@ class SavController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/traitement', name: 'app_sav_traiter', methods: ['GET', 'POST'])]
-    public function traiter(Request $request, Sav $sav, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(SavTraiterType::class, $sav);
-        $form->handleRequest($request);
+    // #[Route('/{id}/traitement', name: 'app_sav_traiter', methods: ['GET', 'POST'])]
+    // public function traiter(Request $request, Sav $sav, EntityManagerInterface $entityManager): Response
+    // {
+    //     $form = $this->createForm(SavTraiterType::class, $sav);
+    //     $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         $entityManager->flush();
 
-            return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
-        }
+    //         return $this->redirectToRoute('client_index', [], Response::HTTP_SEE_OTHER);
+    //     }
 
-        return $this->renderForm('sav/edit.html.twig', [
-            'sav' => $sav,
-            'form' => $form,
-        ]);
-    }
+    //     return $this->renderForm('sav/edit.html.twig', [
+    //         'sav' => $sav,
+    //         'form' => $form,
+    //     ]);
+    // }
 
 
 

@@ -391,7 +391,7 @@ if (resilField !== null) {
 			// pour manipilie les champs
 			subresilContainer1.style.display = 'none';   // cacher date
 			subresilContainer2.style.display = 'block';
-			commentField.style.display = 'block'; // Cacher le champ comment
+			commentField.style.display = 'none'; // Cacher le champ comment
 			buttonField.style.display = 'none';
 		}
 		else {
@@ -693,7 +693,7 @@ function showFullText(element) {
 // 		return new Promise(resolve => setTimeout(resolve, ms));
 // 	}
 // });
-
+// submut deux button en meme temps
 document.addEventListener('DOMContentLoaded', function () {
 	const relanceSubmitButton = document.querySelector('#relance-submit');
 	const clientSubmitButton = document.querySelector('#client-submit');

@@ -4259,3 +4259,57 @@ ul.chat-available-user li a:hover {
     }
 
 }
+
+.table-hover tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f8f9fa;
+}
+
+.section-header {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.table {
+    margin-top: 20px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+}
+
+/* .btn-theme {
+    background-color: #17a2b8;
+    color: white;
+    border-radius: 4px;
+} */
+
+.table thead th {
+    background-color: #002E5B;
+    color: white;
+    padding: 10px;
+}
+
+.table tbody td {
+    padding: 8px;
+    vertical-align: middle;
+}
+
+.alert-light {
+    padding: 20px;
+    background-color: #f4f4f4;
+    border: 1px solid #e0e0e0;
+}
+
+/* .btn-primary {
+    background-color: #28a745;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+} */

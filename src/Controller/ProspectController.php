@@ -405,7 +405,7 @@ class ProspectController extends AbstractController
         }
 
 
-        // //ajouter client apartir de crée contrat
+        //ajouter client apartir de crée client
         $clientEntity = new Client();
         $clientEntity->setFirstName($prospect->getName());
         $clientEntity->setLastName($prospect->getLastName());
@@ -418,6 +418,7 @@ class ProspectController extends AbstractController
         // Associer le prospect au client
         $clientEntity->setProspect($prospect);
 
+
         // Handle the Client form submission
         $clientForm = $this->createForm(ClientProspectType::class, $clientEntity);
         $clientForm->handleRequest($request);
@@ -425,19 +426,38 @@ class ProspectController extends AbstractController
         //dd($clientForm);
         if ($clientForm->isSubmitted()) {
             if ($clientForm->isValid()) {
-                // Vérifier si le firstName existe déjà dans la base de données
-                // $existingClient = $this->entityManager->getRepository(Client::class)->findOneBy([
-                //     'firstName' => $prospect->getName()
-                // ]);
-                // if ($existingClient) {
-                //     $this->addFlash('success', 'prenon dejat.');
-                // } else {
+                // Vérifier si le client existe déjà dans la base de données
+                $existingClient = $this->entityManager->getRepository(Client::class)->findOneBy([
+                    'firstname' => $prospect->getName(),
+                    'lastname' => $prospect->getLastName(),
+                    'phone' => $prospect->getPhone(),
+                    'email' => $prospect->getEmail(),
+                    'raisonSociale' => $prospect->getRaisonSociale(),
+                ]);
 
-                $this->addFlash('debug', 'Client form is valid and submitted.');
+                if ($existingClient) {
+                    $this->addFlash('success', 'Client déjà existant.');
+                    return $this->redirect($request->getRequestUri());
+                } else {
+                    // Create a new Relance entity
+                    $relance = new Relanced();
+                    $relance->setProspect($prospect);
+                    $relance->setMotifRelanced('10');
+                    $relance->setComment($clientForm->get('comment')->getData()); // Set a default motif relanced
+                    $relance->setRelacedAt(new \DateTime()); // Set the relance date to now
 
-                $this->entityManager->persist($clientEntity);
-                $this->entityManager->flush(); // Flush ici pour s'assurer que les données sont enregistrées
-                $this->addFlash('success', 'Client ajouté avec succès.');
+                    // Add the relance to the prospect
+                    $prospect->addRelanced($relance);
+
+                    // Persist and flush the relance
+                    $this->entityManager->persist($relance);
+
+                    $this->addFlash('debug', 'Client form is valid and submitted.');
+
+                    $this->entityManager->persist($clientEntity);
+                    $this->entityManager->flush(); // Flush ici pour s'assurer que les données sont enregistrées
+                    $this->addFlash('success', 'Client ajouté avec succès.');
+                }
             } else {
                 // Debugging output
                 $this->addFlash('debug', 'Client form is submitted but not valid.');

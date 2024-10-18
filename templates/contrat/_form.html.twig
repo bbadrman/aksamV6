@@ -61,11 +61,18 @@
 					{{ form_row(form.frais) }}
 					{{ form_row(form.firstreglement) }}
 					{{ form_row(form.secondreglement) }}
+
 					{# {% if app.user == contrat.comrcl %} #}
-					{% if   is_granted('ROLE_VALIDE') == true %}
+
+					{% if is_granted('ROLE_VALIDE') is same as true and app.user is not same as contrat.comrcl %}
 						{{ form_row(form.status) }}
+					{% else %}
+						<div style="display: none">{{ form_row(form.status) }}</div>
+
 					{% endif %}
 					{# {% endif %} #}
+
+
 					{{ form_row(form.comment) }}
 
 					<div class="text-center">

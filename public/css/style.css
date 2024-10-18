@@ -4294,6 +4294,12 @@ ul.chat-available-user li a:hover {
     padding: 10px;
 }
 
+#contrat-table thead th {
+    background-color: #dee2e6;
+    color: blue;
+    padding: 10px;
+}
+
 .table tbody td {
     padding: 8px;
     vertical-align: middle;

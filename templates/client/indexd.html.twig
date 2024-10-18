@@ -1,0 +1,313 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Client index
+{% endblock %}
+
+{% block body %}
+
+
+	{% for label,  messages in app.flashes  %}
+		<div class="container">
+			<div class="alert alert-{{ label }}">
+				{% for message in messages %}
+					{{ message | raw }}
+				{% endfor %}
+
+			</div>
+		</div>
+	{% endfor %}
+	<section class="content-header">
+		{% if app.request.get('_route') == 'client_valide_index'  %}
+
+			<h2>Pré-Clients
+			</h2>
+		{% elseif app.request.get('_route') == 'client_index'  %}
+			<h2>Clients valider</h2>
+
+
+		{% endif %}
+
+		<ol class="breadcrumb">
+			<li>
+				<a href="{{ path('dashboard') }}">
+					<i class="fa fa-dashboard"></i>
+					Tableau de bord</a>
+			</li>
+			<li class="active">
+				<a href="{{ path('client_index') }}">
+					<i class="fa fa-object-fonction"></i>
+					Tous les clients</a>
+			</li>
+		</ol>
+		<br>
+		{# <a href="{{ path('client_new') }}" class="btn btn-primary">Ajouter un client</a> #}
+	</section>
+	<style>
+		.expanded-content {
+			display: none;
+		}
+	</style>
+	<div class="col-xs-10" style="float: right !important;">
+		<div class="row" style="margin-right: 10px;">
+
+			{% include 'client/_search_form.html.twig' with {search_form: search_form} only %}
+		</div>
+	</div>
+	<div class="row mt">
+		<div class="col-lg-12">
+			<div class="content-panel">
+
+
+				<hr>
+
+				<table class="table table-striped table-advance table-hover">
+					<thead>
+						<tr>
+
+							<th>Equipe</th>
+							<th>Comercial</th>
+							<th>Nom</th>
+							<th>Prénom</th>
+							<th>Raison Sociale</th>
+							<th>Date Client</th>
+							<th>Téléphone</th>
+							<th>Email</th>
+							<th>Contrat</th>
+							<th>Actions</th>
+						</tr>
+
+					</thead>
+					<tbody>
+						{% for client in clients %}
+
+							{# <tr class="expandable-row" {% if client.contrats is not empty %} style="background-color:#98FB98;" {% endif %}> #}
+							<tr class="expandable-row">
+								<td>{{ client.team }}</td>
+
+								<td>{{ client.cmrl }}</td>
+
+								<td>{{ client.firstname }}</td>
+								<td>{{ client.lastname }}</td>
+								<td>{{ client.raisonSociale }}</td>
+								<td>
+									{% if client.creatAt is not empty %}
+										{{ client.creatAt |date('Y-m-d') }}
+									{% endif %}
+								</td>
+								{% if  is_granted('ROLE_ADMIN') or  is_granted('ROLE_CLIENT') or  app.user == client.cmrl %}
+									<td>{{ client.phone }}</td>
+									<td>{{ client.email }}</td>
+								{% else %}
+									<td>—</td>
+									<td>—</td>
+								{% endif %}
+								<td>{{ client.contrats|length }}</td>
+
+								<td class="btn-toolbar">
+
+									{% if client.status == 1   %}
+										<a href="{{ path('app_contrat_new', {'id': client.id}) }}" class="btn btn-success btn-xs">
+											CONTART
+										</a>
+									{% elseif client.status == 2 %}
+										{% if app.user  == client.cmrl %}
+											<a href="{{ path('client_valide_edit', {'id': client.id}) }}" class="btn btn-danger btn-xs">
+												REJETER
+											</a>
+										{% elseif  client.isModif == 1 %}
+											<a href="{{ path('client_edit', {'id': client.id}) }}" class="btn btn btn-xs" style="background-color:#98FB98;">
+												MODIFIE
+											</a>
+
+										{% else %}
+											<a href="{{ path('client_edit', {'id': client.id}) }}" class="btn btn-danger btn-xs">
+												REJETER
+											</a>
+										{% endif %}
+
+
+									{% elseif  client.status is null %}
+										{% if  is_granted('ROLE_VALIDE') and app.user  == client.cmrl  %}
+											<a href="{{ path('client_valide_edit', {'id': client.id}) }}" class="btn btn-success btn-xs">
+												MYCLIENT
+											</a>
+										{% else %}
+											{%  if  is_granted('ROLE_VALIDE')  %}
+												<a href="{{ path('client_edit', {'id': client.id}) }}" class="btn btn-primary btn-xs">
+													NOUVEAU
+												</a>
+											{% else %}
+												En verification
+											{% endif %}
+										{% endif %}
+									{% endif %}
+									{%  if  is_granted('ROLE_VALIDE')  %}
+										<a href="{{ path('client_valide_edit', {'id': client.id}) }}" class="btn btn-primary btn-xs">
+											<i class="fa fa-pencil"></i>
+										</a>
+									{% endif %}
+								</td>
+							</tr>
+
+							{% for contrat in client.contrats %}
+
+
+								<tr class="expanded-content">
+									<td colspan="10">
+										<table id="contrat-table" class="table table-bordered">
+											<thead>
+												<tr>
+													<th>
+														<i class="fa fa-handshake-o" aria-hidden="true"></i>
+														CONTRAT</th>
+													<th>État</th>
+													<th>Commercial</th>
+													<th>Produits</th>
+													<th>Immatriculation</th>
+													<th>Date d'Effet</th>
+													<th>Date de Souscription</th>
+													<th>Partenaire</th>
+													<th>Compagnie</th>
+													<th>Formule</th>
+													<th>Cotisation</th>
+													<th>Frais</th>
+													<th>Actions</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td style="color:blue;"></td>
+													<td>{{ contrat.etat }}</td>
+													<td>{{ contrat.comrcl }}</td>
+													<td>{{ contrat.products }}</td>
+													<td>{{ contrat.imatriclt }}</td>
+													<td>{{ contrat.dateEffet ? contrat.dateEffet|date('Y-m-d  ') : '' }}</td>
+													<td>{{ contrat.dateSouscrpt ? contrat.dateSouscrpt|date('Y-m-d   ') : '' }}</td>
+													<td>{{ contrat.partenaire }}</td>
+													<td>{{ contrat.compagnie }}</td>
+													<td>{{ contrat.formule }}</td>
+													<td>{{ contrat.cotisation }}</td>
+													<td>{{ contrat.frais }}</td>
+
+													<td>
+														<a href="{{ path('contrat_sav_new', {'id': contrat.id}) }}" class="btn btn-primary btn-xs">
+
+															SAV
+														</a>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</td>
+								</tr>
+								{% for sav in contrat.savs %}
+
+									<tr class="expanded-content">
+										{% if sav.status == 1 or sav.status is null %}
+
+
+											<td style="color:red;">
+												<i class="fa fa-tty" aria-hidden="true"></i>
+												SAV</td>
+
+
+											<td>
+												{% if sav.afect is not empty %}
+
+													{% for user in sav.afect %}
+														{{ user.username }}
+													{% endfor %}
+
+												{% else %}
+													...
+												{% endif %}
+											</td>
+											<td>{{ sav.creatAt ? sav.creatAt|date('Y-m-d H:i:s') : '' }}</td>
+
+
+											<td>
+												{% if  sav.motif is not empty %}
+													{% if sav.motif == 1 %}
+														Avenant
+													{% elseif sav.motif == 2 %}
+														Remboursement
+													{% elseif sav.motif == 3 %}
+														Sinistre
+													{% elseif sav.motif == 4 %}
+														Demande documents
+													{% endif %}
+													<br>
+												{% endif %}
+
+											</td>
+											<td>
+												{% if  sav.natureDemande is not empty %}
+													{% if sav.natureDemande == 1 %}
+														Changement adresse
+													{% elseif sav.natureDemande == 2 %}
+														Changement RIB
+													{% elseif sav.natureDemande == 3 %}
+														Changement véhicule
+													{% elseif sav.natureDemande == 4 %}
+														Frais dossier
+													{% elseif sav.natureDemande == 5 %}
+														Acompte
+													{% elseif sav.natureDemande == 6 %}
+														Prorata suite résiliation
+													{% elseif sav.natureDemande == 7 %}
+														Ouverture sinistre
+													{% elseif sav.natureDemande == 8 %}
+														Mandaté expert
+													{% elseif sav.natureDemande == 9 %}
+														Remboursement sinistre
+													{% elseif sav.natureDemande == 10 %}
+														Relevé information
+													{% elseif sav.natureDemande == 11 %}
+														Attestation
+
+													{% endif %}
+													<br>
+												{% endif %}
+											</td>
+
+											<td>{{ sav.CreatAt ? sav.CreatAt|date('Y-m-d  ') : '' }}</td>
+											<td>
+												{% set lastRelanceSav = sav.relanceSavs|last %}
+
+												{% if lastRelanceSav is not empty %}
+													{% if lastRelanceSav.motifRelance == 4 %}
+														<a href="#" class="btn btn-success">
+															<i class="fa fa-check" style="font-size: 12px;" aria-hidden="true"></i>
+														</a>
+													{% else %}
+														<a href="{{ path('app_afficher_show', {'id': sav.id}) }}" class="btn btn-info">
+															<i class="fa fa-hourglass-half" style="font-size: 12px;" aria-hidden="true"></i>
+														</a>
+													{% endif %}
+												{% endif %}
+
+												{# Ne pas afficher le bouton "Traiter" si motifRelance est égal à 4 #}
+												{% if lastRelanceSav is empty  %}
+													<button>
+														<a href="{{ path('app_afficher_show', {'id': sav.id}) }}">
+															<i class="fa fa-folder-open" style="font-size: 20px;" aria-hidden="true"></i>
+														</a>
+													</button>
+												{% endif %}
+											</td>
+										{% endif %}
+									</tr>
+								</tr</tr>
+							{% endfor %}
+						{% endfor %}
+					</tbody>
+				</tbody>
+			</td>
+		</tr>
+	</tbody>
+</thead></tbody>{% else %}<td colspan="3">Aucun client trouvé</td>{% endfor %}</tbody><tfoot class="text-center"><tr><td colspan="10">{{ knp_pagination_render(clients, 'pagination.html.twig') }}</td></tr></tfoot></table></div></div></div><script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script><script>$(document).ready(function () {
+$('.expandable-row').click(function () {
+$('.expanded-content').not($(this).nextAll('.expanded-content')).hide();
+$(this).nextUntil('.expandable-row').toggle();
+});
+});</script>{% endblock %}

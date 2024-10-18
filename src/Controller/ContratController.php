@@ -5,13 +5,18 @@ namespace App\Controller;
 use App\Entity\Client;
 use App\Entity\Contrat;
 use App\Form\ContratType;
+use App\Form\ContratAllType;
+use App\Form\ContratEditType;
+use App\Search\SearchContrat;
 use App\Form\ValidContratType;
+use App\Form\SearchContratType;
 use App\Repository\ClientRepository;
 use App\Repository\ContratRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/contrat')]
@@ -20,6 +25,7 @@ class ContratController extends AbstractController
     public function __construct(
 
         private  EntityManagerInterface $entityManager,
+        private RequestStack $requestStack,
 
     ) {}
 
@@ -31,11 +37,30 @@ class ContratController extends AbstractController
         ]);
     }
     #[Route('/valider', name: 'app_contrat_valid_index', methods: ['GET'])]
-    public function valider(ContratRepository $contratRepository): Response
+    public function valider(Request $request, ContratRepository $contratRepository): Response
     {
-        $contrats =  $contratRepository->findByContartValid();
-        return $this->render('contrat/index.html.twig', [
+
+
+        $data = new SearchContrat();
+        $data->page = $request->query->get('page', 1);
+        $form = $this->createForm(SearchContratType::class, $data);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+        $contrats = [];
+        $contrats =  $contratRepository->findByContartValid($data,  null);
+
+
+        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
+            // admi peut voire toutes les nouveaux client
+            $contrats =  $contratRepository->findByContartValid($data,  null);
+
+            return $this->render('contrat/index.html.twig', [
+                'contrats' => $contrats,
+                'search_form' => $form->createView()
+            ]);
+        }
+        return $this->render('contrat/search.html.twig', [
             'contrats' => $contrats,
+            'search_form' => $form->createView()
         ]);
     }
 
@@ -77,12 +102,21 @@ class ContratController extends AbstractController
         ]);
     }
 
-    #[Route('/newcontrat', name: 'add_contrat_new', methods: ['GET', 'POST'])]
-    public function add(Request $request, EntityManagerInterface $entityManager, ClientRepository $clientRepository): Response
+    #[Route('/newcontrat/{id}', name: 'add_contrat_new', methods: ['GET', 'POST'])]
+    public function add(int $id, Request $request, EntityManagerInterface $entityManager, ClientRepository $clientRepository): Response
     {
 
+        $client = $clientRepository->find($id);
+        if (!$client) {
+            throw $this->createNotFoundException('Client not found');
+        }
         $contrat = new Contrat();
-        $form = $this->createForm(ContratType::class, $contrat);
+        $contrat->setNom($client->getLastName());
+        $contrat->setPrenom($client->getFirstName());
+        $contrat->setRaisonSociale($client->getRaisonSociale());
+        $contrat->setClient($client);
+
+        $form = $this->createForm(ContratAllType::class, $contrat);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -124,7 +158,7 @@ class ContratController extends AbstractController
     #[Route('/{id}/edit', name: 'app_contrat_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Contrat $contrat, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(ContratType::class, $contrat);
+        $form = $this->createForm(ContratEditType::class, $contrat);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

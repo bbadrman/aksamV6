@@ -3,8 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Contrat;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Search\SearchContrat;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Contrat>
@@ -16,25 +19,54 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ContratRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(private ManagerRegistry $registry,   private PaginatorInterface $paginator)
     {
         parent::__construct($registry, Contrat::class);
     }
 
 
     /**
-     * @return Contrat[] Returns an array of Contrat objects
+     * Find a list of contrat using a search form
+     * @param SearchContrat $search
+     * @return PaginationInterface
      */
-    public function findByContartValid()
+    public function findByContartValid(SearchContrat $search): PaginationInterface
     {
-        return $this->createQueryBuilder('c')
+        $queryBuilder = $this->createQueryBuilder('c')
             ->where('c.status = 2 OR c.status IS NULL')
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+            ->orderBy('c.id', 'DESC');
+
+        if (!empty($search->f)) {
+            $queryBuilder
+                ->andWhere('c.nom LIKE :f')
+                ->setParameter('f', "%{$search->f}%");
+        }
+        if (!empty($search->l)) {
+            $queryBuilder
+                ->andWhere('c.prenom LIKE :l')
+                ->setParameter('l', "%{$search->l}%");
+        }
+
+        if (!empty($search->r)) {
+            $queryBuilder
+                ->andWhere('c.raisonSociale LIKE :r')
+                ->setParameter('r', "%{$search->r}%");
+        }
+        if (!empty($search->e)) {
+            $queryBuilder
+                ->andWhere('c.etat LIKE :e')
+                ->setParameter('e', "%{$search->e}%");
+        }
+
+        $query = $queryBuilder->getQuery();
+
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+        );
     }
+
 
     // /**
     //  * @return Contrat[] Returns an array of Contrat objects

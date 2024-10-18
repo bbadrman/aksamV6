@@ -64,48 +64,48 @@ class ClientController extends AbstractController
      * get client with parametre 
      * @Route("/test", name="client_indexTest", methods={"GET"})
      */
-    public function index(Request $request,  Security $security): Response
-    {
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
+    // public function index(Request $request,  Security $security): Response
+    // {
+    //     $this->denyAccessUnlessGrantedAuthorizedRoles();
 
-        $data = new SearchClient();
-        $data->page = $request->query->get('page', 1);
-        $form = $this->createForm(SearchClientType::class, $data);
-        $form->handleRequest($this->requestStack->getCurrentRequest());
-        $client = [];
+    //     $data = new SearchClient();
+    //     $data->page = $request->query->get('page', 1);
+    //     $form = $this->createForm(SearchClientType::class, $data);
+    //     $form->handleRequest($this->requestStack->getCurrentRequest());
+    //     $client = [];
 
-        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
+    //     if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
 
-            $user = $security->getUser();
-            if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
-                // admi peut voire toutes les nouveaux client
-                $client =  $this->clientRepository->findClientAdmin($data, null);
-            } elseif (in_array('ROLE_TEAM', $user->getRoles(), true)) {
-                // chef peut voire toutes les nouveaux client atacher a leur equipe
-                $client =  $this->clientRepository->findClientChef($data,  $user, null);
-            } else {
-                // cmrcl peut voire seulement les nouveaux client atacher a lui
-                $client =  $this->clientRepository->findClientCmrcl($data, $user, null);
-            }
+    //         $user = $security->getUser();
+    //         if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+    //             // admi peut voire toutes les nouveaux client
+    //             $client =  $this->clientRepository->findClientAdmin($data, null);
+    //         } elseif (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+    //             // chef peut voire toutes les nouveaux client atacher a leur equipe
+    //             $client =  $this->clientRepository->findClientChef($data,  $user, null);
+    //         } else {
+    //             // cmrcl peut voire seulement les nouveaux client atacher a lui
+    //             $client =  $this->clientRepository->findClientCmrcl($data, $user, null);
+    //         }
 
 
-            return $this->render('client/testindex.html.twig', [
-                'clients' => $client,
+    //         return $this->render('client/testindex.html.twig', [
+    //             'clients' => $client,
 
-                'search_form' => $form->createView()
-            ]);
-        }
-        return $this->render('client/search.html.twig', [
-            'clients' => $client,
+    //             'search_form' => $form->createView()
+    //         ]);
+    //     }
+    //     return $this->render('client/search.html.twig', [
+    //         'clients' => $client,
 
-            'search_form' => $form->createView()
-        ]);
-    }
+    //         'search_form' => $form->createView()
+    //     ]);
+    // }
     /**
      * get All client
      * @Route("/", name="client_index", methods={"GET"})
      */
-    public function indexTest(Request $request,  Security $security): Response
+    public function index(Request $request,  Security $security): Response
     {
         $this->denyAccessUnlessGrantedAuthorizedRoles();
 

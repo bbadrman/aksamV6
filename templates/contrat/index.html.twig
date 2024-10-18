@@ -50,8 +50,7 @@
 		<br>
 	</section>
 	<div class="col-xs-12" style="float: right !important;">
-		<div
-			class="row" style="margin-right: 10px;">{# {% include 'prospect/_search_form.html.twig' with {search_form: search_form} only %} #}
+		<div class="row" style="margin-right: 10px;">{% include 'contrat/_search_form.html.twig' with {search_form: search_form} only %}
 		</div>
 	</div>
 	<div class="row mt">
@@ -108,19 +107,20 @@
 								</td>
 								<td>
 									{# {% if  is_granted('ROLE_ADMIN')   or is_granted('ROLE_GESTION')     %}
-																																																																																																																																																																			<a href="{{ path('app_contrat_show', {'id': contrat.id}) }}" class="btn btn-success btn-xs">
-																																																																																																																																																																				<i class="fa fa-eye"></i>
-																																																																																																																																																																			</a>
-																																																																																																																																																																		{% endif %} #}
+																																																																																																																																																																																																																																																																						<a href="{{ path('app_contrat_show', {'id': contrat.id}) }}" class="btn btn-success btn-xs">
+																																																																																																																																																																																																																																																																							<i class="fa fa-eye"></i>
+																																																																																																																																																																																																																																																																						</a>
+																																																																																																																																																																																																																																																																					{% endif %} #}
 
 									{% if contrat.status == 1 %}
 										<a href="#" style="color:blue">
 											Valider
 										</a>
-									{% elseif contrat.status == 2 %}
+									{% elseif contrat.status == 2  %}
 										<a href="{{ path('app_contrat_edit', {'id': contrat.id}) }}" class="btn btn-danger btn-xs">
 											Rejeter
 										</a>
+
 									{% elseif contrat.status is null %}
 										{% if  is_granted('ROLE_ADMIN')   or is_granted('ROLE_VALIDE')     %}
 											<a href="{{ path('app_contrat_edit', {'id': contrat.id}) }}" class="btn btn-primary btn-xs">
@@ -131,9 +131,9 @@
 										{% endif %}
 
 									{% endif %}
-									<a href="{{ path('contrat_sav_new', {'id': contrat.id}) }}" class="btn btn-primary btn-xs">
-										SAV
-									</a>
+									{# <a href="{{ path('contrat_sav_new', {'id': contrat.id}) }}" class="btn btn-primary btn-xs">
+																												SAV
+																											</a> #}
 								</td>
 							</tr>
 						{% else %}
@@ -142,6 +142,13 @@
 							</tr>
 						{% endfor %}
 					</tbody>
+					<tfoot class="text-center">
+						<tr>
+							<td colspan="10">
+								{{ knp_pagination_render(contrats, 'pagination.html.twig') }}
+							</td>
+						</tr>
+					</tfoot>
 				</table>
 			</div>
 		</div>

@@ -56,7 +56,7 @@ $(document).ready(function () {
 	});
 });
 
-
+//--------------------------------------------------------------------------//
 // Select du Contrat
 var contratypeField = document.getElementById('contrat_type');
 var produitField = document.getElementById('contrat_products');

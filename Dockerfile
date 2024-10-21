@@ -1,4 +1,4 @@
-FROM php:8.1.6-apache
+FROM php:8.2.20-apache
 LABEL maintainer="badr.bechtioui@gmail.com"
 
 ########## Packages installation

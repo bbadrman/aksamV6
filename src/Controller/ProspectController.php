@@ -440,6 +440,21 @@ class ProspectController extends AbstractController
                     return $this->redirect($request->getRequestUri());
                 } else {
                     // Create a new Relance entity
+                    foreach ($prospect->getRelanceds() as $oldRelance) {
+                        $history = new RelanceHistory();
+                        $history->setProspect($prospect);
+                        $history->setMotifRelanced($oldRelance->getMotifRelanced());
+
+                        $relacedAt = $oldRelance->getRelacedAt();
+                        $history->setRelacedAt($relacedAt instanceof \DateTimeImmutable ? $relacedAt : \DateTimeImmutable::createFromMutable($relacedAt));
+                        $history->setComment($oldRelance->getComment());
+
+                        $this->entityManager->persist($history);
+
+                        // Supprimer l'ancienne relance du prospect et de la base de données
+                        $prospect->removeRelanced($oldRelance);
+                        $this->entityManager->remove($oldRelance);
+                    }
                     $relance = new Relanced();
                     $relance->setProspect($prospect);
                     $relance->setMotifRelanced('10');
@@ -448,11 +463,9 @@ class ProspectController extends AbstractController
 
                     // Add the relance to the prospect
                     $prospect->addRelanced($relance);
-
-                    // Persist and flush the relance
                     $this->entityManager->persist($relance);
 
-                    $this->addFlash('debug', 'Client form is valid and submitted.');
+                    // $this->addFlash('debug', 'Client form is valid and submitted.');
 
                     $this->entityManager->persist($clientEntity);
                     $this->entityManager->flush(); // Flush ici pour s'assurer que les données sont enregistrées

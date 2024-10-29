@@ -2125,6 +2125,7 @@ ul li {
 /*LOGIN CONFIGURATION PAGE*/
 .login-area {
     background: #F3F8FB;
+    background-image: url(../images/login.jpg);
 }
 
 .login-box {
@@ -2136,15 +2137,15 @@ ul li {
 
 .login-box form {
     margin: auto;
-    width: 450px;
+    width: 550px;
     max-width: 100%;
-    background: #fff;
+    background: #e2e4e6;
     border-radius: 3px;
 }
 
 .login-form-head {
     text-align: center;
-    background: #8655FC;
+    background: #3b41eb;
     padding: 50px;
 }
 
@@ -2158,12 +2159,12 @@ ul li {
 
 .login-form-head p {
     color: #fff;
-    font-size: 14px;
-    line-height: 22px;
+    font-size: 18px;
+    line-height: 32px;
 }
 
 .login-form-body {
-    padding: 50px;
+    padding: 80px;
 }
 
 .form-gp {
@@ -2175,7 +2176,7 @@ ul li {
     position: absolute;
     left: 0;
     top: 0;
-    color: #b3b2b2;
+    color: #1628ae;
     -webkit-transition: all 0.3s ease 0s;
     transition: all 0.3s ease 0s;
 }

@@ -57,7 +57,7 @@ $(document).ready(function () {
 });
 
 //--------------------------------------------------------------------------//
-// Select du Contrat
+// Select du Contrat //----
 var contratypeField = document.getElementById('contrat_type');
 var produitField = document.getElementById('contrat_products');
 var typeCondField = document.getElementById('contrat_typeConducteur');
@@ -162,3 +162,78 @@ if (typeCondField !== null) {
 
 }
 
+var contratypeField = document.getElementById('contrat_type');
+var produitField = document.getElementById('contrat_products');
+var typeCondField = document.getElementById('contrat_typeConducteur');
+var CondField = document.getElementById('contrat_conducteur');
+var datePermField = document.getElementById('contrat_datePermis');
+var activtField = document.getElementById('contrat_activite');
+var raisonField = document.getElementById('contrat_raisonSociale');
+var imatricltField = document.getElementById('contrat_imatriclt');
+
+function updateFields() {
+	var contratType = contratypeField ? contratypeField.value : null;
+	var produitType = produitField ? produitField.value : null;
+
+	// Hide `activite` if `contrat_type` is "Particulier"
+	if (contratType === 'Particulier') {
+		activtField.style.display = 'none';
+	} else {
+		// Reset and populate `activite` based on `produitType`
+		var activiteChoices = {
+			'1': ['TPM', 'VTC', 'Société', 'Négociant', 'Professionnel auto', 'Garage', 'AUTO ECOLE', 'BTP', 'BATIMENT', 'DEMENAGEMENT', 'DEPANNAGE', 'LOCATION', 'TAXI', 'TPPC', 'TPV'],
+			'2': ['TPM', 'VTC', 'Société', 'Négociant', 'Professionnel auto', 'Garage', 'AUTO ECOLE', 'BTP', 'BATIMENT', 'DEMENAGEMENT', 'DEPANNAGE', 'LOCATION', 'TAXI', 'TPPC', 'TPV'],
+			'5': ['TPM', 'VTC', 'Société', 'Négociant', 'Professionnel auto', 'Garage', 'AUTO ECOLE', 'BTP', 'BATIMENT', 'DEMENAGEMENT', 'DEPANNAGE', 'LOCATION', 'TAXI', 'TPPC', 'TPV'],
+			'7': ['TPM', 'VTC', 'Société', 'Négociant', 'Professionnel auto', 'Garage', 'AUTO ECOLE', 'BTP', 'BATIMENT', 'DEMENAGEMENT', 'DEPANNAGE', 'LOCATION', 'TAXI', 'TPPC', 'TPV'],
+			'21': ['TPM', 'VTC', 'Société', 'Négociant', 'Professionnel auto', 'Garage', 'AUTO ECOLE', 'BTP', 'BATIMENT', 'DEMENAGEMENT', 'DEPANNAGE', 'LOCATION', 'TAXI', 'TPPC', 'TPV'],
+			'20': ['TPM', 'VTC', 'Société', 'Négociant', 'Professionnel auto', 'Garage', 'AUTO ECOLE', 'BTP', 'BATIMENT', 'DEMENAGEMENT', 'DEPANNAGE', 'LOCATION', 'TAXI', 'TPPC', 'TPV'],
+			'19': [''],
+			'18': ['TPM', 'Société', 'Professionnel auto', 'Garage', 'AUTO ECOLE', 'DEMENAGEMENT', 'DEPANNAGE', 'LOCATION', 'TAXI', 'TPPC', 'TPV'],
+			'16': ['AUTO ECOLE', 'LOCATION', 'TPPC', 'TPV'],
+			'17': ['BTP'],
+			'18': ['TPM', 'Société', 'Garage', 'TAXI'],
+		};
+
+		// Clear previous options and populate new options for `activite`
+		activtField.innerHTML = '';
+		if (produitType in activiteChoices) {
+			activiteChoices[produitType].forEach(function (activity) {
+				var option = document.createElement('option');
+				option.value = activity;
+				option.textContent = activity;
+				activtField.appendChild(option);
+			});
+			activtField.style.display = 'block';
+		} else {
+			activtField.style.display = 'none';
+		}
+	}
+
+	// Additional display logic for other fields...
+}
+
+if (contratypeField !== null) {
+	contratypeField.addEventListener('change', updateFields);
+}
+
+if (produitField !== null) {
+	produitField.addEventListener('change', updateFields);
+}
+
+// Type conducteur change event
+if (typeCondField !== null) {
+	typeCondField.addEventListener('change', function () {
+		if (typeCondField.value === 'Désigné') {
+			CondField.style.display = 'block';
+			datePermField.style.display = 'block';
+		} else if (typeCondField.value === 'Multiconducteur') {
+			CondField.style.display = 'none';
+			datePermField.style.display = 'none';
+		} else {
+			CondField.style.display = 'block';
+			datePermField.style.display = 'block';
+		}
+	});
+}
+
+// Le reste de votre logique pour les autres champs...

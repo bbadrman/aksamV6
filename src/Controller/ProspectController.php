@@ -99,6 +99,7 @@ class ProspectController extends AbstractController
         $user = $this->security->getUser();
         $roles = $user->getRoles();
         $prospects = [];
+        $duplicates = [];
 
         if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_AFFECT', $roles, true)) {
             $prospects = $this->prospectRepository->findByAdminNewProsp($data);
@@ -127,7 +128,53 @@ class ProspectController extends AbstractController
             'search_form' => $form->createView()
         ]);
     }
+    // afficher les nouveaux prospects 
+    #[Route('/reafect', name: 'reafect_index', methods: ['GET', 'POST'])]
+    public function reafect(Request $request): Response
 
+    {
+        $this->denyAccessUnlessGrantedAuthorizedRoles();
+
+        $data = new SearchProspect();
+        $data->page = $request->query->get('page', 1);
+        $form = $this->createForm(SearchProspectType::class, $data);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+
+
+
+        $user = $this->security->getUser();
+        $roles = $user->getRoles();
+        $prospects = [];
+        $duplicates = [];
+
+        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_AFFECT', $roles, true)) {
+            $prospects = $this->prospectRepository->findByAdminNewProsp($data);
+        } elseif (in_array('ROLE_TEAMALL', $roles, true)) {
+            $prospects = $this->prospectRepository->findByChefAllNewProsp($data, $user);
+        } elseif (in_array('ROLE_TEAM', $roles, true)) {
+            $prospects = $this->prospectRepository->findByChefNewProsp($data, $user);
+        } else {
+
+            $prospects = $this->prospectRepository->findByCmrclReafectProsp($data, $user);
+        }
+
+        foreach ($prospects as $prospect) {
+            $email = $prospect->getEmail();
+
+            // Check if the email exists in the database excluding the current prospect
+            $existingProspect = $this->prospectRepository->findOneBy(['email' => $email]);
+            $isDuplicate = $existingProspect !== null && $existingProspect->getId() !== $prospect->getId();
+
+            // Store the duplication information in an array
+            $duplicates[$email] = $isDuplicate;
+        }
+
+        return $this->render('prospect/index.html.twig', [
+            'prospects' => $prospects,
+            'duplicates' => $duplicates,
+            'search_form' => $form->createView()
+        ]);
+    }
     // afficher les nouveaux prospects 
     #[Route('/newprospectchef', name: 'newprospectchef_index', methods: ['GET', 'POST'])]
     public function newprospectchef(Request $request): Response

@@ -624,6 +624,7 @@ class StatsService
         $now = new \DateTime();
         $yesterday = clone $now;
         $yesterday->modify('-24 hours');
+        $yesterday->setTime(23, 59, 59); // pour fixer hier a  minuit
 
         $qb = $this->manager->createQueryBuilder();
         $qb->select('COUNT(DISTINCT p.id)')
@@ -637,8 +638,8 @@ class StatsService
 
 
 
-            ->andWhere('p.creatAt <= :yesterday')
-            ->setParameter('yesterday', $yesterday)
+            // ->andWhere('p.creatAt <= :yesterday')
+            // ->setParameter('yesterday', $yesterday)
             // pas encour passe un jeur de la date de history actionDate
             ->leftJoin('p.histories', 'h') // Jointure avec l'entité History
             ->andWhere('h.actionDate <= :endOfYesterday') // Filtre par date d'action de l'historique

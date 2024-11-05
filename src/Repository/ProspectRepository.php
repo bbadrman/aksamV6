@@ -2776,8 +2776,10 @@ class ProspectRepository extends ServiceEntityRepository
             ->where('p.comrcl = :val')
             ->setParameter('val', $id)
             //qui ne sont pas relancer
+            // ->leftJoin('p.relanceds', 'r')
+            // ->andWhere('r.prospect IS NULL')
             ->leftJoin('p.relanceds', 'r')
-            ->andWhere('r.prospect IS NULL')
+            ->andWhere('r.relacedAt IS NULL OR r.relacedAt < :startOfToday')
 
             ->leftJoin('p.histories', 'h')
             ->andWhere('h.actionDate >= :endOfYesterday')
@@ -2815,6 +2817,67 @@ class ProspectRepository extends ServiceEntityRepository
 
         );
     }
+
+    /**
+     * afficher les prospects qui sont affect au cmrcl
+     * @return Prospect[] Returns an array of Prospect objects
+     * 
+     * @param SearchProspect $search
+     * @return PaginationInterface 
+     */
+    public function findByCmrclReafectProsp(SearchProspect $search, $id): PaginationInterface
+    {
+        $now = new \DateTime();
+        $startOfToday = new \DateTime('today');
+        $yesterday = new \DateTime('yesterday');
+        $yesterday->setTime(23, 59, 59); // La fin de la journée d'hier 
+        // dd($now);
+        $query = $this->createQueryBuilder('p')
+            ->select('p')
+            ->where('p.comrcl = :val')
+            ->setParameter('val', $id)
+
+            // Jointure avec l'historique pour les actions d'aujourd'hui
+            ->leftJoin('p.histories', 'h')
+            ->andWhere('h.actionDate >= :startOfToday')
+            ->setParameter('startOfToday', $startOfToday)
+
+            // Exclure les prospects qui ont été relancés après leur réaffectation
+            ->leftJoin('p.relanceds', 'r')
+            ->andWhere('r.relacedAt IS NULL OR r.relacedAt < :startOfToday OR (r.relacedAt >= :startOfToday AND r.relacedAt <= :endOfToday)')
+            ->setParameter('endOfToday', new \DateTime('now')) // Fin de la journée d'aujourd'hui
+            ->setParameter('startOfToday', $startOfToday)
+
+
+            ->orderBy('p.id', 'DESC');
+
+
+
+
+        if (!empty($search->d) && $search->d instanceof \DateTime) {
+            $query = $query
+                ->andWhere('p.creatAt >= :d')
+                ->setParameter('d', $search->d);
+        }
+
+        if (!empty($search->dd) && $search->dd instanceof \DateTime) {
+            $search->dd->setTime(23, 59, 59);
+            $query = $query
+                ->andWhere('p.creatAt <= :dd')
+                ->setParameter('dd', $search->dd);
+        }
+
+
+
+        return $this->paginator->paginate(
+            $query,
+            $search->page,
+            10
+
+        );
+    }
+
+
 
     //--------------Nouveaux Prospects API-----------------------//
 

@@ -55,8 +55,6 @@ class Contrat
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $formule = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $datePrelvm = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $fraction = null;
@@ -108,6 +106,14 @@ class Contrat
 
     #[ORM\ManyToOne(inversedBy: 'contrats')]
     private ?Client $client = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $jourPrelvm = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $typeProduct = null;
+
+
 
     public function __construct()
     {
@@ -272,17 +278,7 @@ class Contrat
         return $this;
     }
 
-    public function getDatePrelvm(): ?\DateTimeInterface
-    {
-        return $this->datePrelvm;
-    }
 
-    public function setDatePrelvm(?\DateTimeInterface $datePrelvm): static
-    {
-        $this->datePrelvm = $datePrelvm;
-
-        return $this;
-    }
 
     public function getFraction(): ?string
     {
@@ -506,6 +502,30 @@ class Contrat
     public function setClient(?Client $client): static
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    public function getJourPrelvm(): ?string
+    {
+        return $this->jourPrelvm;
+    }
+
+    public function setJourPrelvm(?string $jourPrelvm): static
+    {
+        $this->jourPrelvm = $jourPrelvm;
+
+        return $this;
+    }
+
+    public function getTypeProduct(): ?string
+    {
+        return $this->typeProduct;
+    }
+
+    public function setTypeProduct(?string $typeProduct): static
+    {
+        $this->typeProduct = $typeProduct;
 
         return $this;
     }

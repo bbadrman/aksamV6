@@ -92,7 +92,7 @@ class ContratController extends AbstractController
             $entityManager->persist($contrat);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_contrat_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_contrat_valid_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('contrat/new.html.twig', [

@@ -149,8 +149,6 @@ class ContratEditType extends AbstractType
                             'VTC' =>   'VTC',
                             'Sociéte' => 'Sociéte',
                             'Décenale' => 'Décenale',
-                            'Dommage' =>   'Dommage',
-                            'Marchandise' =>   'Marchandise',
                             'Négociant' =>  'Négociant',
                             'Prof auto' =>  'Prof auto',
                             'Garage' => 'Garage',
@@ -293,16 +291,52 @@ class ContratEditType extends AbstractType
                         'multiple' => false,
                     ]
                 )
-                ->add('datePrelvm', Type\DateType::class, [
-                    'label' => "Date prélèvement :",
-                    'disabled' => false,
+                ->add(
+                    'jourPrelvm',
+                    Type\ChoiceType::class,
+                    [
+                        'label' => 'Jour de prélèvement ',
+                        'disabled' => false,
 
-                    'widget' => 'single_text',
-                    'attr' => [
-                        'placeholder' => "date format: yyyy-mm-dd."
-                    ],
-                    'required' => false
-                ])
+                        'placeholder' => '--Merci de selectie le jour du prélèvement-- ',
+                        'choices' => [
+                            '01' =>  '01',
+                            '02' =>  '02',
+                            '03 ' =>  '03 ',
+                            '04 ' =>  '04',
+                            '05 ' =>  '05',
+                            '06 ' =>  '06',
+                            '07 ' =>  '07',
+                            '08 ' =>  '08',
+                            '09 ' =>  '09',
+                            '10 ' =>  '10',
+                            '11 ' =>  '11',
+                            '12 ' =>  '12',
+                            '13 ' =>  '13',
+                            '14 ' =>  '14',
+                            '15 ' =>  '15',
+                            '16 ' =>  '16',
+                            '17  ' =>  '17',
+                            '18  ' =>  '18',
+                            '19  ' =>  '19',
+                            '20  ' =>  '20',
+                            '21  ' =>  '21',
+                            '22  ' =>  '22',
+                            '23  ' =>  '23',
+                            '24  ' =>  '24',
+                            '25  ' =>  '25',
+                            '26  ' =>  '26',
+                            '27  ' =>  '27',
+                            '28  ' =>  '28',
+                            '29  ' =>  '29',
+                            '30  ' =>  '30',
+                            '31  ' =>  '31',
+
+                        ],
+                        'expanded' => false,
+                        'multiple' => false,
+                    ]
+                )
                 ->add('datePreleveAcompte', Type\DateType::class, [
                     'label' => "Date prélèvement acompte :",
                     'disabled' => false,
@@ -443,6 +477,26 @@ class ContratEditType extends AbstractType
                         'disabled' => false,
                     ]
                 )
+                ->add('typeProduct', ChoiceType::class, [
+                    'label' => 'Type Produit',
+                    'required' => true,
+                    'disabled' => false,
+                    'choices' => [
+                        'AUTOMOBILE' =>  'AUTOMOBILE',
+                        'CARAVANE' =>  'CARAVANE',
+                        'AUTOCAR' => 'AUTOCAR',
+                        'TRACTEUR ROUTIER' =>  'TRACTEUR ROUTIER',
+                        'SEMI-REMORQUE' => 'SEMI-REMORQUE',
+                        'POIDS LOURS' => 'POIDS LOURS',
+                        'CARENE' => 'CARENE',
+                        'CAMIONNETTE' => 'CAMIONNETTE',
+                        'UTILITAIRE' => 'UTILITAIRE'
+
+                    ],
+                    'expanded' => false,
+                    'multiple' => false,
+
+                ])
 
                 ->add('status', ChoiceType::class, [
                     'label' => 'status',
@@ -583,8 +637,6 @@ class ContratEditType extends AbstractType
                             'VTC' =>   'VTC',
                             'Sociéte' => 'Sociéte',
                             'Décenale' => 'Décenale',
-                            'Dommage' =>   'Dommage',
-                            'Marchandise' =>   'Marchandise',
                             'Négociant' =>  'Négociant',
                             'Prof auto' =>  'Prof auto',
                             'Garage' => 'Garage',
@@ -727,13 +779,46 @@ class ContratEditType extends AbstractType
                         'multiple' => false,
                     ]
                 )
-                ->add('datePrelvm', Type\DateType::class, [
-                    'label' => "Date prélèvement :",
+                ->add('jourPrelvm', Type\DateType::class, [
+                    'label' => "Jour de prélèvement :",
                     'disabled' => true,
-                    'widget' => 'single_text',
-                    'attr' => [
-                        'placeholder' => "date format: yyyy-mm-dd."
+                    'placeholder' => '--Merci de selectie le jour du prelevement-- ',
+                    'choices' => [
+                        '01' =>  '01',
+                        '02' =>  '02',
+                        '03 ' =>  '03 ',
+                        '04 ' =>  '04',
+                        '05 ' =>  '05',
+                        '06 ' =>  '06',
+                        '07 ' =>  '07',
+                        '08 ' =>  '08',
+                        '09 ' =>  '09',
+                        '10 ' =>  '10',
+                        '11 ' =>  '11',
+                        '12 ' =>  '12',
+                        '13 ' =>  '13',
+                        '14 ' =>  '14',
+                        '15 ' =>  '15',
+                        '16 ' =>  '16',
+                        '17  ' =>  '17',
+                        '18  ' =>  '18',
+                        '19  ' =>  '19',
+                        '20  ' =>  '20',
+                        '21  ' =>  '21',
+                        '22  ' =>  '22',
+                        '23  ' =>  '23',
+                        '24  ' =>  '24',
+                        '25  ' =>  '25',
+                        '26  ' =>  '26',
+                        '27  ' =>  '27',
+                        '28  ' =>  '28',
+                        '29  ' =>  '29',
+                        '30  ' =>  '30',
+                        '31  ' =>  '31',
+
                     ],
+                    'expanded' => false,
+                    'multiple' => false,
                     'required' => false
                 ])
                 ->add('datePreleveAcompte', Type\DateType::class, [
@@ -875,6 +960,28 @@ class ContratEditType extends AbstractType
 
                     ]
                 )
+                ->add('typeProduct', ChoiceType::class, [
+                    'label' => 'Type Produit',
+                    'required' => true,
+                    'disabled' => true,
+                    'choices' => [
+                        'AUTOMOBILE' =>  'AUTOMOBILE',
+                        'CARAVANE' =>  'CARAVANE',
+                        'AUTOCAR' => 'AUTOCAR',
+                        'TRACTEUR ROUTIER' =>  'TRACTEUR ROUTIER',
+                        'SEMI-REMORQUE' => 'SEMI-REMORQUE',
+                        'POIDS LOURS' => 'POIDS LOURS',
+                        'CARENE' => 'CARENE',
+                        'CAMIONNETTE' => 'CAMIONNETTE',
+                        'UTILITAIRE' => 'UTILITAIRE'
+
+                    ],
+                    'expanded' => false,
+                    'multiple' => false,
+
+                ])
+
+
 
                 ->add('status', ChoiceType::class, [
                     'label' => 'status',

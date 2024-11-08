@@ -49,10 +49,10 @@
 		</ol>
 		<br>
 	</section>
-	<div class="col-xs-12" style="float: right !important;">
-		<div class="row" style="margin-right: 10px;">{% include 'contrat/_search_form.html.twig' with {search_form: search_form} only %}
-		</div>
-	</div>
+	{# <div class="col-xs-12" style="float: right !important;">
+				<div class="row" style="margin-right: 10px;">{% include 'contrat/_search_form.html.twig' with {search_form: search_form} only %}
+				</div>
+			</div> #}
 	<div class="row mt">
 		<div class="col-lg-12">
 			<div class="content-panel">
@@ -71,6 +71,7 @@
 							<th>Activite</th>
 							<th>Partenaire</th>
 							<th>Compagnie</th>
+							<th>JourPrlevm</th>
 							<th>Fraction</th>
 							<th>Cotisation</th>
 							<th>Produit</th>
@@ -91,8 +92,9 @@
 								<td>{{ contrat.dateEffet ? contrat.dateEffet|date('Y-m-d  ') : '' }}</td>
 								<td>{{ contrat.type }}</td>
 								<td>{{ contrat.activite }}</td>
+								<td>{{ contrat.partenaire }}</td>
 								<td>{{ contrat.compagnie }}</td>
-								<td>{{ contrat.datePrelvm ? contrat.datePrelvm|date('Y-m-d  ') : '' }}</td>
+								<td>{{ contrat.jourPrelvm }}</td>
 								<td>{{ contrat.fraction }}</td>
 								<td>{{ contrat.cotisation }}</td>
 								<td>{{ contrat.products }}</td>
@@ -107,10 +109,10 @@
 								</td>
 								<td>
 									{# {% if  is_granted('ROLE_ADMIN')   or is_granted('ROLE_GESTION')     %}
-																																																																																																																																																																																																																																																																						<a href="{{ path('app_contrat_show', {'id': contrat.id}) }}" class="btn btn-success btn-xs">
-																																																																																																																																																																																																																																																																							<i class="fa fa-eye"></i>
-																																																																																																																																																																																																																																																																						</a>
-																																																																																																																																																																																																																																																																					{% endif %} #}
+																																																																																																																																																																																																																																																																																																																																					<a href="{{ path('app_contrat_show', {'id': contrat.id}) }}" class="btn btn-success btn-xs">
+																																																																																																																																																																																																																																																																																																																																						<i class="fa fa-eye"></i>
+																																																																																																																																																																																																																																																																																																																																					</a>
+																																																																																																																																																																																																																																																																																																																																				{% endif %} #}
 
 									{% if contrat.status == 1 %}
 										<a href="#" style="color:blue">
@@ -132,8 +134,8 @@
 
 									{% endif %}
 									{# <a href="{{ path('contrat_sav_new', {'id': contrat.id}) }}" class="btn btn-primary btn-xs">
-																												SAV
-																											</a> #}
+																																																																																											SAV
+																																																																																										</a> #}
 								</td>
 							</tr>
 						{% else %}
@@ -144,9 +146,9 @@
 					</tbody>
 					<tfoot class="text-center">
 						<tr>
-							<td colspan="10">
-								{{ knp_pagination_render(contrats, 'pagination.html.twig') }}
-							</td>
+							{# <td colspan="10">
+															{{ knp_pagination_render(contrats, 'pagination.html.twig') }}
+														</td> #}
 						</tr>
 					</tfoot>
 				</table>

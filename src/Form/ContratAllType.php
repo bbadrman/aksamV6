@@ -945,7 +945,6 @@ class ContratAllType extends AbstractType
                 ->add('typeProduct', ChoiceType::class, [
                     'label' => 'Type Produit',
                     'required' => true,
-                    'disabled' => true,
                     'choices' => [
                         'AUTOMOBILE' =>  'AUTOMOBILE',
                         'CARAVANE' =>  'CARAVANE',
@@ -969,7 +968,6 @@ class ContratAllType extends AbstractType
                     'attr' => ['class' => 'tinymce'],
                     'label' => "Remarque",
                     'required' => false,
-                    'disabled' => true,
                 ]);
         }
     }

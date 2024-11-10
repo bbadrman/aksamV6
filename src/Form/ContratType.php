@@ -481,7 +481,7 @@ class ContratType extends AbstractType
                     'disabled' => false,
                 ]
             )
-            //remplacer par caractaire au le du date
+
             ->add('typeProduct', ChoiceType::class, [
                 'label' => 'Type Produit',
                 'required' => true,

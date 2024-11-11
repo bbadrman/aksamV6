@@ -481,7 +481,7 @@ class ContratType extends AbstractType
                     'disabled' => false,
                 ]
             )
-
+            //je veux ajouter cet script pour push 
             ->add('typeProduct', ChoiceType::class, [
                 'label' => 'Type Produit',
                 'required' => true,

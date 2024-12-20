@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\Team;
 use App\Entity\Prospect;
 use App\Form\SearchStatType;
+use App\Repository\ContratRepository;
 use App\Search\SearchProspect;
 use App\Repository\TeamRepository;
 use App\Repository\ProductRepository;
 use App\Repository\ProspectRepository;
+use App\Service\StatsService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -31,8 +33,7 @@ class StatProspController extends AbstractController
         private TeamRepository $teamRepository,
         private ProspectRepository $prospectRepository,
         private ProductRepository $productRepository
-    ) {
-    }
+    ) {}
 
 
 
@@ -67,6 +68,7 @@ class StatProspController extends AbstractController
             'search_form' => $form->createView()
         ]);
     }
+
 
 
 

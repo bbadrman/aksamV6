@@ -87,6 +87,12 @@ class ClientRepository extends ServiceEntityRepository
                 ->andWhere('b.name LIKE :team')
                 ->setParameter('team', "%{$search->team}%");
         }
+        if (!empty($search->r)) {
+            $queryBuilder
+                ->andWhere('c.raisonSociale LIKE :r')
+                ->setParameter('r', "%{$search->r}%");
+        }
+
 
         if (!empty($search->d) && $search->d instanceof \DateTime) {
             $queryBuilder
@@ -170,6 +176,12 @@ class ClientRepository extends ServiceEntityRepository
                 ->andWhere('t.name LIKE :team')
                 ->setParameter('team', "%{$search->team}%");
         }
+        if (!empty($search->r)) {
+            $query = $query
+                ->andWhere('c.raisonSociale LIKE :r')
+                ->setParameter('r', "%{$search->r}%");
+        }
+
         if (!empty($search->k)) {
             $query = $query
                 ->andWhere('f.username LIKE :k')
@@ -258,6 +270,11 @@ class ClientRepository extends ServiceEntityRepository
                 ->andWhere('c.email LIKE :g')
                 ->setParameter('g', "%{$search->g}%");
         }
+        if (!empty($search->r)) {
+            $query = $query
+                ->andWhere('c.raisonSociale LIKE :r')
+                ->setParameter('r', "%{$search->r}%");
+        }
 
         if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
@@ -314,6 +331,12 @@ class ClientRepository extends ServiceEntityRepository
             $queryBuilder
                 ->andWhere('b.name LIKE :team')
                 ->setParameter('team', "%{$search->team}%");
+        }
+
+        if (!empty($search->r)) {
+            $queryBuilder
+                ->andWhere('c.raisonSociale LIKE :r')
+                ->setParameter('r', "%{$search->r}%");
         }
 
         if (!empty($search->d) && $search->d instanceof \DateTime) {

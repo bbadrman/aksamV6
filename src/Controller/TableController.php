@@ -207,24 +207,29 @@ class TableController extends AbstractController
         $roles = $user->getRoles();
         $prospect = [];
 
+        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
+            if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
+                // admi peut voire toutes les relance du jour
+                $prospect =  $this->prospectRepository->findRelancesNonTraitees($data, null);
+                // $numberOfProspects = count($prospect);
+                // dd($numberOfProspects);
+            } else if (in_array('ROLE_TEAM', $roles, true)) {
+                // chef peut voire toutes les relance du jour atacher a leur equipe
+                $prospect =   $this->prospectRepository->RelancesNonTraiteesChef($data, $user, null);
+            } else {
+                // cmrcl peut voire seulement les relance du jour  atacher a lui
+                $prospect =   $this->prospectRepository->RelancesNonTraiteesCmrcl($data, $user, null);
+            }
 
-        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
-            // admi peut voire toutes les relance du jour
-            $prospect =  $this->prospectRepository->findRelancesNonTraitees($data, null);
-            // $numberOfProspects = count($prospect);
-            // dd($numberOfProspects);
-        } else if (in_array('ROLE_TEAM', $roles, true)) {
-            // chef peut voire toutes les relance du jour atacher a leur equipe
-            $prospect =   $this->prospectRepository->RelancesNonTraiteesChef($data, $user, null);
-        } else {
-            // cmrcl peut voire seulement les relance du jour  atacher a lui
-            $prospect =   $this->prospectRepository->RelancesNonTraiteesCmrcl($data, $user, null);
+
+            return $this->render('prospect/index.html.twig', [
+                'prospects' => $prospect,
+                'search_form' => $form->createView()
+            ]);
         }
-
-
-        return $this->render('prospect/index.html.twig', [
+        return $this->render('prospect/search.html.twig', [
             'prospects' => $prospect,
-            'search_form' => $form->createView()
+            'search_form' => $form->createView(),
         ]);
     }
 }

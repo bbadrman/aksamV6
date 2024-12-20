@@ -488,7 +488,7 @@ le probleme c que on a affecter cet methoud sur controller du dashbord afin d'af
  N.B: au deployement on azure j'ai reconntrai un error de sessionInterface qui Deprecated et pour cela  j'ai changer sessionInterface par RequestStack
 voila l'error qui j'ai: 
  [2023-09-05T17:19:21.345437+00:00] deprecation.INFO: User Deprecated: Since symfony/framework-bundle 5.3: The "Symfony\Component\HttpFoundation\Session\SessionInterface" and "SessionInterface" aliases are deprecated, use "$requestStack->getSession()" instead. It is being referenced by the "App\Cart\Panier" service. {"exception":"[object] (ErrorException(code: 0): User Deprecated: Since symfony/framework-bundle 5.3: The \"Symfony\\Component\\HttpFoundation\\Session\\SessionInterface\" and \"SessionInterface\" aliases are deprecated, use \"$requestStack->getSession()\" instead. It is being referenced by the \"App\\Cart\\Panier\" service. at /home/site/wwwroot/vendor/symfony/dependency-injection/Compiler/ResolveReferencesToAliasesPass.php:68)"} []
-
+ 
 ## Search Interval date :
  
  I create two parametre in form  add (d) and add (add)

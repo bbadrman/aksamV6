@@ -4312,6 +4312,19 @@ ul.chat-available-user li a:hover {
     border: 1px solid #e0e0e0;
 }
 
+button a {
+    text-decoration: none;
+    color: black;
+    font-size: 17px;
+}
+
+button a:hover {
+    color: black;
+    font-size: 17px;
+
+}
+
+
 /* .btn-primary {
     background-color: #28a745;
     border: none;

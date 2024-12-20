@@ -24,6 +24,10 @@
 						<i class="fa fa-shopping-cart"></i>
 						<span class="badge bg-warning fs-4">{{ prospects|length }}</span>
 					</a>
+					{# <a data-toggle="dropdown" class="dropdown-toggle" href="{{path('app_table_liste')}}">
+											<i class="fa fa-shopping-cart"></i>
+											<span class="badge bg-warning fs-4">{{ contrats|length }}</span>
+										</a> #}
 
 				{% elseif app.request.get('_route') == 'prospect_search' %}
 					<span class="badge bg-warning fs-4"></span>

@@ -236,4 +236,16 @@ if (typeCondField !== null) {
 	});
 }
 
+// databale:
+$(document).ready(function () {
+	$('#table-datatables').DataTable({
+		"paging": true,
+		"searching": true,
+		"ordering": true,
+		"order": [[2, "desc"]], // Tri par défaut sur la colonne "Total des frais" (descendant)
+		"language": {
+			"url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/French.json" // Traduction française
+		}
+	});
+});
 // Le reste de votre logique pour les autres champs...

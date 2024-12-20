@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+	{% for label,  messages in app.flashes  %}
+		<div class="container">
+			<div class="alert alert-{{ label }}">
+				{% for message in messages %}
+					{{ message | raw }}
+				{% endfor %}
+
+			</div>
+		</div>
+	{% endfor %}
+	{% for message in app.flashes('warning') %}
+		<div class="alert alert-warning">
+			{{ message }}
+		</div>
+	{% endfor %}
+	<section class="content-header">
+
+		<h1 style="text-align: center;">Statistiques des Contrats</h1>
+
+
+		<ol class="breadcrumb">
+			<li>
+				<a href="{{ path('dashboard') }}">
+					<i class="fa fa-dashboard"></i>
+					Tableau de bord</a>
+			</li>
+			<li class="active">
+				<a href="{{ path('app_table_liste') }}">
+					<i class="fa fa-users"></i>
+					Toutes les Tables</a>
+			</li>
+			<!-- NOTIFICATION DROPDOWN -->
+			<li id="header_notification_bar" class="dropdown">
+				<a data-toggle="dropdown" class="dropdown-toggle" href="#">
+					<i class="fa fa-shopping-cart"></i>
+					<span class="badge bg-warning">{{ contrats|length }}
+					</span>
+				</a>
+
+			</li>
+			<!-- END NOTIFICATION DROPDOWN -->
+		</ol>
+		<br>
+	</section>
+
+	<div class="col-xs-12" style="float: center !important;">
+		<div class="row" style="margin-right: 10px;">{% include 'contrat/_search_form_contrat.html.twig' with {search_form: search_form} only %}
+		</div>
+	</div>
+
+	<div class="row mt">
+		<div class="col-lg-12">
+			<div class="content-panel">
+				{% if contratsParComrcl is not empty %}
+					<p>
+						Total des contrats :
+						<strong>{{ totalContrats }}</strong>
+					</p>
+				</p>
+
+				<p>
+					Total des frais :
+					<strong>{{ totalFrais | number_format(2, ',', ' ') }}</strong>
+					€</p>
+
+				<hr>
+				<table id="table-datatables" class="display">
+					<thead>
+						<tr>
+							<th>Commercial</th>
+							<th>Nombre de contrats</th>
+							<th>Total des frais</th>
+							<th>1er reglement</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for comrcl in contratsParComrcl %}
+							<tr>
+								<td>{{ comrcl.commercial }}</td>
+								<td>{{ comrcl.contratCount }}</td>
+								<td>{{ comrcl.totalFrais | number_format(2, ',', ' ') }}
+									€</td>
+								<td>{{ comrcl.totalFirstReglement | number_format(2, ',', ' ') }}
+									€</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			{% else %}
+				<p>Aucun contrat trouvé pour cette période.</p>
+			{% endif %}
+		</div>
+	</div>
+</div>{% endblock %}{% block javascripts %}{{ parent() }}<script src='/js/adaffect.js'>{% endblock %}

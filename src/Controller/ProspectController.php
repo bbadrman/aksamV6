@@ -7,13 +7,10 @@ use DateTime;
 use App\Entity\Appel;
 use App\Form\GsmType;
 use App\Entity\Client;
-use App\Entity\Cloture;
 use App\Entity\History;
 use App\Entity\Product;
 use App\Entity\Prospect;
 use App\Entity\Relanced;
-use App\Form\ClientType;
-use App\Form\ClotureType;
 use App\Form\ProspectType;
 use App\Form\RelancedType;
 use App\Form\ScdEmailType;
@@ -99,7 +96,10 @@ class ProspectController extends AbstractController
         $user = $this->security->getUser();
         $roles = $user->getRoles();
         $prospects = [];
-        $duplicates = [];
+        $duplicates = [
+            'emails' => [],
+            'phones' => [],
+        ];
 
         if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_AFFECT', $roles, true)) {
             $prospects = $this->prospectRepository->findByAdminNewProsp($data);
@@ -113,15 +113,20 @@ class ProspectController extends AbstractController
 
         foreach ($prospects as $prospect) {
             $email = $prospect->getEmail();
+            $phone = $prospect->getPhone(); // Assurez-vous que la méthode `getPhone()` existe.
 
-            // Check if the email exists in the database excluding the current prospect
-            $existingProspect = $this->prospectRepository->findOneBy(['email' => $email]);
-            $isDuplicate = $existingProspect !== null && $existingProspect->getId() !== $prospect->getId();
+            // Vérifier les doublons par email
+            $existingEmailProspect = $this->prospectRepository->findOneBy(['email' => $email]);
+            $isEmailDuplicate = $existingEmailProspect !== null && $existingEmailProspect->getId() !== $prospect->getId();
+            $duplicates['emails'][$email] = $isEmailDuplicate;
 
-            // Store the duplication information in an array
-            $duplicates[$email] = $isDuplicate;
+            // Vérifier les doublons par téléphone
+            if ($phone) { // Vérifier que le numéro de téléphone existe
+                $existingPhoneProspect = $this->prospectRepository->findOneBy(['phone' => $phone]);
+                $isPhoneDuplicate = $existingPhoneProspect !== null && $existingPhoneProspect->getId() !== $prospect->getId();
+                $duplicates['phones'][$phone] = $isPhoneDuplicate;
+            }
         }
-
         return $this->render('prospect/index.html.twig', [
             'prospects' => $prospects,
             'duplicates' => $duplicates,
@@ -145,7 +150,10 @@ class ProspectController extends AbstractController
         $user = $this->security->getUser();
         $roles = $user->getRoles();
         $prospects = [];
-        $duplicates = [];
+        $duplicates = [
+            'emails' => [],
+            'phones' => [],
+        ];
 
         if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_AFFECT', $roles, true)) {
             $prospects = $this->prospectRepository->findByAdminNewProsp($data);
@@ -160,13 +168,19 @@ class ProspectController extends AbstractController
 
         foreach ($prospects as $prospect) {
             $email = $prospect->getEmail();
+            $phone = $prospect->getPhone(); // Assurez-vous que la méthode `getPhone()` existe.
 
-            // Check if the email exists in the database excluding the current prospect
-            $existingProspect = $this->prospectRepository->findOneBy(['email' => $email]);
-            $isDuplicate = $existingProspect !== null && $existingProspect->getId() !== $prospect->getId();
+            // Vérifier les doublons par email
+            $existingEmailProspect = $this->prospectRepository->findOneBy(['email' => $email]);
+            $isEmailDuplicate = $existingEmailProspect !== null && $existingEmailProspect->getId() !== $prospect->getId();
+            $duplicates['emails'][$email] = $isEmailDuplicate;
 
-            // Store the duplication information in an array
-            $duplicates[$email] = $isDuplicate;
+            // Vérifier les doublons par téléphone
+            if ($phone) { // Vérifier que le numéro de téléphone existe
+                $existingPhoneProspect = $this->prospectRepository->findOneBy(['phone' => $phone]);
+                $isPhoneDuplicate = $existingPhoneProspect !== null && $existingPhoneProspect->getId() !== $prospect->getId();
+                $duplicates['phones'][$phone] = $isPhoneDuplicate;
+            }
         }
 
         return $this->render('prospect/index.html.twig', [

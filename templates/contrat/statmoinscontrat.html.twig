@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques des contrats du mois
+{% endblock %}
+
+{% block body %}
+
+	<section class="content-header">
+
+		<h1 style="text-align: center;">Statistiques des contrats du Mois
+		</h1>
+
+
+		<h2>Total des contrats pour ce mois :
+			<strong>
+				{{ totauxMois.totalContrats }}</strong>
+		</h2>
+
+		<h2>Total des frais pour ce mois :
+			<strong>
+				{{ totauxMois.totalFrais | number_format(2, ',', ' ') }}
+				€</strong>
+		</h2>
+		<div style="text-align: right;">
+			<button type="button" class="btn btn-success">
+				<a href="{{ path('contratstat_trim') }}">TRIMESTRIELS</a>
+			</button>
+			<button type="button" type="button" class="btn btn-theme">
+				<a href="{{ path('contratstat') }}">TOTALES</a>
+			</button>
+		</div>
+
+		<ol class="breadcrumb">
+			<li>
+				<a href="{{ path('dashboard') }}">
+					<i class="fa fa-dashboard"></i>
+					Tableau de bord</a>
+			</li>
+		</li>
+	</ol>
+</section>
+<table id="table-datatables" class="display">
+	<thead>
+		<tr>
+			<th>Commercial</th>
+			<th>Nombre de contrats</th>
+			<th>Total des frais</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for stat in contratsParComrcl %}
+			<tr>
+				<td>{{ stat.username }}</td>
+				<td>{{ stat.contratCount }}</td>
+				<td>{{ stat.totalFrais | number_format(2, ',', ' ') }}
+					€</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>{% endblock %}{% block javascripts %}{{ parent() }}<script src='/js/adaffect.js'>{% endblock %}

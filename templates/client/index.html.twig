@@ -75,7 +75,8 @@
 									<td>—</td>
 									<td>—</td>
 								{% endif %}
-								<td style="text-align:center;">{{ client.contrats|length }}</td>
+								<td style="text-align:center;">
+									{{ client.contrats|filter(contrat => contrat.status == 1)|length }}</td>
 
 								<td class="btn-toolbar">
 
@@ -115,7 +116,7 @@
 											{% endif %}
 										{% endif %}
 									{% endif %}
-									{%  if  is_granted('ROLE_VALIDE')  %}
+									{%  if  is_granted('ROLE_ADMIN')  %}
 										<a href="{{ path('client_valide_edit', {'id': client.id}) }}" class="btn btn-primary btn-xs">
 											<i class="fa fa-pencil"></i>
 										</a>
@@ -144,7 +145,7 @@
 											<th>Actions</th>
 										</thead>
 										<tbody>
-											{% for contrat in client.contrats %}
+											{% for contrat in client.contrats|filter(contrat => contrat.status == 1)  %}
 												<tr class="expandable-row contrat-row">
 													<td style="color:blue;"></td>
 													<td>{{ contrat.etat }}</td>

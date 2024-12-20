@@ -26,6 +26,7 @@ class StatsService
         $teams      = $this->getTeamsCount();
         $products = $this->getProductsCount();
         $clients = $this->getClientsCount();
+        // $contrats = $this->getContratsCount();
         // $prospectsAffect = $this->getProspectCount();
 
         $prospectspasaffect = $this->getProspectPasCount();
@@ -68,12 +69,14 @@ class StatsService
         $preclientAdmin = $this->getpreclientAdmin();
         $preclientChef = $this->getpreclientChef($user);
         $preclientComrcl = $this->getpreclientCmrcl($user);
+        $preclientValide = $this->getpreclientValide($user);
         // compter contrat
         $preContratAdmin = $this->getpreContratAdmin();
+        $preContratComrcl = $this->getpreContratComrcl($user);
 
 
 
-        return compact('preContratAdmin', 'preclientAdmin', 'preclientChef', 'preclientComrcl',  'relancesNoTrCmrcl', 'relancesNoTrChef', 'relanceNoTraite', 'prosAvenirCmrcl', 'prosAvenirChef', 'prospectsAvenir', 'unjoiniableCmrl', 'unjoiniableChef', 'prospectsNoTrCmrcl', 'prospectsNoTrChef', 'prospectsDayCmrcl', 'prospectsDayChef', 'prospectsCmrclNv', 'prospectsChefNv', 'prospectsChefNvAll', 'prospectsNoTraite', 'unjoiniable', 'prospects', 'prospectspasaffect', 'prospectsDay', 'users', 'teams', 'products', 'clients');
+        return compact('preclientValide', 'preContratAdmin', 'preContratComrcl', 'preclientAdmin', 'preclientChef', 'preclientComrcl',  'relancesNoTrCmrcl', 'relancesNoTrChef', 'relanceNoTraite', 'prosAvenirCmrcl', 'prosAvenirChef', 'prospectsAvenir', 'unjoiniableCmrl', 'unjoiniableChef', 'prospectsNoTrCmrcl', 'prospectsNoTrChef', 'prospectsDayCmrcl', 'prospectsDayChef', 'prospectsCmrclNv', 'prospectsChefNv', 'prospectsChefNvAll', 'prospectsNoTraite', 'unjoiniable', 'prospects', 'prospectspasaffect', 'prospectsDay', 'users', 'teams', 'products', 'clients');
     }
 
 
@@ -100,6 +103,15 @@ class StatsService
         return $this->manager->createQuery('SELECT COUNT(p) FROM App\Entity\Prospect p')->getSingleScalarResult();
     }
 
+    // public function getContratsCount()
+    // {
+    //     $qb = $this->manager->createQueryBuilder();
+    //     $qb->select('COUNT(c)');
+    //     $query = $qb->getQuery();
+    //     $result = $query->getSingleScalarResult();
+
+    //     return $result;
+    // }
 
 
     // les prospect cree ce jour et pas affc
@@ -731,6 +743,25 @@ class StatsService
 
         return $result;
     }
+
+    //compter le nombre pre client du validateur
+    public function getpreclientValide()
+    {
+
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(DISTINCT c.id)')
+            ->from(Client::class, 'c')
+
+            ->where('c.status = 2 OR c.status IS NULL')
+        ;
+
+
+
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
     //compter le nombre pre client du admin 
     public function getpreclientChef(User $user): int
     {
@@ -785,6 +816,26 @@ class StatsService
             ->from(Contrat::class, 'c')
 
             ->where('c.status = 2 OR c.status IS NULL')
+        ;
+
+
+
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
+
+    public function getpreContratComrcl($id)
+    {
+
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(DISTINCT c.id)')
+            ->from(Contrat::class, 'c')
+
+            ->where('c.status = 2 OR c.status IS NULL')
+            ->andWhere('c.comrcl = :val')
+            ->setParameter('val', $id)
         ;
 
 

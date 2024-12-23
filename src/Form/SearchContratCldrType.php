@@ -15,12 +15,12 @@ class SearchContratCldrType extends AbstractType
             ->add('startDate', DateType::class, [
                 'widget' => 'single_text',
                 'label' => 'Date de début',
-                'required' => false,
+                'required' => true,
             ])
             ->add('endDate', DateType::class, [
                 'widget' => 'single_text',
                 'label' => 'Date de fin',
-                'required' => false,
+                'required' => true,
             ]);
     }
 }

@@ -191,60 +191,9 @@ class ContratController extends AbstractController
         ]);
     }
 
-    #[Route('/statcontrat', name: 'contratstat')]
-    public function prospectsContrat(): Response
-    {
-
-        $contrat = $this->contratRepository->findAll();
-        $contratsParComrcl = $this->contratRepository->countContratsByComrcl();
-        $totalFrais = $this->contratRepository->getTotalFrais();
-        $contratsParComrcl = $this->contratRepository->countContratsAndTotalFraisByComrcl();
-
-        return $this->render('contrat/statcontrat.html.twig', [
-            'totalFrais' => $totalFrais,
-            'contrats' => $contrat,
-            'contratsParComrcl' => $contratsParComrcl,
-            'contratsParComrcl' => $contratsParComrcl,
 
 
-        ]);
-    }
-
-    #[Route('/statcontratmont', name: 'contratstat_mont')]
-    public function prospectsContratMont(): Response
-    {
-
-
-        $totalFrais = $this->contratRepository->getTotalFrais();
-
-        $contratsParComrcl = $this->contratRepository->countContratsAndTotalFraisByComrclForThisMonth();
-        $totauxMois = $this->contratRepository->getTotalContratsAndFraisForThisMonth(); // Ajout
-
-        return $this->render('contrat/statmoinscontrat.html.twig', [
-            'totalFrais' => $totalFrais,
-
-            'contratsParComrcl' => $contratsParComrcl,
-            'totauxMois' => $totauxMois,
-
-        ]);
-    }
-
-    #[Route('/statcontrattrim', name: 'contratstat_trim')]
-    public function prospectsContratTrim(): Response
-    {
-        $totalFrais = $this->contratRepository->getTotalFrais();
-
-        $totauxMois = $this->contratRepository->getTotalFraisForLastThreeMonths();
-        $contratsParComrcl = $this->contratRepository->countContratsAndTotalFraisByComrclForLastThreeMonths();
-
-        return $this->render('contrat/stattrimcontrat.html.twig', [
-            'totalFrais' => $totalFrais,
-            'contratsParComrcl' => $contratsParComrcl,
-            'totauxMois' => $totauxMois,
-        ]);
-    }
-
-    #[Route('/contrats', name: 'contrats_search')]
+    #[Route('/stat', name: 'contrats_search', methods: ['GET', 'POST'])]
     public function searchContrats(): Response
     {
         $data = new SearchContartCalendrie();
@@ -275,7 +224,7 @@ class ContratController extends AbstractController
             $totalFirstReglm = $this->contratRepository->getTotalFirstReglmForInterval($startDate, $endDate);
         }
 
-        return $this->render('contrat/contrats.html.twig', [
+        return $this->render('contrat/contratstat.html.twig', [
             'contrats' => $contrats,
             'contratsParComrcl' => $contratsParComrcl,
             'totalContrats' => $totalContrats,

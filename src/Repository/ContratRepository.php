@@ -127,111 +127,111 @@ class ContratRepository extends ServiceEntityRepository
     /**
      * Calcule la somme totale des frais
      */
-    public function getTotalFrais(): float
-    {
-        return (float) $this->createQueryBuilder('c')
-            ->select('SUM(c.frais)')
-            ->getQuery()
-            ->getSingleScalarResult();
-    }
+    // public function getTotalFrais(): float
+    // {
+    //     return (float) $this->createQueryBuilder('c')
+    //         ->select('SUM(c.frais)')
+    //         ->getQuery()
+    //         ->getSingleScalarResult();
+    // }
 
     /**
      * Calcule les contrats par comrcl
      */
-    public function countContratsByComrcl(): array
-    {
-        return $this->createQueryBuilder('c')
-            ->select('u.id AS userId, u.username AS username, COUNT(c.id) AS contratCount')
-            ->join('c.comrcl', 'u')
-            ->groupBy('u.id')
-            ->getQuery()
-            ->getResult();
-    }
+    // public function countContratsByComrcl(): array
+    // {
+    //     return $this->createQueryBuilder('c')
+    //         ->select('u.id AS userId, u.username AS username, COUNT(c.id) AS contratCount')
+    //         ->join('c.comrcl', 'u')
+    //         ->groupBy('u.id')
+    //         ->getQuery()
+    //         ->getResult();
+    // }
 
     /**
      * Calcule les frais par comrcl
      */
-    public function countContratsAndTotalFraisByComrcl(): array
-    {
-        return $this->createQueryBuilder('c')
-            ->select('u.id AS userId, u.username AS username, COUNT(c.id) AS contratCount, SUM(c.frais) AS totalFrais')
-            ->join('c.comrcl', 'u')
-            ->groupBy('u.id')
-            ->getQuery()
-            ->getResult();
-    }
+    // public function countContratsAndTotalFraisByComrcl(): array
+    // {
+    //     return $this->createQueryBuilder('c')
+    //         ->select('u.id AS userId, u.username AS username, COUNT(c.id) AS contratCount, SUM(c.frais) AS totalFrais')
+    //         ->join('c.comrcl', 'u')
+    //         ->groupBy('u.id')
+    //         ->getQuery()
+    //         ->getResult();
+    // }
 
-    public function countContratsAndTotalFraisByComrclForThisMonth(): array
-    {
-        $currentMonth = new \DateTime('first day of this month');
+    // public function countContratsAndTotalFraisByComrclForThisMonth(): array
+    // {
+    //     $currentMonth = new \DateTime('first day of this month');
 
-        return $this->createQueryBuilder('c')
-            ->select('u.id AS userId, u.username AS username, COUNT(c.id) AS contratCount, SUM(c.frais) AS totalFrais')
-            ->join('c.comrcl', 'u')
-            ->where('c.dateSouscrpt >= :startOfMonth')
-            ->andWhere('c.dateSouscrpt < :endOfMonth')
-            ->setParameter('startOfMonth', $currentMonth->format('Y-m-01'))
-            ->setParameter('endOfMonth', $currentMonth->modify('first day of next month')->format('Y-m-01'))
-            ->groupBy('u.id')
-            ->getQuery()
-            ->getResult();
-    }
+    //     return $this->createQueryBuilder('c')
+    //         ->select('u.id AS userId, u.username AS username, COUNT(c.id) AS contratCount, SUM(c.frais) AS totalFrais')
+    //         ->join('c.comrcl', 'u')
+    //         ->where('c.dateSouscrpt >= :startOfMonth')
+    //         ->andWhere('c.dateSouscrpt < :endOfMonth')
+    //         ->setParameter('startOfMonth', $currentMonth->format('Y-m-01'))
+    //         ->setParameter('endOfMonth', $currentMonth->modify('first day of next month')->format('Y-m-01'))
+    //         ->groupBy('u.id')
+    //         ->getQuery()
+    //         ->getResult();
+    // }
 
-    public function getTotalContratsAndFraisForThisMonth(): array
-    {
-        $currentMonth = new \DateTime('first day of this month');
+    // public function getTotalContratsAndFraisForThisMonth(): array
+    // {
+    //     $currentMonth = new \DateTime('first day of this month');
 
-        $result = $this->createQueryBuilder('c')
-            ->select('COUNT(c.id) AS totalContrats, SUM(c.frais) AS totalFrais')
-            ->where('c.dateSouscrpt >= :startOfMonth')
-            ->andWhere('c.dateSouscrpt < :endOfMonth')
-            ->setParameter('startOfMonth', $currentMonth->format('Y-m-01'))
-            ->setParameter('endOfMonth', $currentMonth->modify('first day of next month')->format('Y-m-01'))
-            ->getQuery()
-            ->getSingleResult();
+    //     $result = $this->createQueryBuilder('c')
+    //         ->select('COUNT(c.id) AS totalContrats, SUM(c.frais) AS totalFrais')
+    //         ->where('c.dateSouscrpt >= :startOfMonth')
+    //         ->andWhere('c.dateSouscrpt < :endOfMonth')
+    //         ->setParameter('startOfMonth', $currentMonth->format('Y-m-01'))
+    //         ->setParameter('endOfMonth', $currentMonth->modify('first day of next month')->format('Y-m-01'))
+    //         ->getQuery()
+    //         ->getSingleResult();
 
-        return $result;
-    }
+    //     return $result;
+    // }
 
 
     // les donnes des contrats trimistrielle:
-    public function countContratsAndTotalFraisByComrclForLastThreeMonths(): array
-    {
-        $threeMonthsAgo = (new \DateTime('first day of this month'))->modify('-2 months');
-        $endOfCurrentMonth = (new \DateTime('first day of next month'));
+    // public function countContratsAndTotalFraisByComrclForLastThreeMonths(): array
+    // {
+    //     $threeMonthsAgo = (new \DateTime('first day of this month'))->modify('-2 months');
+    //     $endOfCurrentMonth = (new \DateTime('first day of next month'));
 
-        return $this->createQueryBuilder('c')
-            ->select('u.id AS userId, u.username AS username, COUNT(c.id) AS contratCount, SUM(c.frais) AS totalFrais')
-            ->join('c.comrcl', 'u')
-            ->where('c.dateSouscrpt >= :startOfThreeMonths')
-            ->andWhere('c.dateSouscrpt < :endOfCurrentMonth')
-            ->setParameter('startOfThreeMonths', $threeMonthsAgo->format('Y-m-01'))
-            ->setParameter('endOfCurrentMonth', $endOfCurrentMonth->format('Y-m-01'))
-            ->groupBy('u.id')
-            ->getQuery()
-            ->getResult();
-    }
-
-
+    //     return $this->createQueryBuilder('c')
+    //         ->select('u.id AS userId, u.username AS username, COUNT(c.id) AS contratCount, SUM(c.frais) AS totalFrais')
+    //         ->join('c.comrcl', 'u')
+    //         ->where('c.dateSouscrpt >= :startOfThreeMonths')
+    //         ->andWhere('c.dateSouscrpt < :endOfCurrentMonth')
+    //         ->setParameter('startOfThreeMonths', $threeMonthsAgo->format('Y-m-01'))
+    //         ->setParameter('endOfCurrentMonth', $endOfCurrentMonth->format('Y-m-01'))
+    //         ->groupBy('u.id')
+    //         ->getQuery()
+    //         ->getResult();
+    // }
 
 
 
-    public function getTotalFraisForLastThreeMonths(): array
-    {
-        $threeMonthsAgo = (new \DateTime('first day of this month'))->modify('-2 months');
-        $endOfCurrentMonth = (new \DateTime('first day of next month'));
 
-        $result = $this->createQueryBuilder('c')
-            ->select('COUNT(c.id) AS totalContrats, SUM(c.frais) AS totalFrais')
-            ->where('c.dateSouscrpt >= :startOfThreeMonths')
-            ->andWhere('c.dateSouscrpt < :endOfCurrentMonth')
-            ->setParameter('startOfThreeMonths', $threeMonthsAgo->format('Y-m-01'))
-            ->setParameter('endOfCurrentMonth', $endOfCurrentMonth->format('Y-m-01'))
-            ->getQuery()
-            ->getSingleResult();
 
-        return $result;
-    }
+    // public function getTotalFraisForLastThreeMonths(): array
+    // {
+    //     $threeMonthsAgo = (new \DateTime('first day of this month'))->modify('-2 months');
+    //     $endOfCurrentMonth = (new \DateTime('first day of next month'));
+
+    //     $result = $this->createQueryBuilder('c')
+    //         ->select('COUNT(c.id) AS totalContrats, SUM(c.frais) AS totalFrais')
+    //         ->where('c.dateSouscrpt >= :startOfThreeMonths')
+    //         ->andWhere('c.dateSouscrpt < :endOfCurrentMonth')
+    //         ->setParameter('startOfThreeMonths', $threeMonthsAgo->format('Y-m-01'))
+    //         ->setParameter('endOfCurrentMonth', $endOfCurrentMonth->format('Y-m-01'))
+    //         ->getQuery()
+    //         ->getSingleResult();
+
+    //     return $result;
+    // }
 
     // contrat by calendire :
     public function findByDateInterval(?\DateTime $startDate, ?\DateTime $endDate)
@@ -298,7 +298,7 @@ class ContratRepository extends ServiceEntityRepository
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate);
 
-        return $qb->getQuery()->getSingleScalarResult();
+        return $qb->getQuery()->getSingleScalarResult() ?? 0;
     }
 
     /**

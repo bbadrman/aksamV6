@@ -85,6 +85,10 @@ class SearchProspect
      */
     public $y;
     /**
+     * @var int|null
+     */
+    public $u;
+    /**
      * Récupère l'année de la recherche
      * 
      * @return int|null L'année de la recherche ou null si non définie

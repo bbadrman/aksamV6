@@ -40,6 +40,7 @@
         "symfony/yaml": "5.4.*"
     },
     "require-dev": {
+        "symfony/debug-bundle": "5.4.*",
         "symfony/maker-bundle": "^1.50",
         "symfony/stopwatch": "5.4.*",
         "symfony/web-profiler-bundle": "5.4.*"

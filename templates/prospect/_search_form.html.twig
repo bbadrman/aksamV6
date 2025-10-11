@@ -105,10 +105,20 @@
 		<div class="col-md-1 mx-auto" style="padding-right: 1px;padding-left: 2px;">
 			{{ form_row(search_form.motifRelanced) }}
 		</div>
+		{% if is_granted('ROLE_ADMIN')  == true %}
+			<div class="col-md-1 mx-auto" style="padding-right: 1px;padding-left: 2px;">
+				{{ form_row(search_form.u) }}
+			</div>
+		{% else %}
+			{{ form_widget(search_form.u, { 'attr': { 'style': 'display:none' } }) }}
+		{% endif %}
+
 	{% else %}
 		{{ form_widget(search_form.dr, { 'attr': { 'style': 'display:none' } }) }}
 		{{ form_widget(search_form.ddr, { 'attr': { 'style': 'display:none' } }) }}
 		{{ form_widget(search_form.motifRelanced, { 'attr': { 'style': 'display:none' } }) }}
+		{{ form_widget(search_form.u, { 'attr': { 'style': 'display:none' } }) }}
+
 	{% endif %}
 </div>
 

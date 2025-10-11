@@ -78,6 +78,24 @@
 							</th>
 							<th>site pub
 							</th>
+							<th>TPM
+							</th>
+							<th>VTC
+							</th>
+							<th>Sociéte
+							</th>
+							<th>Décenale
+							</th>
+							<th>Dommage
+							</th>
+							<th>Marchandise
+							</th>
+							<th>Négociant
+							</th>
+							<th>Pr-auto
+							</th>
+							<th>Garage
+							</th>
 
 						</tr>
 
@@ -110,7 +128,7 @@
 									</td>
 
 									{# <td> <span class="btn btn-danger"> {{ " %02d"|format(teams.prospects|filter(p => p.comrcl is null  )| length)  }}   </span>  </td>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																					  #}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																				  #}
 									<td>
 										<span class="btn btn-primary">
 											<strong>
@@ -186,6 +204,79 @@
 											</strong>
 										</span>
 									</td>
+									<td>
+										<span class='btn btn' style="background-color:Aquamarine;">
+											<strong>
+												{{ " %02d"|format( teams.prospects|filter(p =>  p.activites == 1  and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+											</strong>
+										</span>
+									</td>
+									<td>
+										<span class='btn btn' style="background-color:Aquamarine;">
+											<strong>
+												{{ " %02d"|format( teams.prospects|filter(p =>  p.activites == 2  and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+											</strong>
+										</span>
+									</td>
+									<td>
+										<span class='btn btn' style="background-color:Aquamarine;">
+											<strong>
+												{{ " %02d"|format( teams.prospects|filter(p =>  p.activites == 3  and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+											</strong>
+										</span>
+									</td>
+									<td>
+										<span class='btn btn' style="background-color:Aquamarine;">
+											<strong>
+												{{ " %02d"|format( teams.prospects|filter(p =>  p.activites == 4  and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+											</strong>
+										</span>
+									</td>
+									<td>
+										<span class='btn btn' style="background-color:Aquamarine;">
+											<strong>
+												{{ " %02d"|format( teams.prospects|filter(p =>  p.activites == 5  and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+											</strong>
+										</span>
+									</td>
+									<td>
+										<span class='btn btn' style="background-color:Aquamarine;">
+											<strong>
+												{{ " %02d"|format( teams.prospects|filter(p =>  p.activites == 6  and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+											</strong>
+										</span>
+									</td>
+									<td>
+										<span class='btn btn' style="background-color:Aquamarine;">
+											<strong>
+												{{ " %02d"|format( teams.prospects|filter(p =>  p.activites == 7  and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+											</strong>
+										</span>
+									</td>
+									<td>
+										<span class='btn btn' style="background-color:Aquamarine;">
+											<strong>
+												{{ " %02d"|format( teams.prospects|filter(p =>  p.activites == 8  and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+											</strong>
+										</span>
+									</td>
+									<td>
+										<span class='btn btn' style="background-color:Aquamarine;">
+											<strong>
+												{{ " %02d"|format( teams.prospects|filter(p =>  p.activites == 9  and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+											</strong>
+										</span>
+									</td>
+
 
 								</tr>
 
@@ -270,6 +361,57 @@
 
 												{# {{  " %02d"|format(user.prospections|filter(p => p.motifSaise is null and 	p.source == 'Revendeur' )| length)  }} #}
 											</span>
+										</td>
+										<td>
+											<span class='btn btn' style="background-color:Aquamarine;">
+												{{ " %02d"|format(user.prospections|filter(p => p.activites == 1 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+											</span>
+										</td>
+										<td>
+											<span class='btn btn' style="background-color:Aquamarine;">
+												{{ " %02d"|format(user.prospections|filter(p => p.activites == 2 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+											</span>
+										</td>
+										<td>
+											<span class='btn btn' style="background-color:Aquamarine;">
+												{{ " %02d"|format(user.prospections|filter(p => p.activites == 3 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+											</span>
+										</td>
+										<td>
+											<span class='btn btn' style="background-color:Aquamarine;">
+												{{ " %02d"|format(user.prospections|filter(p => p.activites == 4 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+											</span>
+
+										</td>
+										<td>
+											<span class='btn btn' style="background-color:Aquamarine;">
+												{{ " %02d"|format(user.prospections|filter(p => p.activites == 5 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+											</span>
+
+										</td>
+										<td>
+											<span class='btn btn' style="background-color:Aquamarine;">
+												{{ " %02d"|format(user.prospections|filter(p => p.activites == 6 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+											</span>
+
+										</td>
+										<td>
+											<span class='btn btn' style="background-color:Aquamarine;">
+												{{ " %02d"|format(user.prospections|filter(p => p.activites == 7 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+											</span>
+
+										</td>
+										<td>
+											<span class='btn btn' style="background-color:Aquamarine;">
+												{{ " %02d"|format(user.prospections|filter(p => p.activites == 8 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+											</span>
+
+										</td>
+										<td>
+											<span class='btn btn' style="background-color:Aquamarine;">
+												{{ " %02d"|format(user.prospections|filter(p => p.activites == 9 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+											</span>
+
 										</td>
 
 
@@ -532,11 +674,11 @@ return new bootstrap.Popover(popoverTriggerEl)
 	</script>
 
 	{# <script> 
-																																																																																																																																											$(document).ready(function(){
-																																																																																																																																											$("#flipp").click(function(){
-																																																																																																																																												$("#panell").slideToggle("slow");
-																																																																																																																																												$("#panel1").slideToggle("slow");
-																																																																																																																																											});
-																																																																																																																																											});
-																																																																																																																																										</script> #}
+																																																																																																																																																		$(document).ready(function(){
+																																																																																																																																																		$("#flipp").click(function(){
+																																																																																																																																																			$("#panell").slideToggle("slow");
+																																																																																																																																																			$("#panel1").slideToggle("slow");
+																																																																																																																																																		});
+																																																																																																																																																		});
+																																																																																																																																																	</script> #}
 {% endblock %}

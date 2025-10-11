@@ -420,6 +420,8 @@ NB:
             pattern: ^/
             user_checker: App\Security\UserChecker
 
+            
+
  ### Select Diynamic:
     - il faut dabord met une relation entre les deux entity (team -> product)
     - metre EntityType in add team and generer une function look script UserTpe

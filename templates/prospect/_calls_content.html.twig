@@ -1,0 +1,36 @@
+{% if appels is not empty %}
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Utilisateur</th>
+				<th>Numéro Appelant</th>
+				<th>Numéro Appelé</th>
+				<th>Date d'appel</th>
+				<th>Durée</th>
+				<th>Enregistrement</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for appel in appels %}
+				<tr>
+					<td>{{ appel.contactName }}</td>
+					<td>{{ appel.fromNumber|replace({'33': '0'}) }}</td>
+					<td>{{ appel.toNumber|replace({'33': '0'}) }}</td>
+					<td>{{ appel.startTime|date('d/m/Y H:i') }}</td>
+					<td>{{ (appel.duration / 60)|number_format(2, ',', ' ') }}
+						min</td>
+					<td>
+
+						<audio controls style="width: 100%;">
+							<source src="{{ appel.recordUrl }}" type="audio/mpeg">
+							Votre navigateur ne supporte pas la balise audio.
+						</audio>
+
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% else %}
+	<p>Aucun appel trouvé pour ce prospect.</p>
+{% endif %}

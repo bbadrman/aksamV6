@@ -63,6 +63,24 @@
 					<th>Site</th>
 					<th>Revdr
 					</th>
+					<th>TPM
+					</th>
+					<th>VTC
+					</th>
+					<th>Sociéte
+					</th>
+					<th>Décenale
+					</th>
+					<th>Dommage
+					</th>
+					<th>Marchandise
+					</th>
+					<th>Négociant
+					</th>
+					<th>Pr-auto
+					</th>
+					<th>Garage
+					</th>
 				</tr>
 			</thead>
 			<style>
@@ -137,6 +155,78 @@
 									</strong>
 								</span>
 							</td>
+							<td>
+								<span>
+									<strong>
+										{{ " %02d"|format( teams.prospects|filter(p => p.activites == 1 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+									</strong>
+								</span>
+							</td>
+							<td>
+								<span>
+									<strong>
+										{{ " %02d"|format( teams.prospects|filter(p => p.activites == 2 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+									</strong>
+								</span>
+							</td>
+							<td>
+								<span>
+									<strong>
+										{{ " %02d"|format( teams.prospects|filter(p => p.activites == 3 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+									</strong>
+								</span>
+							</td>
+							<td>
+								<span>
+									<strong>
+										{{ " %02d"|format( teams.prospects|filter(p => p.activites == 4 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+									</strong>
+								</span>
+							</td>
+							<td>
+								<span>
+									<strong>
+										{{ " %02d"|format( teams.prospects|filter(p => p.activites == 5 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+									</strong>
+								</span>
+							</td>
+							<td>
+								<span>
+									<strong>
+										{{ " %02d"|format( teams.prospects|filter(p => p.activites == 6 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+									</strong>
+								</span>
+							</td>
+							<td>
+								<span>
+									<strong>
+										{{ " %02d"|format( teams.prospects|filter(p => p.activites == 7 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+									</strong>
+								</span>
+							</td>
+							<td>
+								<span>
+									<strong>
+										{{ " %02d"|format( teams.prospects|filter(p => p.activites == 8 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+									</strong>
+								</span>
+							</td>
+							<td>
+								<span>
+									<strong>
+										{{ " %02d"|format( teams.prospects|filter(p => p.activites == 9 and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+
+									</strong>
+								</span>
+							</td>
 						</tr>
 						{# table comrcl pour admin et support#}
 
@@ -181,6 +271,51 @@
 								<td>
 									<span>
 										{{ " %02d"|format(user.prospections|filter(p => p.motifSaise is null and p.source == 'Revendeur' and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+									</span>
+								</td>
+								<td>
+									<span>
+										{{ " %02d"|format(user.prospections|filter(p => p.activites == 1  and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+									</span>
+								</td>
+								<td>
+									<span>
+										{{ " %02d"|format(user.prospections|filter(p => p.activites == 2  and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+									</span>
+								</td>
+								<td>
+									<span>
+										{{ " %02d"|format(user.prospections|filter(p => p.activites == 3  and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+									</span>
+								</td>
+								<td>
+									<span>
+										{{ " %02d"|format(user.prospections|filter(p => p.activites == 4  and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+									</span>
+								</td>
+								<td>
+									<span>
+										{{ " %02d"|format(user.prospections|filter(p => p.activites == 5  and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+									</span>
+								</td>
+								<td>
+									<span>
+										{{ " %02d"|format(user.prospections|filter(p => p.activites == 6  and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+									</span>
+								</td>
+								<td>
+									<span>
+										{{ " %02d"|format(user.prospections|filter(p => p.activites == 7  and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+									</span>
+								</td>
+								<td>
+									<span>
+										{{ " %02d"|format(user.prospections|filter(p => p.activites == 8  and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+									</span>
+								</td>
+								<td>
+									<span>
+										{{ " %02d"|format(user.prospections|filter(p => p.activites == 9  and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
 									</span>
 								</td>
 							</tr>
@@ -250,23 +385,63 @@
 									{# {{  " %02d"|format(user.prospections|filter(p => p.motifSaise is null and 	p.source == 'Revendeur' )| length)  }} #}
 								</span>
 							</td>
+							<td>
+								<span>
+									{{ " %02d"|format(user.prospections|filter(p => p.activites == 1   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+								</span>
+							</td>
+							<td>
+								<span>
+									{{ " %02d"|format(user.prospections|filter(p => p.activites == 2   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+								</span>
+							</td>
+							<td>
+								<span>
+									{{ " %02d"|format(user.prospections|filter(p => p.activites == 3   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+								</span>
+							</td>
+							<td>
+								<span>
+									{{ " %02d"|format(user.prospections|filter(p => p.activites == 4   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+								</span>
+							</td>
+							<td>
+								<span>
+									{{ " %02d"|format(user.prospections|filter(p => p.activites == 5   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+								</span>
+							</td>
+							<td>
+								<span>
+									{{ " %02d"|format(user.prospections|filter(p => p.activites == 6   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+								</span>
+							</td>
+							<td>
+								<span>
+									{{ " %02d"|format(user.prospections|filter(p => p.activites == 7   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}</span>
+							</td>
+							<td>
+								<span>
+									{{ " %02d"|format(user.prospections|filter(p => p.activites == 8   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+								</span>
+							</td>
+							<td>
+								<span>
+									{{ " %02d"|format(user.prospections|filter(p => p.activites == 9   and p.histories | filter(h => h.actionDate|date('Y-m-d') == "now"|date('Y-m-d')) | length > 0) |length ) }}
+								</span>
+							</td>
 						</tr>
+					</td>
+				</tr>
 
-					{% endfor %}
-				{% endfor %}
-				{# fin table des commercial #}
-			</tbody>
-		</table>
-	</div>
-</div>
-
-{# <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> #}
-
-{# <script>
-	$(document).ready(function () {
-$('.expandable-row').click(function () {
-$('.expanded-content').not($(this).nextAll('.expanded-content')).hide();
-$(this).nextUntil('.expandable-row').toggle();
-});
-});
-</script> #}
+			{% endfor %}
+		{% endfor %}
+		{# fin table des commercial #}
+	</tbody>
+</table></div></div>{# <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> #}{# <script>
+			$(document).ready(function () {
+		$('.expandable-row').click(function () {
+		$('.expanded-content').not($(this).nextAll('.expanded-content')).hide();
+		$(this).nextUntil('.expandable-row').toggle();
+		});
+		});
+		</script> #}

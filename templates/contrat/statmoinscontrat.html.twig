@@ -1,60 +1,140 @@
-{# {% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Statistiques des contrats du mois
 {% endblock %}
 
 {% block body %}
+	{% for label,  messages in app.flashes  %}
+		<div class="container">
+			<div class="alert alert-{{ label }}">
+				{% for message in messages %}
+					{{ message | raw }}
+				{% endfor %}
 
-	<section class="content-header">
-
-		<h1 style="text-align: center;">Statistiques des contrats du Mois
-		</h1>
-
-
-		<h2>Total des contrats pour ce mois :
-			<strong>
-				{{ totauxMois.totalContrats }}</strong>
-		</h2>
-
-		<h2>Total des frais pour ce mois :
-			<strong>
-				{{ totauxMois.totalFrais | number_format(2, ',', ' ') }}
-				€</strong>
-		</h2>
-		<div style="text-align: right;">
-			<button type="button" class="btn btn-success">
-				<a href="{{ path('contratstat_trim') }}">TRIMESTRIELS</a>
-			</button>
-			<button type="button" type="button" class="btn btn-theme">
-				<a href="{{ path('contratstat') }}">TOTALES</a>
-			</button>
+			</div>
 		</div>
+	{% endfor %}
+	{% for message in app.flashes('warning') %}
+		<div class="alert alert-warning">
+			{{ message }}
+		</div>
+	{% endfor %}
+	<div class="row mt">
+		<div class="col-lg-12">
+			<div class="content-panel">
+				<section class="content-header">
 
-		<ol class="breadcrumb">
-			<li>
-				<a href="{{ path('dashboard') }}">
-					<i class="fa fa-dashboard"></i>
-					Tableau de bord</a>
-			</li>
-		</li>
-	</ol>
-</section>
-<table id="table-datatables" class="display">
-	<thead>
-		<tr>
-			<th>Commercial</th>
-			<th>Nombre de contrats</th>
-			<th>Total des frais</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for stat in contratsParComrcl %}
-			<tr>
-				<td>{{ stat.username }}</td>
-				<td>{{ stat.contratCount }}</td>
-				<td>{{ stat.totalFrais | number_format(2, ',', ' ') }}
-					€</td>
-			</tr>
-		{% endfor %}
-	</tbody>
-</table>{% endblock %}{% block javascripts %}{{ parent() }}<script src='/js/adaffect.js'>{% endblock %} #}
+					<h1 style="text-align: center;">Chiffres d'Affaires du Mois
+					</h1>
+
+
+					<div style="text-align: right;">
+
+						<button type="button" type="button" class="btn btn-theme">
+							<a href="{{ path('contrats_search') }}">CHERCHER PAR CALENDRIER</a>
+						</button>
+					</div>
+
+					<ol class="breadcrumb">
+						<li>
+							<a href="{{ path('dashboard') }}">
+								<i class="fa fa-dashboard"></i>
+								Tableau de bord</a>
+						</li>
+					</ol>
+				</section>
+
+
+				<hr>
+				<table id="table-datatables" class="display">
+					<thead>
+						<tr>
+							<th>Commercial</th>
+							<th>Nombre de contrats</th>
+							<th>Total des frais</th>
+							<th>1er règlement</th>
+							<th>2ème règlement</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for stat in contratsParComrcl %}
+							<tr>
+								<td>
+									{% if app.user == stat.username  or  is_granted('ROLE_VALIDE') or is_granted('ROLE_ADMIN') %}
+										<button class="btn btn-info btn-details" data-id="{{ stat.userId }}">
+											{{ stat.username }}
+										</button>
+									{% else %}
+										{{ stat.username }}
+									{% endif %}
+
+
+								</td>
+								<td>{{ stat.contratCount }}</td>
+								<td>{{ stat.totalFrais | number_format(2, ',', ' ') }}
+									€</td>
+								<td>{{ stat.totalFirstReglement | number_format(2, ',', ' ') }}
+									€</td>
+								<td>{{ stat.totalSecondReglement | number_format(2, ',', ' ') }}
+									€</td>
+
+							</tr>
+						{% endfor %}
+
+					</tbody>
+					<tr>
+
+						<td>Total</td>
+
+						<td>
+							<h3>
+								{{ totauxMois.totalContrats }}</h3>
+						</td>
+						<td>
+							<h3>{{ totauxMois.totalFrais | number_format(2, ',', ' ') }}
+								€</h3>
+						</td>
+						<td>
+							<h3>{{ totauxMois.totalFirstReglement | number_format(2, ',', ' ') }}
+								€</h3>
+						</td>
+						<td>
+							<h3>{{ totauxMois.totalSecondReglement | number_format(2, ',', ' ') }}
+								€</h3>
+						</td>
+
+
+					</tr>
+				</table>
+
+				<hr>
+
+				<!-- Tableau pour les détails des contrats -->
+				<div id="details-container" style="margin-top: 20px;">
+					<h3>Détails des contrats</h3>
+					<table id="details-table" class="display table-large">
+						<thead>
+							<tr>
+								<th>Client</th>
+								<th>Date Souscription</th>
+								<th>Frais</th>
+								<th>1er règlement</th>
+								<th>2ème règlement</th>
+
+							</tr>
+						</thead>
+						<tbody
+							id="details-body"><!-- Les détails seront ajoutés ici dynamiquement -->
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+	<script src='/js/tabledata.js'></script>
+{% endblock %}

@@ -161,37 +161,97 @@ class ContratRepository extends ServiceEntityRepository
     //         ->getResult();
     // }
 
-    // public function countContratsAndTotalFraisByComrclForThisMonth(): array
-    // {
-    //     $currentMonth = new \DateTime('first day of this month');
+    public function countContratsByComrclForIntervalMont(\DateTimeInterface $startDate, \DateTimeInterface $endDate): array
+    {
+        $currentMonth = new \DateTime('first day of this month');
+        return $this->createQueryBuilder('c')
+            ->select('u.username AS commercial, COUNT(c.id) AS contratCount, SUM(c.frais) AS totalFrais, SUM(c.firstReglement) AS totalFirstReglement',  'SUM(c.secondReglement) AS totalSecondReglement')
+            ->join('c.comrcl', 'u') // Utilisez 'comrcl' pour la relation avec User
+            ->where('c.dateSouscrpt BETWEEN :startDate AND :endDate')
+            ->andWhere('c.status = 1')
+            ->setParameter('startDate', $currentMonth->format('Y-m-01'))
+            ->setParameter('endDate', $currentMonth->modify('first day of next month')->format('Y-m-01'))
+            ->groupBy('u.id')
+            ->getQuery()
+            ->getResult();
+    }
 
-    //     return $this->createQueryBuilder('c')
-    //         ->select('u.id AS userId, u.username AS username, COUNT(c.id) AS contratCount, SUM(c.frais) AS totalFrais')
-    //         ->join('c.comrcl', 'u')
-    //         ->where('c.dateSouscrpt >= :startOfMonth')
-    //         ->andWhere('c.dateSouscrpt < :endOfMonth')
-    //         ->setParameter('startOfMonth', $currentMonth->format('Y-m-01'))
-    //         ->setParameter('endOfMonth', $currentMonth->modify('first day of next month')->format('Y-m-01'))
-    //         ->groupBy('u.id')
-    //         ->getQuery()
-    //         ->getResult();
-    // }
+    public function countContratsAndTotalFraisByComrclForThisMonth(): array
+    {
+        $currentMonth = new \DateTime('first day of this month');
 
-    // public function getTotalContratsAndFraisForThisMonth(): array
-    // {
-    //     $currentMonth = new \DateTime('first day of this month');
+        return $this->createQueryBuilder('c')
+            ->select('u.id AS userId, u.username AS username, COUNT(c.id) AS contratCount, SUM(c.frais) AS totalFrais, SUM(c.firstReglement) AS totalFirstReglement, SUM(c.secondReglement) AS totalSecondReglement')
+            ->join('c.comrcl', 'u')
+            ->where('c.dateSouscrpt >= :startOfMonth')
+            ->andWhere('c.dateSouscrpt < :endOfMonth')
+            ->andWhere('c.status = 1')
+            ->setParameter('startOfMonth', $currentMonth->format('Y-m-01'))
+            ->setParameter('endOfMonth', $currentMonth->modify('first day of next month')->format('Y-m-01'))
+            ->groupBy('u.id')
+            ->getQuery()
+            ->getResult();
+    }
 
-    //     $result = $this->createQueryBuilder('c')
-    //         ->select('COUNT(c.id) AS totalContrats, SUM(c.frais) AS totalFrais')
-    //         ->where('c.dateSouscrpt >= :startOfMonth')
-    //         ->andWhere('c.dateSouscrpt < :endOfMonth')
-    //         ->setParameter('startOfMonth', $currentMonth->format('Y-m-01'))
-    //         ->setParameter('endOfMonth', $currentMonth->modify('first day of next month')->format('Y-m-01'))
-    //         ->getQuery()
-    //         ->getSingleResult();
+    /**
+     * Récupère le total des frais pour un intervalle de dates donné
+     *
+     * @param \DateTimeInterface $startDate La date de début de l'intervalle
+     * @param \DateTimeInterface $endDate   La date de fin de l'intervalle
+     * @return float|null Le total des frais ou null si aucune donnée
+     */
+    public function getTotalFraisForIntervalMont(\DateTimeInterface $startDate, \DateTimeInterface $endDate): ?float
+    {
+        $currentMonth = new \DateTime('first day of this month');
+        $result = $this->createQueryBuilder('c')
+            ->select('SUM(c.frais) as totalFrais')
+            ->where('c.dateSouscrpt BETWEEN :startDate AND :endDate')
+            ->andWhere('c.status = 1')
+            ->setParameter('startOfMonth', $currentMonth->format('Y-m-01'))
+            ->setParameter('endOfMonth', $currentMonth->modify('first day of next month')->format('Y-m-01'))
 
-    //     return $result;
-    // }
+
+            ->getQuery()
+            ->getSingleResult();
+
+        return $result;
+    }
+
+    public function getTotalContratsAndFraisForThisMonth(): array
+    {
+        $currentMonth = new \DateTime('first day of this month');
+
+        $result = $this->createQueryBuilder('c')
+            ->select('COUNT(c.id) AS totalContrats, SUM(c.frais) AS totalFrais, SUM(c.firstReglement) AS totalFirstReglement',  'SUM(c.secondReglement) AS totalSecondReglement')
+            ->where('c.dateSouscrpt >= :startOfMonth')
+            ->andWhere('c.dateSouscrpt < :endOfMonth')
+            ->andWhere('c.status = 1')
+            ->setParameter('startOfMonth', $currentMonth->format('Y-m-01'))
+            ->setParameter('endOfMonth', $currentMonth->modify('first day of next month')->format('Y-m-01'))
+            ->getQuery()
+            ->getSingleResult();
+
+        return $result;
+    }
+    public function findContratsByCommercialForThisMonth(int $comrclId): array
+    {
+        $currentMonth = new \DateTime('first day of this month');
+
+        return $this->createQueryBuilder('c')
+            ->addSelect('cli') // Ajoute l'entité Client
+            ->join('c.comrcl', 'u')
+            ->join('c.client', 'cli')
+            ->where('c.comrcl = :comrclId')
+            ->andWhere('c.dateSouscrpt >= :startOfMonth')
+            ->andWhere('c.dateSouscrpt < :endOfMonth')
+            ->andWhere('c.status = 1')
+            ->setParameter('comrclId', $comrclId)
+            ->setParameter('startOfMonth', $currentMonth->format('Y-m-01'))
+            ->setParameter('endOfMonth', $currentMonth->modify('first day of next month')->format('Y-m-01'))
+            ->getQuery()
+            ->getResult();
+    }
+
 
 
     // les donnes des contrats trimistrielle:
@@ -254,9 +314,10 @@ class ContratRepository extends ServiceEntityRepository
     public function countContratsByComrclForInterval(\DateTimeInterface $startDate, \DateTimeInterface $endDate): array
     {
         return $this->createQueryBuilder('c')
-            ->select('u.username AS commercial, COUNT(c.id) AS contratCount, SUM(c.frais) AS totalFrais, SUM(c.firstReglement) AS totalFirstReglement')
+            ->select('u.username AS commercial, COUNT(c.id) AS contratCount, SUM(c.frais) AS totalFrais, SUM(c.firstReglement) AS totalFirstReglement',  'SUM(c.secondReglement) AS totalSecondReglement')
             ->join('c.comrcl', 'u') // Utilisez 'comrcl' pour la relation avec User
             ->where('c.dateSouscrpt BETWEEN :startDate AND :endDate')
+            ->andWhere('c.status = 1')
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate)
             ->groupBy('u.id')
@@ -295,6 +356,7 @@ class ContratRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('c')
             ->select('SUM(c.frais) as totalFrais')
             ->where('c.dateSouscrpt BETWEEN :startDate AND :endDate')
+            ->andWhere('c.status = 1')
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate);
 
@@ -308,15 +370,19 @@ class ContratRepository extends ServiceEntityRepository
      * @param \DateTimeInterface $endDate   La date de fin de l'intervalle
      * @return float|null Le total des frais ou null si aucune donnée
      */
-    public function getTotalFirstReglmForInterval(\DateTimeInterface $startDate, \DateTimeInterface $endDate): ?float
+    public function getTotalReglementsForInterval(\DateTimeInterface $startDate, \DateTimeInterface $endDate): array
     {
         $qb = $this->createQueryBuilder('c')
-            ->select('SUM(c.firstReglement) as totalFirstReglm')
+            ->select('
+                SUM(c.firstReglement) as totalFirstReglm, 
+                SUM(c.secondReglement) as totalSecondReglm
+            ')
             ->where('c.dateSouscrpt BETWEEN :startDate AND :endDate')
+            ->andWhere('c.status = 1')
             ->setParameter('startDate', $startDate)
             ->setParameter('endDate', $endDate);
 
-        return $qb->getQuery()->getSingleScalarResult();
+        return $qb->getQuery()->getSingleResult();
     }
 
     /**
@@ -334,6 +400,33 @@ class ContratRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findByCommercialAndInterval(string $commercial, \DateTimeInterface $startDate, \DateTimeInterface $endDate): array
+    {
+        return $this->createQueryBuilder('c')
+            ->join('c.comrcl', 'u')
+            ->join('c.client', 'cl')
+            ->where('u.username = :commercial')
+            ->andWhere('c.dateSouscrpt BETWEEN :startDate AND :endDate')
+            ->andWhere('c.status = 1')
+            ->setParameter('commercial', $commercial)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery()
+            ->getResult();
+    }
+    /**
+     * Calcule la somme totale des frais
+     */
+    public function getTotalFrais(): float
+    {
+        return (float) $this->createQueryBuilder('c')
+            ->select('SUM(c.frais)')
+            ->Where('c.status = 1')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     // /**
     //  * Find a list of contrat using a search form
     //  * @param SearchContrat $search

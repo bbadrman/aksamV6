@@ -236,16 +236,69 @@ if (typeCondField !== null) {
 	});
 }
 
-// databale:
+// databale: 
 $(document).ready(function () {
-	$('#table-datatables').DataTable({
-		"paging": true,
-		"searching": true,
-		"ordering": true,
-		"order": [[2, "desc"]], // Tri par défaut sur la colonne "Total des frais" (descendant)
-		"language": {
-			"url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/French.json" // Traduction française
-		}
+	$('#table-datatables').DataTable();
+});
+
+
+// $(document).ready(function () {
+// 	$('#table-datatables').DataTable({
+// 		"paging": true,
+// 		"searching": true,
+// 		"ordering": true,
+// 		"order": [[3, "desc"]], // Tri par défaut sur la colonne "Total des frais" (descendant)
+// 		"language": {
+// 			"url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/French.json" // Traduction française
+// 		}
+// 	});
+// });
+// return la table contrat detaille...
+$(document).ready(function () {
+	$('.btn-details').on('click', function () {
+		const commercial = $(this).data('commercial');
+		const startDate = $(this).data('startdate');
+		const endDate = $(this).data('enddate');
+
+		$.ajax({
+			url: '/contrats/details/' + commercial,
+			method: 'GET',
+			data: {
+				startDate: startDate,
+				endDate: endDate
+			},
+			success: function (data) {
+				let tableBody = $('#details-table tbody');
+				tableBody.empty(); // Effacer les anciennes données
+
+				if (data.length > 0) {
+					data.forEach(contrat => {
+						const date = new Date(contrat.dateSouscrpt);
+
+						// Formater la date au format YY/mm/dd
+						const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
+
+						tableBody.append(`
+                            <tr>
+                                <td>${contrat.id}</td>
+                                 <td>${contrat.nom}</td>
+                                 <td>${formattedDate}</td>
+                                <td>${parseFloat(contrat.frais).toFixed(2)} €</td>
+                                <td>${parseFloat(contrat.firstReglement).toFixed(2)} €</td>
+                                <td>${parseFloat(contrat.secondReglement).toFixed(2)} €</td>
+                            </tr>
+                        `);
+					});
+				} else {
+					tableBody.append('<tr><td colspan="5">Aucun contrat trouvé.</td></tr>');
+				}
+
+				// Affiche la table des détails
+				$('#details-container').show();
+			},
+			error: function () {
+				alert('Erreur lors de la récupération des détails.');
+			}
+		});
 	});
 });
-// Le reste de votre logique pour les autres champs...

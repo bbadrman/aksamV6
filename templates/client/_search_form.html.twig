@@ -1,31 +1,25 @@
 {{ form_start(search_form) }}
 <div class="col-xs-12" style="float: center !important;">
-	<div class="col-xs-1" style="padding-right: 2px;padding-left: 3px;">
-		{{ form_row(search_form.d) }}
-	</div>
-	<div class="col-xs-1" style="padding-right: 2px;padding-left: 3px;">
-		{{ form_row(search_form.dd) }}
-	</div>
-	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+	<div class="col-md-1 mx-auto" style="padding-right: 1px;padding-left: 8px; ">
 		{{ form_row(search_form.f, {attr: {class: 'form-control', 'placeholder': ' Nom...'}}) }}
 	</div>
-	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+	<div class="col-md-1 mx-auto" style="padding-right: 1px;padding-left: 8px; ">
 		{{ form_row(search_form.l, {attr: {class: 'form-control', 'placeholder': ' Prénom...'}}) }}
 	</div>
-	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+	<div class="col-md-1 mx-auto" style="padding-right: 1px;padding-left: 8px; ">
 		{{ form_row(search_form.g, {attr: {class: 'form-control', 'placeholder': ' E-mail...'}}) }}
 	</div>
 
-	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+	<div class="col-md-1 mx-auto" style="padding-right: 1px;padding-left: 8px; ">
 		{{ form_row(search_form.t, {attr: {class: 'form-control', 'placeholder': ' Téléphone...'}}) }}
 	</div>
-	<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+	<div class="col-md-1 mx-auto" style="padding-right: 1px;padding-left: 8px; ">
 		{{ form_row(search_form.r, {attr: {class: 'form-control', 'placeholder': ' Raison sociale...'}}) }}
 	</div>
 
 	{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_TEAM')  == true %}
 
-		<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+		<div class="col-md-1 mx-auto" style="padding-right: 1px;padding-left: 8px; ">
 			{{ form_row(search_form.k, {attr: {class: 'form-control', 'placeholder': ' Commercial...'}}) }}
 		</div>
 	{% else %}
@@ -35,7 +29,7 @@
 		</div>
 	{% endif %}
 	{% if is_granted('ROLE_ADMIN')  or is_granted('ROLE_TEAM')   == true %}
-		<div class="col-xs-1" style="padding-right: 2px;padding-left: 2px;">
+		<div class="col-md-1 mx-auto" style="padding-right: 1px;padding-left: 8px; ">
 			{{ form_row(search_form.team, {attr: {class: 'form-control', 'placeholder': ' Equipe...'}}) }}
 		</div>
 	{% else %}
@@ -60,7 +54,21 @@
 		</h1>
 	</div>
 </div>
+<div class="col-xs-12" style="float: center !important;">
+	<div class="col-xs-2" style="padding-right: 2px;padding-left: 3px;">
+		{{ form_row(search_form.d) }}
+	</div>
+	<div class="col-xs-2" style="padding-right: 2px;padding-left: 3px;">
+		{{ form_row(search_form.dd) }}
+	</div>
+	<div class="col-xs-2" style="padding-right: 2px;padding-left: 3px;">
+		{{ form_row(search_form.dr) }}
+	</div>
+	<div class="col-xs-2" style="padding-right: 2px;padding-left: 3px;">
+		{{ form_row(search_form.ddr) }}
+	</div>
 
+</div>
 {{ form_end(search_form) }}
 <script>
 	document.getElementById("reset-button").addEventListener("click", function () { // Réinitialisez les paramètres de l'URL à vide

@@ -201,6 +201,35 @@ class SearchProspectType extends AbstractType
                 ],
                 'expanded' => false,
                 'multiple' => false
+            ])
+            ->add('u', Type\ChoiceType::class, [
+                'label' => 'Propre Site ',
+                'required' => false,
+                'placeholder' => '--Selectie-- ',
+                'choices' =>   [
+                    'des-vtc' => '1',
+                    'garage-pro' => '2',
+                    'pour-taxi' => '3',
+                    'pour-vtc' => '4',
+                    'des-resilies' => '5',
+                    'decennale' => '6',
+                    'comparez' => '7',
+                    'camion' => '8',
+                    'flotte' => '9',
+                    'vehicule-pro' => '10',
+                    'transporteurs' => '11',
+                    'vehicules-prof' => '12',
+                    'engins' => '13',
+                    'prof-auto' => '14',
+                    'auto-ecole' => '15',
+                    'negociants-auto' => '16',
+                    'garage-auto' => '17',
+
+                ],
+
+
+                'expanded' => false,
+                'multiple' => false
             ]);
         // ->add('rest', Type\ResetType::class, [
         //     'label' => "Rest"

@@ -92,7 +92,7 @@ class SearchClientType extends AbstractType
                 'choices' => $comrclChoices,
                 'required' => false
             ])->add('d', Type\DateType::class, [
-                'label' => "Du :",
+                'label' => "Date client Du :",
 
                 'widget' => 'single_text',
 
@@ -104,6 +104,27 @@ class SearchClientType extends AbstractType
             ])
 
             ->add('dd', Type\DateType::class, [
+                'label' => "Ou :",
+
+                'widget' => 'single_text',
+                'attr' => [
+                    'placeholder' => "date format: yyyy-mm-dd."
+                ],
+                'required' => false
+            ])
+            ->add('dr', Type\DateType::class, [
+                'label' => "Date de contrat du :",
+
+                'widget' => 'single_text',
+
+
+                'attr' => [
+                    'placeholder' => "date format: yyyy-mm-dd."
+                ],
+                'required' => false
+            ])
+
+            ->add('ddr', Type\DateType::class, [
                 'label' => "Ou :",
 
                 'widget' => 'single_text',

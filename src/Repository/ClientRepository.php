@@ -312,6 +312,7 @@ class ClientRepository extends ServiceEntityRepository
             ->where('c.status = 1 ')
             ->leftJoin('c.team', 'b')
             ->leftJoin('c.cmrl', 'h')
+            ->leftJoin('c.contrats', 'r')
             ->orderBy('c.id', 'DESC');
 
 
@@ -362,6 +363,20 @@ class ClientRepository extends ServiceEntityRepository
                 ->setParameter('g', "%{$search->g}%");
         }
 
+        //sherche par souscrip contrat
+
+        if (!empty($search->dr) && $search->dr instanceof \DateTime) {
+            $queryBuilder
+                ->andWhere('r.dateSouscrpt >= :dr')
+                ->setParameter('dr', $search->dr->format('Y-m-d'));
+        }
+
+        if (!empty($search->ddr) && $search->ddr instanceof \DateTime) {
+            $search->ddr->setTime(23, 59, 59); // Fix time to end of the day
+            $queryBuilder
+                ->andWhere('r.dateSouscrpt <= :ddr')
+                ->setParameter('ddr', $search->ddr->format('Y-m-d H:i:s'));
+        }
         if (!empty($search->t)) {
             $queryBuilder
                 ->orWhere('c.phone LIKE :t')

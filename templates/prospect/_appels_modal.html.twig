@@ -1,0 +1,30 @@
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Numéro</th>
+			<th>Date d'appel</th>
+			<th>Durée</th>
+			<th>Enregistrement</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for appel in appels %}
+			<tr>
+				<td>{{ appel.numero }}</td>
+				<td>{{ appel.dateAppel|date('Y-m-d H:i') }}</td>
+				<td>{{ appel.duree }}</td>
+				<td>
+					{% if appel.enregistrement %}
+						<audio controls src="{{ appel.enregistrementUrl }}"></audio>
+					{% else %}
+						Pas d'enregistrement
+					{% endif %}
+				</td>
+			</tr>
+		{% else %}
+			<tr>
+				<td colspan="4">Aucun appel trouvé pour ce prospect.</td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>

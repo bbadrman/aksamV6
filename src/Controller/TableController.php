@@ -60,9 +60,10 @@ class TableController extends AbstractController
     /**
      * @Route("/traitement", name="app_table_liste", methods={"GET"})
      */
+    #[IsGranted('IS_AUTHENTICATED')]
     public function index(StatsService $statsService): Response
     {
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         $stats    = $statsService->getStats();
 
@@ -75,10 +76,11 @@ class TableController extends AbstractController
      * afficher les prospects injoiniable
      * @Route("/unjoinable", name="app_unjoinable", methods={"GET", "POST"}) 
      */
+    #[IsGranted('IS_AUTHENTICATED')]
     public function unjoinable(Request $request): Response
 
     {
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         $data = new SearchProspect();
         $data->page = $request->query->get('page', 1);
@@ -112,10 +114,11 @@ class TableController extends AbstractController
      * afficher les prospect no traiter 
      * @Route("/notrait", name="notrait_index", methods={"GET", "POST"}) 
      */
+    #[IsGranted('IS_AUTHENTICATED')]
     public function notrait(Request $request): Response
 
     {
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         $data = new SearchProspect();
         $data->page = $request->query->get('page', 1);
@@ -129,7 +132,7 @@ class TableController extends AbstractController
         $prospect = [];
 
 
-        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
+        if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true) || in_array('ROLE_AFFECT', $roles, true)) {
             // admi peut voire toutes les no traite
             $prospect =  $this->prospectRepository->findProspectNonTraiter($data, null);
         } else if (in_array('ROLE_TEAM', $roles, true)) {
@@ -152,10 +155,11 @@ class TableController extends AbstractController
      * afficher les relance du jour
      * @Route("/relance", name="relancejour_index", methods={"GET", "POST"}) 
      */
+    #[IsGranted('IS_AUTHENTICATED')]
     public function relancejour(Request $request,): Response
 
     {
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         $data = new SearchProspect();
         $data->page = $request->query->get('page', 1);
@@ -194,10 +198,11 @@ class TableController extends AbstractController
      * afficher les relance du jour
      * @Route("/relancenotraite", name="relancenotraite_index", methods={"GET", "POST"}) 
      */
+    #[IsGranted('IS_AUTHENTICATED')]
     public function relancenotraite(Request $request): Response
 
     {
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         $data = new SearchProspect();
         $data->page = $request->query->get('page', 1);
@@ -208,7 +213,7 @@ class TableController extends AbstractController
         $prospect = [];
 
         if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
-            if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)) {
+            if (in_array('ROLE_SUPER_ADMIN', $roles, true) || in_array('ROLE_ADMIN', $roles, true)  || in_array('ROLE_AFFECT', $roles, true)) {
                 // admi peut voire toutes les relance du jour
                 $prospect =  $this->prospectRepository->findRelancesNonTraitees($data, null);
                 // $numberOfProspects = count($prospect);

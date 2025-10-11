@@ -59,7 +59,7 @@ class ContratAllType extends AbstractType
                     'attr' => [
                         'placeholder' => "date format: yyyy-mm-dd."
                     ],
-                    'required' => false
+                    'required' => true,
                 ])
                 ->add('dateEffet', Type\DateType::class, [
                     'label' => "Date effet :",
@@ -157,7 +157,9 @@ class ContratAllType extends AbstractType
                             'DEMENAGEMENT' => 'DEMENAGEMENT',
                             'TAXI' => 'TAXI',
                             'TPPC' => 'TPPC',
-                            'TP' => 'TP'
+                            'TP' => 'TP',
+                            'Location de véhicule' => 'Location véhicule',
+                            'Convoyage' => 'Convoyage'
 
                         ],
                         'expanded' => false,
@@ -214,6 +216,7 @@ class ContratAllType extends AbstractType
                             'PROGEAS' =>  'PROGEAS',
                             'SOUCHEZ' =>  'SOUCHEZ',
                             'SPRING' =>  'SPRING',
+                            'SOLLYAZAR' => 'SOLLYAZAR',
                             'SVI' =>  'SVI',
                             'TBC' =>  'TBC',
                             'TETRIS' =>  'TETRIS',
@@ -223,6 +226,13 @@ class ContratAllType extends AbstractType
                             'ZEPHIR' =>  'ZEPHIR',
                             'AMI3F' =>  'AMI3F',
                             'NEOLIANE' =>  'NEOLIANE',
+                            'KELIPS' =>  'KELIPS',
+                            'COVERITY' => 'COVERITY',
+                            'ASSURMAX' => 'ASSURMAX'
+
+
+
+
                         ],
                         'expanded' => false,
                         'multiple' => false,
@@ -265,7 +275,11 @@ class ContratAllType extends AbstractType
                             'MAIF' => 'MAIF',
                             'MACIF' => 'MACIF',
                             'ASSUREA' => 'ASSUREA',
-                            'NEOLIANE' => 'NEOLIANE'
+                            'NEOLIANE' => 'NEOLIANE',
+                            'PILLIOT' => 'PILLIOT',
+                            'WAKAM' => 'WAKAM',
+                            'COVERITY' => 'COVERITY',
+                            'ASSURMAX' => 'ASSURMAX'
 
                         ],
                         'expanded' => false,
@@ -490,7 +504,8 @@ class ContratAllType extends AbstractType
                         'POIDS LOURS' => 'POIDS LOURS',
                         'CARENE' => 'CARENE',
                         'CAMIONNETTE' => 'CAMIONNETTE',
-                        'UTILITAIRE' => 'UTILITAIRE'
+                        'UTILITAIRE' => 'UTILITAIRE',
+                        'MOTO' => 'MOTO',
 
                     ],
                     'expanded' => false,
@@ -549,7 +564,7 @@ class ContratAllType extends AbstractType
                     'attr' => [
                         'placeholder' => "date format: yyyy-mm-dd."
                     ],
-                    'required' => false
+                    'required' => true,
                 ])
                 ->add('dateEffet', Type\DateType::class, [
                     'label' => "Date effet :",
@@ -641,7 +656,9 @@ class ContratAllType extends AbstractType
                             'DEMENAGEMENT' => 'DEMENAGEMENT',
                             'TAXI' => 'TAXI',
                             'TPPC' => 'TPPC',
-                            'TP' => 'TP'
+                            'TP' => 'TP',
+                            'Location de véhicule' => 'Location véhicule',
+                            'Convoyage' => 'Convoyage'
 
                         ],
                         'expanded' => false,
@@ -696,6 +713,7 @@ class ContratAllType extends AbstractType
                             'PROGEAS' =>  'PROGEAS',
                             'SOUCHEZ' =>  'SOUCHEZ',
                             'SPRING' =>  'SPRING',
+                            'SOLLYAZAR' => 'SOLLYAZAR',
                             'SVI' =>  'SVI',
                             'TBC' =>  'TBC',
                             'TETRIS' =>  'TETRIS',
@@ -705,6 +723,9 @@ class ContratAllType extends AbstractType
                             'ZEPHIR' =>  'ZEPHIR',
                             'AMI3F' =>  'AMI3F',
                             'NEOLIANE' =>  'NEOLIANE',
+                            'KELIPS' =>  'KELIPS',
+                            'COVERITY' => 'COVERITY',
+                            'ASSURMAX' => 'ASSURMAX'
                         ],
                         'expanded' => false,
                         'multiple' => false,
@@ -746,7 +767,11 @@ class ContratAllType extends AbstractType
                             'MAIF' => 'MAIF',
                             'MACIF' => 'MACIF',
                             'ASSUREA' => 'ASSUREA',
-                            'NEOLIANE' => 'NEOLIANE'
+                            'NEOLIANE' => 'NEOLIANE',
+                            'PILLIOT' => 'PILLIOT',
+                            'WAKAM' => 'WAKAM',
+                            'COVERITY' => 'COVERITY',
+                            'ASSURMAX' => 'ASSURMAX'
 
                         ],
                         'expanded' => false,
@@ -962,7 +987,8 @@ class ContratAllType extends AbstractType
                         'POIDS LOURS' => 'POIDS LOURS',
                         'CARENE' => 'CARENE',
                         'CAMIONNETTE' => 'CAMIONNETTE',
-                        'UTILITAIRE' => 'UTILITAIRE'
+                        'UTILITAIRE' => 'UTILITAIRE',
+                        'MOTO' => 'MOTO',
 
                     ],
                     'expanded' => false,

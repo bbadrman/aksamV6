@@ -29,6 +29,7 @@ class ContratType extends AbstractType
 
                     'placeholder' => 'Tapez le Nom du Client'
                 ],
+                'required' => true,
             ])
             ->add('prenom', Type\TextType::class, [
                 'label' => 'Prénom ',
@@ -37,6 +38,7 @@ class ContratType extends AbstractType
 
                     'placeholder' => 'Tapez le Prénom du Client'
                 ],
+                'required' => true,
             ])
             ->add('raisonSociale', Type\TextType::class, [
                 'label' => 'Raison sociale ',
@@ -45,7 +47,7 @@ class ContratType extends AbstractType
 
                     'placeholder' => 'Tapez le Raison sociale'
                 ],
-                'required' => false
+                'required' => false,
             ])
             ->add('dateSouscrpt', Type\DateType::class, [
                 'label' => "Date souscription :",
@@ -55,7 +57,7 @@ class ContratType extends AbstractType
                 'attr' => [
                     'placeholder' => "date format: yyyy-mm-dd."
                 ],
-                'required' => false
+                'required' => true,
             ])
             ->add('dateEffet', Type\DateType::class, [
                 'label' => "Date effet :",
@@ -65,7 +67,7 @@ class ContratType extends AbstractType
                 'attr' => [
                     'placeholder' => "date format: yyyy-mm-dd."
                 ],
-                'required' => false
+                'required' => true,
             ])
             ->add(
                 'etat',
@@ -96,13 +98,14 @@ class ContratType extends AbstractType
 
                     'placeholder' => 'Tapez le Nom du conducteur'
                 ],
+
             ])
             ->add(
                 'typeConducteur',
                 Type\ChoiceType::class,
                 [
                     'label' => 'Type Conducteur ',
-                    'required' => false,
+                    'required' => true,
                     'disabled' => false,
                     'placeholder' => '--Merci de selectie-- ',
                     'choices' => [
@@ -119,7 +122,7 @@ class ContratType extends AbstractType
                 Type\ChoiceType::class,
                 [
                     'label' => 'Type Contrat ',
-                    'required' => false,
+                    'required' => true,
                     'disabled' => false,
                     'placeholder' => '--Merci de selectie-- ',
                     'choices' => [
@@ -153,7 +156,9 @@ class ContratType extends AbstractType
                         'DEMENAGEMENT' => 'DEMENAGEMENT',
                         'TAXI' => 'TAXI',
                         'TPPC' => 'TPPC',
-                        'TP' => 'TP'
+                        'TP' => 'TP',
+                        'Location de véhicule' => 'Location véhicule',
+                        'Convoyage' => 'Convoyage'
 
 
                     ],
@@ -175,7 +180,7 @@ class ContratType extends AbstractType
                 Type\ChoiceType::class,
                 [
                     'label' => 'Partenaire ',
-                    'required' => false,
+                    'required' => true,
                     'disabled' => false,
                     'placeholder' => '--Merci de selectie-- ',
                     'choices' => [
@@ -220,6 +225,9 @@ class ContratType extends AbstractType
                         'ZEPHIR' =>  'ZEPHIR',
                         'AMI3F' =>  'AMI3F',
                         'NEOLIANE' =>  'NEOLIANE',
+                        'KELIPS' =>  'KELIPS',
+                        'COVERITY' => 'COVERITY',
+                        'ASSURMAX' => 'ASSURMAX'
                     ],
                     'expanded' => false,
                     'multiple' => false,
@@ -230,7 +238,7 @@ class ContratType extends AbstractType
                 Type\ChoiceType::class,
                 [
                     'label' => 'Compagnie ',
-                    'required' => false,
+                    'required' => true,
                     'disabled' => false,
                     'placeholder' => '--Merci de selectie-- ',
                     'choices' => [
@@ -262,7 +270,11 @@ class ContratType extends AbstractType
                         'MAIF' => 'MAIF',
                         'MACIF' => 'MACIF',
                         'ASSUREA' => 'ASSUREA',
-                        'NEOLIANE' => 'NEOLIANE'
+                        'NEOLIANE' => 'NEOLIANE',
+                        'PILLIOT' => 'PILLIOT',
+                        'WAKAM' => 'WAKAM',
+                        'COVERITY' => 'COVERITY',
+                        'ASSURMAX' => 'ASSURMAX'
 
                     ],
                     'expanded' => false,
@@ -366,7 +378,7 @@ class ContratType extends AbstractType
                 Type\ChoiceType::class,
                 [
                     'label' => 'Fractionnement ',
-                    'required' => false,
+                    'required' => true,
                     'disabled' => false,
                     'placeholder' => '--Merci de selectie-- ',
                     'choices' => [
@@ -413,7 +425,7 @@ class ContratType extends AbstractType
             )
             ->add('cotisation', Type\MoneyType::class, [
                 'label' => 'Cotisation  ',
-                'required' => false,
+                'required' => true,
                 'disabled' => false,
                 'currency' => false,
                 'attr' => [
@@ -437,7 +449,7 @@ class ContratType extends AbstractType
             ])
             ->add('frais', Type\MoneyType::class, [
                 'label' => 'Frais  ',
-                'required' => false,
+
                 'disabled' => false,
                 'currency' => false,
                 'attr' => [
@@ -445,11 +457,12 @@ class ContratType extends AbstractType
                     'divisor' => 100,
 
                 ],
+                'required' => true,
 
             ])
             ->add('firstreglement', Type\MoneyType::class, [
                 'label' => '1er Reglement  ',
-                'required' => false,
+                'required' => true,
                 'disabled' => false,
                 'currency' => false,
                 'attr' => [
@@ -495,7 +508,8 @@ class ContratType extends AbstractType
                     'POIDS LOURS' => 'POIDS LOURS',
                     'CARENE' => 'CARENE',
                     'CAMIONNETTE' => 'CAMIONNETTE',
-                    'UTILITAIRE' => 'UTILITAIRE'
+                    'UTILITAIRE' => 'UTILITAIRE',
+                    'MOTO' => 'MOTO',
 
                 ],
                 'expanded' => false,

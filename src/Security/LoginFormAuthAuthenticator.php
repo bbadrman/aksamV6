@@ -30,9 +30,7 @@ class LoginFormAuthAuthenticator extends AbstractLoginFormAuthenticator
 
 
 
-    public function __construct(private UrlGeneratorInterface $urlGenerator, private EntityManagerInterface  $entityManager, private UserRepository $userRepository, private TokenStorageInterface $tokenStorage,  private LoggerInterface $logger)
-    {
-    }
+    public function __construct(private UrlGeneratorInterface $urlGenerator, private EntityManagerInterface  $entityManager, private UserRepository $userRepository, private TokenStorageInterface $tokenStorage,  private LoggerInterface $logger) {}
 
     public function authenticate(Request $request): Passport
     {
@@ -81,15 +79,19 @@ class LoginFormAuthAuthenticator extends AbstractLoginFormAuthenticator
         }
 
         if (in_array('ROLE_SUPER_ADMIN', $user->getRoles(), true) || in_array('ROLE_ADMIN', $user->getRoles(), true) || in_array('ROLE_TEAM', $user->getRoles(), true)) {
-            return new RedirectResponse($this->urlGenerator->generate('dashboard'));
+            return new RedirectResponse($this->urlGenerator->generate('contrats_search'));
+        }
+
+        if (in_array('ROLE_TEAM', $user->getRoles(), true)) {
+            return new RedirectResponse($this->urlGenerator->generate('contrats_search'));
         }
 
         if (in_array('ROLE_COMERC', $user->getRoles(), true)) {
-            return new RedirectResponse($this->urlGenerator->generate('app_table_liste'));
+            return new RedirectResponse($this->urlGenerator->generate('contrats_search'));
         }
 
         // Ajouter un cas par défaut si nécessaire
-        return new RedirectResponse($this->urlGenerator->generate('dashboard'));
+        return new RedirectResponse($this->urlGenerator->generate('contrats_search'));
     }
 
 

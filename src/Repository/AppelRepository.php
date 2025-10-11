@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Appel;
+use App\Entity\Prospect;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -20,6 +21,7 @@ class AppelRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Appel::class);
     }
+
     public function findByUniqueProperties(string $fromNumber, string $toNumber, \DateTime $startTime): ?Appel
     {
         return $this->findOneBy([
@@ -38,6 +40,15 @@ class AppelRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findByProspectGsmOrderedByStartTime(string $gsm)
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.toNumber = :gsm')
+            ->setParameter('gsm', $gsm)
+            ->orderBy('a.startTime', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
     //    /**
     //     * @return Appel[] Returns an array of Appel objects
     //     */

@@ -81,10 +81,11 @@ class ProspectController extends AbstractController
 
     // afficher les nouveaux prospects 
     #[Route('/newprospect', name: 'newprospect_index', methods: ['GET', 'POST'])]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function newprospect(Request $request): Response
 
     {
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         $data = new SearchProspect();
         $data->page = $request->query->get('page', 1);
@@ -133,12 +134,14 @@ class ProspectController extends AbstractController
             'search_form' => $form->createView()
         ]);
     }
+
     // afficher les nouveaux prospects 
     #[Route('/reafect', name: 'reafect_index', methods: ['GET', 'POST'])]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function reafect(Request $request): Response
 
     {
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         $data = new SearchProspect();
         $data->page = $request->query->get('page', 1);
@@ -168,7 +171,7 @@ class ProspectController extends AbstractController
 
         foreach ($prospects as $prospect) {
             $email = $prospect->getEmail();
-            $phone = $prospect->getPhone(); // Assurez-vous que la méthode `getPhone()` existe.
+            $phone = $prospect->getPhone();
 
             // Vérifier les doublons par email
             $existingEmailProspect = $this->prospectRepository->findOneBy(['email' => $email]);
@@ -191,10 +194,11 @@ class ProspectController extends AbstractController
     }
     // afficher les nouveaux prospects 
     #[Route('/newprospectchef', name: 'newprospectchef_index', methods: ['GET', 'POST'])]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function newprospectchef(Request $request): Response
 
     {
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         $data = new SearchProspect();
         $data->page = $request->query->get('page', 1);
@@ -226,14 +230,14 @@ class ProspectController extends AbstractController
      * Afficher les nouveaux prospects via API return Int
      * @Route("/newprospectApi", name="newprospectApi_index", methods={"GET"}) 
      */
-
+    #[IsGranted('IS_AUTHENTICATED')]
     public function newprospectApi(
         ProspectRepository $prospectRepository,
         Security $security,
         SerializerInterface $serializer
     ): JsonResponse {
 
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         $prospect = [];
         $user = $security->getUser();
@@ -262,10 +266,11 @@ class ProspectController extends AbstractController
      * les Relances à venir 
      */
     #[Route('/avenir', name: 'avenir_index', methods: ['GET', 'POST'])]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function avenir(Request $request,    Security $security): Response
 
     {
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
 
 
         $data = new SearchProspect();
@@ -309,10 +314,11 @@ class ProspectController extends AbstractController
 
 
     #[Route('/new', name: 'app_prospect_new', methods: ['GET', 'POST'])]
+    #[IsGranted('IS_AUTHENTICATED')]
 
     public function new(Request $request,): Response
     {
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         $prospect = new Prospect();
         $productChoices = $this->entityManager->getRepository(Product::class)->createQueryBuilder('p')->getQuery()->getResult();
@@ -373,6 +379,7 @@ class ProspectController extends AbstractController
 
 
     #[Route('/show/{id}', name: 'app_prospect_show', methods: ['GET', 'POST'])]
+    #[IsGranted('IS_AUTHENTICATED')]
     public function show(Prospect $prospect,  Request $request,  HistoryRepository $historyRepository, AppelRepository $appelRepository)
     {
         // $user = $this->getUser();
@@ -385,7 +392,7 @@ class ProspectController extends AbstractController
         // }
 
 
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         // $client = HttpClient::create();
 
@@ -497,7 +504,7 @@ class ProspectController extends AbstractController
                 ]);
 
                 if ($existingClient) {
-                    $this->addFlash('success', 'Client déjà existant.');
+                    $this->addFlash('danger', '<h1> Client déjà existant. </h1>');
                     return $this->redirect($request->getRequestUri());
                 } else {
                     // Create a new Relance entity
@@ -516,6 +523,7 @@ class ProspectController extends AbstractController
                         $prospect->removeRelanced($oldRelance);
                         $this->entityManager->remove($oldRelance);
                     }
+
                     $relance = new Relanced();
                     $relance->setProspect($prospect);
                     $relance->setMotifRelanced('10');
@@ -582,10 +590,11 @@ class ProspectController extends AbstractController
      * pour affecter 
      * @Route("/{id}/edit", name="app_prospect_edit", methods={"GET", "POST"}) 
      */
+    #[IsGranted('IS_AUTHENTICATED')]
     public function edit(Request $request, Prospect $prospect,   TeamRepository $teamRepository): Response
     {
 
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         $user = $this->security->getUser();
 
@@ -645,6 +654,7 @@ class ProspectController extends AbstractController
      * @Route("/{id}/editsup", name="app_prospect_editsup", methods={"GET", "POST"}) 
      * @IsGranted("ROLE_SUPER_ADMIN", message="Tu ne peut pas acces a cet ressource") 
      */
+
     public function editsup(Request $request, Prospect $prospect): Response
     {
 

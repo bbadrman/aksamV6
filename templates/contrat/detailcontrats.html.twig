@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails des contrats
+{% endblock %}
+
+{% block body %}
+	<section class="content-header">
+		<h1>Détails des contrats</h1>
+	</section>
+
+	<table id="table-datatables" class="display">
+		<thead>
+			<tr>
+
+				<th>Date Souscription</th>
+				<th>Frais</th>
+				<th>1er règlement</th>
+				<th>2ème règlement</th>
+				<th>Client</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for contrat in contrats %}
+				<tr>
+					<td>{{ contrat.client.firstname }}</td>
+					<td>{{ contrat.dateSouscrpt | date('d/m/Y') }}</td>
+					<td>{{ contrat.frais | number_format(2, ',', ' ') }}
+						€</td>
+					<td>{{ contrat.firstReglement | number_format(2, ',', ' ') }}
+						€</td>
+					<td>{{ contrat.secondReglement | number_format(2, ',', ' ') }}
+						€</td>
+
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<div>
+		<a href="{{ path('contratstat_mont') }}" class="btn btn-secondary">Retour</a>
+	</div>
+{% endblock %}

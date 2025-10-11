@@ -47,7 +47,7 @@ class Relanced
     public function prePersist(): void
     {
         if (empty($this->relacedAt)) {
-            $timezone = new \DateTimeZone('Europe/London'); // Remplacez par le fuseau horaire approprié pour +1 heur
+            $timezone = new \DateTimeZone('Europe/Paris'); // Remplacez par le fuseau horaire approprié pour +1 heur
 
             $this->relacedAt = new \Datetime('now', $timezone);
         }

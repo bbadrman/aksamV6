@@ -1,0 +1,39 @@
+<h1 class="text-center">Historique des Appels
+</h1>
+
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>User</th>
+			<th>Numéro Appelant
+			</th>
+			<th>Numéro Appelé
+			</th>
+			<th>Date d'appel</th>
+			<th>Durée</th>
+			<th>Record</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for apl in appels %}
+			{% if apl.toNumber == prospect.phone or apl.toNumber == prospect.gsm or apl.fromNumber == prospect.phone or apl.fromNumber == prospect.gsm %}
+
+				<tr>
+					<td style="color:red">{{ apl.contactName }}</td>
+					<td>{{ apl.fromNumber|replace({'33': '0'}) }}</td>
+					<td>{{ apl.toNumber|replace({'33': '0'}) }}</td>
+					<td>{{ apl.startTime|date('Y-m-d H:i') }}</td>
+					<td>{{ (apl.duration / 60) | round(2, 'floor') | number_format(2, '.', ',') }}</td>
+					<td>
+						<audio controls style='width: 300px; height: 20px;' src="{{ apl.recordUrl }}"></audio>
+					</td>
+				</tr>
+			{% endif %}
+		{% else %}
+			<tr>
+				<td colspan="5">Aucun appel trouvé.</td>
+			</tr>
+		{% endfor %}
+
+	</tbody>
+</table>

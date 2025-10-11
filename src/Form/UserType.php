@@ -46,57 +46,57 @@ class UserType extends AbstractType
             ])
 
             ->add('fonctions')
-            ->add('roles', ChoiceType::class, [
-                'choices' => [
+            // ->add('roles', ChoiceType::class, [
+            //     'choices' => [
 
-                    'Tous' => 'ROLE_ADMIN',
-                    'Chef Equipe'   => 'ROLE_TEAM',
-                    'Commercial'   => 'ROLE_COMERC',
-                    '*-----Prospects-----*' => [
+            //         'Tous' => 'ROLE_ADMIN',
+            //         'Chef Equipe'   => 'ROLE_TEAM',
+            //         'Commercial'   => 'ROLE_COMERC',
+            //         '*-----Prospects-----*' => [
 
-                        'Affecter Prospects' => 'ROLE_AFFECT',
-                        'Ajouter Prospect'  => 'ROLE_ADD_PROS',
-                        'Traiter Prospect'    => 'ROLE_EDIT_PROS',
-                        'Consulter AllNewProspect' => 'ROLE_TEAMALL',
-                    ],
-                    '*-----Standard-----*' => [
-                        'Gestion Standard' => 'ROLE_STAND',
-                        'Ajouter Standard' => 'ROLE_ADD_STAND',
-                        'Edite Standard'   => 'ROLE_EDIT_STAND',
-                    ],
-                    '*-----Produit-----*' => [
-                        'Gestion Produit'  => 'ROLE_PROD',
-                        'Ajouter Produit'  => 'ROLE_ADD_PROD',
-                        'Edite Produit'  => 'ROLE_EDIT_PROD',
-                    ],
-                    '*-----RH-----*' => [
+            //             'Affecter Prospects' => 'ROLE_AFFECT',
+            //             'Ajouter Prospect'  => 'ROLE_ADD_PROS',
+            //             'Traiter Prospect'    => 'ROLE_EDIT_PROS',
+            //             'Consulter AllNewProspect' => 'ROLE_TEAMALL',
+            //         ],
+            //         '*-----Standard-----*' => [
+            //             'Gestion Standard' => 'ROLE_STAND',
+            //             'Ajouter Standard' => 'ROLE_ADD_STAND',
+            //             'Edite Standard'   => 'ROLE_EDIT_STAND',
+            //         ],
+            //         '*-----Produit-----*' => [
+            //             'Gestion Produit'  => 'ROLE_PROD',
+            //             'Ajouter Produit'  => 'ROLE_ADD_PROD',
+            //             'Edite Produit'  => 'ROLE_EDIT_PROD',
+            //         ],
+            //         '*-----RH-----*' => [
 
-                        'Gestion RH' => 'ROLE_RH',
-                        'Ajouter RH' => 'ROLE_ADD_RH',
-                        'Edite RH' => 'ROLE_EDIT_RH',
-                    ],
+            //             'Gestion RH' => 'ROLE_RH',
+            //             'Ajouter RH' => 'ROLE_ADD_RH',
+            //             'Edite RH' => 'ROLE_EDIT_RH',
+            //         ],
 
-                    '*-----Clients-----*' => [
-                        'Gestion Clients' => 'ROLE_CLIENT',
-                        'Ajouter Client' => 'ROLE_ADD_CLIENT',
-                        'Edite Client' => 'ROLE_EDIT_CLIENT',
-                    ],
-                    '*-----Contrat-----*' => [
-                        'Valider contrat' => 'ROLE_VALIDE',
-                        'Valider client' => 'ROLE_CLIENT',
+            //         '*-----Clients-----*' => [
+            //             'Gestion Clients' => 'ROLE_CLIENT',
+            //             'Ajouter Client' => 'ROLE_ADD_CLIENT',
+            //             'Edite Client' => 'ROLE_EDIT_CLIENT',
+            //         ],
+            //         '*-----Contrat-----*' => [
+            //             'Valider contrat' => 'ROLE_VALIDE',
+            //             'Valider client' => 'ROLE_CLIENT',
 
-                    ],
-                ],
+            //         ],
+            //     ],
 
 
 
-                'required' => false,
-                'multiple' => true,
-                'label' => 'Rôles',
-                'attr' => [
-                    'placeholder' => '--choisir une fonction--',
-                ]
-            ])
+            //     'required' => false,
+            //     'multiple' => true,
+            //     'label' => 'Rôles',
+            //     'attr' => [
+            //         'placeholder' => '--choisir une fonction--',
+            //     ]
+            // ])
 
             ->add('firstname', Type\TextType::class, [
                 'label' => 'Prénom',

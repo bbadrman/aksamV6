@@ -192,50 +192,6 @@ class ContratController extends AbstractController
     }
 
 
-
-    #[Route('/stat', name: 'contrats_search', methods: ['GET', 'POST'])]
-    public function searchContrats(): Response
-    {
-        $data = new SearchContartCalendrie();
-        $form = $this->createForm(SearchContratCldrType::class, $data);
-        $form->handleRequest($this->requestStack->getCurrentRequest());
-
-        $contrats = [];
-        $contratsParComrcl = [];
-        $totalContrats = 0;
-        $totalFrais = 0;
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $startDate = $data->getStartDate();
-            $endDate = $data->getEndDate();
-
-            // Obtenir les contrats pour la plage de dates
-            $contrats = $this->contratRepository->findByDateInterval($startDate, $endDate);
-
-            // Calculer le nombre de contrats par commercial
-            $contratsParComrcl = $this->contratRepository->countContratsByComrclForInterval($startDate, $endDate);
-
-            // Calculer le nombre total de contrats
-            $totalContrats = array_sum(array_column($contratsParComrcl, 'contratCount'));
-
-            // Calculer les frais totaux
-            $totalFrais = $this->contratRepository->getTotalFraisForInterval($startDate, $endDate);
-            // Calculer les frais totaux
-            $totalFirstReglm = $this->contratRepository->getTotalFirstReglmForInterval($startDate, $endDate);
-        }
-
-        return $this->render('contrat/contratstat.html.twig', [
-            'contrats' => $contrats,
-            'contratsParComrcl' => $contratsParComrcl,
-            'totalContrats' => $totalContrats,
-            'totalFrais' => $totalFrais,
-            // 'totalFirstReglm' => $totalFirstReglm,
-            'search_form' => $form->createView(),
-        ]);
-    }
-
-
-
     #[Route('/{id}', name: 'app_contrat_show', methods: ['GET', 'POST'])]
     public function show(Request $request, Contrat $contrat): Response
     {
@@ -262,8 +218,10 @@ class ContratController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $contrat->setIsModif(1);
+            // $contrat->setUpdatedAt(new \DateTimeImmutable());
             $entityManager->flush();
-
+            $this->addFlash('info', 'la Contrat a été modifié avec succès!');
             return $this->redirectToRoute('app_contrat_valid_index', [], Response::HTTP_SEE_OTHER);
         }
 

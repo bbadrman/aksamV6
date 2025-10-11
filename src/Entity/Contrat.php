@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ContratRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: ContratRepository::class)]
@@ -84,6 +85,10 @@ class Contrat
     private ?int $status = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: "Le commentaire ne doit contenir que 255 caractères maximum."
+    )]
     private ?string $comment = null;
 
     #[ORM\Column(nullable: true)]
@@ -112,6 +117,9 @@ class Contrat
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $typeProduct = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $isModif = null;
 
 
 
@@ -526,6 +534,18 @@ class Contrat
     public function setTypeProduct(?string $typeProduct): static
     {
         $this->typeProduct = $typeProduct;
+
+        return $this;
+    }
+
+    public function isIsModif(): ?bool
+    {
+        return $this->isModif;
+    }
+
+    public function setIsModif(?bool $isModif): static
+    {
+        $this->isModif = $isModif;
 
         return $this;
     }

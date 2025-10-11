@@ -50,4 +50,13 @@ class SearchClient
      * @var string
      */
     public $dd;
+    /**
+     * @var string
+     */
+    public $dr;
+
+    /**
+     * @var string
+     */
+    public $ddr;
 }

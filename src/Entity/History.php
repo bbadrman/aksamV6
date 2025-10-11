@@ -47,7 +47,7 @@ class History
     public function prePersist(): void
     {
         if (empty($this->actionDate)) {
-            $timezone = new \DateTimeZone('Europe/London');
+            $timezone = new \DateTimeZone('Europe/Paris');
             $this->actionDate = new \Datetime('now', $timezone);
         }
     }
@@ -67,7 +67,7 @@ class History
     public function setActionDate(?\DateTimeInterface $actionDate): static
     {
         //ajouter +1h quand on persiste
-        $this->actionDate = new \DateTime('now', new \DateTimeZone('Europe/London'));
+        $this->actionDate = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
 
 
 

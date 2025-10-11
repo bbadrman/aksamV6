@@ -59,14 +59,46 @@ class ClientController extends AbstractController
         throw new AccessDeniedException("Tu ne peux pas accéder à cette ressource");
     }
 
+    /**
+     * get All client
+     * @Route("/", name="client_index", methods={"GET"})
+     */
+    #[IsGranted('IS_AUTHENTICATED')]
+    public function index(Request $request,  Security $security): Response
+    {
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
+
+        $data = new SearchClient();
+        $data->page = $request->query->get('page', 1);
+        $form = $this->createForm(SearchClientType::class, $data);
+        $form->handleRequest($this->requestStack->getCurrentRequest());
+        $client = [];
+
+        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
+            // admi peut voire toutes les nouveaux client
+            $client =  $this->clientRepository->findClientAll($data,  null);
+
+            return $this->render('client/index.html.twig', [
+                'clients' => $client,
+
+                'search_form' => $form->createView()
+            ]);
+        }
+        return $this->render('client/search.html.twig', [
+            'clients' => $client,
+
+            'search_form' => $form->createView()
+        ]);
+    }
 
     /**
      * get client with parametre 
      * @Route("/valide", name="client_valide_index", methods={"GET"})
      */
+    #[IsGranted('IS_AUTHENTICATED')]
     public function valide(Request $request,  Security $security): Response
     {
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         $data = new SearchClient();
         $data->page = $request->query->get('page', 1);
@@ -105,36 +137,7 @@ class ClientController extends AbstractController
         ]);
     }
 
-    /**
-     * get All client
-     * @Route("/", name="client_index", methods={"GET"})
-     */
-    public function index(Request $request,  Security $security): Response
-    {
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
 
-        $data = new SearchClient();
-        $data->page = $request->query->get('page', 1);
-        $form = $this->createForm(SearchClientType::class, $data);
-        $form->handleRequest($this->requestStack->getCurrentRequest());
-        $client = [];
-
-        if ($form->isSubmitted() && $form->isValid() && !$form->isEmpty()) {
-            // admi peut voire toutes les nouveaux client
-            $client =  $this->clientRepository->findClientAll($data,  null);
-
-            return $this->render('client/index.html.twig', [
-                'clients' => $client,
-
-                'search_form' => $form->createView()
-            ]);
-        }
-        return $this->render('client/search.html.twig', [
-            'clients' => $client,
-
-            'search_form' => $form->createView()
-        ]);
-    }
 
     // /**
     //  * get All client valide
@@ -167,9 +170,10 @@ class ClientController extends AbstractController
      * @Route("/new", name="client_new", methods={"GET", "POST"})
      * @Route("/new/{id}", name="client_new_with_id", methods={"GET", "POST"}, requirements={"id"="\d+"})
      */
+    #[IsGranted('IS_AUTHENTICATED')]
     public function new(Request $request, $id = null): Response
     {
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         $client = new Client();
         $form = $this->createForm(ClientType::class, $client);
@@ -189,9 +193,10 @@ class ClientController extends AbstractController
     /**
      * @Route("/newclient", name="client_newclient", methods={"GET", "POST"}) 
      */
+    #[IsGranted('IS_AUTHENTICATED')]
     public function newclient(Request $request, $id = null): Response
     {
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         $client = new Client();
         $form = $this->createForm(ClientType::class, $client);
@@ -252,9 +257,10 @@ class ClientController extends AbstractController
     /**
      * @Route("/{id}", name="client_show", methods={"GET"}) 
      */
+    #[IsGranted('IS_AUTHENTICATED')]
     public function show(Client $client): Response
     {
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         return $this->render('client/show.html.twig', [
             'client' => $client,
@@ -264,9 +270,10 @@ class ClientController extends AbstractController
     /**
      * @Route("/{id}/edit", name="client_edit", methods={"GET", "POST"}) 
      */
+    #[IsGranted('IS_AUTHENTICATED')]
     public function edit(Request $request, Client $client): Response
     {
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
         $user = $this->security->getUser();
         $roles = $user->getRoles();
 
@@ -291,9 +298,10 @@ class ClientController extends AbstractController
     /**
      * @Route("/{id}/editvalide", name="client_valide_edit", methods={"GET", "POST"}) 
      */
+    #[IsGranted('IS_AUTHENTICATED')]
     public function editvalide(Request $request, Client $client): Response
     {
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         $form = $this->createForm(ClientValideType::class, $client);
         $form->handleRequest($request);
@@ -314,9 +322,10 @@ class ClientController extends AbstractController
     /**
      * @Route("/{id}", name="client_delete", methods={"POST"}) 
      */
+    #[IsGranted('IS_AUTHENTICATED')]
     public function delete(Request $request, Client $client): Response
     {
-        $this->denyAccessUnlessGrantedAuthorizedRoles();
+        // $this->denyAccessUnlessGrantedAuthorizedRoles();
 
         if ($this->isCsrfTokenValid('delete' . $client->getId(), $request->request->get('_token'))) {
             $this->clientRepository->remove($client, true);

@@ -324,7 +324,7 @@ class ProspectRepository extends ServiceEntityRepository
 
         $query = $this
             ->createQueryBuilder('u')
-            ->select('u, t, f, h')
+            ->addSelect('t, f, h')
 
             ->leftJoin('u.team', 't')
 
@@ -422,6 +422,12 @@ class ProspectRepository extends ServiceEntityRepository
                 ->andWhere('h.motifRelanced = :motifRelanced')
                 ->setParameter('motifRelanced', $search->motifRelanced);
         }
+        if (!empty($search->u)) {
+            $query = $query
+
+                ->andWhere('u.url = :url')
+                ->setParameter('url', $search->u);
+        }
 
 
 
@@ -449,7 +455,7 @@ class ProspectRepository extends ServiceEntityRepository
 
         $query = $this
             ->createQueryBuilder('p')
-            ->select('p,  h, f')
+            ->select('p, h, f')
 
             // joiner les tables en relation ManyToOne avec team
             ->where('p.team IN (:teams)')
@@ -2134,7 +2140,7 @@ class ProspectRepository extends ServiceEntityRepository
         // dd($yesterday); = date: 2024-09-24 23:59:59.0 UTC (+00:00)
 
         $query = $this->createQueryBuilder('p')
-            ->select('p,   r')
+            ->select('p, r')
 
             ->andWhere('p.comrcl = :val')
             ->setParameter('val', $id)
@@ -2236,7 +2242,6 @@ class ProspectRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('p')
             ->select('p, t, f')
             ->innerJoin('p.relanceds', 'r', 'WITH', 'r.motifRelanced = 2')
-
 
 
             // joiner les tables en relation ManyToOne avec team
@@ -2350,7 +2355,7 @@ class ProspectRepository extends ServiceEntityRepository
             ->select('p, f')
             ->where('p.team IN (:teams)')
             ->setParameter('teams', $teams)
-            ->andWhere('p.id IN (' . $subQuery . ')')
+            ->andWhere('p.id EXISTS (' . $subQuery . ')')
 
             ->leftJoin('p.comrcl', 'f');
 
@@ -2540,6 +2545,9 @@ class ProspectRepository extends ServiceEntityRepository
             ->andWhere('r.motifRelanced is null')
 
             ->orderBy('p.id', 'DESC');
+
+
+
         if (!empty($search->d) && $search->d instanceof \DateTime) {
             $query = $query
                 ->andWhere('p.creatAt >= :d')
@@ -2595,6 +2603,7 @@ class ProspectRepository extends ServiceEntityRepository
             // ->leftJoin('p.histories', 'h')
             // ->andWhere('h.actionDate  >= :endOfYesterday')
             // ->setParameter('endOfYesterday', $today)
+
 
             //->andWhere('p.comrcl IS NULL OR p.comrcl = :val') // Filtrer les prospects no affectés et affect au chef aussi
             //->setParameter('val', $user)
@@ -2717,6 +2726,15 @@ class ProspectRepository extends ServiceEntityRepository
 
             //->andWhere('p.comrcl IS NULL OR p.comrcl = :val') // Filtrer les prospects no affectés et affect au chef aussi
             //->setParameter('val', $user)
+
+            // ->andWhere('p.team IS NOT NULL')
+
+
+
+
+
+
+
             ->orderBy('p.id', 'DESC');
 
 
@@ -2909,14 +2927,22 @@ class ProspectRepository extends ServiceEntityRepository
             ->select('COUNT(DISTINCT p.id)')
             ->leftJoin('p.team', 't')
             ->leftJoin('p.comrcl', 'f')
+
             ->where('p.team IN (:teams) ')
             ->setParameter('teams', $team)
+
             ->leftJoin('p.relanceds', 'r')
             ->andWhere('p.comrcl IS NULL')
             ->andWhere('r.prospect IS NULL')
+
             ->andWhere('p.team IS NOT NULL');
         //->andWhere('p.comrcl IS NULL OR p.comrcl = :user') // Filtrer les prospects no affectés et affect au chef aussi
         //->setParameter('user', $user);
+
+
+
+
+
 
         return (int) $query->getQuery()->getSingleScalarResult();
     }
@@ -2926,7 +2952,7 @@ class ProspectRepository extends ServiceEntityRepository
     {
         $team = $user->getTeams();
         if ($team->isEmpty()) {
-            return [];
+            return 0;
         }
         $query = $this->createQueryBuilder('p')
             ->select('COUNT(DISTINCT p.id)')
@@ -2944,7 +2970,7 @@ class ProspectRepository extends ServiceEntityRepository
         return (int) $query->getQuery()->getSingleScalarResult();
     }
 
-    //return with int pour chef
+    //return with int pour comercl
     public function findAllNewProspectsComercialApi($id): int
     {
 

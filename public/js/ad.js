@@ -726,6 +726,29 @@ document.addEventListener('DOMContentLoaded', function () {
 		return new Promise(resolve => setTimeout(resolve, ms));
 	}
 });
+// affichier les apl par modal :
+
+// document.getElementById('showCallsButton').addEventListener('click', function () {
+// 	const prospectId = this.dataset.id;
+
+// 	fetch(`/show/appels/${prospectId}`) // Replace with your actual route for fetching calls
+// 		.then(response => response.text())
+// 		.then(data => {
+// 			document.getElementById('callsContent').innerHTML = data;
+// 		})
+// 		.catch(error => {
+// 			console.error('Error fetching calls:', error);
+// 			document.getElementById('callsContent').innerHTML = 'Error loading calls.';
+// 		});
+// });
+
+// function refreshShowalls(prospectId) {
+// 	fetch(`/show/appels/${prospectId}`).then(response => response.text()).then(html => {
+// 		document.getElementById('showalls-content').innerHTML = html;
+// 	}).catch(error => console.error('Error fetching calls:', error));
+// }
+
+
 
 // filter table
 // $(document).ready(function () {

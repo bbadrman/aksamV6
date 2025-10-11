@@ -1,0 +1,64 @@
+<button type="button" class='btn btn' style="background-color:#7a96ea;" data-toggle="modal" data-target="#AddFonctionModal{{ prospect.id }}">
+	apl
+</button>
+
+
+{# #  Modal display team info on dashboard # #}
+<div class="modal" id="AddFonctionModal{{ prospect.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<div class="modal-header modal-header-info">
+				<h3 class="modal-title" id="exampleModalLabel">
+					<i class="fa fa-plus-square-o"></i>
+
+				</h3>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+
+			<div class="modal-body">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>User</th>
+							<th>Numéro Appelant
+							</th>
+							<th>Numéro Appelé
+							</th>
+							<th>Date d'appel</th>
+							<th>Durée</th>
+							<th>Record</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for apl in appel %}
+							{% if apl.toNumber == prospect.phone or apl.toNumber == prospect.gsm or apl.fromNumber == prospect.phone or apl.fromNumber == prospect.gsm %}
+
+								<tr>
+									<td style="color:red">{{ apl.contactName }}</td>
+									<td>{{ apl.fromNumber|replace({'33': '0'}) }}</td>
+									<td>{{ apl.toNumber|replace({'33': '0'}) }}</td>
+									<td>{{ apl.startTime|date('Y-m-d H:i') }}</td>
+									<td>{{ (apl.duration / 60) | round(2, 'floor') | number_format(2, '.', ',') }}</td>
+									<td>
+										<audio controls style='width: 300px; height: 20px;' src="{{ apl.recordUrl }}"></audio>
+									</td>
+								</tr>
+							{% endif %}
+						{% else %}
+							<tr>
+								<td colspan="5">Aucun appel trouvé.</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</tbody>
+			</table>
+
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+
+		</div>
+	</div>
+</div></div></div>{# # END- AddFonctioModal # #}

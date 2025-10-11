@@ -34,7 +34,7 @@ class DashboardController extends AbstractController
     ) {}
 
     /**
-     * @Route("/", name="dashboard")
+     * @Route("/statjour", name="dashboard")
      * @IsGranted("ROLE_USER", message="Tu ne peut pas acces a cet ressource")
      
      * @return Response  
@@ -202,6 +202,39 @@ class DashboardController extends AbstractController
             'Content-Disposition' => 'inline',
             'X-Frame-Options' => 'SAMEORIGIN',
             'X-Content-Type-Options' => 'nosniff'
+        ]);
+    }
+
+    /**
+     * Permet d'afficher tous les teams (regles_soucriptionGarage)
+     * 
+     *  @Route("/bibliotique-garage", name="bebltq_garage")
+     *
+     * @return Response  
+     */
+    public function readbebliotiqueGarage(): Response
+    {
+        // Chemin relatif à partir du répertoire `public`
+
+
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/images/screngarage.png';
+        chmod($filePath, 0444); // Lecture seule, pas d'écriture
+        if (!file_exists($filePath)) {
+            throw $this->createNotFoundException('The file does not exist');
+        }
+        // Charger l'image
+        $image = imagecreatefrompng($filePath);
+        $newWidth = 2000; // Largeur agrandie
+        $newHeight = 1400; // Hauteur agrandie
+
+        $resizedImage = imagescale($image, $newWidth, $newHeight);
+
+        ob_start();
+        imagepng($resizedImage);
+        $imageData = ob_get_clean();
+
+        return new Response($imageData, 200, [
+            'Content-Type' => 'image/png',
         ]);
     }
 }

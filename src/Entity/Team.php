@@ -12,7 +12,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 
 
-
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
 #[ORM\Table(name: "team")]
 #[ApiResource]
@@ -30,7 +29,6 @@ class Team
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $description;
-
 
 
     #[ORM\OneToMany(targetEntity: Prospect::class, mappedBy: "team")]

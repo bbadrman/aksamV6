@@ -26,7 +26,7 @@ class StatsService
         $teams      = $this->getTeamsCount();
         $products = $this->getProductsCount();
         $clients = $this->getClientsCount();
-        // $contrats = $this->getContratsCount();
+        $contrats = $this->getContratsCount();
         // $prospectsAffect = $this->getProspectCount();
 
         $prospectspasaffect = $this->getProspectPasCount();
@@ -76,7 +76,7 @@ class StatsService
 
 
 
-        return compact('preclientValide', 'preContratAdmin', 'preContratComrcl', 'preclientAdmin', 'preclientChef', 'preclientComrcl',  'relancesNoTrCmrcl', 'relancesNoTrChef', 'relanceNoTraite', 'prosAvenirCmrcl', 'prosAvenirChef', 'prospectsAvenir', 'unjoiniableCmrl', 'unjoiniableChef', 'prospectsNoTrCmrcl', 'prospectsNoTrChef', 'prospectsDayCmrcl', 'prospectsDayChef', 'prospectsCmrclNv', 'prospectsChefNv', 'prospectsChefNvAll', 'prospectsNoTraite', 'unjoiniable', 'prospects', 'prospectspasaffect', 'prospectsDay', 'users', 'teams', 'products', 'clients');
+        return compact('contrats', 'preclientValide', 'preContratAdmin', 'preContratComrcl', 'preclientAdmin', 'preclientChef', 'preclientComrcl',  'relancesNoTrCmrcl', 'relancesNoTrChef', 'relanceNoTraite', 'prosAvenirCmrcl', 'prosAvenirChef', 'prospectsAvenir', 'unjoiniableCmrl', 'unjoiniableChef', 'prospectsNoTrCmrcl', 'prospectsNoTrChef', 'prospectsDayCmrcl', 'prospectsDayChef', 'prospectsCmrclNv', 'prospectsChefNv', 'prospectsChefNvAll', 'prospectsNoTraite', 'unjoiniable', 'prospects', 'prospectspasaffect', 'prospectsDay', 'users', 'teams', 'products', 'clients');
     }
 
 
@@ -103,15 +103,18 @@ class StatsService
         return $this->manager->createQuery('SELECT COUNT(p) FROM App\Entity\Prospect p')->getSingleScalarResult();
     }
 
-    // public function getContratsCount()
-    // {
-    //     $qb = $this->manager->createQueryBuilder();
-    //     $qb->select('COUNT(c)');
-    //     $query = $qb->getQuery();
-    //     $result = $query->getSingleScalarResult();
+    public function getContratsCount()
+    {
+        $qb = $this->manager->createQueryBuilder();
+        $qb->select('COUNT(c)')
+            ->from('App\Entity\Contrat', 'c'); // Spécifiez la source des données
 
-    //     return $result;
-    // }
+        $query = $qb->getQuery();
+        $result = $query->getSingleScalarResult();
+
+        return $result;
+    }
+
 
 
     // les prospect cree ce jour et pas affc

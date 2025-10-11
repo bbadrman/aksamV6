@@ -60,7 +60,7 @@ class ContratEditType extends AbstractType
                     'attr' => [
                         'placeholder' => "date format: yyyy-mm-dd."
                     ],
-                    'required' => false
+                    'required' => true,
                 ])
                 ->add('dateEffet', Type\DateType::class, [
                     'label' => "Date effet :",
@@ -158,7 +158,9 @@ class ContratEditType extends AbstractType
                             'DEMENAGEMENT' => 'DEMENAGEMENT',
                             'TAXI' => 'TAXI',
                             'TPPC' => 'TPPC',
-                            'TP' => 'TP'
+                            'TP' => 'TP',
+                            'Location de véhicule' => 'Location véhicule',
+                            'Convoyage' => 'Convoyage'
 
                         ],
                         'expanded' => false,
@@ -224,6 +226,9 @@ class ContratEditType extends AbstractType
                             'ZEPHIR' =>  'ZEPHIR',
                             'AMI3F' =>  'AMI3F',
                             'NEOLIANE' =>  'NEOLIANE',
+                            'KELIPS' =>  'KELIPS',
+                            'COVERITY' => 'COVERITY',
+                            'ASSURMAX' => 'ASSURMAX'
                         ],
                         'expanded' => false,
                         'multiple' => false,
@@ -266,7 +271,13 @@ class ContratEditType extends AbstractType
                             'MAIF' => 'MAIF',
                             'MACIF' => 'MACIF',
                             'ASSUREA' => 'ASSUREA',
-                            'NEOLIANE' => 'NEOLIANE'
+                            'NEOLIANE' => 'NEOLIANE',
+                            'PILLIOT' => 'PILLIOT',
+                            'WAKAM' => 'WAKAM',
+                            'COVERITY' => 'COVERITY',
+                            'ASSURMAX' => 'ASSURMAX'
+
+
 
                         ],
                         'expanded' => false,
@@ -490,7 +501,8 @@ class ContratEditType extends AbstractType
                         'POIDS LOURS' => 'POIDS LOURS',
                         'CARENE' => 'CARENE',
                         'CAMIONNETTE' => 'CAMIONNETTE',
-                        'UTILITAIRE' => 'UTILITAIRE'
+                        'UTILITAIRE' => 'UTILITAIRE',
+                        'MOTO' => 'MOTO',
 
                     ],
                     'expanded' => false,
@@ -546,11 +558,12 @@ class ContratEditType extends AbstractType
                 ->add('dateSouscrpt', Type\DateType::class, [
                     'label' => "Date souscription  :",
                     'disabled' => true,
+
                     'widget' => 'single_text',
                     'attr' => [
                         'placeholder' => "date format: yyyy-mm-dd."
                     ],
-                    'required' => false
+                    'required' => true,
                 ])
                 ->add('dateEffet', Type\DateType::class, [
                     'label' => "Date effet :",
@@ -647,7 +660,9 @@ class ContratEditType extends AbstractType
                             'DEMENAGEMENT' => 'DEMENAGEMENT',
                             'TAXI' => 'TAXI',
                             'TPPC' => 'TPPC',
-                            'TP' => 'TP'
+                            'TP' => 'TP',
+                            'Location de véhicule' => 'Location véhicule',
+                            'Convoyage' => 'Convoyage'
 
                         ],
                         'expanded' => false,
@@ -713,6 +728,11 @@ class ContratEditType extends AbstractType
                             'ZEPHIR' =>  'ZEPHIR',
                             'AMI3F' =>  'AMI3F',
                             'NEOLIANE' =>  'NEOLIANE',
+                            'KELIPS' => 'KELIPS',
+                            'COVERITY' => 'COVERITY',
+                            'ASSURMAX' => 'ASSURMAX'
+
+
                         ],
                         'expanded' => false,
                         'multiple' => false,
@@ -755,7 +775,11 @@ class ContratEditType extends AbstractType
                             'MAIF' => 'MAIF',
                             'MACIF' => 'MACIF',
                             'ASSUREA' => 'ASSUREA',
-                            'NEOLIANE' => 'NEOLIANE'
+                            'NEOLIANE' => 'NEOLIANE',
+                            'PILLIOT' => 'PILLIOT',
+                            'WAKAM' => 'WAKAM',
+                            'COVERITY' => 'COVERITY',
+                            'ASSURMAX' => 'ASSURMAX'
 
                         ],
                         'expanded' => false,
@@ -978,7 +1002,8 @@ class ContratEditType extends AbstractType
                         'POIDS LOURS' => 'POIDS LOURS',
                         'CARENE' => 'CARENE',
                         'CAMIONNETTE' => 'CAMIONNETTE',
-                        'UTILITAIRE' => 'UTILITAIRE'
+                        'UTILITAIRE' => 'UTILITAIRE',
+                        'MOTO' => 'MOTO',
 
                     ],
                     'expanded' => false,
